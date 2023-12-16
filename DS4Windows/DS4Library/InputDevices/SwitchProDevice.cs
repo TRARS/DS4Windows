@@ -968,13 +968,14 @@ namespace DS4Windows.InputDevices
             byte[] command;
             byte[] tmpBuffer;
 
-            //command = new byte[] { 0x00, 0x50, 0x00, 0x00, 0x01 };
-            //tmpBuffer = Subcommand(SwitchProSubCmd.SPI_FLASH_READ, command, 5, checkResponse: true);
-            //Console.WriteLine("THE POWER");
-            //Console.WriteLine(string.Join(",", tmpBuffer));
-            //Console.WriteLine(tmpBuffer[SPI_RESP_OFFSET]);
-            //Console.WriteLine();
+        //command = new byte[] { 0x00, 0x50, 0x00, 0x00, 0x01 };
+        //tmpBuffer = Subcommand(SwitchProSubCmd.SPI_FLASH_READ, command, 5, checkResponse: true);
+        //Console.WriteLine("THE POWER");
+        //Console.WriteLine(string.Join(",", tmpBuffer));
+        //Console.WriteLine(tmpBuffer[SPI_RESP_OFFSET]);
+        //Console.WriteLine();
 
+        reload_left://
             bool foundUserCalib = false;
             command = new byte[] { 0x10, 0x80, 0x00, 0x00, 0x02 };
             tmpBuffer = Subcommand(0x10, command, 5, checkResponse: true);
@@ -1028,15 +1029,21 @@ namespace DS4Windows.InputDevices
                 //Debug.WriteLine("New: {0} | Old: {1}", leftStickXData.mid, leftStickCalib[2]);
                 //Debug.WriteLine("MAX: {0} | MIN: {1}", leftStickXData.max, leftStickXData.min);
                 //leftStickOffsetX = leftStickOffsetY = 140;
+
+                if (leftStickXData.mid == 0 || leftStickYData.mid == 0)
+                {
+                    goto reload_left;//
+                }
             }
 
-            //leftStickOffsetX = leftStickCalib[2];
-            //leftStickOffsetY = leftStickCalib[3];
+        //leftStickOffsetX = leftStickCalib[2];
+        //leftStickOffsetY = leftStickCalib[3];
 
-            //Console.WriteLine(string.Join(",", tmpBuffer));
-            //Console.WriteLine();
-            //Console.WriteLine(string.Join(",", leftStickCalib));
+        //Console.WriteLine(string.Join(",", tmpBuffer));
+        //Console.WriteLine();
+        //Console.WriteLine(string.Join(",", leftStickCalib));
 
+        reload_right://
             foundUserCalib = false;
             command = new byte[] { 0x1B, 0x80, 0x00, 0x00, 0x02 };
             tmpBuffer = Subcommand(0x10, command, 5, checkResponse: true);
@@ -1087,6 +1094,11 @@ namespace DS4Windows.InputDevices
                 //rightStickYData.mid = rightStickCalib[3];
                 rightStickYData.mid = (ushort)((rightStickYData.max - rightStickYData.min) / 2.0 + rightStickYData.min);
                 //rightStickOffsetX = rightStickOffsetY = 140;
+
+                if (rightStickXData.mid == 0 || rightStickYData.mid == 0)
+                {
+                    goto reload_right;//
+                }
             }
 
             //rightStickOffsetX = rightStickCalib[2];
