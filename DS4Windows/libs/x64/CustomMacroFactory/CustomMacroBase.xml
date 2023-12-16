@@ -1,0 +1,1065 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CustomMacroBase</name>
+    </assembly>
+    <members>
+        <member name="T:CustomMacroBase.CustomControlEx.ConsoleListBoxEx.cConsoleListBox_event">
+            <summary>
+            cConsoleListBox_event
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.CustomControlEx.ConsoleListBoxEx.cConsoleListBox_event.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.CustomControlEx.GridEx.cGrid.ParentModel">
+            <summary>
+            DataContext中转
+            </summary>
+        </member>
+        <member name="T:CustomMacroBase.CustomEffect.MagnifyEffect">
+            <summary>An effect that magnifies a circular region.</summary>
+        </member>
+        <member name="P:CustomMacroBase.CustomEffect.MagnifyEffect.CenterPoint">
+            <summary>The center point of the magnified region.</summary>
+        </member>
+        <member name="P:CustomMacroBase.CustomEffect.MagnifyEffect.Radius">
+            <summary>The radius of the magnified region.</summary>
+        </member>
+        <member name="P:CustomMacroBase.CustomEffect.MagnifyEffect.MagnificationAmount">
+            <summary>The magnification factor.</summary>
+        </member>
+        <member name="P:CustomMacroBase.CustomEffect.MagnifyEffect.AspectRatio">
+            <summary>The aspect ratio (width / height) of the input.</summary>
+        </member>
+        <member name="M:CustomMacroBase.CustomEffect.TranslationalEffect.#ctor">
+            <summary>
+            线性减淡+平移
+            </summary>
+        </member>
+        <member name="T:CustomMacroBase.Helper.Attributes.DoNotLoadAttribute">
+            <summary>
+            是否加载
+            </summary>
+        </member>
+        <member name="T:CustomMacroBase.Helper.Attributes.SortIndexAttribute">
+            <summary>
+            排序索引，数字越小，位置越靠上
+            </summary>
+        </member>
+        <member name="T:CustomMacroBase.Helper.Attributes.VersionAttribute">
+            <summary>
+            记录编译时间
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.Helper.Tools.FlowManager.ActionInfoV0.Action">
+            <summary>
+            待执行的动作
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.Helper.Tools.FlowManager.ActionInfoV0.Duration">
+            <summary>
+            动作持续时间（毫秒）
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.Helper.Tools.FlowManager.ActionInfoV0.DurationFunc">
+            <summary>
+            动作持续时间（毫秒）（以委托的形式接收）
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.Helper.Tools.FlowManager.ActionInfoV0.#ctor(System.Int32)">
+            <summary>
+            <para>参数_duration：空动作持续时间（毫秒）</para>
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.Helper.Tools.FlowManager.ActionInfoV0.#ctor(System.Func{System.Int32})">
+            <summary>
+            <para>参数_durationfunc：空动作持续时间（毫秒）（以委托的形式接收）</para>
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.Helper.Tools.FlowManager.ActionInfoV0.#ctor(System.Action,System.Int32)">
+            <summary>
+            <para>动作打包</para>
+            <para>参数_action：待执行的动作</para>
+            <para>参数_duration：动作持续时间（毫秒）</para>
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.Helper.Tools.FlowManager.ActionInfoV0.#ctor(System.Action,System.Func{System.Int32})">
+            <summary>
+            <para>动作打包</para>
+            <para>参数_action：待执行的动作</para>
+            <para>参数_durationfunc：动作持续时间（毫秒）（以委托的形式接收）</para>
+            </summary>
+        </member>
+        <member name="T:CustomMacroBase.Helper.Tools.FlowManager.FlowControllerV0">
+            <summary>
+            <para>脚本执行时，不会影响来自真实手柄的其他操作</para>
+            <para>适用场景：辅助搓招 or 挂机</para>
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.Helper.Tools.FlowManager.FlowControllerV0.#ctor(System.String,System.Action)">
+            <summary>
+            <para>_macroName：脚本名</para>
+            <para>_macro_act_pre：额外动作，用以在脚本中的每个动作被执行前优先弹起某些按键以避免冲突</para>
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.Helper.Tools.FlowManager.FlowControllerV0.Start_Condition">
+            <summary>
+            该值为true时触发脚本
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.Helper.Tools.FlowManager.FlowControllerV0.Stop_Condition">
+            <summary>
+            该值为true时中断脚本
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.Helper.Tools.FlowManager.FlowControllerV0.Repeat_Condition">
+            <summary>
+            该值为true时令脚本可以循环
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.Helper.Tools.FlowManager.ActionInfoV1.Key">
+            <summary>
+            按键名
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.Helper.Tools.FlowManager.ActionInfoV1.Value">
+            <summary>
+            按键值
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.Helper.Tools.FlowManager.ActionInfoV1.Duration">
+            <summary>
+            按键持续时间
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.Helper.Tools.FlowManager.ActionInfoV1.DurationFunc">
+            <summary>
+            按键持续时间（委托版）
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.Helper.Tools.FlowManager.ActionInfoV1.#ctor(System.Int32)">
+            <summary>
+            <para>参数_duration：状态持续时间（毫秒）</para>
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.Helper.Tools.FlowManager.ActionInfoV1.#ctor(System.String,System.Byte,System.Int32)">
+            <summary>
+            <para>动作打包</para>
+            <para>参数_key：按键名</para>
+            <para>参数_value：按键状态</para>
+            <para>参数_duration：按键状态持续时间（毫秒）</para>
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.Helper.Tools.FlowManager.ActionInfoV1.#ctor(System.String,System.Boolean,System.Int32)">
+            <summary>
+            <para>动作打包</para>
+            <para>参数_key：按键名</para>
+            <para>参数_value：按键状态</para>
+            <para>参数_duration：按键状态持续时间（毫秒）</para>
+            </summary>
+        </member>
+        <member name="T:CustomMacroBase.Helper.Tools.FlowManager.FlowControllerV1">
+            <summary>
+            <para>脚本执行时，将完全无视任何来自真实手柄的操作</para>
+            <para>适用场景：挂机</para>
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.Helper.Tools.FlowManager.FlowControllerV1.#ctor(System.String)">
+            <summary>
+            <para>_macroName：脚本名</para>
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.Helper.Tools.FlowManager.FlowControllerV1.Start_Condition">
+            <summary>
+            该值为true时触发脚本
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.Helper.Tools.FlowManager.FlowControllerV1.Stop_Condition">
+            <summary>
+            该值为true时中断脚本
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.Helper.Tools.FlowManager.FlowControllerV1.Repeat_Condition">
+            <summary>
+            该值为true时令脚本可以循环
+            </summary>
+        </member>
+        <member name="T:CustomMacroBase.Helper.Tools.FlowManager.FlowControllerV2">
+            <summary>
+            <para>脚本执行时，不会影响来自真实手柄的其他操作</para>
+            <para>适用场景：挂机 + 找图/找色/找数字（FindImage/FindColor/FindNumber）</para>
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.Helper.Tools.FlowManager.FlowControllerV2.#ctor(System.String,System.Action)">
+            <summary>
+            <para>_macroName：脚本名</para>
+            <para>_macro_act_pre：额外动作，用以在脚本中的每个动作被执行前优先弹起某些按键以避免冲突</para>
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.Helper.Tools.FlowManager.FlowControllerV2.Start_Condition">
+            <summary>
+            该值为true时触发脚本
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.Helper.Tools.FlowManager.FlowControllerV2.Stop_Condition">
+            <summary>
+            该值为true时中断脚本
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.Helper.Tools.FlowManager.FlowControllerV2.InnerWait(System.Int32)">
+            <summary>
+            从较长的延时任务中取消时，返回true，否则返回false
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.Helper.Tools.OtherManager.ActionController.#ctor(System.Int32)">
+            <summary>
+            _cooldown：动作的冷却时间
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.Helper.Tools.OtherManager.ActionController.Start_Condition">
+            <summary>
+            该值为true时触发动作
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.Helper.Tools.OtherManager.StickFixInfo.#ctor(System.Int32,System.Double,System.Double)">
+            <summary>
+            <para>_a：内圈死区&amp;反死区(0~127)</para>
+            <para>_b：输出放大(128~640)</para>
+            <para>_c：外圈死区(64~180)</para>
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.Helper.Tools.OtherManager.StickController.#ctor(CustomMacroBase.Helper.Tools.OtherManager.StickFixInfo,CustomMacroBase.Helper.Tools.OtherManager.StickFixInfo)">
+            <summary>
+            <para>_ls：左摇杆修正参数</para>
+            <para>_rs：右摇杆修正参数</para>
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.Helper.Tools.SendInputManager.SendKBMInput.PreSendInput(CustomMacroBase.Helper.Tools.SendInputManager.SendKBMInput.INPUT[]@)">
+            <summary>
+            SendInput简化
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.Helper.Tools.SendInputManager.SendKBMInput.InnerTimer.CoolDown(System.Int32)">
+            <summary>
+            长按时间小于_threshold返回false，否则返回true
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.Helper.Tools.SendInputManager.SendKBMInput.SendMouseLeftClick(System.Windows.Point)">
+            <summary>
+            <para>鼠标左键单击</para>
+            <para>参数 pt：绝对坐标</para>
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.Helper.Tools.SendInputManager.SendKBMInput.SendKeyBoardClick(System.Windows.Forms.Keys)">
+            <summary>
+            <para>键盘某键按下&amp;弹起</para>
+            <para>参数 key：按哪个键（比如填'<see cref="F:System.Windows.Forms.Keys.Enter"/>'）</para>
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.Helper.Tools.SendInputManager.SendKBMInput.SendBlockInput(System.Boolean)">
+            <summary>
+            <para>禁用键鼠输入，仅在管理员模式下有效</para>
+            <para>※ 无法禁用数位板/数位屏输入</para>
+            </summary>
+            <param name="flag"></param>
+        </member>
+        <member name="M:CustomMacroBase.Helper.Tools.SendInputManager.SendKBMInput.MouseMove(System.Windows.Point)">
+            <summary>
+            <para>鼠标移动</para>
+            <para>参数 point：绝对坐标</para>
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.Helper.Tools.SendInputManager.SendKBMInput.MouseDown(System.String,System.Boolean,CustomMacroBase.Helper.Tools.SendInputManager.SendKBMInput.MouseKeys[])">
+            <summary>
+            <para>鼠标某键按下</para>
+            <para>参数 specialKey：用作访问字典的唯一key</para>
+            <para>参数 flag：true按下 false弹起</para>
+            <para>参数 keys：一次性按多个键，MouseKey数组</para>
+            <para>禁用自动连发</para>
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.Helper.Tools.SendInputManager.SendKBMInput.MouseDownEx(System.String,System.Boolean,CustomMacroBase.Helper.Tools.SendInputManager.SendKBMInput.MouseKeys[],System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            <para>鼠标某键按下</para>
+            <para>参数 specialKey：用作访问字典的唯一key</para>
+            <para>参数 flag：true按下 false弹起</para>
+            <para>参数 keys：一次性按多个键，MouseKey数组</para>
+            <para>参数 autoCycle：是否启用自动连发</para>
+            <para>参数 cycleActivationDuration：启用自动连发时，长按直至激活自动连发所需耗时（毫秒）</para>
+            <para>参数 cycleDuration：启用自动连发时，按下与弹起之间的延时（毫秒）</para>
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.Helper.Tools.SendInputManager.SendKBMInput.KeyDown(System.String,System.Boolean,System.Windows.Forms.Keys[])">
+            <summary>
+            <para>键盘某键按下</para>
+            <para>参数 specialKey：用作访问字典的唯一key</para>
+            <para>参数 flag：true按下 false弹起</para>
+            <para>参数 keys：一次性按多个键，Key数组（比如填'<see cref="F:System.Windows.Forms.Keys.Enter"/>'）</para>
+            <para>禁用自动连发</para>
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.Helper.Tools.SendInputManager.SendKBMInput.KeyDownEx(System.String,System.Boolean,System.Windows.Forms.Keys[],System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            <para>键盘某键按下</para>
+            <para>参数 specialKey：用作访问字典的唯一key</para>
+            <para>参数 flag：true按下 false弹起</para>
+            <para>参数 keys：一次性按多个键，Key数组（比如填'<see cref="F:System.Windows.Forms.Keys.Enter"/>'）</para>
+            <para>参数 autoCycle：是否启用自动连发</para>
+            <para>参数 cycleActivationDuration：启用自动连发时，长按直至激活自动连发所需耗时（毫秒）</para>
+            <para>参数 cycleDuration：启用自动连发时，按下与弹起之间的延时（毫秒）</para>
+            </summary>
+        </member>
+        <member name="T:CustomMacroBase.Helper.Tools.TimeManager.CooldownTimer.InnerTimer">
+            <summary>
+            内部计时器类
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.Helper.Tools.TimeManager.CooldownTimer.InnerTimer.Elapsed(System.Int32)">
+            <summary>
+            <para>_threshold：<see cref="T:System.Int32"/>类型，超时阈值（比如填'100'，则当持续访问该方法时，于100毫秒内返回false，于100毫秒后返回true）</para>
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.Helper.Tools.TimeManager.CooldownTimer.internalList">
+            <summary>
+            内部字典
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.Helper.Tools.TimeManager.CooldownTimer.Item(System.String)">
+            <summary>
+            通过key访问内部计时器
+            </summary>
+        </member>
+        <member name="T:CustomMacroBase.Helper.Tools.TimeManager.StopwatchTask.InternalTask">
+            <summary>
+            内部Task
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.Helper.Tools.TimeManager.StopwatchTask.internalList">
+            <summary>
+            内部字典
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.Helper.Tools.TimeManager.StopwatchTask.Item(System.String)">
+            <summary>
+            通过key访问内部Task
+            </summary>
+        </member>
+        <member name="T:CustomMacroBase.Helper.GDI32">
+            <summary>
+            Helper class containing Gdi32 API functions
+            </summary>
+        </member>
+        <member name="T:CustomMacroBase.Helper.User32">
+            <summary>
+            Helper class containing User32 API functions
+            </summary>
+        </member>
+        <member name="T:CustomMacroBase.Helper.Win32_Ex_Transparency.ExtendedWindowStyles">
+            <summary>
+            扩展的窗口风格
+            这是 long 类型的，如果想要使用 int 类型请使用 <see cref="!:WindowExStyles"/> 类
+            </summary>
+            代码：[Extended Window Styles (Windows)](https://msdn.microsoft.com/en-us/library/windows/desktop/ff700543(v=vs.85).aspx )
+            code from [Extended Window Styles (Windows)](https://msdn.microsoft.com/en-us/library/windows/desktop/ff700543(v=vs.85).aspx )
+        </member>
+        <member name="F:CustomMacroBase.Helper.Win32_Ex_Transparency.ExtendedWindowStyles.WS_EX_ACCEPTFILES">
+            <summary>
+            The window accepts drag-drop files
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.Helper.Win32_Ex_Transparency.ExtendedWindowStyles.WS_EX_APPWINDOW">
+            <summary>
+            Forces a top-level window onto the taskbar when the window is visible
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.Helper.Win32_Ex_Transparency.ExtendedWindowStyles.WS_EX_CLIENTEDGE">
+            <summary>
+            The window has a border with a sunken edge.
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.Helper.Win32_Ex_Transparency.ExtendedWindowStyles.WS_EX_COMPOSITED">
+            <summary>
+            Paints all descendants of a window in bottom-to-top painting order using double-buffering. For more information, see Remarks. This cannot be used if the window has a class style of either CS_OWNDC or CS_CLASSDC.Windows 2000:  This style is not supported.
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.Helper.Win32_Ex_Transparency.ExtendedWindowStyles.WS_EX_CONTEXTHELP">
+            <summary>
+            The title bar of the window includes a question mark. When the user clicks the question mark, the cursor changes to a question mark with a pointer. If the user then clicks a child window, the child receives a WM_HELP message. The child window should pass the message to the parent window procedure, which should call the WinHelp function using the HELP_WM_HELP command. The Help application displays a pop-up window that typically contains help for the child window.WS_EX_CONTEXTHELP cannot be used with the WS_MAXIMIZEBOX or WS_MINIMIZEBOX styles.
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.Helper.Win32_Ex_Transparency.ExtendedWindowStyles.WS_EX_CONTROLPARENT">
+            <summary>
+            The window itself contains child windows that should take part in dialog box navigation. If this style is specified, the dialog manager recurses into children of this window when performing navigation operations such as handling the TAB key, an arrow key, or a keyboard mnemonic.
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.Helper.Win32_Ex_Transparency.ExtendedWindowStyles.WS_EX_DLGMODALFRAME">
+            <summary>
+            The window has a double border; the window can, optionally, be created with a title bar by specifying the WS_CAPTION style in the dwStyle parameter.
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.Helper.Win32_Ex_Transparency.ExtendedWindowStyles.WS_EX_LAYERED">
+            <summary>
+            The window is a layered window. This style cannot be used if the window has a class style of either CS_OWNDC or CS_CLASSDC.Windows 8:  The WS_EX_LAYERED style is supported for top-level windows and child windows. Previous Windows versions support WS_EX_LAYERED only for top-level windows.
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.Helper.Win32_Ex_Transparency.ExtendedWindowStyles.WS_EX_LAYOUTRTL">
+            <summary>
+            If the shell language is Hebrew, Arabic, or another language that supports reading order alignment, the horizontal origin of the window is on the right edge. Increasing horizontal values advance to the left.
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.Helper.Win32_Ex_Transparency.ExtendedWindowStyles.WS_EX_LEFT">
+            <summary>
+            The window has generic left-aligned properties. This is the default.
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.Helper.Win32_Ex_Transparency.ExtendedWindowStyles.WS_EX_LEFTSCROLLBAR">
+            <summary>
+            If the shell language is Hebrew, Arabic, or another language that supports reading order alignment, the vertical scroll bar (if present) is to the left of the client area. For other languages, the style is ignored.
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.Helper.Win32_Ex_Transparency.ExtendedWindowStyles.WS_EX_LTRREADING">
+            <summary>
+            The window text is displayed using left-to-right reading-order properties. This is the default.
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.Helper.Win32_Ex_Transparency.ExtendedWindowStyles.WS_EX_MDICHILD">
+            <summary>
+            The window is a MDI child window.
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.Helper.Win32_Ex_Transparency.ExtendedWindowStyles.WS_EX_NOACTIVATE">
+            <summary>
+            A top-level window created with this style does not become the foreground window when the user clicks it. The system does not bring this window to the foreground when the user minimizes or closes the foreground window.To activate the window, use the SetActiveWindow or SetForegroundWindow function.The window does not appear on the taskbar by default. To force the window to appear on the taskbar, use the WS_EX_APPWINDOW style.
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.Helper.Win32_Ex_Transparency.ExtendedWindowStyles.WS_EX_NOINHERITLAYOUT">
+            <summary>
+            The window does not pass its window layout to its child windows.
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.Helper.Win32_Ex_Transparency.ExtendedWindowStyles.WS_EX_NOPARENTNOTIFY">
+            <summary>
+            The child window created with this style does not send the WM_PARENTNOTIFY message to its parent window when it is created or destroyed.
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.Helper.Win32_Ex_Transparency.ExtendedWindowStyles.WS_EX_NOREDIRECTIONBITMAP">
+            <summary>
+            The window does not render to a redirection surface. This is for windows that do not have visible content or that use mechanisms other than surfaces to provide their visual.
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.Helper.Win32_Ex_Transparency.ExtendedWindowStyles.WS_EX_OVERLAPPEDWINDOW">
+            <summary>
+            The window is an overlapped window.
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.Helper.Win32_Ex_Transparency.ExtendedWindowStyles.WS_EX_PALETTEWINDOW">
+            <summary>
+            The window is palette window, which is a modeless dialog box that presents an array of commands.
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.Helper.Win32_Ex_Transparency.ExtendedWindowStyles.WS_EX_RIGHT">
+            <summary>
+            The window has generic "right-aligned" properties. This depends on the window class. This style has an effect only if the shell language is Hebrew, Arabic, or another language that supports reading-order alignment; otherwise, the style is ignored.Using the WS_EX_RIGHT style for static or edit controls has the same effect as using the SS_RIGHT or ES_RIGHT style, respectively. Using this style with button controls has the same effect as using BS_RIGHT and BS_RIGHTBUTTON styles.
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.Helper.Win32_Ex_Transparency.ExtendedWindowStyles.WS_EX_RIGHTSCROLLBAR">
+            <summary>
+            The vertical scroll bar (if present) is to the right of the client area. This is the default.
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.Helper.Win32_Ex_Transparency.ExtendedWindowStyles.WS_EX_RTLREADING">
+            <summary>
+            If the shell language is Hebrew, Arabic, or another language that supports reading-order alignment, the window text is displayed using right-to-left reading-order properties. For other languages, the style is ignored.
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.Helper.Win32_Ex_Transparency.ExtendedWindowStyles.WS_EX_STATICEDGE">
+            <summary>
+            The window has a three-dimensional border style intended to be used for items that do not accept user input.
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.Helper.Win32_Ex_Transparency.ExtendedWindowStyles.WS_EX_TOOLWINDOW">
+            <summary>
+            The window is intended to be used as a floating toolbar. A tool window has a title bar that is shorter than a normal title bar, and the window title is drawn using a smaller font. A tool window does not appear in the taskbar or in the dialog that appears when the user presses ALT+TAB. If a tool window has a system menu, its icon is not displayed on the title bar. However, you can display the system menu by right-clicking or by typing ALT+SPACE.
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.Helper.Win32_Ex_Transparency.ExtendedWindowStyles.WS_EX_TOPMOST">
+            <summary>
+            The window should be placed above all non-topmost windows and should stay above them, even when the window is deactivated. To add or remove this style, use the SetWindowPos function.
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.Helper.Win32_Ex_Transparency.ExtendedWindowStyles.WS_EX_TRANSPARENT">
+            <summary>
+            The window should not be painted until siblings beneath the window (that were created by the same thread) have been painted. The window appears transparent because the bits of underlying sibling windows have already been painted.To achieve transparency without these restrictions, use the SetWindowRgn function.
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.Helper.Win32_Ex_Transparency.ExtendedWindowStyles.WS_EX_WINDOWEDGE">
+            <summary>
+            The window has a border with a raised edge
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.Helper.Win32_Ex_Transparency.User32.GetWindowLongPtr(System.IntPtr,CustomMacroBase.Helper.Win32_Ex_Transparency.GetWindowLongFields)">
+            <summary>
+            获得指定窗口的信息
+            </summary>
+            <param name="hWnd">指定窗口的句柄</param>
+            <param name="nIndex">需要获得的信息的类型 请使用<see cref="T:CustomMacroBase.Helper.Win32_Ex_Transparency.GetWindowLongFields"/></param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomMacroBase.Helper.Win32_Ex_Transparency.User32.GetWindowLongPtr(System.IntPtr,System.Int32)">
+            <summary>
+            获得指定窗口的信息
+            </summary>
+            <param name="hWnd">指定窗口的句柄</param>
+            <param name="nIndex">需要获得的信息的类型 请使用<see cref="T:CustomMacroBase.Helper.Win32_Ex_Transparency.GetWindowLongFields"/></param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomMacroBase.Helper.Win32_Ex_Transparency.User32.GetWindowLong(System.IntPtr,System.Int32)">
+            <summary>
+            获得指定窗口的信息
+            </summary>
+            <param name="hWnd">指定窗口的句柄</param>
+            <param name="nIndex">需要获得的信息的类型 请使用<see cref="T:CustomMacroBase.Helper.Win32_Ex_Transparency.GetWindowLongFields"/></param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomMacroBase.Helper.Win32_Ex_Transparency.User32.GetWindowLongPtr_x64(System.IntPtr,System.Int32)">
+            <summary>
+            获得指定窗口的信息
+            </summary>
+            <param name="hWnd">指定窗口的句柄</param>
+            <param name="nIndex">需要获得的信息的类型 请使用<see cref="T:CustomMacroBase.Helper.Win32_Ex_Transparency.GetWindowLongFields"/></param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomMacroBase.Helper.Win32_Ex_Transparency.User32.SetWindowLongPtr(System.IntPtr,CustomMacroBase.Helper.Win32_Ex_Transparency.GetWindowLongFields,System.IntPtr)">
+            <summary>
+            改变指定窗口的属性
+            </summary>
+            <param name="hWnd">窗口句柄</param>
+            <param name="nIndex">
+            指定将设定的大于等于0的偏移值。有效值的范围从0到额外类的存储空间的字节数减4：例如若指定了12或多于12个字节的额外窗口存储空间，则应设索引位8来访问第三个4字节，同样设置0访问第一个4字节，4访问第二个4字节。要设置其他任何值，可以指定下面值之一
+            从 GetWindowLongFields 可以找到所有的值
+            </param>
+            <param name="dwNewLong">指定的替换值</param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomMacroBase.Helper.Win32_Ex_Transparency.User32.SetWindowLongPtr(System.IntPtr,System.Int32,System.IntPtr)">
+            <summary>
+            改变指定窗口的属性
+            </summary>
+            <param name="hWnd">窗口句柄</param>
+            <param name="nIndex">指定将设定的大于等于0的偏移值。有效值的范围从0到额外类的存储空间的字节数减4：例如若指定了12或多于12个字节的额外窗口存储空间，则应设索引位8来访问第三个4字节，同样设置0访问第一个4字节，4访问第二个4字节。要设置其他任何值，可以指定下面值之一
+            从 GetWindowLongFields 可以找到所有的值
+            <para>
+            GetWindowLongFields.GWL_EXSTYLE             -20    设定一个新的扩展风格。 </para>
+            <para>GWL_HINSTANCE     -6	   设置一个新的应用程序实例句柄。</para>
+            <para>GWL_ID            -12    设置一个新的窗口标识符。</para>
+            <para>GWL_STYLE         -16    设定一个新的窗口风格。</para>
+            <para>GWL_USERDATA      -21    设置与窗口有关的32位值。每个窗口均有一个由创建该窗口的应用程序使用的32位值。</para>
+            <para>GWL_WNDPROC       -4    为窗口设定一个新的处理函数。</para>
+            <para>GWL_HWNDPARENT    -8    改变子窗口的父窗口,应使用SetParent函数</para>
+            </param>
+            <param name="dwNewLong">指定的替换值</param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomMacroBase.Helper.Win32_Ex_Transparency.User32.SetWindowLong(System.IntPtr,System.Int32,System.Int32)">
+            <summary>
+            改变指定窗口的属性
+            </summary>
+            <param name="hWnd">窗口句柄</param>
+            <param name="nIndex">指定将设定的大于等于0的偏移值。有效值的范围从0到额外类的存储空间的字节数减4：例如若指定了12或多于12个字节的额外窗口存储空间，则应设索引位8来访问第三个4字节，同样设置0访问第一个4字节，4访问第二个4字节。要设置其他任何值，可以指定下面值之一
+            从 GetWindowLongFields 可以找到所有的值
+            <para>
+            GetWindowLongFields.GWL_EXSTYLE             -20    设定一个新的扩展风格。 </para>
+            <para>GWL_HINSTANCE     -6	   设置一个新的应用程序实例句柄。</para>
+            <para>GWL_ID            -12    设置一个新的窗口标识符。</para>
+            <para>GWL_STYLE         -16    设定一个新的窗口风格。</para>
+            <para>GWL_USERDATA      -21    设置与窗口有关的32位值。每个窗口均有一个由创建该窗口的应用程序使用的32位值。</para>
+            <para>GWL_WNDPROC       -4    为窗口设定一个新的处理函数。</para>
+            <para>GWL_HWNDPARENT    -8    改变子窗口的父窗口,应使用SetParent函数</para>
+            </param>
+            <param name="dwNewLong">指定的替换值</param>
+            <returns></returns>
+        </member>
+        <member name="M:CustomMacroBase.Helper.Win32_Ex_Transparency.User32.SetWindowLongPtr_x64(System.IntPtr,System.Int32,System.IntPtr)">
+            <summary>
+            改变指定窗口的属性
+            </summary>
+            <param name="hWnd">窗口句柄</param>
+            <param name="nIndex">指定将设定的大于等于0的偏移值。有效值的范围从0到额外类的存储空间的字节数减4：例如若指定了12或多于12个字节的额外窗口存储空间，则应设索引位8来访问第三个4字节，同样设置0访问第一个4字节，4访问第二个4字节。要设置其他任何值，可以指定下面值之一
+            从 GetWindowLongFields 可以找到所有的值
+            <para>
+            GetWindowLongFields.GWL_EXSTYLE             -20    设定一个新的扩展风格。 </para>
+            <para>GWL_HINSTANCE     -6	   设置一个新的应用程序实例句柄。</para>
+            <para>GWL_ID            -12    设置一个新的窗口标识符。</para>
+            <para>GWL_STYLE         -16    设定一个新的窗口风格。</para>
+            <para>GWL_USERDATA      -21    设置与窗口有关的32位值。每个窗口均有一个由创建该窗口的应用程序使用的32位值。</para>
+            <para>GWL_WNDPROC       -4    为窗口设定一个新的处理函数。</para>
+            <para>GWL_HWNDPARENT    -8    改变子窗口的父窗口,应使用SetParent函数</para>
+            </param>
+            <param name="dwNewLong">指定的替换值</param>
+            <returns></returns>
+        </member>
+        <member name="T:CustomMacroBase.Helper.Win32_Ex_Transparency.GetWindowLongFields">
+            <summary>
+            用于在 <see cref="M:CustomMacroBase.Helper.Win32.GetWindowLong(System.IntPtr,System.Int32)"/> 的 int index 传入
+            </summary>
+            代码：[GetWindowLong function (Windows)](https://msdn.microsoft.com/en-us/library/windows/desktop/ms633584(v=vs.85).aspx )
+        </member>
+        <member name="F:CustomMacroBase.Helper.Win32_Ex_Transparency.GetWindowLongFields.GWL_EXSTYLE">
+            <summary>
+            设定一个新的扩展风格
+            Retrieves the extended window styles
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.Helper.Win32_Ex_Transparency.GetWindowLongFields.GWL_HINSTANCE">
+            <summary>
+            设置一个新的应用程序实例句柄
+            Retrieves a handle to the application instance
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.Helper.Win32_Ex_Transparency.GetWindowLongFields.GWL_HWNDPARENT">
+            <summary>
+            改变子窗口的父窗口
+            Retrieves a handle to the parent window, if any
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.Helper.Win32_Ex_Transparency.GetWindowLongFields.GWL_ID">
+            <summary>
+             设置一个新的窗口标识符
+            Retrieves the identifier of the window
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.Helper.Win32_Ex_Transparency.GetWindowLongFields.GWL_STYLE">
+            <summary>
+            设定一个新的窗口风格
+            Retrieves the window styles
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.Helper.Win32_Ex_Transparency.GetWindowLongFields.GWL_USERDATA">
+            <summary>
+            设置与窗口有关的32位值。每个窗口均有一个由创建该窗口的应用程序使用的32位值
+            Retrieves the user data associated with the window. This data is intended for use by the application that created the window. Its value is initially zero
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.Helper.Win32_Ex_Transparency.GetWindowLongFields.GWL_WNDPROC">
+            <summary>
+            为窗口设定一个新的处理函数
+            Retrieves the address of the window procedure, or a handle representing the address of the window procedure. You must use the CallWindowProc function to call the window procedure
+            </summary>
+        </member>
+        <member name="T:CustomMacroBase.PreBase.GateBase">
+            <summary>
+            滑块开关控件模型
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.PreBase.GateBase.#ctor(System.String,System.Nullable{System.Boolean},System.String)">
+            <summary>
+            <para>_text：开关注释</para>
+            <para>_enable：开关状态</para>
+            <para>_groupname：开关分组</para>
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.PreBase.GateBase.Item(System.Int32)">
+            <summary>
+            <para>通过下标访问自身Children列表中对应的子项</para>
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.PreBase.GateBase.Add(CustomMacroBase.PreBase.GateBase)">
+            <summary>
+            <para>往自身Children列表添加子项</para>
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.PreBase.GateBase.AddEx(System.Func{System.Windows.UIElement})">
+            <summary>
+            <para>往自身ChildrenEx列表添加子项</para>
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.PreBase.GateBase.EnableReverse">
+            <summary>
+            滑块开关状态反转
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.PreBase.GateBase.SetDs4Rumble">
+            <summary>
+            震动一下以表示状态发生变化
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.PreBase.GateBase.EnableReverseAndSetDs4Rumble">
+            <summary>
+            连起来
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.PreBase.GateBase.GroupNameList">
+            <summary>
+            组名字典
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.PreBase.GateBase.RegisteGroupName(System.String,CustomMacroBase.PreBase.GateBase)">
+            <summary>
+            注册进组
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.PreBase.GateBase.NotifyGroupMemberUpdate(CustomMacroBase.PreBase.GateBase)">
+            <summary>
+            通知同组控件做出反应
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.PreBase.GateBase.GroupName">
+            <summary>
+            获取或设置组名，使得处于相同组里的滑块开关在任意时刻最多只有一个处于启用状态
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.PreBase.GateBase.Text">
+            <summary>
+            获取或设置文本内容，用作滑块开关控件的注释
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.PreBase.GateBase.Enable">
+            <summary>
+            获取或设置滑块开关状态
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.PreBase.GateBase.HideSelf">
+            <summary>
+            获取或设置滑块开关整体显示状态
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.PreBase.GateBase.DisableSliderButton">
+            <summary>
+            获取或设置SliderButton状态
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.PreBase.GateBase.Children">
+            <summary>
+            获取当前滑块开关的子项列表，用以存放与宿主类型相同的对象
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.PreBase.GateBase.ChildrenEx">
+            <summary>
+            获取当前滑块开关的额外子项列表，用以存放委托
+            </summary>
+        </member>
+        <member name="T:CustomMacroBase.PreBase.MacroModel">
+            <summary>
+            脚本基类模型
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.PreBase.MacroModel.Title">
+            <summary>
+            获取或设置文本内容，将绑定到用户界面的按钮上
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.PreBase.MacroModel.Selected">
+            <summary>
+            获取或设置被选中状态，将绑定到用户界面的按钮上
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.PreBase.MacroModel.MainGate">
+            <summary>
+            主开关，既位于最外层的开关
+            </summary>
+        </member>
+        <member name="T:CustomMacroBase.DS4Btn">
+            <summary>
+            DS4按键名
+            </summary>
+        </member>
+        <member name="T:CustomMacroBase.MacroBase">
+            <summary>
+            脚本基类
+            </summary>
+            <summary>
+            脚本基类_ProConSendReport
+            </summary>
+            <summary>
+            脚本基类_GetStringDiffRate
+            </summary>
+            <summary>
+            脚本基类_CreateControl
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.MacroBase.btnKey">
+            <summary>
+            <para>DS4按键名集合</para>
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.MacroBase.RealDS4">
+            <summary>
+            获取真实手柄按键状态
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.MacroBase.VirtualDS4">
+            <summary>
+            获取虚拟手柄按键状态
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.MacroBase.UpdateNow(System.String@,System.Byte@)">
+            <summary>
+            <para>通过反射更新虚拟手柄按键状态</para>
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.MacroBase.UpdateNow(System.String@,System.Boolean@)">
+            <summary>
+            <para>通过反射更新虚拟手柄按键状态</para>
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.MacroBase.GetNow``1(System.String@)">
+            <summary>
+            <para>通过反射获取虚拟手柄按键状态</para>
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.MacroBase.FindColor(System.Int32,System.Nullable{System.Drawing.Rectangle},System.Nullable{System.Int32},System.Boolean)">
+            <summary>
+            <para>范围找色_new</para>
+            <para>-</para>
+            <para>参数 color：<see cref="T:System.Int32"/> 类型，匹配的颜色（比如填'0xFF0000'意为待查找颜色为红色）</para>
+            <para>参数 rect：<see cref="T:System.Drawing.Rectangle"/>? 类型，描述匹配范围的矩形（比如填'new(10, 20, 30, 40)'意为将范围限定在'x=10,y=20,width=30,height=40'的矩形内，填'null'默认全图）</para>
+            <para>参数 tolerance：<see cref="T:System.Int32"/>? 类型，匹配的容差（比如填'20'意为被对比的两个颜色之间RGB分量差值允许浮动±20，填'null'默认20）</para>
+            <para>参数 flag：<see cref="T:System.Boolean"/> 类型，是否获取最新画面（比如填'false'意为不获取新截图而是采用旧的截图进行找色）</para>
+            <para>-</para>
+            <para>返回值：<see cref="T:System.Int32"/> 类型，匹配到的颜色数量</para>
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.MacroBase.FindImage(System.Drawing.Bitmap@,System.Nullable{System.Drawing.Rectangle},System.Nullable{System.Double},System.Boolean)">
+            <summary>
+            <para>范围找图</para>
+            <para>-</para>
+            <para>参数 bitmap：<see cref="T:System.Drawing.Bitmap"/>类型，匹配的小图</para>
+            <para>参数 rect：<see cref="T:System.Drawing.Rectangle"/>? 类型，描述匹配范围的矩形（比如填'new(10, 20, 30, 40)'意为将范围限定在'x=10,y=20,width=30,height=40'的矩形内，填'null'默认全图）</para>
+            <para>参数 tolerance：<see cref="T:System.Double"/>? 类型，匹配的相似度（范围0~1，比如填'null'意为使用默认值0.8）</para>
+            <para>参数 flag：<see cref="T:System.Boolean"/> 类型，是否获取最新画面（比如填'true'意为先获取新截图再进行找图）</para>
+            <para>-</para>
+            <para>返回值：<see cref="T:System.Drawing.Point"/>? 类型，匹配成功返矩形左上角坐标，匹配失败返回null</para>
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.MacroBase.FindImage(System.String,System.Nullable{System.Drawing.Rectangle},System.Nullable{System.Double},System.Boolean)">
+            <summary>
+            <para>范围找图</para>
+            <para>-</para>
+            <para>参数 path：<see cref="T:System.String"/> 类型，匹配的小图的绝对路径</para>
+            <para>参数 rect：<see cref="T:System.Drawing.Rectangle"/>? 类型，描述匹配范围的矩形（比如填'new(10, 20, 30, 40)'意为将范围限定在'x=10,y=20,width=30,height=40'的矩形内，填'null'默认全图）</para>
+            <para>参数 tolerance：<see cref="T:System.Double"/>? 类型，相似度（范围0~1，比如填'null'意为使用默认值0.8）</para>
+            <para>参数 flag：<see cref="T:System.Boolean"/> 类型，是否获取最新画面（比如填'false'意为不获取新截图而是采用旧的截图进行找图）</para>
+            <para>-</para>
+            <para>返回值：<see cref="T:System.Drawing.Point"/>? 类型，匹配成功返矩形左上角坐标，匹配失败返回null</para>
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.MacroBase.FindNumber(System.Drawing.Rectangle,System.Double,System.Boolean)">
+            <summary>
+            <para>范围找字（仅限数字0~9）</para>
+            <para>-</para>
+            <para>参数 rect：<see cref="T:System.Drawing.Rectangle"/> 类型，描述查找范围的矩形（比如填'new(10, 20, 30, 40)'意为将范围限定在'x=10,y=20,width=30,height=40'的矩形内）</para>
+            <para>参数 zoomratio：<see cref="T:System.Double"/> 类型，缩放比例（比如填'2'意为宽高均拉伸至原来的2倍）</para>
+            <para>参数 flag：<see cref="T:System.Boolean"/> 类型，是否获取最新画面（比如填'false'意为不获取新截图而是采用旧的截图进行找字）</para>
+            <para>-</para>
+            <para>返回值：<see cref="T:System.String"/> 类型，识别成功返回字符串，识别失败返回空字符串</para>
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.MacroBase.FindText(System.Drawing.Rectangle,System.Boolean,System.String,System.String,System.Double,System.Boolean)">
+            <summary>
+            <para>范围找字</para>
+            <para>-</para>
+            <para>参数 rect：<see cref="T:System.Drawing.Rectangle"/> 类型，描述查找范围的矩形（比如填'new(10, 20, 30, 40)'意为将范围限定在'x=10,y=20,width=30,height=40'的矩形内）</para>
+            <para>参数 iswhitetext：<see cref="T:System.Boolean"/> 类型，指定是否黑底白字（比如填'false'意为传入图像为白底黑字）</para>
+            <para>参数 language：<see cref="T:System.String"/> 类型，指定语言（比如填'eng'、"jpn"，需在~/tessdata文件夹内存在对应训练数据）</para>
+            <para>参数 whitelist：<see cref="T:System.String"/> 类型，指定白名单（比如填'abcd'意为只查找这几个字母，填null或空文本则意为不使用白名单）</para>
+            <para>参数 zoomratio：<see cref="T:System.Double"/> 类型，缩放比例（比如填'2'意为宽高均拉伸至原来的2倍）</para>
+            <para>参数 flag：<see cref="T:System.Boolean"/> 类型，是否获取最新画面（比如填'false'意为不获取新截图而是采用旧的截图进行找字）</para>
+            <para>-</para>
+            <para>返回值：<see cref="T:System.String"/> 类型，识别成功返回字符串，识别失败返回空字符串</para>
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.MacroBase.FindText(System.Drawing.Rectangle,System.String,System.String,System.Double,System.Boolean)">
+            <summary>
+            <para>范围找字</para>
+            <para>-</para>
+            <para>参数 rect：<see cref="T:System.Drawing.Rectangle"/> 类型，描述查找范围的矩形（比如填'new(10, 20, 30, 40)'意为将范围限定在'x=10,y=20,width=30,height=40'的矩形内）</para>
+            <para>参数 language：<see cref="T:System.String"/> 类型，指定语言（比如填'eng'、"jpn"，需在~/tessdata文件夹内存在对应训练数据）</para>
+            <para>参数 whitelist：<see cref="T:System.String"/> 类型，指定白名单（比如填'abcd'意为只查找这几个字母，填null或空文本则意为不使用白名单）</para>
+            <para>参数 zoomratio：<see cref="T:System.Double"/> 类型，缩放比例（比如填'2'意为宽高均拉伸至原来的2倍）</para>
+            <para>参数 flag：<see cref="T:System.Boolean"/> 类型，是否获取最新画面（比如填'false'意为不获取新截图而是采用旧的截图进行找字）</para>
+            <para>-</para>
+            <para>返回值：<see cref="T:System.String"/> 类型，识别成功返回字符串，识别失败返回空字符串</para>
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.MacroBase.Print(System.String)">
+            <summary>
+            <para>打印文本</para>
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.MacroBase.MainGate">
+            <summary>
+            <para>顶层开关</para>
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.MacroBase.Title">
+            <summary>
+            <para>按钮文本，默认值为类名</para>
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.MacroBase.Selected">
+            <summary>
+            <para>按钮选中状态</para>
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.MacroBase.UpdateEntry(CustomMacroBase.GamePadState.DS4StateLite@,CustomMacroBase.GamePadState.DS4StateLite@)">
+            <summary>
+            入口
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.MacroBase.UpdateState">
+            <summary>
+            <para>该方法将于轮询中反复被执行</para>
+            <para>于该方法中监听 RealDS4 并操作 VirtualDS4 以实现自定义脚本</para>
+            <para>-</para>
+            <para>轮询频率设置为250Hz/500Hz/1000Hz时，理论上该方法每秒被执行250次/500次/1000次</para>
+            <para></para>
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.MacroBase.Init">
+            <summary>
+            <para>该方法将于本类被实例化时执行一次</para>
+            <para>于该方法中操作 MainGate.Children 以实现往UI上放置默认滑块开关</para>
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.MacroBase.#ctor">
+            <summary>
+            默认构造函数
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.MacroBase.ProConSendReport(System.UInt32)">
+            <summary>
+            <para>将虚拟DS4手柄的按键状态转发给蓝牙模拟的Pro手柄</para>
+            <para>-</para>
+            <para>参数 waittime：新的btkeyLib.dll（2022.09.26）轮询频率提高至1ms，该参数不再需要</para>
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.MacroBase.ProConSendAmiibo(System.String)">
+            <summary>
+            读取Amiibo
+            </summary>
+            <param name="path"></param>
+        </member>
+        <member name="M:CustomMacroBase.MacroBase.GetStringDiffRate(System.String,System.String)">
+            <summary>
+            获取两字符串相似度
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.MacroBase.CreateGateBase(System.String,System.Boolean,System.String,System.Boolean)">
+            <summary>
+            CreateGateBase
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.MacroBase.CreateSlider(System.Double,System.Double,System.Object,System.String,System.Double,System.String,System.Double,System.String,System.Boolean)">
+            <summary>
+            CreateSlider
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.MacroBase.CreateComboBox(System.Object,System.String,System.String,System.String,System.Int32,System.Boolean)">
+            <summary>
+            CreateComboBox
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.MacroBase.CreateValueIndicator(System.Object,CustomMacroBase.MacroBase.ValueIndicatorPacket[])">
+            <summary>
+            CreateValueIndicator
+            </summary>
+        </member>
+        <member name="T:CustomMacroBase.MacroBase.ValueIndicatorPacket">
+            <summary>
+            ValueIndicatorPacket
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.MacroBase.ValueIndicatorPacket.#ctor(System.String,System.Windows.Media.SolidColorBrush,System.Windows.Media.SolidColorBrush,System.Func{System.Double,System.Windows.Media.SolidColorBrush},System.Windows.Media.SolidColorBrush,System.Windows.Media.SolidColorBrush,System.Nullable{System.Windows.CornerRadius})">
+            <summary>
+            <para>propname:  属性名</para>
+            <para>propnamecolor: 属性名的颜色</para>
+            <para>propvaluecolor: 属性值的颜色</para>
+            <para>propvaluecolorswitcher: 属性值的颜色的选择</para>
+            <para>backgroundcolor: 背景颜色</para>
+            </summary>
+        </member>
+        <member name="T:CustomMacroBase.PixelMatcher.AimCursor">
+            <summary>
+            AimCursor
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.PixelMatcher.AimCursor.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:CustomMacroBase.PixelMatcher.OpenCV">
+            <summary>
+            OpenCvSharp封装
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.PixelMatcher.OpenCV.UpdateController.UpdateFrames(OpenCvSharp.Mat)">
+            <summary>
+            将指定的Mat推给MacroWindow
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.PixelMatcher.PixelMatcherBase.MediatorProxy.UpdateFrames(System.Drawing.Bitmap)">
+            <summary>
+            将指定的Bitmap推送至MacroWindow
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.PixelMatcher.PixelMatcherBase.MatchColor(System.Int32,System.Nullable{System.Drawing.Rectangle},System.Nullable{System.Int32})">
+            <summary>
+            范围找色_获取区域内与指定颜色相似的颜色数量
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.PixelMatcher.PixelMatcherBase.MatchImage(System.Drawing.Bitmap@,System.Nullable{System.Drawing.Rectangle},System.Nullable{System.Double})">
+            <summary>
+            范围找图_判断区域内是否包含小图 (OpenCV)
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.PixelMatcher.PixelMatcherBase.MatchImage(System.String,System.Nullable{System.Drawing.Rectangle},System.Nullable{System.Double})">
+            <summary>
+            范围找图_判断区域内是否包含小图 (OpenCV)
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.PixelMatcher.PixelMatcherBase.MatchNumber(System.Drawing.Rectangle,System.Boolean,System.Double)">
+            <summary>
+            范围找字_尝试识别区域内的数字 (Tesseract)
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.PixelMatcher.PixelMatcherBase.MatchText(System.Drawing.Rectangle,System.Boolean,System.String,System.String,System.Double)">
+            <summary>
+            范围找字_尝试识别区域内的文字，需指定语言 (Tesseract)
+            </summary>
+        </member>
+        <member name="T:XamlGeneratedNamespace.GeneratedInternalTypeHelper">
+            <summary>
+            GeneratedInternalTypeHelper
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateInstance(System.Type,System.Globalization.CultureInfo)">
+            <summary>
+            CreateInstance
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.GetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            GetPropertyValue
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.SetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            SetPropertyValue
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateDelegate(System.Type,System.Object,System.String)">
+            <summary>
+            CreateDelegate
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.AddEventHandler(System.Reflection.EventInfo,System.Object,System.Delegate)">
+            <summary>
+            AddEventHandler
+            </summary>
+        </member>
+    </members>
+</doc>

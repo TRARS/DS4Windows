@@ -178,6 +178,10 @@ namespace DS4WinWPF.DS4Forms
             timerThread.Start();
             // Wait for thread tasks to finish before continuing
             timerThread.Join();
+
+            CustomMacroLink.CustomMacroFactoryInstance.Init();
+            CustomMacroLink.Ds4_MainWindow_Instance = this;
+            CustomMacroLink.Ds4_ControlService_Instance = App.rootHub;
         }
 
         public void LateChecks(ArgumentParser parser)
@@ -802,6 +806,17 @@ Suspend support not enabled.", true);
             });
 
             // Log exceptions that might occur
+            Util.LogAssistBackgroundTask(serviceTask);
+            await serviceTask;
+        }
+        public async void CloseBT()
+        {
+            App root = Application.Current as App;
+            ControlService service = App.rootHub;
+            Task serviceTask = Task.Run(() =>
+            {
+                if (service.running) { service.Stop(immediateUnplug: true); }
+            });
             Util.LogAssistBackgroundTask(serviceTask);
             await serviceTask;
         }

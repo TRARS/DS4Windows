@@ -1,0 +1,52 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:CustomMacroBase.CustomControlEx.ValueIndicatorEx">
+
+    <local:cValueIndicator_converter_colorswitcher x:Key="cValueIndicator_converter_colorswitcher"/>
+
+    <Style TargetType="{x:Type local:cValueIndicator}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:cValueIndicator}">
+                    <Border Padding="0,1,0,1">
+                        
+                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto" MinWidth="48"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.ColumnSpan="2"
+                                    Background="{TemplateBinding BackgroundColor}"
+                                    CornerRadius="{TemplateBinding BackgroundCornerRadius}"/>
+
+                            <TextBlock Grid.Column="0" 
+                                       VerticalAlignment="Center" 
+                                       Text="{TemplateBinding PropName}"
+                                       Foreground="{TemplateBinding PropNameColor}"
+                                       Margin="5,0,0,0"/>
+
+                            <TextBlock Grid.Column="1" 
+                                       VerticalAlignment="Center"
+                                       Margin="5,0,0,0">
+                                    <Run Text=":" Foreground="{TemplateBinding ColonColor}"/>
+                                    <Run x:Name="propValue" 
+                                         Text="{TemplateBinding PropValue}">
+                                        <Run.Foreground>
+                                           <MultiBinding Converter="{StaticResource cValueIndicator_converter_colorswitcher}">
+                                                <Binding Path="PropValue" RelativeSource="{RelativeSource AncestorType={x:Type local:cValueIndicator}}"/>
+                                                <Binding Path="PropValueColor" RelativeSource="{RelativeSource AncestorType={x:Type local:cValueIndicator}}"/>
+                                                <Binding Path="PropValueColorSwitcher" RelativeSource="{RelativeSource AncestorType={x:Type local:cValueIndicator}}"/>
+                                            </MultiBinding>
+                                        </Run.Foreground>
+                                    </Run>
+                            </TextBlock>
+                        </Grid>
+                    </Border>
+                    
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+</ResourceDictionary>

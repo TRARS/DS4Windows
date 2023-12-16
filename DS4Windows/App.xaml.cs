@@ -777,5 +777,10 @@ namespace DS4WinWPF
                 LogManager.Shutdown();
             }
         }
+
+        public App()
+        {
+            AppContext.SetSwitch("Switch.System.Windows.Controls.Text.UseAdornerForTextboxSelectionRendering", false);
+        }
     }
 }

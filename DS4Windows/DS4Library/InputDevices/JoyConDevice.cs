@@ -1413,6 +1413,9 @@ namespace DS4Windows.InputDevices
 
             if (sideType == JoyConSide.Left)
             {
+            reload_left://
+                foundUserCalib = false;
+
                 command = new byte[] { 0x10, 0x80, 0x00, 0x00, 0x02 };
                 tmpBuffer = Subcommand(SwitchProSubCmd.SPI_FLASH_READ, command, 5, checkResponse: true);
                 if (tmpBuffer[SPI_RESP_OFFSET] == 0xB2 && tmpBuffer[SPI_RESP_OFFSET + 1] == 0xA1)
@@ -1463,6 +1466,11 @@ namespace DS4Windows.InputDevices
                     //leftStickYData.mid = leftStickCalib[3];
                     leftStickYData.mid = (ushort)((leftStickYData.max - leftStickYData.min) / 2.0 + leftStickYData.min);
                     //leftStickOffsetX = leftStickOffsetY = 140;
+
+                    if (leftStickXData.mid == 0 || leftStickYData.mid == 0)
+                    {
+                        goto reload_left;//
+                    }
                 }
 
                 //leftStickOffsetX = leftStickCalib[2];
@@ -1483,6 +1491,7 @@ namespace DS4Windows.InputDevices
             }
             else if (sideType == JoyConSide.Right)
             {
+            reload_right://
                 foundUserCalib = false;
                 command = new byte[] { 0x1B, 0x80, 0x00, 0x00, 0x02 };
                 tmpBuffer = Subcommand(SwitchProSubCmd.SPI_FLASH_READ, command, 5, checkResponse: true);
@@ -1534,6 +1543,11 @@ namespace DS4Windows.InputDevices
                     //rightStickYData.mid = rightStickCalib[3];
                     rightStickYData.mid = (ushort)((rightStickYData.max - rightStickYData.min) / 2.0 + rightStickYData.min);
                     //rightStickOffsetX = rightStickOffsetY = 140;
+
+                    if (rightStickXData.mid == 0 || rightStickYData.mid == 0)
+                    {
+                        goto reload_right;//
+                    }
                 }
 
                 //rightStickOffsetX = rightStickCalib[2];

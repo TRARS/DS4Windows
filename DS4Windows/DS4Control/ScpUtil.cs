@@ -1339,6 +1339,8 @@ namespace DS4Windows
                     {
                         break;
                     }
+
+                    if (CustomMacroLink.AllowOnce(hardwareIds)) { break; }
                 }
 
                 // Check for potential non-present device as well

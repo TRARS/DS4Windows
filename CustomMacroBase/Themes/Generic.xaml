@@ -1,0 +1,19 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/ComboBoxEx/cComboBox_style.xaml"/>
+        <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/ConsoleListBoxEx/cConsoleListBox_style.xaml"/>
+        <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/ContextMenuEx/cContextMenu_cMenuItem_style.xaml"/>
+        <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/NormalButtonEx/cNormalButton_style.xaml"/>
+        <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/ScrollViewerEx/cScrollViewer_style.xaml"/>
+        <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/SliderEx/cSlider_style.xaml"/>
+        <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/StackPanelEx/cStackPanel_style.xaml"/>
+        <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/ToggleButtonEx/cToggleButton_style.xaml"/>
+        <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/ValueIndicatorEx/cValueIndicator_style.xaml"/>
+        <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/VerticalButtonEx/cVerticalButtonBase_style.xaml"/>
+        <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/VerticalButtonEx/cVerticalButton_style.xaml"/>
+        <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/VerticalRadioButtonEx/cVerticalRadioButton_style.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    
+</ResourceDictionary>

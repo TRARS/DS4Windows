@@ -1,0 +1,79 @@
+﻿<UserControl x:Class="CustomMacroFactory.MainWindow.CustomControlPreView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CustomMacroFactory.MainWindow"
+             xmlns:AttachedProperty="clr-namespace:CustomMacroBase.Helper.Extensions;assembly=CustomMacroBase"
+             
+             xmlns:ConsoleListBoxEx="clr-namespace:CustomMacroBase.CustomControlEx.ConsoleListBoxEx;assembly=CustomMacroBase" 
+             xmlns:verticalbuttonex="clr-namespace:CustomMacroBase.CustomControlEx.VerticalButtonEx;assembly=CustomMacroBase" 
+             xmlns:verticalradiobuttonex="clr-namespace:CustomMacroBase.CustomControlEx.VerticalRadioButtonEx;assembly=CustomMacroBase" 
+             xmlns:togglebuttonex="clr-namespace:CustomMacroBase.CustomControlEx.ToggleButtonEx;assembly=CustomMacroBase" 
+             xmlns:sliderex="clr-namespace:CustomMacroBase.CustomControlEx.SliderEx;assembly=CustomMacroBase" 
+             xmlns:valueindicatorex="clr-namespace:CustomMacroBase.CustomControlEx.ValueIndicatorEx;assembly=CustomMacroBase"
+             xmlns:scrollviewerex="clr-namespace:CustomMacroBase.CustomControlEx.ScrollViewerEx;assembly=CustomMacroBase" 
+             xmlns:comboboxex="clr-namespace:CustomMacroBase.CustomControlEx.ComboBoxEx;assembly=CustomMacroBase"
+             mc:Ignorable="d" 
+             
+             Visibility="Collapsed"
+             d:DesignHeight="200" d:DesignWidth="400" d:Visibility="Visible">
+    <Border BorderBrush="Red" BorderThickness="2" Padding="5">
+        <Grid>
+            <StackPanel Orientation ="Horizontal"
+                        AttachedProperty:PanelExtensions.Spacing="0,0,3,0">
+                
+                <scrollviewerex:cScrollViewer VerticalScrollBarVisibility="Hidden"
+                                              ScrollBarBackgroundColor="Snow"
+                                              BackgroundColor="#9BAFBB"
+                                              BackgroundCornerRadius="4">
+                    <StackPanel Orientation ="Horizontal" 
+                                AttachedProperty:PanelExtensions.Spacing="2">
+                        <ConsoleListBoxEx:cConsoleListBox  d:ItemsSource="{d:SampleData ItemCount=5}"/>
+                    </StackPanel>
+                </scrollviewerex:cScrollViewer>
+
+                <scrollviewerex:cScrollViewer VerticalScrollBarVisibility="Hidden"
+                                              ScrollBarBackgroundColor="Snow"
+                                              BackgroundColor="#5A4344"
+                                              BackgroundCornerRadius="4">
+                    <StackPanel Orientation ="Vertical"
+                                AttachedProperty:PanelExtensions.Spacing="2">
+                        <verticalbuttonex:cVerticalButton Text="cVerticalButton"/>
+                        <verticalradiobuttonex:cVerticalRadioButton Text="cVerticalRadioButton" 
+                                                                    IsChecked="True"/>
+                    </StackPanel>
+                </scrollviewerex:cScrollViewer>
+                
+                <scrollviewerex:cScrollViewer VerticalScrollBarVisibility="Hidden"
+                                              ScrollBarBackgroundColor="Snow"
+                                              BackgroundColor="#5A4344"
+                                              BackgroundCornerRadius="4">
+                    <StackPanel Orientation ="Vertical"
+                                AttachedProperty:PanelExtensions.Spacing="2">
+                        <togglebuttonex:cToggleButton Text="cToggleButton"/>
+                        <togglebuttonex:cToggleButton Text="cToggleButton" 
+                                                      IsChecked="True"/>
+                        <sliderex:cSlider Maximum="255"
+                                          TickPlacement="TopLeft" 
+                                          TickFrequency="64" 
+                                          LargeChange="1"
+                                          SmallChange="1"
+                                          AutoToolTipPlacement="TopLeft"
+                                          AutoToolTipPrecision="0"
+                                          Value="192"/>
+                        <comboboxex:cComboBox d:ItemsSource="{d:SampleData ItemCount=5}" 
+                                              SelectedIndex="0"/>
+                        <valueindicatorex:cValueIndicator PropName="someProp"
+                                                          PropValue="-999" 
+                                                          PropNameColor="Red"
+                                                          PropValueColor="LawnGreen"
+                                                          ColonColor="Yellow"
+                                                          BackgroundColor="#210F19"
+                                                          BackgroundCornerRadius="2.5"/>
+                    </StackPanel>
+                </scrollviewerex:cScrollViewer>
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>
