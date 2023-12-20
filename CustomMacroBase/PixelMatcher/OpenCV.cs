@@ -22,6 +22,8 @@ namespace CustomMacroBase.PixelMatcher
         private static readonly Lazy<OpenCV> lazyObject = new(() => new OpenCV());
         public static OpenCV Instance => lazyObject.Value;
 
+        private OpenCV() { }
+
         private void Print([CallerMemberName] string str = "")
         {
             Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, str);

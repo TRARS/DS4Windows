@@ -8,6 +8,8 @@ namespace CustomMacroFactory.MacroFactory.Sample
     {
         public override void Init()
         {
+            this.UseColorfulText = true;
+
             MainGate.Text = "CustomMacroFactory/MacroFactory/Sample/Game_DesignMode.cs";
 
             MainGate.Add(CreateGateBase("[0]"));

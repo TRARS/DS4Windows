@@ -40,6 +40,8 @@ namespace CustomMacroBase.Helper
     {
         private static readonly Lazy<Mediator> lazyObject = new(() => new Mediator());
         public static Mediator Instance => lazyObject.Value;
+
+        private Mediator() { }
     }
 
     //公开方法

@@ -219,6 +219,11 @@ namespace CustomMacroBase.PreBase
         public bool Selected { get; set; } = false;
 
         /// <summary>
+        /// 获取或设置彩色字状态
+        /// </summary>
+        public bool ColorfulText { get; set; } = false;
+
+        /// <summary>
         /// 主开关，既位于最外层的开关
         /// </summary>
         public GateBase MainGate { get; } = new() { Text = "Main_NoName", Enable = true };
@@ -458,6 +463,18 @@ namespace CustomMacroBase
             set
             {
                 model.Selected = value;
+                NotifyPropertyChanged();
+            }
+        }
+        /// <summary>
+        /// <para>按钮文本染色</para>
+        /// </summary>
+        public bool UseColorfulText
+        {
+            get { return model.ColorfulText; }
+            set
+            {
+                model.ColorfulText = value;
                 NotifyPropertyChanged();
             }
         }

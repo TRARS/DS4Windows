@@ -4,6 +4,8 @@
                     xmlns:effect="clr-namespace:CustomMacroBase.CustomEffect">
 
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    <local:cVerticalRadioButton_converter_doublenullcheck x:Key="cVerticalRadioButton_converter_doublenullcheck"/>
+    <local:cVerticalRadioButton_converter_boolbool2visibility x:Key="cVerticalRadioButton_converter_boolbool2visibility"/>
 
     <SolidColorBrush x:Key="RadioButton.Static.Background" Color="#FFFFFFFF"/>
     <SolidColorBrush x:Key="RadioButton.Static.Border" Color="#FF707070"/>
@@ -58,41 +60,52 @@
                                 </LinearGradientBrush>
                             </Border.OpacityMask>
                         </Border>
-                        <Border x:Name="radioButtonTexture" Grid.ColumnSpan="2" Background="{StaticResource StripeTexture}" Opacity="0.15" Visibility="Collapsed"/>
+                        <!--<Border x:Name="radioButtonTexture" Grid.ColumnSpan="2" Background="{StaticResource StripeTexture}" Opacity="0.15" Visibility="Collapsed"/>-->
 
-                        <Grid x:Name="radioButtonBody" Grid.ColumnSpan="2" MinHeight="25" 
+                        <Grid x:Name="radioButtonNormalTextBody" Grid.ColumnSpan="2" MinHeight="25" 
                               HorizontalAlignment="Stretch"
                               VerticalAlignment="Stretch"
                               Opacity="1.0"
                               Background="Transparent">
-                            <TextBlock Margin="5,0,5,0" x:Name="radioButtonText" Text="{TemplateBinding Text}" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Visible"/>
+                            <TextBlock Margin="5,0,5,0" x:Name="radioButtonNormalText" Text="{TemplateBinding Text}" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Visible"/>
                             <!--<ContentPresenter x:Name="contentPresenter" Focusable="False" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" HorizontalAlignment="Left" VerticalAlignment="Center" />-->
                         </Grid>
-                        <Grid x:Name="radioButtonColorfulText" Grid.ColumnSpan="2" Visibility="{TemplateBinding ColorfulText,Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Grid x:Name="radioButtonColorfulTextBody" Grid.ColumnSpan="2" Visibility="{TemplateBinding EnableColorfulText, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Border>
-                                <Border.Background>
-                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                                        <GradientStop Offset="1.000" Color="#009fd9" />
-                                        <GradientStop Offset="0.834" Color="#65b849" />
-                                        <GradientStop Offset="0.667" Color="#f7b423" />
-                                        <GradientStop Offset="0.500" Color="#f58122" />
-                                        <GradientStop Offset="0.334" Color="#de3a3c" />
-                                        <GradientStop Offset="0.137" Color="#943f96" />
-                                        <GradientStop Offset="0.000" Color="#009fd9" />
-                                    </LinearGradientBrush>
-                                </Border.Background>
+                                <Border.Visibility>
+                                    <MultiBinding Converter="{StaticResource cVerticalRadioButton_converter_boolbool2visibility}" Mode="OneWay">
+                                        <Binding Path="EnableColorfulText" RelativeSource="{RelativeSource AncestorType={x:Type local:cVerticalRadioButton},Mode=FindAncestor}"/>
+                                        <Binding Path="IsChecked" RelativeSource="{RelativeSource AncestorType={x:Type local:cVerticalRadioButton},Mode=FindAncestor}"/>
+                                    </MultiBinding>
+                                </Border.Visibility>
                                 <Border.Style>
                                     <Style TargetType="{x:Type Border}">
-                                        <Setter Property="Effect">
-                                            <Setter.Value>
-                                                <effect:TranslationalEffect Threshold="0.75" HorizontalOffset ="0" VerticalOffset="0"/>
-                                            </Setter.Value>
-                                        </Setter>
                                         <Style.Triggers>
                                             <Trigger Property="Visibility" Value="Visible">
+                                                <Trigger.Setters>
+                                                    <Setter Property="Background">
+                                                        <Setter.Value>
+                                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                                <GradientStop Offset="1.000" Color="#009fd9" />
+                                                                <GradientStop Offset="0.834" Color="#65b849" />
+                                                                <GradientStop Offset="0.667" Color="#f7b423" />
+                                                                <GradientStop Offset="0.500" Color="#f58122" />
+                                                                <GradientStop Offset="0.334" Color="#de3a3c" />
+                                                                <GradientStop Offset="0.137" Color="#943f96" />
+                                                                <GradientStop Offset="0.000" Color="#009fd9" />
+                                                            </LinearGradientBrush>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                    <Setter Property="Effect">
+                                                        <Setter.Value>
+                                                            <effect:TranslationalEffect Threshold="0.75" HorizontalOffset ="0" VerticalOffset="0"/>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Trigger.Setters>
+                                                
                                                 <Trigger.EnterActions>
-                                                    <BeginStoryboard>
-                                                        <Storyboard Name="Anm">
+                                                    <BeginStoryboard Name="Anm">
+                                                        <Storyboard>
                                                             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Effect.HorizontalOffset" 
                                                                                            Duration="0:0:5" 
                                                                                            AutoReverse="False" 
@@ -104,7 +117,7 @@
                                                     </BeginStoryboard>
                                                 </Trigger.EnterActions>
                                                 <Trigger.ExitActions>
-                                                    <StopStoryboard BeginStoryboardName="Anm"></StopStoryboard>
+                                                    <RemoveStoryboard BeginStoryboardName="Anm"></RemoveStoryboard>
                                                 </Trigger.ExitActions>
                                             </Trigger>
                                         </Style.Triggers>
@@ -113,7 +126,16 @@
                             </Border>
 
                             <Grid.OpacityMask>
-                                <VisualBrush Stretch="None" Visual="{Binding ElementName=radioButtonBody}"/>
+                                <!--<VisualBrush Stretch="None" Visual="{Binding ElementName=radioButtonBody}"/>-->
+                                <VisualBrush Stretch="None">
+                                    <VisualBrush.Visual>
+                                        <Border Width="{Binding ActualWidth, ElementName=radioButtonNormalTextBody, Converter={StaticResource cVerticalRadioButton_converter_doublenullcheck}, Mode=OneWay}"
+                                                Height="{Binding ActualHeight, ElementName=radioButtonNormalTextBody, Converter={StaticResource cVerticalRadioButton_converter_doublenullcheck}, Mode=OneWay}"
+                                                Background="Transparent">
+                                            <TextBlock Margin="5,0,5,0" Text="{TemplateBinding Text}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </VisualBrush.Visual>
+                                </VisualBrush>
                             </Grid.OpacityMask>
                             <Grid.Effect>
                                 <DropShadowEffect x:Name="BodyEffect" ShadowDepth="1" BlurRadius="1" Color="Black"/>
@@ -144,8 +166,8 @@
                             <Setter Property="Padding" Value="5,0,0,0"/>
                         </Trigger>
                         <Trigger Property="IsChecked" Value="true">
-                            <Setter Property="Opacity" TargetName="radioButtonColorfulText" Value="1"/>
-                            <Setter Property="Visibility" TargetName="radioButtonTexture" Value="Visible"/>
+                            <Setter Property="Opacity" TargetName="radioButtonColorfulTextBody" Value="1"/>
+                            <!--<Setter Property="Visibility" TargetName="radioButtonTexture" Value="Visible"/>-->
                             <Trigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard FillBehavior="HoldEnd">
@@ -224,11 +246,11 @@
                             </Trigger.ExitActions>
                         </Trigger>
                         <Trigger Property="IsChecked" Value="False">
-                            <Setter Property="Opacity" TargetName="radioButtonColorfulText" Value="0"/>
+                            <Setter Property="Opacity" TargetName="radioButtonColorfulTextBody" Value="0"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="true">
                             <Setter Property="Visibility" TargetName="radioButtonHeader" Value="Visible"/>
-                            <Setter Property="Foreground" TargetName="radioButtonText" Value="Aqua"/>
+                            <Setter Property="Foreground" TargetName="radioButtonNormalText" Value="Aqua"/>
                         </Trigger>
 
                         <MultiTrigger>
@@ -237,7 +259,7 @@
                                 <Condition Property="IsChecked" Value="False"/>
                             </MultiTrigger.Conditions>
                             <MultiTrigger.Setters>
-                                <Setter Property="Effect" TargetName="radioButtonBody">
+                                <Setter Property="Effect" TargetName="radioButtonNormalTextBody">
                                     <Setter.Value>
                                         <BlurEffect Radius="12"/>
                                     </Setter.Value>

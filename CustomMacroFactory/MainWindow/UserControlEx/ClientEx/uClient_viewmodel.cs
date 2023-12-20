@@ -7,7 +7,6 @@ using CustomMacroBase.Helper.Extensions;
 using CustomMacroFactory.MainWindow.UserControlEx.PixelPicker;
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
@@ -173,9 +172,6 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.ClientEx
     //Init具体实现
     partial class uClient_viewmodel
     {
-        //
-        private bool is_in_designmode => (bool)DesignerProperties.IsInDesignModeProperty.GetMetadata(typeof(DependencyObject)).DefaultValue;
-
         //递归遍历所有子项
         private void GetChildren(StackPanel sp,
                                  CustomMacroBase.PreBase.GateBase parent_model,
@@ -365,9 +361,9 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.ClientEx
                     //TopContent_Middle 每个游戏类安排一个按钮
                     cVerticalRadioButton MC = new();
                     {
-                        MC.ColorfulText = is_in_designmode;
-                        MC.SetBinding(cVerticalRadioButton.TextProperty, new Binding("Title") { Source = item, Mode = BindingMode.OneWay });
-                        MC.SetBinding(cVerticalRadioButton.IsCheckedProperty, new Binding("Selected") { Source = item, Mode = BindingMode.TwoWay });
+                        MC.SetBinding(cVerticalRadioButton.EnableColorfulTextProperty, new Binding(nameof(item.UseColorfulText)) { Source = item, Mode = BindingMode.TwoWay });
+                        MC.SetBinding(cVerticalRadioButton.TextProperty, new Binding(nameof(item.Title)) { Source = item, Mode = BindingMode.OneWay });
+                        MC.SetBinding(cVerticalRadioButton.IsCheckedProperty, new Binding(nameof(item.Selected)) { Source = item, Mode = BindingMode.TwoWay });
                     }
                     this.TopContent_Middle.Add(MC);
                 }

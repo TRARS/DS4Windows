@@ -756,6 +756,11 @@
             获取或设置被选中状态，将绑定到用户界面的按钮上
             </summary>
         </member>
+        <member name="P:CustomMacroBase.PreBase.MacroModel.ColorfulText">
+            <summary>
+            获取或设置彩色字状态
+            </summary>
+        </member>
         <member name="P:CustomMacroBase.PreBase.MacroModel.MainGate">
             <summary>
             主开关，既位于最外层的开关
@@ -902,6 +907,11 @@
         <member name="P:CustomMacroBase.MacroBase.Selected">
             <summary>
             <para>按钮选中状态</para>
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.MacroBase.UseColorfulText">
+            <summary>
+            <para>按钮文本染色</para>
             </summary>
         </member>
         <member name="M:CustomMacroBase.MacroBase.UpdateEntry(CustomMacroBase.GamePadState.DS4StateLite@,CustomMacroBase.GamePadState.DS4StateLite@)">

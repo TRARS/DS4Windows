@@ -117,10 +117,7 @@ namespace CustomMacroBase.Helper.Tools.SendInputManager
         private static void PreSendInput(ref INPUT[] _inputs) => SendInput(_inputs.Length, ref _inputs[0], Marshal.SizeOf(_inputs[0]));
 
         //
-        private SendKBMInput()
-        {
-
-        }
+        private SendKBMInput() { }
     }
 
 

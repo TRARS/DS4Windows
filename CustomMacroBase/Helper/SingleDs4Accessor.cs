@@ -8,6 +8,8 @@ namespace CustomMacroBase.Helper
     {
         private static readonly Lazy<SingleDs4Accessor> lazyObject = new(() => new SingleDs4Accessor());
         public static SingleDs4Accessor Instance => lazyObject.Value;
+
+        private SingleDs4Accessor() { }
     }
 
     public sealed partial class SingleDs4Accessor

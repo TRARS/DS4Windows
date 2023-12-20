@@ -29,13 +29,13 @@ namespace CustomMacroBase.CustomControlEx.VerticalRadioButtonEx
             typeMetadata: new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
         );
 
-        public bool ColorfulText
+        public bool EnableColorfulText
         {
-            get { return (bool)GetValue(ColorfulTextProperty); }
-            set { SetValue(ColorfulTextProperty, value); }
+            get { return (bool)GetValue(EnableColorfulTextProperty); }
+            set { SetValue(EnableColorfulTextProperty, value); }
         }
-        public static readonly DependencyProperty ColorfulTextProperty = DependencyProperty.Register(
-            name: "ColorfulText",
+        public static readonly DependencyProperty EnableColorfulTextProperty = DependencyProperty.Register(
+            name: "EnableColorfulText",
             propertyType: typeof(bool),
             ownerType: typeof(cVerticalRadioButton),
             typeMetadata: new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
