@@ -1030,7 +1030,7 @@ namespace DS4Windows.InputDevices
                 //Debug.WriteLine("MAX: {0} | MIN: {1}", leftStickXData.max, leftStickXData.min);
                 //leftStickOffsetX = leftStickOffsetY = 140;
 
-                if (leftStickXData.mid == 0 || leftStickYData.mid == 0)
+                if (CustomMacroLink.HasAnyZero("left", leftStickXData, leftStickYData))
                 {
                     goto reload_left;//
                 }
@@ -1095,7 +1095,7 @@ namespace DS4Windows.InputDevices
                 rightStickYData.mid = (ushort)((rightStickYData.max - rightStickYData.min) / 2.0 + rightStickYData.min);
                 //rightStickOffsetX = rightStickOffsetY = 140;
 
-                if (rightStickXData.mid == 0 || rightStickYData.mid == 0)
+                if (CustomMacroLink.HasAnyZero("right", rightStickXData, rightStickYData))
                 {
                     goto reload_right;//
                 }

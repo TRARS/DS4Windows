@@ -225,6 +225,8 @@ namespace DS4Windows.InputDevices
         public int OutputReportLen { get => outputReportLen; }
         public int RumbleReportLen { get => rumbleReportLen; }
 
+        private bool fixCalib = false;
+
         private bool foundLeftStickCalib;
         private ushort[] leftStickCalib = new ushort[6];
         private ushort leftStickOffsetX = 0;
@@ -853,7 +855,7 @@ namespace DS4Windows.InputDevices
                         tempAxisX = (stick_raw[0] | ((stick_raw[1] & 0x0F) << 8)) - leftStickOffsetX;
                         tempAxisY = ((stick_raw[1] >> 4) | (stick_raw[2] << 4)) - leftStickOffsetY;
 
-                        if (firstReport && !foundLeftStickCalib)
+                        if (firstReport && !foundLeftStickCalib && fixCalib)
                         {
                             if (tempAxisX > leftStickXData.mid)
                             {
@@ -914,7 +916,7 @@ namespace DS4Windows.InputDevices
                         tempAxisX = (stick_raw2[0] | ((stick_raw2[1] & 0x0F) << 8)) - rightStickOffsetX;
                         tempAxisY = ((stick_raw2[1] >> 4) | (stick_raw2[2] << 4)) - rightStickOffsetY;
 
-                        if (firstReport && !foundRightStickCalib)
+                        if (firstReport && !foundRightStickCalib && fixCalib)
                         {
                             if (tempAxisX > rightStickXData.mid)
                             {
@@ -1467,7 +1469,7 @@ namespace DS4Windows.InputDevices
                     leftStickYData.mid = (ushort)((leftStickYData.max - leftStickYData.min) / 2.0 + leftStickYData.min);
                     //leftStickOffsetX = leftStickOffsetY = 140;
 
-                    if (leftStickXData.mid == 0 || leftStickYData.mid == 0)
+                    if (CustomMacroLink.HasAnyZero("left", leftStickXData, leftStickYData))
                     {
                         goto reload_left;//
                     }
@@ -1544,7 +1546,7 @@ namespace DS4Windows.InputDevices
                     rightStickYData.mid = (ushort)((rightStickYData.max - rightStickYData.min) / 2.0 + rightStickYData.min);
                     //rightStickOffsetX = rightStickOffsetY = 140;
 
-                    if (rightStickXData.mid == 0 || rightStickYData.mid == 0)
+                    if (CustomMacroLink.HasAnyZero("right", rightStickXData, rightStickYData))
                     {
                         goto reload_right;//
                     }

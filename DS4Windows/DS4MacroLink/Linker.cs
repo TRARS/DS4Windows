@@ -1,5 +1,8 @@
 ﻿using CustomMacroBase.GamePadState;
 using CustomMacroBase.Helper;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DS4Windows
 {
@@ -117,5 +120,24 @@ namespace DS4Windows
     public static partial class CustomMacroLink
     {
         public static bool AllowOnce(string[] hardwareIds) => SingleDs4Accessor.Instance.AllowOnce(hardwareIds);
+        public static void Print(string str) => Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, str);
+        public static bool HasAnyZero<T>(string msg, T xData, T yData)
+        {
+            var valuesListX = typeof(T).GetFields().Select(field => Convert.ToUInt16(field.GetValue(xData))).ToList();
+            var valuesListY = typeof(T).GetFields().Select(field => Convert.ToUInt16(field.GetValue(yData))).ToList();
+
+            var hasAnyZero = valuesListX.Any(item => item == 0) || valuesListY.Any(item => item == 0);
+            var dataInfo = $"xData: {string.Join(",", valuesListX)} --- yData: {string.Join(",", valuesListY)}";
+
+            if (hasAnyZero)
+            {
+                Print($"{msg}_need_reload -> {dataInfo}");
+            }
+            else
+            {
+                Print($"{msg} -> {dataInfo}");
+            }
+            return hasAnyZero;
+        }
     }
 }
