@@ -1,5 +1,11 @@
 #### ※This custom build of DS4Windows (3.3.3) is specifically designed to work in conjunction with [`CustomMacroExtension`](https://github.com/TRARS/CustomMacroExtension).
 
+After writing specific macros for different scenarios in the CustomMacroExtension project, we can switch and use these macros at any time in this custom-built DS4W.
+
+As shown in the following image, using this Recorder, we can quickly validate whether the Action sequences of certain Macros align with the actual requirements.
+<img src="CustomMacroFactory/スクリーンショット/CustomMacroFactory.png" width="100%" />
+---
+
 # DS4Windows
 
 Like those other DS4 tools, but sexier.
