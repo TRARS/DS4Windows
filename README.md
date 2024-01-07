@@ -1,4 +1,4 @@
-#### ※This custom build of DS4Windows (3.3.0) is specifically designed to work in conjunction with [`CustomMacroExtension`](https://github.com/TRARS/CustomMacroExtension).
+#### ※This custom build of DS4Windows (3.3.3) is specifically designed to work in conjunction with [`CustomMacroExtension`](https://github.com/TRARS/CustomMacroExtension).
 
 # DS4Windows
 
