@@ -4,6 +4,7 @@ After writing specific macros for different scenarios in the CustomMacroExtensio
 
 As shown in the following image, using this Recorder, we can quickly validate whether the Action sequences of certain Macros align with the actual requirements.
 <img src="CustomMacroFactory/スクリーンショット/CustomMacroFactory.png" width="100%" />
+
 ---
 
 # DS4Windows
