@@ -23,7 +23,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CustomMacroBase\CustomMacroBase.csproj" />
+    <ProjectReference Include="..\CustomMacroBase\CustomMacroBase.csproj"/>
   </ItemGroup>
 
   <ItemGroup>

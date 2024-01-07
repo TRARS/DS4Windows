@@ -13,8 +13,14 @@
              xmlns:sliderex="clr-namespace:CustomMacroBase.CustomControlEx.SliderEx;assembly=CustomMacroBase" 
              xmlns:valueindicatorex="clr-namespace:CustomMacroBase.CustomControlEx.ValueIndicatorEx;assembly=CustomMacroBase"
              xmlns:scrollviewerex="clr-namespace:CustomMacroBase.CustomControlEx.ScrollViewerEx;assembly=CustomMacroBase" 
-             xmlns:comboboxex="clr-namespace:CustomMacroBase.CustomControlEx.ComboBoxEx;assembly=CustomMacroBase"
+             xmlns:comboboxex="clr-namespace:CustomMacroBase.CustomControlEx.ComboBoxEx;assembly=CustomMacroBase" 
+             xmlns:colorfultextblockex="clr-namespace:CustomMacroBase.CustomControlEx.ColorfulTextBlockEx;assembly=CustomMacroBase"
              mc:Ignorable="d" 
+             
+             SnapsToDevicePixels="True" 
+             TextOptions.TextFormattingMode="Display"
+             TextOptions.TextRenderingMode="ClearType"
+             UseLayoutRounding="true" 
              
              Visibility="Collapsed"
              d:DesignHeight="200" d:DesignWidth="400" d:Visibility="Visible">
@@ -41,7 +47,8 @@
                                 AttachedProperty:PanelExtensions.Spacing="2">
                         <verticalbuttonex:cVerticalButton Text="cVerticalButton"/>
                         <verticalradiobuttonex:cVerticalRadioButton Text="cVerticalRadioButton" 
-                                                                    IsChecked="True"/>
+                                                                    IsChecked="True"
+                                                                    EnableColorfulText="True"/>
                     </StackPanel>
                 </scrollviewerex:cScrollViewer>
                 
@@ -69,8 +76,16 @@
                                                           PropNameColor="Red"
                                                           PropValueColor="LawnGreen"
                                                           ColonColor="Yellow"
-                                                          BackgroundColor="#210F19"
+                                                          BackgroundColor="#210F19" 
                                                           BackgroundCornerRadius="2.5"/>
+                        <colorfultextblockex:cColorfulTextBlock Text="cColorfulTextBlock"
+                                                              TextBaseColor="Transparent"
+                                                              TextHorizontalAlignment="Center"
+                                                              TextVerticalAlignment="Center"
+                                                              BackgroundColor="#210F19"
+                                                              BackgroundCornerRadius="2.5"
+                                                              MaskBackgroundColor="Transparent"/>
+                        
                     </StackPanel>
                 </scrollviewerex:cScrollViewer>
             </StackPanel>

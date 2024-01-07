@@ -69,7 +69,7 @@
                           Height="{Binding Width, RelativeSource={RelativeSource Self}}"/>
                 </Grid>
             </Button>
-            <TextBlock x:Name="TextBlock2" TextWrapping="Wrap" d:IsHidden="False" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="4,0,0,0"
+            <TextBlock x:Name="TextBlock2" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="4,0,4,0"
                        Text="{Binding DataContext.Title, FallbackValue=Title, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl}}"
                        Foreground="Snow"
                        Opacity="{Binding IsActive, 

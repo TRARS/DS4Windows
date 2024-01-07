@@ -2,6 +2,11 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:CustomMacroBase.CustomControlEx.ToggleButtonEx">
 
+    <local:cToggleButton_converter_diameter2height x:Key="cToggleButton_converter_diameter2height"/>
+    <local:cToggleButton_converter_diameter2width x:Key="cToggleButton_converter_diameter2width"/>
+    <local:cToggleButton_converter_radius2cornerradius x:Key="cToggleButton_converter_radius2cornerradius"/>
+    <local:cToggleButton_converter_transformXnullcheck x:Key="cToggleButton_converter_transformXnullcheck"/>
+    
     <VisualBrush x:Key="StripeTexture" TileMode="Tile" Viewport="0,0,3,3" ViewportUnits="Absolute" Viewbox="0,0,15,15" ViewboxUnits="Absolute">
         <VisualBrush.Visual>
             <Grid Background="Transparent" RenderTransformOrigin="0.5,0.5">
@@ -18,7 +23,8 @@
         <Style.Resources>
             <ResourceDictionary Source="/CustomMacroBase;component/CustomStyle/TooltipEx/cTooltip_style.xaml"/>
         </Style.Resources>
-        
+
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -26,85 +32,49 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:cToggleButton}">
-                    <Border Background="#01000000"
+                    <Border Background="Transparent"
                             Margin="-5,0,-5,0">
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="CommonStates">
-                                <VisualState x:Name="Normal">
-                                    <!--<Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="Slider" Storyboard.TargetProperty="(BorderBrush).(SolidColorBrush.Color)">
-                                            <EasingColorKeyFrame KeyTime="00:00:00:00" Value="Transparent"/>
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>-->
-                                </VisualState>
-                                <VisualState x:Name="MouseOver">
-                                    <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="Slider" Storyboard.TargetProperty="(BorderBrush).(SolidColorBrush.Color)">
-                                            <EasingColorKeyFrame KeyTime="00:00:00:00" Value="GreenYellow"/>
-                                        </ColorAnimationUsingKeyFrames>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="TextBlock" Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)">
-                                            <EasingColorKeyFrame KeyTime="00:00:00:00" Value="Aqua"/>
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Pressed">
-                                    <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="Slider" Storyboard.TargetProperty="(BorderBrush).(SolidColorBrush.Color)">
-                                            <EasingColorKeyFrame KeyTime="00:00:00:00" Value="GreenYellow"/>
-                                        </ColorAnimationUsingKeyFrames>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="TextBlock" Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)">
-                                            <EasingColorKeyFrame KeyTime="00:00:00:00" Value="Aqua"/>
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Disabled"/>
-                            </VisualStateGroup>
-                            <VisualStateGroup x:Name="CheckStates">
-                                <VisualState x:Name="Checked">
-                                    <Storyboard>
-                                        <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="Dot" Storyboard.TargetProperty="(FrameworkElement.Margin)">
-                                            <EasingThicknessKeyFrame KeyTime="00:00:00:0.1" Value="11,0,0,0"/>
-                                        </ThicknessAnimationUsingKeyFrames>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="Back" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)">
-                                            <EasingColorKeyFrame KeyTime="00:00:00:0.1" Value="#FFC62626"/>
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Unchecked">
-                                    <Storyboard>
-                                        <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="Dot" Storyboard.TargetProperty="(FrameworkElement.Margin)">
-                                            <EasingThicknessKeyFrame KeyTime="00:00:00:0.1" Value="0,0,0,0"/>
-                                        </ThicknessAnimationUsingKeyFrames>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="Back" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)">
-                                            <EasingColorKeyFrame KeyTime="00:00:00:0.1" Value="#FFA0A0A0"/>
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Indeterminate"/>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-
+                        
                         <Border Padding="5,0,5,0" Background="{TemplateBinding BackgroundColor}">
                             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="23"/>
+                                    <ColumnDefinition Width="{TemplateBinding DotDiameter, Converter={StaticResource cToggleButton_converter_diameter2width}}"/>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*" MinWidth="10"/>
                                 </Grid.ColumnDefinitions>
                                 
                                 <!--Left 滑块本体-->
-                                <Grid x:Name="Left" Grid.Column="0" Height="12">
-                                    <Border x:Name="Slider" BorderThickness="1" BorderBrush="Transparent" CornerRadius="2.5" >
-                                        <Grid>
-                                            <Rectangle x:Name="Back" Fill="#FFA0A0A0" 
-                                                       RadiusY="{Binding RadiusX, RelativeSource={RelativeSource Self}}" 
-                                                       RadiusX="{TemplateBinding Radius}"/>
-                                            <Rectangle x:Name="Dot" Fill="White"  HorizontalAlignment="Left" VerticalAlignment="Center"
-                                                       Width="{TemplateBinding Diameter}" 
-                                                       Height="{TemplateBinding Diameter}" 
-                                                       RadiusX="{TemplateBinding Radius}"
-                                                       RadiusY="{TemplateBinding Radius}"/>
-                                        </Grid>
+                                <Grid x:Name="Left" Grid.Column="0">
+                                    <Grid.Height>
+                                        <MultiBinding Converter="{StaticResource cToggleButton_converter_diameter2height}">
+                                            <Binding Path="BorderThickness" ElementName="Slider"/>
+                                            <Binding Path="DotDiameter" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                        </MultiBinding>
+                                    </Grid.Height>
+                                    <Border x:Name="Slider" 
+                                            BorderThickness="{TemplateBinding DotBorderThickness}" 
+                                            BorderBrush="#80A0A0A0" 
+                                            Background="DarkGray">
+                                        <Border.CornerRadius>
+                                            <MultiBinding Converter="{StaticResource cToggleButton_converter_radius2cornerradius}">
+                                                <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}"/>
+                                                <Binding Path="DotCornerRadius" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                            </MultiBinding>
+                                        </Border.CornerRadius>
+
+                                        <Border Background="White" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                Width="{TemplateBinding DotDiameter}" 
+                                                Height="{TemplateBinding DotDiameter}" 
+                                                CornerRadius="{TemplateBinding DotCornerRadius}">
+                                            <Border.RenderTransform>
+                                                <TransformGroup>
+                                                    <TranslateTransform X="{Binding DotTransformX, 
+                                                                                    RelativeSource={RelativeSource Mode=TemplatedParent},
+                                                                                    Converter={StaticResource cToggleButton_converter_transformXnullcheck}}"
+                                                                        Y="0"/>
+                                                </TransformGroup>
+                                            </Border.RenderTransform>
+                                        </Border>
                                     </Border>
                                 </Grid>
 
@@ -158,6 +128,47 @@
 
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="GuideLine" Property="Opacity" Value="1"/>
+                            <Setter TargetName="Slider" Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect Color="Cyan" ShadowDepth="0" BlurRadius="3"/>
+                                </Setter.Value>
+                            </Setter>
+                            <Trigger.EnterActions>
+                                <BeginStoryboard x:Name="IsMouseOverAnm">
+                                    <Storyboard>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="Slider" Storyboard.TargetProperty="(BorderBrush).(SolidColorBrush.Color)">
+                                            <EasingColorKeyFrame KeyTime="00:00:00:00" Value="GreenYellow"/>
+                                        </ColorAnimationUsingKeyFrames>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="TextBlock" Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)">
+                                            <EasingColorKeyFrame KeyTime="00:00:00:00" Value="Cyan"/>
+                                        </ColorAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <RemoveStoryboard BeginStoryboardName="IsMouseOverAnm"/>
+                            </Trigger.ExitActions>
+                        </Trigger>
+
+                        <Trigger Property="IsChecked" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="Slider" Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)">
+                                            <EasingColorKeyFrame KeyTime="00:00:00:0.1" Value="#FFC62626"/>
+                                        </ColorAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="Slider" Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)">
+                                            <EasingColorKeyFrame KeyTime="00:00:00:0.1" Value="#FFA0A0A0"/>
+                                        </ColorAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
                         </Trigger>
 
                         <DataTrigger Binding="{Binding DisableSliderButton, RelativeSource={RelativeSource Self}}" Value="True">

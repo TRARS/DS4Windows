@@ -1,7 +1,9 @@
-﻿using System;
+﻿using CustomMacroBase.Helper.Extensions;
+using System;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 
 namespace CustomMacroBase.CustomControlEx.ToggleButtonEx
 {
@@ -14,8 +16,8 @@ namespace CustomMacroBase.CustomControlEx.ToggleButtonEx
 
         public cToggleButton()
         {
-            this.Checked += (s, e) => { CheckedAct?.Invoke(); };
-            this.Unchecked += (s, e) => { UncheckedAct?.Invoke(); };
+            this.Checked += (s, e) => { OnChecked(); CheckedAct?.Invoke(); };
+            this.Unchecked += (s, e) => { OnUnchecked(); UncheckedAct?.Invoke(); };
             this.Loaded += (s, e) => { LoadedAct?.Invoke(this); };
         }
     }
@@ -93,28 +95,40 @@ namespace CustomMacroBase.CustomControlEx.ToggleButtonEx
             typeMetadata: new FrameworkPropertyMetadata(new SolidColorBrush(Colors.Transparent), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
         );
 
-        public double Radius
+        public Thickness DotBorderThickness
         {
-            get { return (double)GetValue(RadiusProperty); }
-            set { SetValue(RadiusProperty, value); }
+            get { return (Thickness)GetValue(DotBorderThicknessProperty); }
+            set { SetValue(DotBorderThicknessProperty, value); }
         }
-        public static readonly DependencyProperty RadiusProperty = DependencyProperty.Register(
-            name: "Radius",
-            propertyType: typeof(double),
+        public static readonly DependencyProperty DotBorderThicknessProperty = DependencyProperty.Register(
+            name: "DotBorderThickness",
+            propertyType: typeof(Thickness),
             ownerType: typeof(cToggleButton),
-            typeMetadata: new FrameworkPropertyMetadata(2d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
+            typeMetadata: new FrameworkPropertyMetadata(new Thickness(1), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
         );
 
-        public double Diameter
+        public CornerRadius DotCornerRadius
         {
-            get { return (double)GetValue(DiameterProperty); }
-            set { SetValue(DiameterProperty, value); }
+            get { return (CornerRadius)GetValue(DotCornerRadiusProperty); }
+            set { SetValue(DotCornerRadiusProperty, value); }
         }
-        public static readonly DependencyProperty DiameterProperty = DependencyProperty.Register(
-            name: "Diameter",
+        public static readonly DependencyProperty DotCornerRadiusProperty = DependencyProperty.Register(
+            name: "DotCornerRadius",
+            propertyType: typeof(CornerRadius),
+            ownerType: typeof(cToggleButton),
+            typeMetadata: new FrameworkPropertyMetadata(new CornerRadius(2d), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
+        );
+
+        public double DotDiameter
+        {
+            get { return (double)GetValue(DotDiameterProperty); }
+            set { SetValue(DotDiameterProperty, value); }
+        }
+        public static readonly DependencyProperty DotDiameterProperty = DependencyProperty.Register(
+            name: "DotDiameter",
             propertyType: typeof(double),
             ownerType: typeof(cToggleButton),
-            typeMetadata: new FrameworkPropertyMetadata(10d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
+            typeMetadata: new FrameworkPropertyMetadata(11d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
         );
 
         public bool Enable
@@ -141,4 +155,33 @@ namespace CustomMacroBase.CustomControlEx.ToggleButtonEx
             typeMetadata: new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
         );
     }
+
+    public partial class cToggleButton
+    {
+        public double DotTransformX
+        {
+            get { return (double)GetValue(DotTransformXProperty); }
+            set { SetValue(DotTransformXProperty, value); }
+        }
+        public static readonly DependencyProperty DotTransformXProperty = DependencyProperty.Register(
+            name: "DotTransformX",
+            propertyType: typeof(double),
+            ownerType: typeof(cToggleButton),
+            typeMetadata: new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
+        );
+
+        private double distance => cToggleButton_math.Instance.WidthCalculator(DotDiameter) - DotDiameter - (DotBorderThickness.Left + DotBorderThickness.Right);
+
+        private void OnChecked()
+        {
+            cToggleButton.DotTransformXProperty.SetDoubleAnimation(this, 0, distance, 100, FillBehavior.HoldEnd).Begin();
+        }
+
+        private void OnUnchecked()
+        {
+            cToggleButton.DotTransformXProperty.SetDoubleAnimation(this, distance, 0, 100, FillBehavior.HoldEnd).Begin();
+        }
+    }
+
+
 }

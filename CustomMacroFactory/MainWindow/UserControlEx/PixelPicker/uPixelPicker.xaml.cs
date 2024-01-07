@@ -2,9 +2,6 @@
 
 namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
 {
-    /// <summary>
-    /// uPixelPicker.xaml 的交互逻辑
-    /// </summary>
     public partial class uPixelPicker : UserControl
     {
         uPixelPicker_viewmodel viewmodel = new();

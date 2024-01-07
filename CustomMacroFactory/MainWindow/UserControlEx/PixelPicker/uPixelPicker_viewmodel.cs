@@ -201,7 +201,7 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
                         Foreground = new SolidColorBrush(Colors.Snow),
                         Background = new SolidColorBrush(Colors.SlateGray)
                     };
-                    BindingOperations.SetBinding(tb, TextBlock.TextProperty, new Binding("MessageStr") { Source = this });
+                    BindingOperations.SetBinding(tb, TextBlock.TextProperty, new Binding(nameof(MessageStr)) { Source = this });
 
                     Grid.Children.Add(tb);
                 }
@@ -223,7 +223,7 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
                             Viewport = new Rect(0, 0, 1, 1),
                             Stretch = Stretch.None
                         };
-                        BindingOperations.SetBinding(vb, VisualBrush.ViewboxProperty, new Binding("ViewboxRect") { Source = this });
+                        BindingOperations.SetBinding(vb, VisualBrush.ViewboxProperty, new Binding(nameof(ViewboxRect)) { Source = this });
                         rect.Fill = vb;
                     }
 
