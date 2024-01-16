@@ -45,6 +45,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CustomMacroBase\CustomMacroBase.csproj" />
     <ProjectReference Include="..\CustomMacroFactory\CustomMacroFactory.csproj" />
+    <ProjectReference Include="..\DS4Windows.UI\DS4WinWPF.UI.csproj" />
   </ItemGroup>
   
   <ItemGroup>

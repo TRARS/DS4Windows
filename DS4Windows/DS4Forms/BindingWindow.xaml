@@ -10,7 +10,9 @@
         lex:ResxLocalizationProvider.DefaultDictionary="Strings"
         xmlns:local="clr-namespace:DS4WinWPF.DS4Forms"
         mc:Ignorable="d"
-        Title="Select action" Height="540" Width="1020" Closing="Window_Closing"
+        Title="Select action" Closing="Window_Closing"
+        Height="550" Width="1090"
+        MinHeight="550" MinWidth="1090"
         Style="{DynamicResource WindowStyle}">
     <Window.Resources>
         <local:BindingWinResourcePaths x:Key="resourcePaths" />

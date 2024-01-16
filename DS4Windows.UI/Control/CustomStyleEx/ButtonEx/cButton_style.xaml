@@ -1,0 +1,240 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+                    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+                    xmlns:local="clr-namespace:DS4WinWPF.UI.Control.CustomStyleEx.ButtonEx"
+                    xmlns:behavior="clr-namespace:DS4WinWPF.UI.Helper.Behavior" 
+                    xmlns:attached="clr-namespace:DS4WinWPF.UI.Helper.AttachedProperty" 
+                    xmlns:universalobj="clr-namespace:DS4WinWPF.UI.Helper.Base" 
+                    xmlns:translationaleffect="clr-namespace:DS4WinWPF.UI.Control.EffectEx.TranslationalEffect">
+    
+    <local:cButton_converter_content2text x:Key="cButton_converter_content2text"/>
+    
+    <local:cButton_converter_clickpos2xy x:Key="cButton_converter_clickpos2xy"/>
+    <local:cButton_converter_size2brush x:Key="cButton_converter_size2brush"/>
+    <local:cButton_converter_opacity2scale x:Key="cButton_converter_opacity2scale"/>
+    <local:cButton_converter_cornerradius2double x:Key="cButton_converter_cornerradius2double"/>
+    <local:cButton_converter_size2rect x:Key="cButton_converter_size2rect"/>
+    <local:cButton_converter_minradius x:Key="cButton_converter_minradius"/>
+    
+    <local:cButton_converter_anm2radius x:Key="cButton_converter_anm2radius"/>
+    <local:cButton_converter_thickness2margin x:Key="cButton_converter_thickness2margin"/>
+
+    <Style x:Key="cButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="MinWidth" Value="25"/>
+        <Setter Property="MinHeight" Value="25"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Background" Value="#41414141" />
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border"
+                            Background="{TemplateBinding Background}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="2.5"
+                            ClipToBounds="True"
+                            RenderTransformOrigin="0.5,0.5">
+                        <attached:UIElementHelper.UniversalObjectAttached>
+                            <universalobj:UniversalObjectViewModel/>
+                        </attached:UIElementHelper.UniversalObjectAttached>
+                        <!--边框染色-->
+                        <Border.BorderBrush>
+                            <MultiBinding Converter="{StaticResource cButton_converter_size2brush}"
+                                          ConverterParameter="0.15">
+                                <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}"/>
+                                <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}"/>
+                            </MultiBinding>
+                        </Border.BorderBrush>
+
+                        <!--获取点击坐标用-->
+                        <i:Interaction.Behaviors>
+                            <behavior:GetBorderClickPosBehavior Target="{Binding RelativeSource={RelativeSource TemplatedParent}}"/>
+                        </i:Interaction.Behaviors>
+
+                        <Grid IsHitTestVisible="False">
+                            <!--裁剪-->
+                            <Grid.Clip>
+                                <RectangleGeometry RadiusX="{Binding CornerRadius, 
+                                                                     ElementName=border, 
+                                                                     Converter={StaticResource cButton_converter_cornerradius2double}}" 
+                                                   RadiusY="{Binding CornerRadius, 
+                                                                     ElementName=border, 
+                                                                     Converter={StaticResource cButton_converter_cornerradius2double}}">
+                                    <RectangleGeometry.Rect>
+                                        <MultiBinding Converter="{StaticResource cButton_converter_size2rect}">
+                                            <Binding Path="ActualWidth" ElementName="border"/>
+                                            <Binding Path="ActualHeight" ElementName="border"/>
+                                            <Binding Path="BorderThickness" ElementName="border"/>
+                                        </MultiBinding>
+                                    </RectangleGeometry.Rect>
+                                </RectangleGeometry>
+                            </Grid.Clip>
+
+                            <!--圆盘-->
+                            <Ellipse x:Name="circle_ellipse" 
+                                     Height="{Binding ActualWidth, RelativeSource={RelativeSource Self}}"
+                                     HorizontalAlignment="Center"
+                                     VerticalAlignment="Center"
+                                     Opacity="1"
+                                     Fill="LightSlateGray" RenderTransformOrigin="0.5,0.5">
+                                <Ellipse.Width>
+                                    <MultiBinding Converter="{StaticResource cButton_converter_minradius}">
+                                        <Binding Path="ActualWidth" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                        <Binding Path="ActualHeight" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                        <Binding Path="BorderThickness" ElementName="border"/>
+                                    </MultiBinding>
+                                </Ellipse.Width>
+                                <Ellipse.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform ScaleY="{Binding ScaleX, RelativeSource={RelativeSource Self}}" >
+                                            <ScaleTransform.ScaleX>
+                                                <MultiBinding Converter="{StaticResource cButton_converter_opacity2scale}">
+                                                    <Binding Path="Opacity" Mode="OneWay" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type Ellipse}, AncestorLevel=1}" />
+                                                    <Binding Path="ActualWidth" Mode="OneWay" RelativeSource="{RelativeSource TemplatedParent}" />
+                                                    <Binding Path="ActualHeight" Mode="OneWay" RelativeSource="{RelativeSource TemplatedParent}" />
+                                                </MultiBinding>
+                                            </ScaleTransform.ScaleX>
+                                        </ScaleTransform>
+                                        <TranslateTransform>
+                                            <TranslateTransform.X>
+                                                <MultiBinding Converter="{StaticResource cButton_converter_clickpos2xy}">
+                                                    <Binding Path="(attached:UIElementHelper.UniversalObjectAttached).ClickPos.X" ElementName="border"/>
+                                                    <Binding Path="ActualWidth" ElementName="border"/>
+                                                </MultiBinding>
+                                            </TranslateTransform.X>
+                                            <TranslateTransform.Y>
+                                                <MultiBinding Converter="{StaticResource cButton_converter_clickpos2xy}">
+                                                    <Binding Path="(attached:UIElementHelper.UniversalObjectAttached).ClickPos.Y" ElementName="border"/>
+                                                    <Binding Path="ActualHeight" ElementName="border"/>
+                                                </MultiBinding>
+                                            </TranslateTransform.Y>
+                                        </TranslateTransform>
+                                    </TransformGroup>
+                                </Ellipse.RenderTransform>
+                                <Ellipse.Effect>
+                                    <translationaleffect:TranslationalEffect Threshold="0" />
+                                </Ellipse.Effect>
+                            </Ellipse>
+
+                            <!--Content框-->
+                            <Border x:Name="contentBorder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                    Background="Transparent"
+                                    CornerRadius="2.5"
+                                    Margin="2">
+                                <!--Content本体-->
+                                <Grid x:Name="contentHost" 
+                                      Margin="4,0,4,0"
+                                      RenderTransformOrigin="0.5,0.5">
+                                    <UIElement.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform ScaleX="1" ScaleY="{Binding ScaleX,RelativeSource={RelativeSource Self}}"/>
+                                        </TransformGroup>
+                                    </UIElement.RenderTransform>
+
+                                    <ContentPresenter x:Name="contentSite" HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False"
+                                                      Visibility="Collapsed">
+                                    </ContentPresenter>
+
+                                    <TextBlock x:Name="contentText" Text="{TemplateBinding Content, Converter={StaticResource cButton_converter_content2text}}"
+                                               HorizontalAlignment="Center" 
+                                               VerticalAlignment="Center"
+                                               Foreground="{TemplateBinding Foreground}"/>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="contentBorder" Value="Transparent"/>
+
+                            <Trigger.EnterActions>
+                                <!--内容放大-->
+                                <BeginStoryboard>
+                                    <Storyboard FillBehavior="HoldEnd">
+                                        <DoubleAnimation Storyboard.TargetName="contentHost"
+                                                     Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)"
+                                                     To="1.05" 
+                                                     Duration="0:0:0.1" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+
+                                <!--边框光照滚动-->
+                                <BeginStoryboard x:Name="borderAnm">
+                                    <Storyboard RepeatBehavior="Forever">
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(BorderBrush).(GradientBrush.GradientStops)[0].(GradientStop.Color)" Storyboard.TargetName="border">
+                                            <EasingColorKeyFrame KeyTime="0:0:0.0" Value="#FF23FFE1"/>
+                                        </ColorAnimationUsingKeyFrames>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(BorderBrush).(GradientBrush.GradientStops)[1].(GradientStop.Color)" Storyboard.TargetName="border">
+                                            <EasingColorKeyFrame KeyTime="0:0:0.0" Value="LightYellow"/>
+                                        </ColorAnimationUsingKeyFrames>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(BorderBrush).(GradientBrush.GradientStops)[2].(GradientStop.Color)" Storyboard.TargetName="border">
+                                            <EasingColorKeyFrame KeyTime="0:0:0.0" Value="#FFFF6BE1"/>
+                                        </ColorAnimationUsingKeyFrames>
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(BorderBrush).(Transform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Storyboard.TargetName="border">
+                                            <EasingDoubleKeyFrame KeyTime="0:0:0.0" Value="360">
+                                                <EasingDoubleKeyFrame.EasingFunction>
+                                                    <ExponentialEase EasingMode="EaseInOut"/>
+                                                </EasingDoubleKeyFrame.EasingFunction>
+                                            </EasingDoubleKeyFrame>
+                                            <EasingDoubleKeyFrame KeyTime="0:0:1.0" Value="180">
+                                                <EasingDoubleKeyFrame.EasingFunction>
+                                                    <ExponentialEase EasingMode="EaseInOut"/>
+                                                </EasingDoubleKeyFrame.EasingFunction>
+                                            </EasingDoubleKeyFrame>
+                                            <EasingDoubleKeyFrame KeyTime="0:0:1.5" Value="0">
+                                                <EasingDoubleKeyFrame.EasingFunction>
+                                                    <ExponentialEase EasingMode="EaseInOut"/>
+                                                </EasingDoubleKeyFrame.EasingFunction>
+                                            </EasingDoubleKeyFrame>
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </BeginStoryboard>
+
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <!--删除动画-->
+                                <RemoveStoryboard BeginStoryboardName="borderAnm"/>
+
+                                <!--内容复原-->
+                                <BeginStoryboard>
+                                    <Storyboard FillBehavior="HoldEnd">
+                                        <DoubleAnimation Storyboard.TargetName="contentHost"
+                                                         Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)"
+                                                         To="1" 
+                                                         Duration="0:0:0.1"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Trigger.EnterActions>
+                                <!--波纹-->
+                                <BeginStoryboard HandoffBehavior="Compose">
+                                    <Storyboard FillBehavior="Stop">
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Opacity" 
+                                                                       Storyboard.TargetName="circle_ellipse">
+                                            <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
+                                            <EasingDoubleKeyFrame KeyTime="0:0:1.2" Value="0"/>
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </BeginStoryboard>
+
+                            </Trigger.EnterActions>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" TargetName="border" Value="0.3"/>
+                        </Trigger>
+                        <DataTrigger Binding="{Binding Text, ElementName=contentText}" Value="">
+                            <Setter Property="Visibility" Value="Visible" TargetName="contentSite"/>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

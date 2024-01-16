@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>DS4WinWPF.UI</RootNamespace>
+    <Platforms>x64</Platforms>
+    <Configurations>Release</Configurations>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.77" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Resource Include="Control\EffectEx\TranslationalEffect\TranslationalEffect.ps" />
+  </ItemGroup>
+  
+</Project>

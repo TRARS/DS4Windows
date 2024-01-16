@@ -1,0 +1,95 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+                    xmlns:pathbuttonex="clr-namespace:DS4WinWPF.UI.Control.CustomControlEx.PathButtonEx">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomControlEx/PathButtonEx/cPathButton_style.xaml"/>
+
+        <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/ButtonEx/cButton_style.xaml"/>
+        <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/CheckBoxEx/cCheckBox_style.xaml"/>
+        <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/ComboBoxEx/cComboBox_style.xaml"/>
+        <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/ContextMenuEx/cContextMenu_style.xaml"/>
+        <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/GridViewColumnHeaderEx/cGridViewColumnHeader_style.xaml"/>
+        <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/GroupBoxEx/cGroupBox_style.xaml"/>
+        <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/LabelEx/cLabel_style.xaml"/>
+        <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/ListBoxEx/cListBox_style.xaml"/>
+        <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/ListViewEx/cListView_style.xaml"/>
+        <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/RadioButtonEx/cRadioButton_style.xaml"/>
+        <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/RichTextBoxEx/cRichTextBox_style.xaml"/>
+        <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/ScrollViewerEx/cScrollViewer_style.xaml"/>
+        <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/TabControlEx/cTabControl_style.xaml"/>
+        <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/TabItemEx/cTabItem_style.xaml"/>
+        <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/TextBlockEx/cTextBlock_style.xaml"/>
+        <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/TextBoxEx/cTextBox_style.xaml"/>
+        <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/ThumbEx/cThumb_style.xaml"/>
+        <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/ToolBarEx/cToolBar_style.xaml"/>
+        <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/ToolTipEx/cToolTip_style.xaml"/>
+        <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/WindowEx/cWindow_style.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <SolidColorBrush x:Key="TextColor" Color="Black" />
+    <SolidColorBrush x:Key="SelectedColor" Color="LightGray"/>
+    <SolidColorBrush x:Key="PathColor" Color="#363636"/>
+    <SolidColorBrush x:Key="PathBackgroundColor" Color="#20000000"/>
+
+    <!--c控件-->
+    <Style TargetType="{x:Type pathbuttonex:cPathButton}" BasedOn="{StaticResource cPathButtonStyle}">
+        <Setter Property="PathColor" Value="{StaticResource PathColor}"/>
+        <Setter Property="TextColor" Value="{StaticResource TextColor}"/>
+        <Setter Property="PathBackgroundColor" Value="{StaticResource PathBackgroundColor}"/>
+    </Style>
+    <!--c样式-->
+    <!--<Style TargetType="{x:Type Button}" BasedOn="{StaticResource cButtonStyle}">
+        <Setter Property="Foreground" Value="{StaticResource TextColor}" />
+        <Setter Property="Background" Value="{StaticResource PathBackgroundColor}"/>
+    </Style>-->
+    <!--<Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource cCheckBoxStyle}"/>-->
+    <!--<Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource cComboBoxStyle}"/>-->
+    <!--<Style TargetType="{x:Type ContextMenu}" BasedOn="{StaticResource cContextMenuStyle}"/>-->
+    <!--<Style TargetType="{x:Type GridViewColumnHeader}" BasedOn="{StaticResource cGridViewColumnHeaderStyle}"/>-->
+    <!--<Style TargetType="{x:Type GroupBox}" BasedOn="{StaticResource cGroupBoxStyle}"/>-->
+    <!--<Style TargetType="{x:Type Label}" BasedOn="{StaticResource cLabelStyle}"/>-->
+    <!--<Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource cListBoxStyle}"/>-->
+    <!--<Style TargetType="{x:Type ListView}" BasedOn="{StaticResource cListViewStyle}"/>-->
+    <!--<Style TargetType="{x:Type RadioButton}" BasedOn="{StaticResource cRadioButtonStyle}"/>-->
+    <!--<Style TargetType="{x:Type RichTextBox}" BasedOn="{StaticResource cRichTextBoxStyle}"/>-->
+    <!--<Style TargetType="{x:Type ScrollViewer}" BasedOn="{StaticResource {x:Type ScrollViewer}}"/>-->
+    <Style TargetType="{x:Type TabControl}" BasedOn="{StaticResource cTabControlStyle}">
+        <Setter Property="Foreground" Value="{StaticResource SelectedColor}"/>
+    </Style>
+    <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource cTabItemStyle}">
+        <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="#44808080" Offset="-0.4"/>
+                            <GradientStop Color="#44808080" Offset="0.9"/>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="LightGray" Offset="-0.4"/>
+                            <GradientStop Color="LightGray" Offset="0.9"/>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <!--<Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource cTextBlockStyle}"/>-->
+    <!--<Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource cTextBoxStyle}"/>-->
+    <!--<Style TargetType="{x:Type Thumb}" BasedOn="{StaticResource cThumbStyle}"/>-->
+    <Style TargetType="{x:Type ToolBar}" BasedOn="{StaticResource cToolBarStyle}"/>
+    <!--<Style TargetType="{x:Type ToolTip}" BasedOn="{StaticResource cToolTipStyle}"/>-->
+    <Style x:Key="WindowStyle" TargetType="{x:Type Window}" BasedOn="{StaticResource cWindowStyle}">
+        <Setter Property="Background" Value="{StaticResource PathBackgroundColor}" />
+        <Setter Property="Foreground" Value="{StaticResource TextColor}" />
+    </Style>
+</ResourceDictionary>
