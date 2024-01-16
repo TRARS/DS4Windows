@@ -3,7 +3,7 @@
 
     <Style x:Key="cTabItemStyle" TargetType="{x:Type TabItem}">
         <Setter Property="Background" Value="#FF007ACC"/>
-        <Setter Property="Foreground" Value="LightGray"/>
+        <Setter Property="Foreground" Value="White"/>
         <Setter Property="MinHeight" Value="20" />
         <Setter Property="MinWidth" Value="50" />
         <Setter Property="Padding" Value="10,0,10,0"/>

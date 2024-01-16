@@ -52,7 +52,7 @@ namespace DS4WinWPF.UI.Control.CustomStyleEx.ButtonEx
         {
             var width = double.Parse($"{values[0]}");
             var height = double.Parse($"{values[1]}");
-            var delta = double.Parse($"{parameter}");
+            var delta = double.Parse($"{parameter}", CultureInfo.InvariantCulture);
 
             // 创建一个线性渐变画刷
             LinearGradientBrush linearGradientBrush = new LinearGradientBrush();

@@ -1658,7 +1658,7 @@
                                     </GroupBox>
 
                                     <StackPanel Orientation="Horizontal" Margin="0,8,0,8">
-                                        <Button x:Name="gyroCalBtn" Content="Gyro Calibration" Width="100"  Click="GyroCalibration_Click" />
+                                        <Button x:Name="gyroCalBtn" Content="Gyro Calibration" Width="auto"  Click="GyroCalibration_Click" />
                                     </StackPanel>
                                 </StackPanel>
                             </TabItem>
@@ -1759,7 +1759,7 @@
                                     </GroupBox>
 
                                     <StackPanel Orientation="Horizontal" Margin="0,8,0,8">
-                                        <Button x:Name="gyroCalBtn4" Content="Gyro Calibration" Width="100"  Click="GyroCalibration_Click" />
+                                        <Button x:Name="gyroCalBtn4" Content="Gyro Calibration" Width="auto"  Click="GyroCalibration_Click" />
                                     </StackPanel>
                                 </StackPanel>
                             </TabItem>
@@ -1888,7 +1888,7 @@
                                     </GroupBox>
 
                                     <StackPanel Orientation="Horizontal" Margin="0,8,0,8">
-                                        <Button x:Name="gyroCalBtn1" Content="Gyro Calibration" Width="100"  Click="GyroCalibration_Click" />
+                                        <Button x:Name="gyroCalBtn1" Content="Gyro Calibration" Width="auto"  Click="GyroCalibration_Click" />
                                     </StackPanel>
                                 </StackPanel>
                             </TabItem>
@@ -1967,7 +1967,7 @@
                                     </StackPanel>
 
                                     <StackPanel Orientation="Horizontal" Margin="0,8,0,8">
-                                        <Button x:Name="gyroCalBtn2" Content="Gyro Calibration" Width="100"  Click="GyroCalibration_Click" />
+                                        <Button x:Name="gyroCalBtn2" Content="Gyro Calibration" Width="auto"  Click="GyroCalibration_Click" />
                                     </StackPanel>
                                 </StackPanel>
                             </TabItem>
@@ -1980,7 +1980,7 @@
                                     </TextBlock>
 
                                     <StackPanel Orientation="Horizontal" Margin="0,8,0,8">
-                                        <Button x:Name="gyroCalBtn3" Content="Gyro Calibration" Width="100"  Click="GyroCalibration_Click" />
+                                        <Button x:Name="gyroCalBtn3" Content="Gyro Calibration" Width="auto"  Click="GyroCalibration_Click" />
                                     </StackPanel>
                                 </StackPanel>
                             </TabItem>
@@ -2112,7 +2112,7 @@
                               ToolTip="{lex:Loc Resources:EnableTouchToggle}" />
                         <CheckBox Content="{lex:Loc EnableOutputDataToDS4}" IsChecked="{Binding EnableOutputDataToDS4}" Margin="0,6,0,0" ToolTip="{lex:Loc EnableOutputDataToDS4Tip}" />
                         <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
-                            <CheckBox x:Name="launchProgCk" Content="{lex:Loc LaunchProgramWithProfile}" IsChecked="{Binding LaunchProgramExists}" IsEnabled="{Binding LaunchProgramExists}" />
+                            <CheckBox x:Name="launchProgCk" Content="{lex:Loc LaunchProgramWithProfile}" IsChecked="{Binding LaunchProgramExists}" IsEnabled="{Binding LaunchProgramExists}" VerticalAlignment="Center"/>
                             <Button x:Name="launchProgBrowseBtn" Click="LaunchProgBrowseBtn_Click" Width="80" Height="30" Margin="20,0,0,0">
                                 <Button.Content>
                                     <PriorityBinding>
@@ -2204,7 +2204,7 @@
                                         </DockPanel>
 
                                         <Label Content="{lex:Loc SnapToCenter}" ContentStringFormat="{}{0}:" Grid.Row="5" Grid.Column="0" />
-                                        <CheckBox IsChecked="{Binding AbsSnapCenter}" MinWidth="50" Grid.Row="5" Grid.Column="1" />
+                                        <CheckBox IsChecked="{Binding AbsSnapCenter}" MinWidth="50" Grid.Row="5" Grid.Column="1" VerticalAlignment="Center"/>
                                     </Grid>
                                 </Expander>
                             </StackPanel>

@@ -202,9 +202,10 @@
                 <ControlTemplate TargetType="{x:Type ListViewItem}">
                     <Grid>
                         <Border x:Name="innerBorder" 
-                            Background="{TemplateBinding Background}" 
-                            Padding="{TemplateBinding Padding}" 
-                            SnapsToDevicePixels="true" />
+                                Background="{TemplateBinding Background}" 
+                                Padding="{TemplateBinding Padding}" 
+                                CornerRadius="1.5"
+                                SnapsToDevicePixels="true" />
                         <GridViewRowPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
                                           SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                     </Grid>

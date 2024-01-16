@@ -772,7 +772,7 @@
     <comment/>
   </data>
   <data name="White" xml:space="preserve">
-    <value>亮色</value>
+    <value>白色</value>
     <comment/>
   </data>
   <data name="AppTheme" xml:space="preserve">
@@ -883,7 +883,7 @@
     <value>解释监控消息</value>
   </data>
   <data name="EnableOscSender" xml:space="preserve">
-    <value>启用监控消息</value>
+    <value>启用监控服务</value>
   </data>
   <data name="EnableOscServer" xml:space="preserve">
     <value>启用控制服务器</value>
@@ -943,7 +943,7 @@
     <value>第一次启动</value>
   </data>
   <data name="Light" xml:space="preserve">
-    <value>左</value>
+    <value>亮色</value>
   </data>
   <data name="TouchpadTapTooltip" xml:space="preserve">
     <value>用触摸板单击触发鼠标左键点击。最大时间间隔为（值 * 2）ms</value>

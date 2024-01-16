@@ -23,6 +23,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="CustomEffect\InvertedColorEffect\InvertedColorEffect.ps" />
     <None Remove="CustomEffect\MagnifyEffect\MagnifyEffect.ps" />
     <None Remove="CustomEffect\TranslationalEffect\TranslationalEffect.ps" />
   </ItemGroup>
@@ -68,6 +69,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="CustomEffect\InvertedColorEffect\InvertedColorEffect.ps" />
     <Resource Include="CustomEffect\MagnifyEffect\MagnifyEffect.ps" />
     <Resource Include="CustomEffect\TranslationalEffect\TranslationalEffect.ps" />
   </ItemGroup>

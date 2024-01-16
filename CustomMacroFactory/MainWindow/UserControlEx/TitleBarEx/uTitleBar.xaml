@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:CustomMacroFactory.MainWindow.UserControlEx.TitleBarEx"
+             xmlns:local="clr-namespace:CustomMacroFactory.MainWindow.UserControlEx.TitleBarEx" xmlns:titlebarbuttonex="clr-namespace:CustomMacroBase.CustomControlEx.TitleBarButtonEx;assembly=CustomMacroBase"
              mc:Ignorable="d" 
              MinWidth="240"
              d:MinWidth="240">
@@ -15,7 +15,7 @@
             
             <SolidColorBrush Color="#862E2F34" x:Key="AreaColor"/>
             
-            <DoubleCollection x:Key = "double_def">15 12</DoubleCollection>
+            <DoubleCollection x:Key = "double_def">15 11.5</DoubleCollection>
             <Geometry x:Key="GamePadIcon">
                 M334 483.1a78.9 78.9 0 1 0 78.9 78.9 79 79 0 0 0-78.9-78.9z m0 138.4a59.5 59.5 0 1 1 59.5-59.5 59.57 59.57 0 0 1-59.5 59.5z
                 M332.5 244m10.05 0l338.9 0q10.05 0 10.05 10.05l0 180.9q0 10.05-10.05 10.05l-338.9 0q-10.05 0-10.05-10.05l0-180.9q0-10.05 10.05-10.05Z
@@ -76,29 +76,29 @@
                                          RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl},
                                          Converter={StaticResource uTitleBar_converter_bool2opacity}}"/>
         </StackPanel>
-        
+
         <!--靠右-->
-        <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0" HorizontalAlignment="Right"
-                    Opacity="{Binding IsActive, 
-                                      RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl},
-                                      Converter={StaticResource uTitleBar_converter_bool2opacity}}">
-            <Button x:Name="ResetPosBtn" Width="30" HorizontalAlignment="Right" Margin="0" BorderBrush="#00F11717" Padding="1" Background="#00DDDDDD" Style="{StaticResource TitleBarMaxMinButtonStyle}" Foreground="#FFDCDFE1" d:IsHidden="False" Height="25" VerticalAlignment="Center" Click="ResetPosButton_Click" Focusable="False">
+        <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0" HorizontalAlignment="Right">
+            <titlebarbuttonex:cTitleBarButton x:Name="ResetPosBtn" Type="MaxMinBtn" Width="30" Height="25" HorizontalAlignment="Right" VerticalAlignment="Center" Click="ResetPosButton_Click"
+                                              IsActive="{Binding IsActive, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl}}">
                 <Path Data="M838.695 374.154A354.62 354.62 0 0 0 512 157.538a354.462 354.462 0 1 0 0 708.924A354.58 354.58 0 0 0 842.161 641.26a39.385 39.385 0 1 1 73.334 28.751A433.31 433.31 0 0 1 512 945.231C272.738 945.23 78.77 751.26 78.77 512S272.737 78.77 512 78.77c144.423 0 275.14 71.285 354.462 183.965V177.23a39.385 39.385 0 0 1 78.769 0v236.307a39.266 39.266 0 0 1-39.385 39.385H708.923a39.385 39.385 0 0 1 0-78.77h129.772z"
                       Fill="{Binding Foreground, ElementName=CloseBtn}"
                       Margin="0" 
                       Stretch="Fill" 
                       Width="{Binding [1], Source={StaticResource double_def}}"
                       Height="{Binding Width, RelativeSource={RelativeSource Self}}"/>
-            </Button>
-            <Button x:Name="MinimizeBtn" Width="30" Height="25" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0" Style="{Binding Style, ElementName=MaximizeBtn}" BorderBrush="#00707070" Background="#00DDDDDD" Click="MinimizeButton_Click" IsEnabled="False">
+            </titlebarbuttonex:cTitleBarButton>
+            <titlebarbuttonex:cTitleBarButton x:Name="MinimizeBtn" Type="MaxMinBtn" Width="30" Height="25" HorizontalAlignment="Right" VerticalAlignment="Center" Click="MinimizeButton_Click" IsEnabled="False"
+                                              IsActive="{Binding IsActive, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl}}">
                 <Path Data="M984.615385 955.076923c0 15.753846-13.784615 29.538462-29.538462 29.538462h-886.153846c-15.753846 0-29.538462-13.784615-29.538462-29.538462v-59.076923c0-15.753846 13.784615-29.538462 29.538462-29.538462h886.153846c15.753846 0 29.538462 13.784615 29.538462 29.538462v59.076923z"
                       Fill="{Binding Foreground, ElementName=CloseBtn}"
                       Margin="0,9,0,0"
                       Stretch="Fill"
                       Width="{Binding [1], Source={StaticResource double_def}}"
                       Height="1"/>
-            </Button>
-            <Button x:Name="MaximizeBtn" Width="30" Height="25" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0" Background="#00DDDDDD" BorderBrush="#00707070" Style="{StaticResource TitleBarMaxMinButtonStyle}" Click="MaximizeButton_Click" IsEnabled="False">
+            </titlebarbuttonex:cTitleBarButton>
+            <titlebarbuttonex:cTitleBarButton x:Name="MaximizeBtn" Type="MaxMinBtn" Width="30" Height="25" HorizontalAlignment="Right" VerticalAlignment="Center" Click="MaximizeButton_Click" IsEnabled="False"
+                                              IsActive="{Binding IsActive, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl}}">
                 <Path Data="M915.995 960.219H110.228c-24.262 0-44-19.738-44-44V110.228c0-24.262 19.738-44 44-44h805.768c24.262 0 44 19.738 44 44v805.991c-0.001 24.261-19.739 44-44.001 44z m-785.767-64h765.768V130.228H130.228v765.991z
                             M124.462 128.688h803.533v64H124.462z"
                       Fill="{Binding Foreground, ElementName=CloseBtn}"
@@ -106,15 +106,17 @@
                       Stretch="Fill"
                       Width="{Binding [1], Source={StaticResource double_def}}"
                       Height="{Binding Width, RelativeSource={RelativeSource Self}}"/>
-            </Button>
-            <Button x:Name="CloseBtn" Width="30" HorizontalAlignment="Right" Margin="0" BorderBrush="#00F11717" Padding="1" Background="#00DDDDDD" Style="{StaticResource TitleBarCloseButtonStyle}" Foreground="#FFDCDFE1" d:IsHidden="False" Height="25" VerticalAlignment="Center" Click="CloseButton_Click">
+            </titlebarbuttonex:cTitleBarButton>
+            <titlebarbuttonex:cTitleBarButton x:Name="CloseBtn" Type="CloseBtn" Width="30" Height="25" HorizontalAlignment="Right" VerticalAlignment="Center" Click="CloseButton_Click"
+                                              IsActive="{Binding IsActive, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl}}"
+                                              Foreground="#FFDCDFE1" >
                 <Path Data="M571.733333 512l268.8-268.8c17.066667-17.066667 17.066667-42.666667 0-59.733333-17.066667-17.066667-42.666667-17.066667-59.733333 0L512 452.266667 243.2 183.466667c-17.066667-17.066667-42.666667-17.066667-59.733333 0-17.066667 17.066667-17.066667 42.666667 0 59.733333L452.266667 512 183.466667 780.8c-17.066667 17.066667-17.066667 42.666667 0 59.733333 8.533333 8.533333 19.2 12.8 29.866666 12.8s21.333333-4.266667 29.866667-12.8L512 571.733333l268.8 268.8c8.533333 8.533333 19.2 12.8 29.866667 12.8s21.333333-4.266667 29.866666-12.8c17.066667-17.066667 17.066667-42.666667 0-59.733333L571.733333 512z"
                       Fill="{Binding Foreground, ElementName=CloseBtn}"
                       Margin="0" 
                       Stretch="Fill" 
                       Width="{Binding [1], Source={StaticResource double_def}}"
                       Height="{Binding Width, RelativeSource={RelativeSource Self}}"/>
-            </Button>
+            </titlebarbuttonex:cTitleBarButton>
         </StackPanel>
     </Grid>
 </UserControl>

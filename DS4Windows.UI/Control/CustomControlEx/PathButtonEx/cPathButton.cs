@@ -35,7 +35,7 @@ namespace DS4WinWPF.UI.Control.CustomControlEx.PathButtonEx
             name: "TextColor",
             propertyType: typeof(SolidColorBrush),
             ownerType: typeof(cPathButton),
-            typeMetadata: new FrameworkPropertyMetadata(new SolidColorBrush(Colors.LightGray), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
+            typeMetadata: new FrameworkPropertyMetadata(new SolidColorBrush(Colors.White), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
         );
 
         public string PathData

@@ -253,8 +253,8 @@
                             </Button.Content>
                         </Button>-->
                     </ToolBar>
-                    <ToolBar x:Name="dupBoxBar" Height="40" DockPanel.Dock="Top" Background="{x:Null}" HorizontalAlignment="Center" Visibility="Collapsed">
-                        <local:DupBox x:Name="dupBox" />
+                    <ToolBar x:Name="dupBoxBar" DockPanel.Dock="Top" Background="{x:Null}" HorizontalAlignment="Center" Visibility="Collapsed">
+                        <local:DupBox x:Name="dupBox" Height="Auto"/>
                     </ToolBar>
 
                     <ListBox x:Name="profilesListBox" DockPanel.Dock="Bottom" SelectionChanged="ProfilesListBox_SelectionChanged" MouseDoubleClick="ProfilesListBox_MouseDoubleClick">

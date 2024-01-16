@@ -4,7 +4,7 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomControlEx/PathButtonEx/cPathButton_style.xaml"/>
-        
+
         <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/ButtonEx/cButton_style.xaml"/>
         <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/CheckBoxEx/cCheckBox_style.xaml"/>
         <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/ComboBoxEx/cComboBox_style.xaml"/>
@@ -31,7 +31,9 @@
     <Style TargetType="{x:Type pathbuttonex:cPathButton}" BasedOn="{StaticResource cPathButtonStyle}"/>
     <!--c样式-->
     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource cButtonStyle}"/>
-    <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource cCheckBoxStyle}"/>
+    <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource cCheckBoxStyle}">
+        <Setter Property="Background" Value="#FF202020"/>
+    </Style>
     <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource cComboBoxStyle}"/>
     <Style TargetType="{x:Type ContextMenu}" BasedOn="{StaticResource cContextMenuStyle}"/>
     <Style TargetType="{x:Type GridViewColumnHeader}" BasedOn="{StaticResource cGridViewColumnHeaderStyle}"/>

@@ -1,0 +1,233 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:CustomMacroBase.CustomControlEx.TitleBarButtonEx" 
+                    xmlns:invertedcoloreffect="clr-namespace:CustomMacroBase.CustomEffect">
+
+    <Style TargetType="{x:Type local:cTitleBarButton}">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Width" Value="30"/>
+        <Setter Property="Height" Value="25"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="0"/>
+
+        <Style.Resources>
+            <!--EmptyBtn-->
+            <ControlTemplate x:Key="EmptyBtn" TargetType="{x:Type local:cTitleBarButton}">
+                <Border x:Name="border"
+                        Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}" 
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding BorderCornerRadius}">
+                    <Border x:Name="contentBorder">
+                        <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          IsHitTestVisible="False"/>
+                    </Border>
+                </Border>
+
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Effect" TargetName="contentBorder">
+                            <Setter.Value>
+                                <invertedcoloreffect:InvertColorEffect Threshold="0"/>
+                            </Setter.Value>
+                        </Setter>
+                        <Trigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard FillBehavior="HoldEnd">
+                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Effect.Threshold" Storyboard.TargetName="contentBorder">
+                                        <EasingDoubleKeyFrame KeyTime="0:0:0" Value="0"/>
+                                        <EasingDoubleKeyFrame KeyTime="0:0:0.15" Value="1"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.EnterActions>
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" TargetName="border" Value="0.3"/>
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+            <!--MaxMinBtn-->
+            <ControlTemplate x:Key="MaxMinBtn" TargetType="{x:Type local:cTitleBarButton}">
+                <Border x:Name="border"
+                        Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}" 
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding BorderCornerRadius}">
+                    <Border x:Name="contentBorder">
+                        <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          IsHitTestVisible="False"/>
+                    </Border>
+                </Border>
+
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Effect" TargetName="contentBorder">
+                            <Setter.Value>
+                                <DropShadowEffect ShadowDepth="0" BlurRadius="0" Color="LightYellow"/>
+                            </Setter.Value>
+                        </Setter>
+                        <Trigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard FillBehavior="HoldEnd">
+                                    <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="Background.Color" Storyboard.TargetName="border">
+                                        <EasingColorKeyFrame KeyTime="0:0:0" Value="#006A757A"/>
+                                        <EasingColorKeyFrame KeyTime="0:0:0.05" Value="#FF6A757A"/>
+                                    </ColorAnimationUsingKeyFrames>
+                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Effect.BlurRadius" Storyboard.TargetName="contentBorder">
+                                        <EasingDoubleKeyFrame KeyTime="0:0:0.05" Value="0"/>
+                                        <EasingDoubleKeyFrame KeyTime="0:0:0.10" Value="6"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.EnterActions>
+                        <Trigger.ExitActions>
+                            <BeginStoryboard>
+                                <Storyboard FillBehavior="HoldEnd">
+                                    <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="Background.Color" Storyboard.TargetName="border">
+                                        <EasingColorKeyFrame KeyTime="0:0:0" Value="#FF6A757A"/>
+                                        <EasingColorKeyFrame KeyTime="0:0:0.15" Value="#006A757A"/>
+                                    </ColorAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.ExitActions>
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Trigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard FillBehavior="HoldEnd">
+                                    <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="Background.Color" Storyboard.TargetName="border">
+                                        <EasingColorKeyFrame KeyTime="0:0:0.15" Value="#FF5C769B"/>
+                                    </ColorAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.EnterActions>
+                        <Trigger.ExitActions>
+                            <BeginStoryboard>
+                                <Storyboard FillBehavior="Stop">
+                                    <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="Background.Color" Storyboard.TargetName="border">
+                                        <EasingColorKeyFrame KeyTime="0:0:0.05" Value="#FF5C769B"/>
+                                    </ColorAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.ExitActions>
+                    </Trigger>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding IsActive, RelativeSource={RelativeSource Self}}" Value="false"/>
+                            <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="false"/>
+                        </MultiDataTrigger.Conditions>
+                        <MultiDataTrigger.Setters>
+                            <Setter Property="Opacity" TargetName="border" Value="0.5"/>
+                        </MultiDataTrigger.Setters>
+                    </MultiDataTrigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" TargetName="border" Value="0.3"/>
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+            <!--CloseBtn-->
+            <ControlTemplate x:Key="CloseBtn" TargetType="{x:Type local:cTitleBarButton}">
+                <Border x:Name="border"
+                        Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}" 
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding BorderCornerRadius}">
+                    <Border x:Name="contentBorder">
+                        <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          IsHitTestVisible="False"/>
+                    </Border>
+                </Border>
+
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Effect" TargetName="contentBorder">
+                            <Setter.Value>
+                                <DropShadowEffect ShadowDepth="0" BlurRadius="0" Color="LightYellow"/>
+                            </Setter.Value>
+                        </Setter>
+                        <Trigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard FillBehavior="HoldEnd">
+                                    <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="Background.Color" Storyboard.TargetName="border">
+                                        <EasingColorKeyFrame KeyTime="0:0:0" Value="#00E02A2A"/>
+                                        <EasingColorKeyFrame KeyTime="0:0:0.05" Value="#FFE02A2A"/>
+                                    </ColorAnimationUsingKeyFrames>
+                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Effect.BlurRadius" Storyboard.TargetName="contentBorder">
+                                        <EasingDoubleKeyFrame KeyTime="0:0:0.05" Value="0"/>
+                                        <EasingDoubleKeyFrame KeyTime="0:0:0.10" Value="6"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.EnterActions>
+                        <Trigger.ExitActions>
+                            <BeginStoryboard>
+                                <Storyboard FillBehavior="HoldEnd">
+                                    <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="Background.Color" Storyboard.TargetName="border">
+                                        <EasingColorKeyFrame KeyTime="0:0:0" Value="#FFE02A2A"/>
+                                        <EasingColorKeyFrame KeyTime="0:0:0.15" Value="#00E02A2A"/>
+                                    </ColorAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.ExitActions>
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Trigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard FillBehavior="HoldEnd">
+                                    <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="Background.Color" Storyboard.TargetName="border">
+                                        <EasingColorKeyFrame KeyTime="0:0:0.15" Value="#FFCB2D74"/>
+                                    </ColorAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.EnterActions>
+                        <Trigger.ExitActions>
+                            <BeginStoryboard>
+                                <Storyboard FillBehavior="Stop">
+                                    <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="Background.Color" Storyboard.TargetName="border">
+                                        <EasingColorKeyFrame KeyTime="0:0:0.05" Value="#FFCB2D74"/>
+                                    </ColorAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.ExitActions>
+                    </Trigger>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding IsActive, RelativeSource={RelativeSource Self}}" Value="false"/>
+                            <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="false"/>
+                        </MultiDataTrigger.Conditions>
+                        <MultiDataTrigger.Setters>
+                            <Setter Property="Opacity" TargetName="border" Value="0.5"/>
+                        </MultiDataTrigger.Setters>
+                    </MultiDataTrigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" TargetName="border" Value="0.3"/>
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+        </Style.Resources>
+
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Type, RelativeSource={RelativeSource Self}}" Value="{x:Static local:ButtonType.EmptyBtn}">
+                <Setter Property="Template" Value="{StaticResource EmptyBtn}"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="BorderCornerRadius" Value="0"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Type, RelativeSource={RelativeSource Self}}" Value="{x:Static local:ButtonType.MaxMinBtn}">
+                <Setter Property="Template" Value="{StaticResource MaxMinBtn}"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="BorderCornerRadius" Value="0"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Type, RelativeSource={RelativeSource Self}}" Value="{x:Static local:ButtonType.CloseBtn}">
+                <Setter Property="Template" Value="{StaticResource CloseBtn}"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="BorderCornerRadius" Value="0"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+    
+</ResourceDictionary>

@@ -19,6 +19,11 @@
             DataContext中转
             </summary>
         </member>
+        <member name="M:CustomMacroBase.CustomEffect.InvertColorEffect.#ctor">
+            <summary>
+            颜色反转
+            </summary>
+        </member>
         <member name="T:CustomMacroBase.CustomEffect.MagnifyEffect">
             <summary>An effect that magnifies a circular region.</summary>
         </member>
