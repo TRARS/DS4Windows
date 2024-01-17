@@ -23,7 +23,7 @@
         }
       },
       "Microsoft.Win32.SystemEvents/7.0.0": {},
-      "OpenCvSharp4/4.8.0.20230708": {
+      "OpenCvSharp4/4.9.0.20240103": {
         "dependencies": {
           "System.Memory": "4.5.5",
           "System.Runtime.CompilerServices.Unsafe": "6.0.0"
@@ -35,9 +35,9 @@
           }
         }
       },
-      "OpenCvSharp4.Extensions/4.8.0.20230708": {
+      "OpenCvSharp4.Extensions/4.9.0.20240103": {
         "dependencies": {
-          "OpenCvSharp4": "4.8.0.20230708",
+          "OpenCvSharp4": "4.9.0.20240103",
           "System.Drawing.Common": "7.0.0"
         },
         "runtime": {
@@ -47,34 +47,34 @@
           }
         }
       },
-      "OpenCvSharp4.runtime.win/4.8.0.20230708": {
+      "OpenCvSharp4.runtime.win/4.9.0.20240103": {
         "runtimeTargets": {
           "runtimes/win-x64/native/OpenCvSharpExtern.dll": {
             "rid": "win-x64",
             "assetType": "native",
             "fileVersion": "0.0.0.0"
           },
-          "runtimes/win-x64/native/opencv_videoio_ffmpeg480_64.dll": {
+          "runtimes/win-x64/native/opencv_videoio_ffmpeg490_64.dll": {
             "rid": "win-x64",
             "assetType": "native",
-            "fileVersion": "2023.6.0.0"
+            "fileVersion": "2023.12.0.0"
           },
           "runtimes/win-x86/native/OpenCvSharpExtern.dll": {
             "rid": "win-x86",
             "assetType": "native",
             "fileVersion": "0.0.0.0"
           },
-          "runtimes/win-x86/native/opencv_videoio_ffmpeg480.dll": {
+          "runtimes/win-x86/native/opencv_videoio_ffmpeg490.dll": {
             "rid": "win-x86",
             "assetType": "native",
-            "fileVersion": "2023.6.0.0"
+            "fileVersion": "2023.12.0.0"
           }
         }
       },
-      "OpenCvSharp4.Windows/4.8.0.20230708": {
+      "OpenCvSharp4.Windows/4.9.0.20240103": {
         "dependencies": {
-          "OpenCvSharp4": "4.8.0.20230708",
-          "OpenCvSharp4.runtime.win": "4.8.0.20230708"
+          "OpenCvSharp4": "4.9.0.20240103",
+          "OpenCvSharp4.runtime.win": "4.9.0.20240103"
         }
       },
       "System.Drawing.Common/7.0.0": {
@@ -99,8 +99,8 @@
       "CustomMacroBase/1.0.0": {
         "dependencies": {
           "Fastenshtein": "1.0.0.8",
-          "OpenCvSharp4.Extensions": "4.8.0.20230708",
-          "OpenCvSharp4.Windows": "4.8.0.20230708",
+          "OpenCvSharp4.Extensions": "4.9.0.20240103",
+          "OpenCvSharp4.Windows": "4.9.0.20240103",
           "Tesseract": "5.2.0"
         },
         "runtime": {
@@ -129,33 +129,33 @@
       "path": "microsoft.win32.systemevents/7.0.0",
       "hashPath": "microsoft.win32.systemevents.7.0.0.nupkg.sha512"
     },
-    "OpenCvSharp4/4.8.0.20230708": {
+    "OpenCvSharp4/4.9.0.20240103": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-MmZqvNUJuTUWQfkyXN1NOxJjx6JNfaedMOnY0dAdP5zgaKMAsxwwX5pkZl/F40JheSo3oMJhI7nhDC3kh7/ISQ==",
-      "path": "opencvsharp4/4.8.0.20230708",
-      "hashPath": "opencvsharp4.4.8.0.20230708.nupkg.sha512"
+      "sha512": "sha512-+BJMqToSH3dl+5SUF2YaPI+1eY/o/aTtvCQsY3qgcE4YS8qvPNS7MObzzVy4avYrBmcEEFnCvNF+1VbFnQjU9w==",
+      "path": "opencvsharp4/4.9.0.20240103",
+      "hashPath": "opencvsharp4.4.9.0.20240103.nupkg.sha512"
     },
-    "OpenCvSharp4.Extensions/4.8.0.20230708": {
+    "OpenCvSharp4.Extensions/4.9.0.20240103": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-nMX2ZFI+cAIp7q2UoaHFSzBD9xJgr/TyZ9dDOuDS0K2BNCdOYqT8TbXWIGCIXpcLZLn2seoy5r4ZlGaJsyREYg==",
-      "path": "opencvsharp4.extensions/4.8.0.20230708",
-      "hashPath": "opencvsharp4.extensions.4.8.0.20230708.nupkg.sha512"
+      "sha512": "sha512-zqFJuQPV36ttTMrN1kMGQdj8rDD+wMDtTU5fVGE8osSPEAyehru1ow3xTAmB04uiaKlbzl/gy2G9BnbT+OgMNA==",
+      "path": "opencvsharp4.extensions/4.9.0.20240103",
+      "hashPath": "opencvsharp4.extensions.4.9.0.20240103.nupkg.sha512"
     },
-    "OpenCvSharp4.runtime.win/4.8.0.20230708": {
+    "OpenCvSharp4.runtime.win/4.9.0.20240103": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-V9zbVQXazSSoEG04nF1KEkxfY62WMQAcKAlDe7xgkNErY7WQZzEcj8dMEuHXQMaDr45jPvrJi50SQroi+w4wNw==",
-      "path": "opencvsharp4.runtime.win/4.8.0.20230708",
-      "hashPath": "opencvsharp4.runtime.win.4.8.0.20230708.nupkg.sha512"
+      "sha512": "sha512-PkV3ge6rE//gj0OlG4TRXzmcLVDoKsJx0lYN1ogx9gZhqUPHlzrnWqKk2hAFK+nU8T0chRhrwHL0U2hSMyoCWw==",
+      "path": "opencvsharp4.runtime.win/4.9.0.20240103",
+      "hashPath": "opencvsharp4.runtime.win.4.9.0.20240103.nupkg.sha512"
     },
-    "OpenCvSharp4.Windows/4.8.0.20230708": {
+    "OpenCvSharp4.Windows/4.9.0.20240103": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-4DXUxmwJyIQiijl58xNdIOB0n34dRbgurL4sGNV0jCPk3W5W5DGANHN7Ex7T8uL/5Xfn5Tp1zq6Q/QztyuF6sw==",
-      "path": "opencvsharp4.windows/4.8.0.20230708",
-      "hashPath": "opencvsharp4.windows.4.8.0.20230708.nupkg.sha512"
+      "sha512": "sha512-IOtMfbVyZ0K7/39EAaRyz496WNNCWeI/SV1yRI1fCoWbID84EEnVnFcY2iqn1G6sWfQIpASm7pc44OF9y/gbFw==",
+      "path": "opencvsharp4.windows/4.9.0.20240103",
+      "hashPath": "opencvsharp4.windows.4.9.0.20240103.nupkg.sha512"
     },
     "System.Drawing.Common/7.0.0": {
       "type": "package",

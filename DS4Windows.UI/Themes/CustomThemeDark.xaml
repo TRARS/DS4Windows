@@ -1,10 +1,14 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:bluetoothusbstatusiconex="clr-namespace:DS4WinWPF.UI.Control.CustomControlEx.BluetoothUSBStatusIconEx"
+                    xmlns:exclusivestatusiconex="clr-namespace:DS4WinWPF.UI.Control.CustomControlEx.ExclusiveStatusIconEx"
                     xmlns:pathbuttonex="clr-namespace:DS4WinWPF.UI.Control.CustomControlEx.PathButtonEx">
 
     <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomControlEx/BluetoothUSBStatusIconEx/cBluetoothUSBStatusIcon_style.xaml"/>
+        <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomControlEx/ExclusiveStatusIconEx/cExclusiveStatusIcon_style.xaml"/>
         <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomControlEx/PathButtonEx/cPathButton_style.xaml"/>
-
+        
         <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/ButtonEx/cButton_style.xaml"/>
         <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/CheckBoxEx/cCheckBox_style.xaml"/>
         <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/ComboBoxEx/cComboBox_style.xaml"/>
@@ -28,7 +32,10 @@
     </ResourceDictionary.MergedDictionaries>
 
     <!--c控件-->
+    <Style TargetType="{x:Type bluetoothusbstatusiconex:cBluetoothUSBStatusIcon}" BasedOn="{StaticResource cBluetoothUSBStatusIconStyle}"/>
+    <Style TargetType="{x:Type exclusivestatusiconex:cExclusiveStatusIcon}" BasedOn="{StaticResource cExclusiveStatusIconStyle}"/>
     <Style TargetType="{x:Type pathbuttonex:cPathButton}" BasedOn="{StaticResource cPathButtonStyle}"/>
+    
     <!--c样式-->
     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource cButtonStyle}"/>
     <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource cCheckBoxStyle}">

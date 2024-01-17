@@ -1,0 +1,50 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:local="clr-namespace:DS4WinWPF.UI.Control.CustomControlEx.ExclusiveStatusIconEx">
+
+    <local:cExclusiveStatusIcon_converter_accesstype2bool x:Key="cExclusiveStatusIcon_converter_accesstype2bool"/>
+
+    <Style x:Key="cExclusiveStatusIconStyle" TargetType="{x:Type local:cExclusiveStatusIcon}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:cExclusiveStatusIcon}">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+
+                        <Grid Margin="0">
+                            <Path x:Name="hidhide" Grid.Column="0" 
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Stretch"
+                                  Fill="{TemplateBinding PathColor}"
+                                  Stretch="Uniform"
+                                  Data="M704 0C527.264 0 384 143.264 384 320c0 20.032 1.856 39.616 5.376 58.624L0 768v192c0 35.36 28.64 64 64 64h64v-64h128V832h128V704h128l83.04-83.04C629.056 633.28 665.728 640 704 640c176.736 0 320-143.264 320-320S880.736 0 704 0z m95.872 320.128c-53.024 0-96-42.976-96-96s42.976-96 96-96 96 42.976 96 96-42.976 96-96 96z"
+                                  Margin="{TemplateBinding PathMargin}"
+                                  Visibility="Collapsed"/>
+                            <Path x:Name="shared" Grid.Column="0" 
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Stretch"
+                                  Fill="{TemplateBinding PathColor}"
+                                  Stretch="Uniform"
+                                  Data="M463.787 512l-253.44-253.44a34.133 34.133 0 0 1 48.213-48.213L512 463.787l253.44-253.44a34.133 34.133 0 1 1 48.213 48.213L560.213 512l253.44 253.44a34.133 34.133 0 1 1-48.213 48.213L512 560.213l-253.44 253.44a34.133 34.133 0 0 1-48.213-48.213z"
+                                  Margin="{TemplateBinding PathMargin}"/>
+                        </Grid>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding Source, RelativeSource={RelativeSource Self}, Converter={StaticResource cExclusiveStatusIcon_converter_accesstype2bool}}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" TargetName="hidhide"/>
+                            <Setter Property="Visibility" Value="Collapsed" TargetName="shared"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Source, RelativeSource={RelativeSource Self}, Converter={StaticResource cExclusiveStatusIcon_converter_accesstype2bool}}" Value="False">
+                            <Setter Property="Visibility" Value="Collapsed" TargetName="hidhide"/>
+                            <Setter Property="Visibility" Value="Visible" TargetName="shared"/>
+                            <Setter Property="Margin" Value="3" TargetName="shared"/>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

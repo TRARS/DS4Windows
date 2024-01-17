@@ -35,7 +35,7 @@
                                 BorderBrush="{TemplateBinding BorderBrush}" 
                                 BorderThickness="{TemplateBinding BorderThickness}" 
                                 HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                VerticalAlignment="Center"
+                                VerticalAlignment="Stretch"
                                 Margin="1"
                                 CornerRadius="1.5">
                             <Grid x:Name="markGrid" Margin="1">

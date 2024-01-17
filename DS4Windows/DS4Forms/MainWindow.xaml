@@ -13,6 +13,8 @@
         xmlns:localConverters="clr-namespace:DS4WinWPF.DS4Forms.Converters"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:pathbuttonex="clr-namespace:DS4WinWPF.UI.Control.CustomControlEx.PathButtonEx;assembly=DS4WinWPF.UI"
+        xmlns:bluetoothusbstatusiconex="clr-namespace:DS4WinWPF.UI.Control.CustomControlEx.BluetoothUSBStatusIconEx;assembly=DS4WinWPF.UI"
+        xmlns:exclusivestatusiconex="clr-namespace:DS4WinWPF.UI.Control.CustomControlEx.ExclusiveStatusIconEx;assembly=DS4WinWPF.UI"
         xml:lang="en-US"
         mc:Ignorable="d"
         Title="DS4Windows" Height="500" Width="800" Closing="MainDS4Window_Closing" Closed="MainDS4Window_Closed" StateChanged="MainDS4Window_StateChanged" SizeChanged="MainDS4Window_SizeChanged" LocationChanged="MainDS4Window_LocationChanged" MinWidth="600" MinHeight="250"
@@ -68,11 +70,12 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="{lex:Loc Status}"  x:Name="statusColumn" Width="40">
+                                <GridViewColumn Header="{lex:Loc Status}" x:Name="statusColumn" Width="50">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Width="{Binding ElementName=statusColumn, Path=Width}">
-                                                <Image x:Name="contStatusImg" Source="{Binding StatusSource}" Stretch="Uniform" Width="20" Height="20" HorizontalAlignment="Center" ToolTip="Right click to disconnect wireless" MouseRightButtonUp="ContStatusImg_MouseRightButtonUp" Tag="{Binding DevIndex}" />
+                                                <!--<Image x:Name="contStatusImg" Source="{Binding StatusSource}" Stretch="Uniform" Width="20" Height="20" HorizontalAlignment="Center" ToolTip="Right click to disconnect wireless" MouseRightButtonUp="ContStatusImg_MouseRightButtonUp" Tag="{Binding DevIndex}" />-->
+                                                <bluetoothusbstatusiconex:cBluetoothUSBStatusIcon x:Name="contStatusImg" Source="{Binding StatusSource, Mode=OneWay}" Width="20" Height="20" HorizontalAlignment="Center" ToolTip="Right click to disconnect wireless" MouseRightButtonUp="ContStatusImg_MouseRightButtonUp" Tag="{Binding DevIndex}" />
                                             </StackPanel>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
@@ -81,8 +84,8 @@
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Width="{Binding ElementName=exclusiveColumn, Path=Width}">
-                                                <Image Source="{Binding ExclusiveSource}" Stretch="Uniform" Width="20" Height="20" HorizontalAlignment="Center"
-                                                       ToolTip="{Binding IsExclusiveText}" />
+                                                <!--<Image Source="{Binding ExclusiveSource}" Stretch="Uniform" Width="20" Height="20" HorizontalAlignment="Center" ToolTip="{Binding IsExclusiveText}" />-->
+                                                <exclusivestatusiconex:cExclusiveStatusIcon Source="{Binding ExclusiveSource, Mode=OneWay}" Width="20" Height="20" HorizontalAlignment="Center" ToolTip="{Binding IsExclusiveText}" />
                                             </StackPanel>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
