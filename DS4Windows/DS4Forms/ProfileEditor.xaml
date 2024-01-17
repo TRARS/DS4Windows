@@ -244,10 +244,10 @@
 
         <TabControl x:Name="profileSettingsTabCon" DockPanel.Dock="Right" Margin="10,0,0,0" Padding="6">
             <TabControl.Resources>
-                <Thickness x:Key="spaceMargin" Bottom="8" />
+                <Thickness x:Key="spaceMargin" Left="0" Top="0" Right="0" Bottom="8"/>
             </TabControl.Resources>
 
-            <TabItem Header="{lex:Loc AxisConfig}" Height="24" Margin="-2,0,-2,0" VerticalAlignment="Bottom">
+            <TabItem Header="{lex:Loc AxisConfig}">
                 <TabItem.Resources>
                     <Thickness x:Key="spaceMargin" Left="10" Bottom="6" />
                     <Style x:Key="gridRowHeight" TargetType="{x:Type RowDefinition}">
@@ -255,7 +255,7 @@
                     </Style>
                 </TabItem.Resources>
                 <ScrollViewer>
-                    <StackPanel>
+                    <StackPanel Margin="4">
                         <GroupBox Header="LS">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal">
@@ -1106,9 +1106,9 @@
             </TabItem>
 
             <TabItem Header="{lex:Loc Lightbar}">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="{lex:Loc OutputMode}" ContentStringFormat="{}{0}:" />
+                <StackPanel Margin="4">
+                    <StackPanel Orientation="Horizontal" Margin="{StaticResource spaceMargin}">
+                        <Label Content="{lex:Loc OutputMode}" ContentStringFormat="{}{0}" />
                         <ComboBox x:Name="lightbarModeCombo" Width="160" SelectedIndex="{Binding LightbarModeIndex, FallbackValue='0'}"
                                   VerticalContentAlignment="Center" Margin="10,0,0,0">
                             <ComboBoxItem Content="{lex:Loc Normal}" />
@@ -1216,11 +1216,7 @@
                 </StackPanel>
             </TabItem>
 
-            <TabItem Header="{lex:Loc Touchpad}" Height="22" VerticalAlignment="Top">
-                <TabItem.Resources>
-                    <Thickness x:Key="spaceMargin" Bottom="8" />
-                </TabItem.Resources>
-
+            <TabItem Header="{lex:Loc Touchpad}">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel Margin="4">
                         <StackPanel Orientation="Horizontal" Margin="{StaticResource spaceMargin}">
@@ -1534,8 +1530,8 @@
 
             <TabItem Header="{lex:Loc Gyro}">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <StackPanel Margin="4">
+                        <StackPanel Orientation="Horizontal" Margin="{StaticResource spaceMargin}">
                             <Label Content="{lex:Loc OutputMode}" />
                             <ComboBox x:Name="gyroOutModeCombo" Width="160" SelectedIndex="{Binding GyroOutModeIndex, FallbackValue='0'}" VerticalContentAlignment="Center" Margin="10,0,0,0">
                                 <ComboBoxItem Content="{lex:Loc GyroControlsAccel}" />

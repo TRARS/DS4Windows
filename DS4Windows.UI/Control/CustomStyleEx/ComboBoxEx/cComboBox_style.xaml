@@ -135,7 +135,7 @@
                             <Setter Property="MinHeight" Value="95" TargetName="DropDownBorder"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
-                            <Setter Property="Foreground" Value="{DynamicResource DisabledForegroundBrush}"/>
+                            <!--<Setter Property="Foreground" Value="{DynamicResource DisabledForegroundBrush}"/>-->
                             <Setter Property="Opacity" Value="0.25" TargetName="contentGrid"/>
                         </Trigger>
                         <Trigger Property="IsGrouping" Value="true">
