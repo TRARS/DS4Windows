@@ -21,6 +21,7 @@
         <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/RadioButtonEx/cRadioButton_style.xaml"/>
         <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/RichTextBoxEx/cRichTextBox_style.xaml"/>
         <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/ScrollViewerEx/cScrollViewer_style.xaml"/>
+        <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/SliderEx/cSlider_style.xaml"/>
         <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/TabControlEx/cTabControl_style.xaml"/>
         <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/TabItemEx/cTabItem_style.xaml"/>
         <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/TextBlockEx/cTextBlock_style.xaml"/>
@@ -65,6 +66,7 @@
     <!--<Style TargetType="{x:Type RadioButton}" BasedOn="{StaticResource cRadioButtonStyle}"/>-->
     <!--<Style TargetType="{x:Type RichTextBox}" BasedOn="{StaticResource cRichTextBoxStyle}"/>-->
     <!--<Style TargetType="{x:Type ScrollViewer}" BasedOn="{StaticResource {x:Type ScrollViewer}}"/>-->
+    <!--<Style TargetType="{x:Type Slider}" BasedOn="{StaticResource cSliderStyle}"/>-->
     <Style TargetType="{x:Type TabControl}" BasedOn="{StaticResource cTabControlStyle}">
         <Setter Property="Foreground" Value="{StaticResource SelectedColor}"/>
     </Style>

@@ -6,7 +6,9 @@
                     xmlns:attached="clr-namespace:DS4WinWPF.UI.Helper.AttachedProperty" 
                     xmlns:universalobj="clr-namespace:DS4WinWPF.UI.Helper.Base" 
                     xmlns:translationaleffect="clr-namespace:DS4WinWPF.UI.Control.EffectEx.TranslationalEffect">
-    
+
+    <local:cButton_converter_actualwidth2horizontalalignment x:Key="cButton_converter_actualwidth2horizontalalignment"/>
+    <local:cButton_converter_actualwidth2margin x:Key="cButton_converter_actualwidth2margin"/>
     <local:cButton_converter_content2text x:Key="cButton_converter_content2text"/>
     
     <local:cButton_converter_clickpos2xy x:Key="cButton_converter_clickpos2xy"/>
@@ -123,12 +125,11 @@
                             <!--Content框-->
                             <Border x:Name="contentBorder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                     Background="Transparent"
-                                    CornerRadius="2.5"
-                                    Margin="2">
+                                    CornerRadius="2.5">
                                 <!--Content本体-->
-                                <Grid x:Name="contentHost" 
-                                      Margin="4,0,4,0"
-                                      RenderTransformOrigin="0.5,0.5">
+                                <Grid x:Name="contentHost"
+                                      RenderTransformOrigin="0.5,0.5"
+                                      Margin="4,0,4,0">
                                     <UIElement.RenderTransform>
                                         <TransformGroup>
                                             <ScaleTransform ScaleX="1" ScaleY="{Binding ScaleX,RelativeSource={RelativeSource Self}}"/>
@@ -140,9 +141,21 @@
                                     </ContentPresenter>
 
                                     <TextBlock x:Name="contentText" Text="{TemplateBinding Content, Converter={StaticResource cButton_converter_content2text}}"
-                                               HorizontalAlignment="Center" 
                                                VerticalAlignment="Center"
-                                               Foreground="{TemplateBinding Foreground}"/>
+                                               Foreground="{TemplateBinding Foreground}">
+                                        <TextBlock.HorizontalAlignment>
+                                            <MultiBinding Converter="{StaticResource cButton_converter_actualwidth2horizontalalignment}">
+                                                <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}"/>
+                                                <Binding Path="ActualWidth" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                            </MultiBinding>
+                                        </TextBlock.HorizontalAlignment>
+                                        <TextBlock.Margin>
+                                            <MultiBinding Converter="{StaticResource cButton_converter_actualwidth2margin}">
+                                                <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}"/>
+                                                <Binding Path="ActualWidth" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                            </MultiBinding>
+                                        </TextBlock.Margin>
+                                    </TextBlock>
                                 </Grid>
                             </Border>
                         </Grid>

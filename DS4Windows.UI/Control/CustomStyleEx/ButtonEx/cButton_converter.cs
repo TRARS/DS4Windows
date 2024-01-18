@@ -6,6 +6,38 @@ using System.Windows.Media;
 
 namespace DS4WinWPF.UI.Control.CustomStyleEx.ButtonEx
 {
+    internal class cButton_converter_actualwidth2horizontalalignment : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            var str_width = (double)values[0];
+            var btn_width = (double)values[1];
+            if (str_width is double.NaN || btn_width is double.NaN) { return Binding.DoNothing; }
+            if (str_width > btn_width - 8) { return HorizontalAlignment.Left; }
+            return HorizontalAlignment.Center;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    internal class cButton_converter_actualwidth2margin : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            var str_width = (double)values[0];
+            var btn_width = (double)values[1];
+            if (str_width is double.NaN || btn_width is double.NaN) { return Binding.DoNothing; }
+            if (str_width > btn_width - 8) { return new Thickness(-2); }
+            return new Thickness(0);
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
     internal class cButton_converter_content2text : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -146,6 +178,7 @@ namespace DS4WinWPF.UI.Control.CustomStyleEx.ButtonEx
             {
                 var w = (double)values[0];
                 var h = (double)values[1];
+                if (w is double.NaN || w is double.NaN) { return Binding.DoNothing; }
                 var tk = (Thickness)values[2];
                 return new Rect(0 - tk.Left, 0 - tk.Top, w, h);
             }

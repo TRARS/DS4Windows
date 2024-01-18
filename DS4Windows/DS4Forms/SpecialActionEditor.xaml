@@ -24,15 +24,7 @@
                     <ListView.View>
                         <GridView>
                             <GridView.Columns>
-                                <GridViewColumn Header="{lex:Loc Trigger}" Width="170">
-                                    <GridViewColumn.HeaderContainerStyle>
-                                        <Style TargetType="{x:Type GridViewColumnHeader}">
-                                            <Setter Property="HorizontalContentAlignment" Value="Left" />
-                                            <Setter Property="Background" Value="{DynamicResource BackgroundColor}" />
-                                            <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
-                                        </Style>
-                                    </GridViewColumn.HeaderContainerStyle>
-                                </GridViewColumn>
+                                <GridViewColumn Header="{lex:Loc Trigger}" Width="170"/>
                             </GridView.Columns>
                         </GridView>
                     </ListView.View>
