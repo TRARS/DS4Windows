@@ -28,7 +28,6 @@
     <SolidColorBrush x:Key="SliderThumb.Track.Border" Color="#FFD6D6D6"/>
 
     <SolidColorBrush x:Key="SliderThumb.Custom.DarkViolet" Color="DarkViolet"/>
-    <SolidColorBrush x:Key="SliderThumb.Custom.Dark3Violet" Color="DarkSlateGray"/>
     <SolidColorBrush x:Key="SliderThumb.Custom.DarkGray" Color="DarkGray"/>
     <SolidColorBrush x:Key="SliderThumb.Custom.Snow" Color="Snow"/>
     <SolidColorBrush x:Key="SliderThumb.Custom.Red" Color="Red"/>
@@ -36,7 +35,7 @@
 
     <VisualBrush x:Key="SliderThumb.StripeTextureLeft" TileMode="Tile" Viewport="0,0,3,3" ViewportUnits="Absolute" Viewbox="0,0,15,15" ViewboxUnits="Absolute">
         <VisualBrush.Visual>
-            <Grid Background="{StaticResource SliderThumb.Custom.DarkSlateGray}" RenderTransformOrigin="0.5,0.5">
+            <Grid Background="{StaticResource SliderThumb.Custom.DarkViolet}" RenderTransformOrigin="0.5,0.5">
                 <Path Data="M 0,15 L 15,0" Stroke="{StaticResource SliderThumb.Custom.DarkViolet}" StrokeThickness="5" Opacity="1" />
                 <Path Data="M 15,15 L 30,0" Stroke="{StaticResource SliderThumb.Custom.DarkViolet}"  StrokeThickness="5" Opacity="1" />
                 <Path Data="M 15,-15 L 0,0" Stroke="{StaticResource SliderThumb.Custom.DarkViolet}"  StrokeThickness="5" Opacity="1" />
@@ -262,7 +261,7 @@
                 <Border x:Name="TrackBackground" 
                         BorderThickness="0"
                         Width="4.0"
-                        Margin="5,0" 
+                        Margin="0,5" 
                         Grid.Column="1"
                         HorizontalAlignment="center" 
                         CornerRadius="1">
@@ -284,7 +283,8 @@
                                 BorderBrush="{StaticResource SliderThumb.Custom.Snow}" 
                                 BorderThickness="1"    
                                 Width="4.0"
-                                Height="{Binding ActualHeight, ElementName=TopRepeatButton}"/>
+                                Height="{Binding ActualHeight, ElementName=TopRepeatButton}"
+                                Margin="0,0,0,0"/>
                         <Canvas Margin="-1,-6">
                             <Rectangle x:Name="PART_SelectionRange" Fill="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Visibility="Hidden" Width="4.0"/>
                         </Canvas>

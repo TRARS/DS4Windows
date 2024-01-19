@@ -6,6 +6,8 @@
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/ComboBoxEx/cComboBox_style.xaml"/>
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/ConsoleListBoxEx/cConsoleListBox_style.xaml"/>
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/ContextMenuEx/cContextMenu_cMenuItem_style.xaml"/>
+        <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/ContextMenuEx/cMenuItem_style.xaml"/>
+        <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/ContextMenuEx/cMenuItemForHotkey_style.xaml"/>
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/NormalButtonEx/cNormalButton_style.xaml"/>
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/ScrollViewerEx/cScrollViewer_style.xaml"/>
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/SliderEx/cSlider_style.xaml"/>

@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
@@ -81,6 +82,26 @@ namespace CustomMacroBase.PreBase
         /// 连起来
         /// </summary>
         public void EnableReverseAndSetDs4Rumble() => ((Action)(() => { EnableReverse(); SetDs4Rumble(); }))();
+    }
+    public partial class GateBase
+    {
+        private static Random random = new Random();
+        /// <summary>
+        /// 加盐
+        /// </summary>
+        private static string GenerateRandomString(int length)
+        {
+            const string chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+            StringBuilder stringBuilder = new StringBuilder();
+
+            for (int i = 0; i < length; i++)
+            {
+                int index = random.Next(chars.Length);
+                stringBuilder.Append(chars[index]);
+            }
+
+            return stringBuilder.ToString();
+        }
     }
     public partial class GateBase
     {
@@ -187,7 +208,19 @@ namespace CustomMacroBase.PreBase
         }
         private bool _DisableSliderButton = false;
 
-
+        /// <summary>
+        /// 特征码
+        /// </summary>
+        public string Feature
+        {
+            get { return _Feature; }
+            init
+            {
+                _Feature = value;
+                NotifyPropertyChanged();
+            }
+        }
+        private string _Feature = GenerateRandomString(32);
 
         /// <summary>
         /// 获取当前滑块开关的子项列表，用以存放与宿主类型相同的对象

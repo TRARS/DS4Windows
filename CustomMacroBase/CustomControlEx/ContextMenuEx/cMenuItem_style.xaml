@@ -1,0 +1,39 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:CustomMacroBase.CustomControlEx.ContextMenuEx">
+    
+    <!--MenuItem-->
+    <Style TargetType="{x:Type local:cMenuItem}">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="StaysOpenOnClick" Value="False"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:cMenuItem}">
+                    <Border x:Name="border"
+                            CornerRadius="2.5" 
+                            BorderThickness="1"
+                            BorderBrush="White"
+                            Background="Black"
+                            Padding="4">
+                        <Grid>
+                            <!--<ContentPresenter x:Name="HeaderHost" Grid.Column="1" ContentSource="Header" RecognizesAccessKey="True" />-->
+                            <TextBlock x:Name="content"
+                                       Text="{TemplateBinding Text}"
+                                       Foreground="White"/>
+                        </Grid>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="BorderBrush" Value="Black" TargetName="border"/>
+                            <Setter Property="Background" Value="White" TargetName="border"/>
+                            <Setter Property="Foreground" Value="Black" TargetName="content"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

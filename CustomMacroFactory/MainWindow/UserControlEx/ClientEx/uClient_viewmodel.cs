@@ -1,9 +1,11 @@
 ﻿using CustomMacroBase.CustomControlEx.ConsoleListBoxEx;
+using CustomMacroBase.CustomControlEx.ContextMenuEx;
 using CustomMacroBase.CustomControlEx.ToggleButtonEx;
 using CustomMacroBase.CustomControlEx.VerticalButtonEx;
 using CustomMacroBase.CustomControlEx.VerticalRadioButtonEx;
 using CustomMacroBase.Helper;
 using CustomMacroBase.Helper.Extensions;
+using CustomMacroBase.Helper.HotKey;
 using CustomMacroFactory.MainWindow.UserControlEx.PixelPicker;
 using System;
 using System.Collections.ObjectModel;
@@ -13,6 +15,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
+using Key = SharpDX.DirectInput.Key;
 
 namespace CustomMacroFactory.MainWindow.UserControlEx.ClientEx
 {
@@ -193,6 +196,16 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.ClientEx
                 root_view.SetBinding(cToggleButton.VisibilityProperty, new Binding("HideSelf") { Source = parent_model, Mode = BindingMode.OneWay, Converter = new uClient_converter_bool2visibility() });
                 root_view.SetBinding(cToggleButton.DisableSliderButtonProperty, new Binding("DisableSliderButton") { Source = parent_model, Mode = BindingMode.OneWay });
                 //root_view.BackgroundColor = new SolidColorBrush(Color.FromArgb((byte)Math.Clamp(container_bk_opacity * 255, 0, 255), container_bk_color.R, container_bk_color.G, container_bk_color.B));
+                root_view.ContextMenu = ((Func<cContextMenu>)(() => 
+                {
+                    var temp = new cContextMenu();
+                    {
+                        temp.StaysOpen = true;
+                        temp.Focusable = true;
+                        temp.Items.Add(new cMenuItemForHotkey(parent_model));
+                    }
+                    return temp;
+                })).Invoke();
                 sp.Children.Add(root_view);
             }
 
@@ -330,28 +343,37 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.ClientEx
             }
             //TopContent_LeftEx
             {
-                this.TopContent_LeftEx.Add(((Func<cToggleButton>)(() =>
+                this.TopContent_LeftEx.Add(new cToggleButton()
                 {
-                    var ex1 = new cToggleButton()
+                    Margin = new(4, 0, 4, 0),
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    GuideLineColor = new SolidColorBrush(Colors.OrangeRed),
+                    Text = "Ex1",
+                    ToolTip = "Temporarily allow DS4W to recognize a virtual DS4 controller as a real DS4 controller once.",
+                    CheckedAct = () => { SingleDs4Accessor.Instance.Reset(0); },
+                    UncheckedAct = () => { SingleDs4Accessor.Instance.Reset(1); },
+                    LoadedAct = (self) =>
                     {
-                        Margin = new(4, 0, 4, 0),
-                        HorizontalAlignment = HorizontalAlignment.Stretch,
-                        VerticalAlignment = VerticalAlignment.Center,
-                        GuideLineColor = new SolidColorBrush(Colors.OrangeRed),
-                        Text = "Ex1",
-                        ToolTip = "Temporarily allow DS4W to recognize a virtual DS4 controller as a real DS4 controller once.",
-                        CheckedAct = () => { SingleDs4Accessor.Instance.Reset(0); },
-                        UncheckedAct = () => { SingleDs4Accessor.Instance.Reset(1); },
-                        LoadedAct = (self) =>
-                        {
-                            ToolTipService.SetInitialShowDelay(self, 256);
-                            SingleDs4Accessor.Instance.OnSlotConsumed += () => { Application.Current.Dispatcher.Invoke(() => { self.IsChecked = false; }); };
-                        }
-                    };
-
-                    return ex1;
-                })).Invoke());
-
+                        ToolTipService.SetInitialShowDelay(self, 256);
+                        SingleDs4Accessor.Instance.OnSlotConsumed += () => { Application.Current.Dispatcher.Invoke(() => { self.IsChecked = false; }); };
+                    }
+                });
+                this.TopContent_LeftEx.Add(new cToggleButton()
+                {
+                    Margin = new(4, 0, 4, 0),
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    GuideLineColor = new SolidColorBrush(Colors.OrangeRed),
+                    Text = "Ex2",
+                    ToolTip = "Allow using hotkeys to control toggles.",
+                    CheckedAct = () => { RealKeyboard.Instance.StartMonitoring(); },
+                    UncheckedAct = () => { RealKeyboard.Instance.StopMonitoring(); },
+                    LoadedAct = (self) =>
+                    {
+                        ToolTipService.SetInitialShowDelay(self, 256);
+                    }
+                });
             }
 
             //TopContent_Middle

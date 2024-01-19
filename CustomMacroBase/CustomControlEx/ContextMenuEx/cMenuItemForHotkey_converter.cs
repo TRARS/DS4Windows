@@ -2,17 +2,16 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace CustomMacroBase.CustomControlEx.ColorfulTextBlockEx
+namespace CustomMacroBase.CustomControlEx.ContextMenuEx
 {
-    internal class cColorfulTextBlock_converter_doublenullcheck : IValueConverter
+    class cMenuItemForHotkey_converter_enum2string : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is double.NaN)
+            if (value is Enum)
             {
-                return Binding.DoNothing;
+                return value.ToString() ?? "error"; // 将枚举值转换为字符串
             }
-
             return value;
         }
 

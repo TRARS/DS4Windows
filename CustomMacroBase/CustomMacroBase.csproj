@@ -23,15 +23,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="CustomEffect\InvertedColorEffect\InvertedColorEffect.ps" />
-    <None Remove="CustomEffect\MagnifyEffect\MagnifyEffect.ps" />
-    <None Remove="CustomEffect\TranslationalEffect\TranslationalEffect.ps" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Fastenshtein" Version="1.0.0.8" />
     <PackageReference Include="OpenCvSharp4.Extensions" Version="4.9.0.20240103" />
     <PackageReference Include="OpenCvSharp4.Windows" Version="4.9.0.20240103" />
+    <PackageReference Include="SharpDX.DirectInput" Version="4.2.0" />
     <PackageReference Include="Tesseract" Version="5.2.0" />
   </ItemGroup>
   
@@ -72,5 +67,13 @@
     <Resource Include="CustomEffect\InvertedColorEffect\InvertedColorEffect.ps" />
     <Resource Include="CustomEffect\MagnifyEffect\MagnifyEffect.ps" />
     <Resource Include="CustomEffect\TranslationalEffect\TranslationalEffect.ps" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\arsTemp\.nuget\packages\tesseract\5.2.0\build\\..\x86\leptonica-1.82.0.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\arsTemp\.nuget\packages\tesseract\5.2.0\build\\..\x86\tesseract50.dll" />
   </ItemGroup>
 </Project>

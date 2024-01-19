@@ -696,6 +696,11 @@
             连起来
             </summary>
         </member>
+        <member name="M:CustomMacroBase.PreBase.GateBase.GenerateRandomString(System.Int32)">
+            <summary>
+            加盐
+            </summary>
+        </member>
         <member name="F:CustomMacroBase.PreBase.GateBase.GroupNameList">
             <summary>
             组名字典
@@ -734,6 +739,11 @@
         <member name="P:CustomMacroBase.PreBase.GateBase.DisableSliderButton">
             <summary>
             获取或设置SliderButton状态
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.PreBase.GateBase.Feature">
+            <summary>
+            特征码
             </summary>
         </member>
         <member name="P:CustomMacroBase.PreBase.GateBase.Children">
