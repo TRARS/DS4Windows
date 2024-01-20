@@ -45,18 +45,23 @@
                     <StackPanel Orientation="Vertical">
                         <CheckBox Content="{lex:Loc BindingWin.ChangeLight}" IsChecked="{Binding UseExtrasColor}" Margin="{StaticResource spaceMargin}" />
                         <StackPanel Margin="{StaticResource spaceMargin}">
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="R" />
-                                <Slider Value="{Binding ExtrasColorR}" Minimum="0" Maximum="255" ToolTip="{Binding ExtrasColorR}" MinWidth="100" Background="{Binding ExtrasColorRString, FallbackValue=Red}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="G" />
-                                <Slider Value="{Binding ExtrasColorG}" MinWidth="100" Minimum="0" Maximum="255" ToolTip="{Binding ExtrasColorG}" Background="{Binding ExtrasColorGString, FallbackValue=Lime}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="B" />
-                                <Slider Value="{Binding ExtrasColorB}" MinWidth="100" Minimum="0" Maximum="255" ToolTip="{Binding ExtrasColorB}" Background="{Binding ExtrasColorBString, FallbackValue=Blue}"/>
-                            </StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Label Grid.Column="0" Grid.Row="0" Content="R" VerticalAlignment="Center"/>
+                                <Label Grid.Column="0" Grid.Row="1" Content="G" VerticalAlignment="Center"/>
+                                <Label Grid.Column="0" Grid.Row="2" Content="B" VerticalAlignment="Center"/>
+                                <Slider Grid.Column="1" Grid.Row="0" Value="{Binding ExtrasColorR}" Minimum="0" Maximum="255" ToolTip="{Binding ExtrasColorR}" Background="{Binding ExtrasColorRString, FallbackValue=Red}" VerticalAlignment="Center" Padding="0,2,2,2"/>
+                                <Slider Grid.Column="1" Grid.Row="1" Value="{Binding ExtrasColorG}" Minimum="0" Maximum="255" ToolTip="{Binding ExtrasColorG}" Background="{Binding ExtrasColorGString, FallbackValue=Lime}" VerticalAlignment="Center" Padding="0,2,2,2"/>
+                                <Slider Grid.Column="1" Grid.Row="2" Value="{Binding ExtrasColorB}" Minimum="0" Maximum="255" ToolTip="{Binding ExtrasColorB}" Background="{Binding ExtrasColorBString, FallbackValue=Blue}" VerticalAlignment="Center" Padding="0,2,2,2"/>
+                            </Grid>
                             <Button x:Name="extrasColorChoosebtn" Width="20" Height="20" Background="{Binding ExtrasColorString}" HorizontalAlignment="Right" Margin="0,10,10,0" Click="ExtrasColorChoosebtn_Click" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="{StaticResource spaceMargin}">
@@ -199,11 +204,11 @@
                                 <TextBlock x:Name="keyMouseTopTxt" Text="{lex:Loc BindingWin.KeyboardAndMouse}" TextWrapping="Wrap" TextAlignment="Center"  />
                             </StackPanel>
                             <StackPanel x:Name="topOptsPanel" Orientation="Horizontal" Grid.Column="2"
-                            HorizontalAlignment="Right" VerticalAlignment="Center">
+                                        HorizontalAlignment="Right" VerticalAlignment="Center">
                                 <CheckBox Content="{lex:Loc Toggle}" IsChecked="{Binding Toggle}" />
                                 <CheckBox Content="{lex:Loc ScanCode}" IsChecked="{Binding HasScanCode}" Margin="6,0,0,0" />
                             </StackPanel>
-                            <StackPanel Grid.Column="3" HorizontalAlignment="Right" VerticalAlignment="Center">
+                            <StackPanel Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <Button x:Name="recordMacroBtn" Content="{lex:Loc BindingWin.RecordAMacro}" Click="RecordMacroBtn_Click" />
                             </StackPanel>
                         </Grid>

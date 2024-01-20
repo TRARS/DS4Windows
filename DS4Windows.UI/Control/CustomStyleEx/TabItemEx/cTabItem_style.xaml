@@ -2,6 +2,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Style x:Key="cTabItemStyle" TargetType="{x:Type TabItem}">
+        <Style.Resources>
+            <SolidColorBrush x:Key="MouseOverColor" Color="OrangeRed"/>
+        </Style.Resources>
+        
         <Setter Property="Background" Value="#FF007ACC"/>
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="MinHeight" Value="20" />
@@ -15,50 +19,47 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TabItem}">
-                    <Border BorderBrush="Transparent" Width="{TemplateBinding Width}" 
-                            Background="{TemplateBinding Background}" 
-                            Padding="{TemplateBinding Padding}">
+                    <Grid>
+                        <Border x:Name="background" Opacity="0"
+                                    Background="{TemplateBinding Background}"
+                                    CornerRadius="1.5,1.5,0,0"/>
+
                         <TextBlock x:Name="textblock"
-                                   Text="{TemplateBinding Header}" Foreground="{TemplateBinding Foreground}"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center"
-                                   RenderTransformOrigin="0.5,0.5">
-                            <UIElement.RenderTransform>
-                                <TransformGroup>
-                                    <ScaleTransform ScaleX="1" ScaleY="{Binding ScaleX,RelativeSource={RelativeSource Self}}"/>
-                                </TransformGroup>
-                            </UIElement.RenderTransform>
+                                       Text="{TemplateBinding Header}" Foreground="{TemplateBinding Foreground}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       Margin="{TemplateBinding Padding}"
+                                       RenderTransformOrigin="0.5,0.5">
+                                <UIElement.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform ScaleX="1" ScaleY="{Binding ScaleX,RelativeSource={RelativeSource Self}}"/>
+                                    </TransformGroup>
+                                </UIElement.RenderTransform>
                         </TextBlock>
-                    </Border>
+                    </Grid>
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="Foreground" Value="OrangeRed" />
+                            <Setter Property="Foreground" Value="{DynamicResource MouseOverColor}" />
                         </Trigger>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background">
-                                <Setter.Value>
-                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                        <GradientStop Color="#FF007ACC" Offset="-0.4"/>
-                                        <GradientStop Color="#FF007ACC" Offset="0.9"/>
-                                    </LinearGradientBrush>
-                                </Setter.Value>
-                            </Setter>
                             <Setter Property="Foreground" Value="White" />
-                            <!--<Setter Property="Effect" TargetName="textblock">
-                                <Setter.Value>
-                                    <DropShadowEffect BlurRadius="0" ShadowDepth="1"/>
-                                </Setter.Value>
-                            </Setter>-->
-
                             <Trigger.EnterActions>
                                 <!--内容放大-->
                                 <BeginStoryboard>
                                     <Storyboard FillBehavior="HoldEnd">
                                         <DoubleAnimation Storyboard.TargetName="textblock"
-                                                     Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)"
-                                                     To="1.05" 
-                                                     Duration="0:0:0.2" />
+                                                         Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)"
+                                                         To="1.05" 
+                                                         Duration="0:0:0.2" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                                <!--背景染色-->
+                                <BeginStoryboard>
+                                    <Storyboard FillBehavior="HoldEnd">
+                                        <DoubleAnimation Storyboard.TargetName="background"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="1" 
+                                                         Duration="0:0:0.0" />
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.EnterActions>
@@ -72,16 +73,30 @@
                                                          Duration="0:0:0.2"/>
                                     </Storyboard>
                                 </BeginStoryboard>
+                                <!--背景还原-->
+                                <BeginStoryboard>
+                                    <Storyboard FillBehavior="HoldEnd">
+                                        <DoubleAnimation Storyboard.TargetName="background"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="0" 
+                                                         Duration="0:0:0.4" />
+                                    </Storyboard>
+                                </BeginStoryboard>
                             </Trigger.ExitActions>
                         </Trigger>
 
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsMouseOver" Value="False"/>
-                                <Condition Property="IsSelected" Value="False"/>
+                                <Condition Property="IsSelected" Value="True"/>
+                                <Condition Property="Foreground" Value="White"/>
                             </MultiTrigger.Conditions>
-                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="Effect" TargetName="textblock">
+                                <Setter.Value>
+                                    <DropShadowEffect BlurRadius="0" ShadowDepth="1"/>
+                                </Setter.Value>
+                            </Setter>
                         </MultiTrigger>
+                        
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

@@ -6,6 +6,7 @@
     <SolidColorBrush x:Key="AccentColor" Color="#FF007ACC" />
 
     <Style x:Key="cTabControlStyle" TargetType="{x:Type TabControl}">
+        <Setter Property="BorderThickness" Value="0,2,0,2"/>
         <Setter Property="Foreground" Value="{StaticResource AccentColor}" />
         <Setter Property="BorderBrush" Value="{StaticResource BorderColor}" />
         <Setter Property="Template">
@@ -19,8 +20,8 @@
                         <Border Padding="0,2,0,0">
                             <TabPanel IsItemsHost="True"/>
                         </Border>
-                        <Border BorderThickness="0,2,0,2" BorderBrush="{TemplateBinding Foreground}" Grid.Row="1">
-                            <Grid Margin="0,5,0,0">
+                        <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding Foreground}" Grid.Row="1">
+                            <Grid Margin="0,5,0,2">
                                 <ContentPresenter x:Name="PART_Presenter" ContentSource="SelectedContent" HorizontalAlignment="Stretch"/>
                                 <Rectangle x:Name="PART_TempArea"/>
                             </Grid>

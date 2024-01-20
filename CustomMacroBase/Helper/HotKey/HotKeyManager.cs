@@ -1,10 +1,8 @@
-﻿using CustomMacroBase.Helper.Tools.OtherManager;
-using CustomMacroBase.Helper.Tools.TimeManager;
+﻿using CustomMacroBase.Helper.Tools.TimeManager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
 using Key = SharpDX.DirectInput.Key;
 
 namespace CustomMacroBase.Helper.HotKey

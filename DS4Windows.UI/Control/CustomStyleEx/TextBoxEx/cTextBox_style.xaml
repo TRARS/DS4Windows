@@ -5,7 +5,7 @@
     <SolidColorBrush x:Key="BackgroundColor" Color="#FF202020" />
     <SolidColorBrush x:Key="BorderColor" Color="#FF3F3F46" />
     <SolidColorBrush x:Key="ForegroundColor" Color="White" />
-    <SolidColorBrush x:Key="SecondaryColor" Color="#FF2d5a8c" />
+    <SolidColorBrush x:Key="SecondaryColor" Color="Cyan" />
 
     <Style x:Key="cTextBoxStyle" TargetType="{x:Type TextBox}">
         <Setter Property="Background" Value="{StaticResource BackgroundColor}" />

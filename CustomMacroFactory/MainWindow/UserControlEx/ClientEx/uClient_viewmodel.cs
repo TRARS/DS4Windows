@@ -15,7 +15,6 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
-using Key = SharpDX.DirectInput.Key;
 
 namespace CustomMacroFactory.MainWindow.UserControlEx.ClientEx
 {
@@ -196,7 +195,7 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.ClientEx
                 root_view.SetBinding(cToggleButton.VisibilityProperty, new Binding("HideSelf") { Source = parent_model, Mode = BindingMode.OneWay, Converter = new uClient_converter_bool2visibility() });
                 root_view.SetBinding(cToggleButton.DisableSliderButtonProperty, new Binding("DisableSliderButton") { Source = parent_model, Mode = BindingMode.OneWay });
                 //root_view.BackgroundColor = new SolidColorBrush(Color.FromArgb((byte)Math.Clamp(container_bk_opacity * 255, 0, 255), container_bk_color.R, container_bk_color.G, container_bk_color.B));
-                root_view.ContextMenu = ((Func<cContextMenu>)(() => 
+                root_view.ContextMenu = ((Func<cContextMenu>)(() =>
                 {
                     var temp = new cContextMenu();
                     {

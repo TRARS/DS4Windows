@@ -5,11 +5,11 @@
                     xmlns:system="clr-namespace:System;assembly=mscorlib"
                     xmlns:themes="clr-namespace:Xceed.Wpf.Toolkit.Themes;assembly=DotNetProjects.Wpf.Extended.Toolkit"
                     xmlns:themes1="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero">
-
+    
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/DS4WinWPF.UI;component/Themes/CustomThemeDark.xaml"/>
     </ResourceDictionary.MergedDictionaries>
-
+  
 
     <!-- Brushes -->
     <SolidColorBrush x:Key="BackgroundColor" Color="#FF202020" />
@@ -17,7 +17,9 @@
     <SolidColorBrush x:Key="ForegroundColor" Color="White" />
     <SolidColorBrush x:Key="SecondaryColor" Color="#FF2d5a8c" />
     <SolidColorBrush x:Key="AccentColor" Color="#FF007ACC" />
-
+    <SolidColorBrush x:Key="UpDownColor" Color="Crimson" />
+    <SolidColorBrush x:Key="UpDownColor2" Color="MediumVioletRed" />
+    
     <system:String x:Key="KeyImageImg">key-solid_white.png</system:String>
     <system:String x:Key="CancelImg">cancel_white.png</system:String>
     <system:String x:Key="CheckedImg">checked_white.png</system:String>
@@ -86,8 +88,9 @@
 
 
     <!-- Repeat Button Style -->
-    <Style x:Key="RepeatButtonStyle" TargetType="{x:Type RepeatButton}">
+    <Style x:Key="RepeatUpButtonStyle" TargetType="{x:Type RepeatButton}">
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="BorderThickness" Value="1,0,0,0"/>
         <Setter Property="Background" Value="{StaticResource BackgroundColor}"/>
         <Setter Property="BorderBrush" Value="{StaticResource BorderColor}"/>
         <Setter Property="Foreground" Value="{StaticResource ForegroundColor}"/>
@@ -95,19 +98,64 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type RepeatButton}">
-                    <Border x:Name="border" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" SnapsToDevicePixels="true">
-                        <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                    </Border>
+                    <Grid>
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderThickness="0" BorderBrush="{TemplateBinding BorderBrush}" SnapsToDevicePixels="true"
+                                CornerRadius="0,1.5,0,0">
+                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <Border BorderBrush="{StaticResource BorderColor}" BorderThickness="{TemplateBinding BorderThickness}"/>
+                    </Grid>
+
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="Background" TargetName="border" Value="{StaticResource SecondaryColor}"/>
+                            <Setter Property="Background" TargetName="border" Value="{StaticResource UpDownColor}"/>
                             <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource AccentColor}"/>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="true">
-                            <Setter Property="Background" TargetName="border" Value="{StaticResource AccentColor}"/>
+                            <Setter Property="Opacity" TargetName="border" Value="0.5"/>
+                            <Setter Property="Background" TargetName="border" Value="{StaticResource UpDownColor2}"/>
                             <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource SecondaryColor}"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Opacity" TargetName="border" Value="0.25"/>
+                            <Setter Property="Background" TargetName="border" Value="DimGray"/>
+                            <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource BorderColor}"/>
+                            <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="DimGray"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="RepeatDownButtonStyle" TargetType="{x:Type RepeatButton}">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="BorderThickness" Value="1,0,0,0"/>
+        <Setter Property="Background" Value="{StaticResource BackgroundColor}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BorderColor}"/>
+        <Setter Property="Foreground" Value="{StaticResource ForegroundColor}"/>
+        <Setter Property="Padding" Value="1"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RepeatButton}">
+                    <Grid>
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderThickness="0" BorderBrush="{TemplateBinding BorderBrush}" SnapsToDevicePixels="true"
+                                CornerRadius="0,0,1.5,0">
+                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <Border BorderBrush="{StaticResource BorderColor}" BorderThickness="{TemplateBinding BorderThickness}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Background" TargetName="border" Value="{StaticResource UpDownColor}"/>
+                            <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource AccentColor}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter Property="Opacity" TargetName="border" Value="0.5"/>
+                            <Setter Property="Background" TargetName="border" Value="{StaticResource UpDownColor2}"/>
+                            <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource SecondaryColor}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Opacity" TargetName="border" Value="0.25"/>
                             <Setter Property="Background" TargetName="border" Value="DimGray"/>
                             <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource BorderColor}"/>
                             <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="DimGray"/>
@@ -146,7 +194,7 @@
                 <ControlTemplate TargetType="{x:Type xctk:SplitButton}">
                     <Grid x:Name="MainGrid" SnapsToDevicePixels="True">
                         <xctk:ButtonChrome x:Name="ControlChrome" Background="{TemplateBinding Background}" BorderThickness="0" RenderEnabled="{TemplateBinding IsEnabled}"
-                                           CornerRadius="2.5">
+                                           CornerRadius="4">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
@@ -184,7 +232,11 @@
                             </Grid>
                         </xctk:ButtonChrome>
                         <Popup x:Name="PART_Popup" AllowsTransparency="True" Focusable="False" HorizontalOffset="1" IsOpen="{Binding IsChecked, ElementName=PART_ToggleButton}" Placement="{TemplateBinding DropDownPosition}" StaysOpen="False" VerticalOffset="1">
-                            <Border Background="{TemplateBinding DropDownContentBackground}" BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                            <Border Background="{TemplateBinding DropDownContentBackground}"
+                                    BorderThickness="0" 
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                                    CornerRadius="3">
                                 <ScrollViewer x:Name="DropDownScrollViewer" VerticalScrollBarVisibility="Auto">
                                     <ContentPresenter x:Name="PART_ContentPresenter" Content="{TemplateBinding DropDownContent}"/>
                                 </ScrollViewer>
@@ -202,16 +254,63 @@
         </Setter>
     </Style>
 
-
-    <Style x:Key="DoubleUpDownStyle" TargetType="{x:Type xctk:DoubleUpDown}">
-        <Setter Property="Background" Value="{StaticResource BackgroundColor}" />
-        <Setter Property="Foreground" Value="{StaticResource ForegroundColor}" />
-    </Style>
-
     <DataTemplate x:Key="DefaultWatermarkTemplate">
         <ContentControl Content="{Binding}" Focusable="False" Foreground="{StaticResource ForegroundColor}" Margin="0,0,3,0"/>
     </DataTemplate>
-    <Style x:Key="IntegerDownStyle" TargetType="{x:Type xctk:IntegerUpDown}">
+
+    <Style x:Key="DoubleUpDownStyle" TargetType="{x:Type xctk:DoubleUpDown}">
+        <Setter Property="MinHeight" Value="24"/>
+        <Setter Property="Background" Value="{StaticResource BackgroundColor}" />
+        <Setter Property="Foreground" Value="{StaticResource ForegroundColor}" />
+        <Setter Property="BorderBrush" Value="{StaticResource BorderColor}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="HorizontalContentAlignment" Value="Right"/>
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="TextAlignment" Value="Right"/>
+        <Setter Property="WatermarkTemplate" Value="{StaticResource DefaultWatermarkTemplate}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type xctk:DoubleUpDown}">
+                    <xctk:ButtonSpinner x:Name="PART_Spinner" AllowSpin="{Binding AllowSpin, RelativeSource={RelativeSource TemplatedParent}}" 
+                                        Background="{TemplateBinding Background}"
+                                        BorderThickness="{TemplateBinding BorderThickness}" 
+                                        ButtonSpinnerLocation="{Binding ButtonSpinnerLocation, RelativeSource={RelativeSource TemplatedParent}}" 
+                                        BorderBrush="{TemplateBinding BorderBrush}" HorizontalContentAlignment="Stretch" IsTabStop="False" 
+                                        ShowButtonSpinner="{Binding ShowButtonSpinner, RelativeSource={RelativeSource TemplatedParent}}" 
+                                        VerticalContentAlignment="Stretch">
+                        <xctk:WatermarkTextBox x:Name="PART_TextBox" AutoMoveFocus="{Binding AutoMoveFocus, RelativeSource={RelativeSource TemplatedParent}}" AcceptsReturn="False" AutoSelectBehavior="{Binding AutoSelectBehavior, RelativeSource={RelativeSource TemplatedParent}}" Background="Transparent" BorderThickness="0" ContextMenu="{TemplateBinding ContextMenu}" FontStyle="{TemplateBinding FontStyle}" FontStretch="{TemplateBinding FontStretch}" FontWeight="{TemplateBinding FontWeight}" FontFamily="{TemplateBinding FontFamily}" Foreground="{TemplateBinding Foreground}" FontSize="{TemplateBinding FontSize}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" IsUndoEnabled="{Binding IsUndoEnabled, RelativeSource={RelativeSource TemplatedParent}}" IsTabStop="True" MinWidth="20" MaxLength="{Binding MaxLength, RelativeSource={RelativeSource TemplatedParent}}" Padding="{TemplateBinding Padding}" TextWrapping="NoWrap" TabIndex="{TemplateBinding TabIndex}" TextAlignment="{Binding TextAlignment, RelativeSource={RelativeSource TemplatedParent}}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" WatermarkTemplate="{Binding WatermarkTemplate, RelativeSource={RelativeSource TemplatedParent}}" Watermark="{Binding Watermark, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    </xctk:ButtonSpinner>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="BorderBrush" Value="Cyan"/>
+                        </Trigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding IsReadOnly, RelativeSource={RelativeSource Self}}" Value="False"/>
+                                <Condition Binding="{Binding AllowTextInput, RelativeSource={RelativeSource Self}}" Value="False"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="IsReadOnly" TargetName="PART_TextBox" Value="True"/>
+                        </MultiDataTrigger>
+                        <DataTrigger Binding="{Binding IsReadOnly, RelativeSource={RelativeSource Self}}" Value="True">
+                            <Setter Property="IsReadOnly" TargetName="PART_TextBox" Value="True"/>
+                        </DataTrigger>
+                        <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                            <Setter Property="BorderBrush" Value="Cyan"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="DimGray"/>
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="PART_TextBox" Property="BorderBrush" Value="Cyan"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="IntegerUpDownStyle" TargetType="{x:Type xctk:IntegerUpDown}">
+        <Setter Property="MinHeight" Value="24"/>
         <Setter Property="Background" Value="{StaticResource BackgroundColor}"/>
         <Setter Property="Foreground" Value="{StaticResource ForegroundColor}"/>
         <Setter Property="BorderBrush" Value="{StaticResource BorderColor}"/>
@@ -235,7 +334,7 @@
                     </xctk:ButtonSpinner>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="BorderBrush" Value="{StaticResource SecondaryColor}"/>
+                            <Setter Property="BorderBrush" Value="Cyan"/>
                         </Trigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
@@ -248,13 +347,13 @@
                             <Setter Property="IsReadOnly" TargetName="PART_TextBox" Value="True"/>
                         </DataTrigger>
                         <Trigger Property="IsKeyboardFocusWithin" Value="True">
-                            <Setter Property="BorderBrush" Value="{StaticResource SecondaryColor}"/>
+                            <Setter Property="BorderBrush" Value="Cyan"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Foreground" Value="DimGray"/>
                         </Trigger>
                         <Trigger Property="IsFocused" Value="True">
-                            <Setter TargetName="PART_TextBox" Property="BorderBrush" Value="{StaticResource SecondaryColor}"/>
+                            <Setter TargetName="PART_TextBox" Property="BorderBrush" Value="Cyan"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -288,8 +387,8 @@
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-                                <RepeatButton Grid.Row="0" x:Name="PART_IncreaseButton" ContentTemplate="{StaticResource IncreaseGlyphNormalKey}" IsTabStop="{TemplateBinding IsTabStop}" Style="{StaticResource RepeatButtonStyle}"/>
-                                <RepeatButton Grid.Row="1" x:Name="PART_DecreaseButton" ContentTemplate="{StaticResource DecreaseGlyphNormalKey}" IsTabStop="{TemplateBinding IsTabStop}" Style="{StaticResource RepeatButtonStyle}"/>
+                                <RepeatButton Grid.Row="0" x:Name="PART_IncreaseButton" ContentTemplate="{StaticResource IncreaseGlyphNormalKey}" IsTabStop="{TemplateBinding IsTabStop}" Style="{StaticResource RepeatUpButtonStyle}"/>
+                                <RepeatButton Grid.Row="1" x:Name="PART_DecreaseButton" ContentTemplate="{StaticResource DecreaseGlyphNormalKey}" IsTabStop="{TemplateBinding IsTabStop}" Style="{StaticResource RepeatDownButtonStyle}"/>
                             </Grid>
                         </Grid>
                     </Border>
@@ -377,7 +476,7 @@
                                 <Condition Property="RenderEnabled" Value="True"/>
                                 <Condition Property="RenderPressed" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter Property="BorderBrush" TargetName="OuterBorder" Value="{StaticResource SecondaryColor}"/>
+                            <Setter Property="BorderBrush" TargetName="OuterBorder" Value="Cyan"/>
                             <Setter Property="Background" TargetName="OuterBorder" Value="{StaticResource AccentColor}"/>
                         </MultiTrigger>
                         <MultiTrigger>
@@ -387,7 +486,7 @@
                                 <Condition Property="RenderMouseOver" Value="True"/>
                                 <Condition Property="RenderPressed" Value="False"/>
                             </MultiTrigger.Conditions>
-                            <Setter Property="BorderBrush" TargetName="OuterBorder" Value="{StaticResource AccentColor}"/>
+                            <Setter Property="BorderBrush" TargetName="OuterBorder" Value="Cyan"/>
                             <Setter Property="Background" TargetName="OuterBorder" Value="{StaticResource SecondaryColor}"/>
                         </MultiTrigger>
                         <MultiTrigger>
@@ -642,11 +741,10 @@
 
     <!-- Now apply custom styles -->
     <!--<Style BasedOn="{StaticResource WindowStyle}" TargetType="{x:Type Window}" />-->
-    <!--<Style BasedOn="{StaticResource RectangleStyle}" TargetType="{x:Type Rectangle}" />-->
-    <!--Unused-->
+    <!--<Style BasedOn="{StaticResource RectangleStyle}" TargetType="{x:Type Rectangle}" />--> <!--Unused-->
     <!--<Style BasedOn="{StaticResource LabelStyle}" TargetType="{x:Type Label}" />-->
     <!--<Style BasedOn="{StaticResource ButtonStyle}" TargetType="{x:Type Button}" />-->
-    <Style BasedOn="{StaticResource RepeatButtonStyle}" TargetType="{x:Type RepeatButton}" />
+    <!--<Style BasedOn="{StaticResource RepeatButtonStyle}" TargetType="{x:Type RepeatButton}" />-->
     <!--<Style BasedOn="{StaticResource TextBoxStyle}" TargetType="{x:Type TextBox}" />-->
     <!--<Style BasedOn="{StaticResource RichTextBoxStyle}" TargetType="{x:Type RichTextBox}" />-->
     <!--<Style BasedOn="{StaticResource CheckBoxStyle}" TargetType="{x:Type CheckBox}" />-->
@@ -664,7 +762,7 @@
     <Style BasedOn="{StaticResource ButtonChromeStyle}" TargetType="{x:Type xctk:ButtonChrome}" />
     <Style BasedOn="{StaticResource SplitButtonStyle}" TargetType="{x:Type xctk:SplitButton}" />
     <Style BasedOn="{StaticResource DoubleUpDownStyle}" TargetType="{x:Type xctk:DoubleUpDown}" />
-    <Style BasedOn="{StaticResource IntegerDownStyle}" TargetType="{x:Type xctk:IntegerUpDown}" />
+    <Style BasedOn="{StaticResource IntegerUpDownStyle}" TargetType="{x:Type xctk:IntegerUpDown}" />
     <!--<Style BasedOn="{StaticResource ContextMenuStyle}" TargetType="{x:Type ContextMenu}" />
     <Style BasedOn="{StaticResource MenuStyle}" TargetType="{x:Type Menu}" />
     <Style BasedOn="{StaticResource MenuItemStyle}" TargetType="{x:Type MenuItem}" />-->

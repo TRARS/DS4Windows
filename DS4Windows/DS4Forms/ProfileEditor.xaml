@@ -19,7 +19,7 @@
         <local:ResourcePaths x:Key="resourcesPaths" />
     </UserControl.Resources>
     <DockPanel>
-        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,4,0,10">
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="4,4,0,10">
             <TextBlock Text="{lex:BLoc Profile, StringFormat='{}{0}:'}" VerticalAlignment="Center" Margin="0,0,8,0"/>
             <TextBox x:Name="profileNameTxt" Text="" Width="160" VerticalContentAlignment="Center" />
             <Button x:Name="saveBtn" Content="{lex:Loc SaveProfile}" Margin="10,0,0,0" Click="SaveBtn_Click" />
@@ -34,7 +34,8 @@
 
             </Button>
         </StackPanel>
-        <TabControl x:Name="sidebarTabControl" Width="480" DockPanel.Dock="Left" SelectionChanged="SidebarTabControl_SelectionChanged">
+        <TabControl x:Name="sidebarTabControl" Width="480" DockPanel.Dock="Left" SelectionChanged="SidebarTabControl_SelectionChanged"
+                    BorderThickness="0,2,0,0">
             <TabItem Header="{lex:Loc Controls}">
                 <DockPanel Width="470" LastChildFill="False">
                     <DockPanel.Background>
@@ -242,7 +243,8 @@
             </TabItem>
         </TabControl>
 
-        <TabControl x:Name="profileSettingsTabCon" DockPanel.Dock="Right" Margin="10,0,0,0" Padding="6">
+        <TabControl x:Name="profileSettingsTabCon" DockPanel.Dock="Right" Margin="10,0,0,0" Padding="6"
+                    BorderThickness="0,2,0,0">
             <TabControl.Resources>
                 <Thickness x:Key="spaceMargin" Left="0" Top="0" Right="0" Bottom="8"/>
             </TabControl.Resources>
@@ -287,7 +289,7 @@
                                                             <ColumnDefinition/>
                                                         </Grid.ColumnDefinitions>
                                                         <Grid.RowDefinitions>
-                                                            <RowDefinition/>
+                                                            <RowDefinition Style="{StaticResource gridRowHeight}"/>
                                                             <RowDefinition Style="{StaticResource gridRowHeight}" />
                                                             <RowDefinition Style="{StaticResource gridRowHeight}" />
                                                             <RowDefinition Style="{StaticResource gridRowHeight}" />
@@ -1118,41 +1120,49 @@
 
                     <TabControl SelectedIndex="{Binding LightbarModeIndex, FallbackValue='0'}" BorderBrush="{x:Null}" Margin="{StaticResource spaceMargin}">
                         <TabItem Header="{lex:Loc Normal}" Visibility="Collapsed">
-
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <GroupBox x:Name="colorGB" Header="{lex:Loc Color}" Padding="4">
                                         <StackPanel>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Label Content="R" />
-                                                <Slider Value="{Binding MainColorR}" Minimum="0" Maximum="255" ToolTip="{Binding MainColorR}" MinWidth="100" Background="{Binding MainColorRString, FallbackValue=Red}"/>
-                                            </StackPanel>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Label Content="G" />
-                                                <Slider Value="{Binding MainColorG}" MinWidth="100" Minimum="0" Maximum="255" ToolTip="{Binding MainColorG}" Background="{Binding MainColorGString, FallbackValue=Lime}"/>
-                                            </StackPanel>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Label Content="B" />
-                                                <Slider Value="{Binding MainColorB}" MinWidth="100" Minimum="0" Maximum="255" ToolTip="{Binding MainColorB}" Background="{Binding MainColorBString, FallbackValue=Blue}"/>
-                                            </StackPanel>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="auto"/>
+                                                    <RowDefinition Height="auto"/>
+                                                    <RowDefinition Height="auto"/>
+                                                </Grid.RowDefinitions>
+                                                <Label Grid.Column="0" Grid.Row="0" Content="R" VerticalAlignment="Center" />
+                                                <Label Grid.Column="0" Grid.Row="1" Content="G" VerticalAlignment="Center" />
+                                                <Label Grid.Column="0" Grid.Row="2" Content="B" VerticalAlignment="Center" />
+                                                <Slider Grid.Column="1" Grid.Row="0" Value="{Binding MainColorR}" MinWidth="100" Minimum="0" Maximum="255" ToolTip="{Binding MainColorR}" Background="{Binding MainColorRString, FallbackValue=Red}" VerticalAlignment="Center" Padding="0,2,2,2"/>
+                                                <Slider Grid.Column="1" Grid.Row="1" Value="{Binding MainColorG}" MinWidth="100" Minimum="0" Maximum="255" ToolTip="{Binding MainColorG}" Background="{Binding MainColorGString, FallbackValue=Lime}" VerticalAlignment="Center" Padding="0,2,2,2"/>
+                                                <Slider Grid.Column="1" Grid.Row="2" Value="{Binding MainColorB}" MinWidth="100" Minimum="0" Maximum="255" ToolTip="{Binding MainColorB}" Background="{Binding MainColorBString, FallbackValue=Blue}" VerticalAlignment="Center" Padding="0,2,2,2"/>
+                                            </Grid>
                                         </StackPanel>
                                     </GroupBox>
 
                                     <GroupBox x:Name="emptyColorGB" Header="Empty" Padding="4">
                                         <StackPanel>
-
-                                            <StackPanel Orientation="Horizontal">
-                                                <Label Content="R" />
-                                                <Slider Value="{Binding LowColorR}" MinWidth="100" Minimum="0" Maximum="255" ToolTip="{Binding LowColorR}" Background="{Binding LowColorRString, FallbackValue=Red}"/>
-                                            </StackPanel>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Label Content="G" />
-                                                <Slider Value="{Binding LowColorG}" MinWidth="100" Minimum="0" Maximum="255" ToolTip="{Binding LowColorG}" Background="{Binding LowColorGString, FallbackValue=Lime}"/>
-                                            </StackPanel>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Label Content="B" />
-                                                <Slider Value="{Binding LowColorB}" MinWidth="100" Minimum="0" Maximum="255" ToolTip="{Binding LowColorB}" Background="{Binding LowColorBString, FallbackValue=Blue}"/>
-                                            </StackPanel>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="auto"/>
+                                                    <RowDefinition Height="auto"/>
+                                                    <RowDefinition Height="auto"/>
+                                                </Grid.RowDefinitions>
+                                                <Label Grid.Column="0" Grid.Row="0" Content="R" VerticalAlignment="Center" />
+                                                <Label Grid.Column="0" Grid.Row="1" Content="G" VerticalAlignment="Center" />
+                                                <Label Grid.Column="0" Grid.Row="2" Content="B" VerticalAlignment="Center" />
+                                                <Slider Grid.Column="1" Grid.Row="0" Value="{Binding LowColorR}" MinWidth="100" Minimum="0" Maximum="255" ToolTip="{Binding LowColorR}" Background="{Binding LowColorRString, FallbackValue=Red}" VerticalAlignment="Center" Padding="0,2,2,2"/>
+                                                <Slider Grid.Column="1" Grid.Row="1" Value="{Binding LowColorG}" MinWidth="100" Minimum="0" Maximum="255" ToolTip="{Binding LowColorG}" Background="{Binding LowColorGString, FallbackValue=Lime}" VerticalAlignment="Center" Padding="0,2,2,2"/>
+                                                <Slider Grid.Column="1" Grid.Row="2" Value="{Binding LowColorB}" MinWidth="100" Minimum="0" Maximum="255" ToolTip="{Binding LowColorB}" Background="{Binding LowColorBString, FallbackValue=Blue}" VerticalAlignment="Center" Padding="0,2,2,2"/>
+                                            </Grid>
 
                                             <Button x:Name="lowColorBtn" Width="10" Height="10" Background="{Binding LowColor}" HorizontalAlignment="Right" Margin="0,6,0,0" Click="LowColorBtn_Click" />
                                         </StackPanel>

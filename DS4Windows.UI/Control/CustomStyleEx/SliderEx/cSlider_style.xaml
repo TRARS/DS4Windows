@@ -103,7 +103,8 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
     <ControlTemplate x:Key="SliderHorizontal" TargetType="{x:Type Slider}">
-        <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
+        <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True"
+                CornerRadius="1.5" Padding="{TemplateBinding Padding}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -117,9 +118,9 @@
                         Height="4.0"
                         Margin="5,0" 
                         Grid.Row="1" 
-                        VerticalAlignment="center"
+                        VerticalAlignment="Center"
                         CornerRadius="1">
-                    <Grid>
+                    <Grid >
                         <!--右边进度-->
                         <Border x:Name="slider_right" HorizontalAlignment="Right"  
                                 VerticalAlignment="Top"

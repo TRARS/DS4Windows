@@ -104,8 +104,7 @@
                         <TextBox Visibility="Hidden" Template="{StaticResource ComboBoxTextBox}" HorizontalAlignment="Left" Margin="3,3,23,3" x:Name="PART_EditableTextBox" Style="{x:Null}" VerticalAlignment="Center" Focusable="True" Background="Transparent" IsReadOnly="{TemplateBinding IsReadOnly}"/>
 
                         <Path x:Name="DropDownArrow"
-                              Data="M726.62 470.62L545.94 651.31c-18.72 18.72-49.16 18.72-67.88 0L297.38 470.62c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L512 594.75l169.38-169.38c12.5-12.5 32.75-12.5 45.25 0 6.25 6.25 9.38 14.44 9.38 22.62s-3.13 16.39-9.39 22.63zM523.31 606.38v-0.31 0.31z
-                                    M128 512c0-211.74 172.26-384 384-384s384 172.26 384 384-172.26 384-384 384-384-172.26-384-384m-64 0c0 247.42 200.58 448 448 448s448-200.58 448-448S759.42 64 512 64 64 264.58 64 512z"
+                              Data="M786.135091 1024L0 237.864909 237.864909 0l548.270182 546.583196L1332.718287 0l237.864909 237.864909-784.448105 786.135091z"
                               Margin="4" Stretch="Uniform" VerticalAlignment="Center" HorizontalAlignment="Right"
                               Width="12" Height="{Binding Width,RelativeSource={RelativeSource Self}}"
                               Fill="{TemplateBinding Foreground}" Opacity="0.85" IsHitTestVisible="False">
@@ -154,11 +153,11 @@
                             <Setter Property="Opacity" TargetName="bk" Value="0.85"/>
                             <Setter Property="Foreground" TargetName="contentSite" Value="White"/>
                             <Setter Property="Fill" TargetName="DropDownArrow" Value="White"/>
-                            <Setter Property="Effect" TargetName="DropDownArrow">
+                            <!--<Setter Property="Effect" TargetName="DropDownArrow">
                                 <Setter.Value>
                                     <DropShadowEffect Color="White" ShadowDepth="0" BlurRadius="1" Direction="0"/>
                                 </Setter.Value>
-                            </Setter>
+                            </Setter>-->
                         </Trigger>
                         <!--<Trigger Property="IsKeyboardFocused" Value="true">
                             <Setter Property="Opacity" TargetName="bk" Value="0.8"/>

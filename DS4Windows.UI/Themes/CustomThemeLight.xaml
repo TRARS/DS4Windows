@@ -71,28 +71,16 @@
         <Setter Property="Foreground" Value="{StaticResource SelectedColor}"/>
     </Style>
     <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource cTabItemStyle}">
+        <Style.Resources>
+            <SolidColorBrush x:Key="MouseOverColor" Color="Crimson"/>
+        </Style.Resources>
+        
         <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+        <Setter Property="Background" Value="#88D3D3D3"/>
         <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background">
-                    <Setter.Value>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                            <GradientStop Color="#88D3D3D3" Offset="-0.4"/>
-                            <GradientStop Color="#88D3D3D3" Offset="0.9"/>
-                        </LinearGradientBrush>
-                    </Setter.Value>
-                </Setter>
-            </Trigger>
             <Trigger Property="IsSelected" Value="True">
                 <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
-                <Setter Property="Background">
-                    <Setter.Value>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                            <GradientStop Color="LightGray" Offset="-0.4"/>
-                            <GradientStop Color="LightGray" Offset="0.9"/>
-                        </LinearGradientBrush>
-                    </Setter.Value>
-                </Setter>
+                <Setter Property="Background" Value="LightGray"/>
             </Trigger>
         </Style.Triggers>
     </Style>

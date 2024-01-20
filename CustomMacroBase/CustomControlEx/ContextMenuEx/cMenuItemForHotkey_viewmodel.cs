@@ -88,7 +88,7 @@ namespace CustomMacroBase.CustomControlEx.ContextMenuEx
                 HotKeyManager.Instance.UnregisterHotKey(_accesskey);
 
                 if (this.GetKeys.Length > 0)
-                { 
+                {
                     HotKeyManager.Instance.RegisterHotKey(_accesskey, this.GetKeys, _callback);
                     Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, $"RegisterHotKey: {_text}, {string.Join(",", this.GetKeys)}");
                 }
@@ -100,11 +100,11 @@ namespace CustomMacroBase.CustomControlEx.ContextMenuEx
     {
         public ObservableCollection<ItemViewModel> HotkeyInfoList { get; init; }
 
-        public cMenuItemForHotkey_viewmodel(string text,string feature, Action callback)
+        public cMenuItemForHotkey_viewmodel(string text, string feature, Action callback)
         {
             HotkeyInfoList = new()
             {
-                new ItemViewModel(text, feature, callback), 
+                new ItemViewModel(text, feature, callback),
             };
         }
     }
