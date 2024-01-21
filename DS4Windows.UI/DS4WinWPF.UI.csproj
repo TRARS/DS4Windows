@@ -6,7 +6,7 @@
     <UseWPF>true</UseWPF>
     <RootNamespace>DS4WinWPF.UI</RootNamespace>
     <Platforms>x64</Platforms>
-    <Configurations>Release</Configurations>
+    <Configurations>Release;Debug</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

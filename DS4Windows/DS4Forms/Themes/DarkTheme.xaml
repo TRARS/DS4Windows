@@ -42,10 +42,12 @@
     <!-- Copied from https://github.com/dotnetprojects/WpfExtendedToolkit/blob/master/Src/Xceed.Wpf.Toolkit/Themes/Generic/Glyphs.xaml for theming -->
     <Geometry x:Key="UpArrowGeometry">M0,5 L4.5,.5 9,5 6,5 4.5,3.5 3,5 z</Geometry>
     <Geometry x:Key="DownArrowGeometry">M0,0 L3,0 4.5,1.5 6,0 9,0 4.5,4.5 z</Geometry>
-
+    <Geometry x:Key="DownArrowGeometry2">M786.135091 1024L0 237.864909 237.864909 0l548.270182 546.583196L1332.718287 0l237.864909 237.864909-784.448105 786.135091z</Geometry>
+    
     <DataTemplate x:Key="IncreaseGlyphNormalKey">
-        <Path Width="9"
-              Height="5"
+        <Path Width="8" 
+              Height="8"
+              Stretch="Uniform"
               Data="{StaticResource UpArrowGeometry}"
               Fill="{StaticResource ForegroundColor}"
               SnapsToDevicePixels="True"
@@ -54,19 +56,21 @@
               Focusable="False" />
     </DataTemplate>
     <DataTemplate x:Key="IncreaseGlyphDisabledKey">
-        <Path	Width="9"
-                Height="5"
-                Data="{StaticResource UpArrowGeometry}"
-                Fill="LightGray"
-                SnapsToDevicePixels="True"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Focusable="False" />
+        <Path Width="8" 
+              Height="8"
+              Stretch="Uniform"
+              Data="{StaticResource UpArrowGeometry}"
+              Fill="LightGray"
+              SnapsToDevicePixels="True"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center"
+              Focusable="False" />
     </DataTemplate>
 
     <DataTemplate x:Key="DecreaseGlyphNormalKey">
-        <Path Width="9"
-              Height="5"
+        <Path Width="8" 
+              Height="8"
+              Stretch="Uniform"
               Data="{StaticResource DownArrowGeometry}"
               Fill="{StaticResource ForegroundColor}"
               SnapsToDevicePixels="True"
@@ -74,16 +78,16 @@
               VerticalAlignment="Center"
               Focusable="False" />
     </DataTemplate>
-
     <DataTemplate x:Key="DecreaseGlyphDisabledKey">
-        <Path	Width="9"
-                Height="5"
-                Data="{StaticResource DownArrowGeometry}"
-                Fill="LightGray"
-                SnapsToDevicePixels="True"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Focusable="False" />
+        <Path Width="8" 
+              Height="8"
+              Stretch="Uniform"
+              Data="{StaticResource DownArrowGeometry}"
+              Fill="LightGray"
+              SnapsToDevicePixels="True"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center"
+              Focusable="False" />
     </DataTemplate>
 
 
@@ -198,9 +202,10 @@
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="1"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-                                <Button x:Name="PART_ActionButton" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="0" Padding="{TemplateBinding Padding}" Style="{x:Null}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}">
+                                <Button Grid.Column="0" x:Name="PART_ActionButton" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="0" Padding="{TemplateBinding Padding}" Style="{x:Null}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}">
                                     <Button.Template>
                                         <ControlTemplate TargetType="{x:Type Button}">
                                             <ContentPresenter/>
@@ -213,18 +218,25 @@
                                         </xctk:ButtonChrome>
                                     </Grid>
                                 </Button>
-                                <ToggleButton Grid.Column="1" x:Name="PART_ToggleButton" IsChecked="{Binding IsOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" IsHitTestVisible="{Binding IsOpen, Converter={StaticResource InverseBoolConverter}, RelativeSource={RelativeSource TemplatedParent}}">
+                                <Rectangle Grid.Column="1" x:Name="PART_Separator" Fill="{StaticResource BorderColor}"/>
+                                <ToggleButton Grid.Column="2" x:Name="PART_ToggleButton" IsChecked="{Binding IsOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" IsHitTestVisible="{Binding IsOpen, Converter={StaticResource InverseBoolConverter}, RelativeSource={RelativeSource TemplatedParent}}">
                                     <ToggleButton.Template>
                                         <ControlTemplate TargetType="{x:Type ToggleButton}">
                                             <ContentPresenter/>
                                         </ControlTemplate>
                                     </ToggleButton.Template>
                                     <Grid>
-                                        <xctk:ButtonChrome x:Name="ToggleButtonChrome" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Padding="1,0,1,0" RenderEnabled="{TemplateBinding IsEnabled}" RenderMouseOver="{Binding IsMouseOver, ElementName=PART_ToggleButton}" RenderPressed="{Binding IsPressed, ElementName=PART_ToggleButton}" RenderChecked="{TemplateBinding IsOpen}"
+                                        <xctk:ButtonChrome x:Name="ToggleButtonChrome" Background="{TemplateBinding Background}" BorderThickness="{Binding BorderThickness, Converter={StaticResource ThicknessSideRemovalConverter}, ConverterParameter=0, RelativeSource={RelativeSource TemplatedParent}}" BorderBrush="{TemplateBinding BorderBrush}" Padding="1,0,1,0" RenderEnabled="{TemplateBinding IsEnabled}" RenderMouseOver="{Binding IsMouseOver, ElementName=PART_ToggleButton}" RenderPressed="{Binding IsPressed, ElementName=PART_ToggleButton}" RenderChecked="{TemplateBinding IsOpen}"
                                                            CornerRadius="0,2.5,2.5,0">
                                             <Grid x:Name="arrowGlyph" IsHitTestVisible="False" Margin="4,3,4,3">
-                                                <Path x:Name="Arrow" Data="{StaticResource DownArrowGeometry}" Fill="{StaticResource ForegroundColor}" 
-                                                      HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+                                                <Path x:Name="Arrow" 
+                                                      Width="8" 
+                                                      Height="{Binding Width,RelativeSource={RelativeSource Self}}"
+                                                      Stretch="Uniform"
+                                                      Data="{StaticResource DownArrowGeometry2}" 
+                                                      Fill="{StaticResource ForegroundColor}" 
+                                                      HorizontalAlignment="Center" 
+                                                      VerticalAlignment="Center"/>
                                             </Grid>
                                         </xctk:ButtonChrome>
                                     </Grid>
@@ -244,6 +256,9 @@
                         </Popup>
                     </Grid>
                     <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Fill" TargetName="PART_Separator" Value="Cyan"/>
+                        </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Fill" TargetName="Arrow" Value="#AFAFAF"/>
                             <Setter Property="Foreground" TargetName="ActionButtonChrome" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>

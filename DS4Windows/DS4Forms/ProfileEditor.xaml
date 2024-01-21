@@ -1174,7 +1174,8 @@
                                         <ComboBoxItem Content="Pulse at"/>
                                     </ComboBox>
                                     <xctk:IntegerUpDown d:IsHidden="True" Value="{Binding FlashAt,FallbackValue=0}" MinWidth="50"
-                                            Minimum="-10" Maximum="100" Increment="10" />
+                                                        Minimum="-10" Maximum="100" Increment="10" 
+                                                        Margin="3,0,0,0"/>
                                     <Label Content="%" />
                                     <Button x:Name="flashColorBtn" Width="20" Height="20" Background="{Binding FlashColor,FallbackValue=Blue}"
                                 ToolTip="{lex:Loc Resources:FlashAtTip}" Click="FlashColorBtn_Click" />
@@ -1290,7 +1291,7 @@
                                                     ToolTip="{lex:Loc Resources:TouchpadOffTip}" Margin="0,10,0,0" />
 
                                     <StackPanel Orientation="Horizontal" Margin="{StaticResource spaceMargin}">
-                                        <Label Content="Rotation" ContentStringFormat="{}{0}:" />
+                                        <Label Content="Rotation" ContentStringFormat="{}{0}:" VerticalAlignment="Center"/>
                                         <xctk:DoubleUpDown d:IsHidden="True" MinWidth="80" Height="20" Minimum="-180" Maximum="180" Increment="1" FormatString="F0" Value="{Binding TouchRelMouseRotation,FallbackValue='0'}"
                                                        ToolTip="{lex:Loc TouchpadRotationTooltip}"
                                                        Margin="8,0,0,0" />
@@ -1304,7 +1305,7 @@
                                                        Margin="8,0,0,0" />
                                     </StackPanel>
 
-                                    <StackPanel Orientation="Horizontal" Height="20" Margin="{StaticResource spaceMargin}">
+                                    <StackPanel Orientation="Horizontal" Height="auto" Margin="{StaticResource spaceMargin}">
                                         <CheckBox Content="Trackball" IsChecked="{Binding TouchTrackball}" VerticalAlignment="Center" ToolTip="{lex:Loc TouchpadTrackballEnableTooltip}" />
                                         <Label Content="Friction:" Padding="0" Margin="20,0,5,0" VerticalAlignment="Center"/>
                                         <xctk:DoubleUpDown x:Name="frictionUD" d:IsHidden="True" MinWidth="80" IsEnabled="{Binding TouchTrackball}" Minimum="0.1" Maximum="20.0"
@@ -1324,7 +1325,7 @@
                                     </StackPanel>
 
                                     <StackPanel Orientation="Horizontal" Margin="{StaticResource spaceMargin}">
-                                        <Label Content="Disable Invert" Padding="0" HorizontalAlignment="Center" />
+                                        <Label Content="Disable Invert" Padding="0" VerticalAlignment="Center" />
                                         <Button x:Name="touchDisInvertBtn" MinWidth="160"  Height="22" Content="{Binding TouchDisInvertString,FallbackValue=None}" Click="TouchDisInvertBtn_Click" Margin="20,0,0,0">
                                             <Button.ContextMenu>
                                                 <ContextMenu>

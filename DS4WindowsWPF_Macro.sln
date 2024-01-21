@@ -19,16 +19,26 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DS4WinWPF.UI", "DS4Windows.
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0135A24D-5DBB-483C-9FC5-9A869E23DA9A}.Debug|x64.ActiveCfg = Debug|x64
+		{0135A24D-5DBB-483C-9FC5-9A869E23DA9A}.Debug|x64.Build.0 = Debug|x64
 		{0135A24D-5DBB-483C-9FC5-9A869E23DA9A}.Release|x64.ActiveCfg = Release|x64
 		{0135A24D-5DBB-483C-9FC5-9A869E23DA9A}.Release|x64.Build.0 = Release|x64
+		{6BEB9062-56E7-4A0D-9243-BE43F09A711D}.Debug|x64.ActiveCfg = Debug|x64
 		{6BEB9062-56E7-4A0D-9243-BE43F09A711D}.Release|x64.ActiveCfg = Release|x64
+		{AAA75DAF-1462-424A-BF00-E0BF04474B2C}.Debug|x64.ActiveCfg = Debug|x64
+		{AAA75DAF-1462-424A-BF00-E0BF04474B2C}.Debug|x64.Build.0 = Debug|x64
 		{AAA75DAF-1462-424A-BF00-E0BF04474B2C}.Release|x64.ActiveCfg = Release|x64
 		{AAA75DAF-1462-424A-BF00-E0BF04474B2C}.Release|x64.Build.0 = Release|x64
+		{90825265-D005-4F6E-BAEC-905412CA80A5}.Debug|x64.ActiveCfg = Debug|x64
+		{90825265-D005-4F6E-BAEC-905412CA80A5}.Debug|x64.Build.0 = Debug|x64
 		{90825265-D005-4F6E-BAEC-905412CA80A5}.Release|x64.ActiveCfg = Release|x64
 		{90825265-D005-4F6E-BAEC-905412CA80A5}.Release|x64.Build.0 = Release|x64
+		{20E55051-DF1E-4094-9185-31E7C9C7A131}.Debug|x64.ActiveCfg = Debug|x64
+		{20E55051-DF1E-4094-9185-31E7C9C7A131}.Debug|x64.Build.0 = Debug|x64
 		{20E55051-DF1E-4094-9185-31E7C9C7A131}.Release|x64.ActiveCfg = Release|x64
 		{20E55051-DF1E-4094-9185-31E7C9C7A131}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
