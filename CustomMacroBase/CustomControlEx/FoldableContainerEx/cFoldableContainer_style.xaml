@@ -2,11 +2,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:CustomMacroBase.CustomControlEx.FoldableContainerEx">
 
-    <local:cFoldableContainer_converter_visibility2angle x:Key="cFoldableContainer_converter_visibility2angle"/>
-
     <SolidColorBrush x:Key="MouseOverColor" Color="Yellow"/>
     <SolidColorBrush x:Key="MousePressedColor" Color="Cyan"/>
-    <SolidColorBrush x:Key="MouseLeaveColor" Color="DimGray"/>
+    <SolidColorBrush x:Key="ContractedColor" Color="DimGray"/>
+    <SolidColorBrush x:Key="ExpandedColor" Color="DarkGray"/>
     
     <Style TargetType="{x:Type local:cFoldableContainer}">
         <Setter Property="Template">
@@ -26,14 +25,12 @@
                             </Grid.RowDefinitions>
 
                             <!--Arrow-->
-                            <Border Grid.Column="0" Grid.Row="0" x:Name="expander">
-                                <Button Height="12"
-                                        Background="Transparent"
+                            <Border Grid.Column="0" Grid.Row="0" x:Name="expander"
+                                    Visibility="{TemplateBinding ArrowVisibility}">
+                                <Button Background="Transparent"
                                         HorizontalAlignment="Stretch" 
-                                        VerticalAlignment="Top"
-                                        Visibility="{TemplateBinding ExpanderVisibility}"
-                                        Command="{TemplateBinding ArrowCommand}"
-                                        Margin="0,1,0,0">
+                                        VerticalAlignment="Stretch"
+                                        Command="{TemplateBinding ArrowCommand}">
                                     <Button.Style>
                                         <Style TargetType="{x:Type Button}">
                                             <Setter Property="Template">
@@ -45,21 +42,51 @@
                                                                   Width="8" 
                                                                   Height="{Binding Width, RelativeSource={RelativeSource Self}}"
                                                                   HorizontalAlignment="Right" 
-                                                                  VerticalAlignment="Center"   
+                                                                  VerticalAlignment="Stretch"
                                                                   Stretch="Uniform"
-                                                                  Fill="{StaticResource MouseLeaveColor}"
-                                                                  Margin="0,0,3,0"
+                                                                  Fill="{StaticResource ContractedColor}"
+                                                                  Margin="0,0,4,1"
                                                                   RenderTransformOrigin="0.5,0.5">
                                                                 <Path.RenderTransform>
-                                                                    <RotateTransform Angle="{Binding BodyVisibility, 
-                                                                                                     RelativeSource={RelativeSource AncestorType={x:Type local:cFoldableContainer}},
-                                                                                                     Converter={StaticResource cFoldableContainer_converter_visibility2angle},
-                                                                                                     Mode=OneWay}"/>
+                                                                    <RotateTransform Angle="0"/>
                                                                 </Path.RenderTransform>
                                                             </Path>
                                                         </Border>
 
                                                         <ControlTemplate.Triggers>
+                                                            <DataTrigger Binding="{Binding BodyVisibility,
+                                                                                           RelativeSource={RelativeSource AncestorType={x:Type local:cFoldableContainer}},
+                                                                                           Mode=OneWay}" 
+                                                                         Value="Visible">
+                                                                <Setter Property="Fill" Value="{StaticResource ExpandedColor}" TargetName="arrow"/>
+                                                                <DataTrigger.EnterActions>
+                                                                    <BeginStoryboard>
+                                                                        <Storyboard FillBehavior="HoldEnd" 
+                                                                                    Storyboard.TargetProperty="(RenderTransform).(RotateTransform.Angle)"
+                                                                                    Storyboard.TargetName="arrow">
+                                                                            <DoubleAnimationUsingKeyFrames>
+                                                                                <EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="90"/>
+                                                                                <EasingDoubleKeyFrame KeyTime="0:0:0.15" Value="115"/>
+                                                                                <EasingDoubleKeyFrame KeyTime="0:0:0.25" Value="90"/>
+                                                                            </DoubleAnimationUsingKeyFrames>
+                                                                        </Storyboard>
+                                                                    </BeginStoryboard>
+                                                                </DataTrigger.EnterActions>
+                                                                <DataTrigger.ExitActions>
+                                                                    <BeginStoryboard>
+                                                                        <Storyboard FillBehavior="HoldEnd" 
+                                                                                    Storyboard.TargetProperty="(RenderTransform).(RotateTransform.Angle)"
+                                                                                    Storyboard.TargetName="arrow">
+                                                                            <DoubleAnimationUsingKeyFrames>
+                                                                                <EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="0"/>
+                                                                                <EasingDoubleKeyFrame KeyTime="0:0:0.15" Value="-25"/>
+                                                                                <EasingDoubleKeyFrame KeyTime="0:0:0.25" Value="0"/>
+                                                                            </DoubleAnimationUsingKeyFrames>
+                                                                        </Storyboard>
+                                                                    </BeginStoryboard>
+                                                                </DataTrigger.ExitActions>
+                                                            </DataTrigger>
+                                                            
                                                             <Trigger Property="IsMouseOver" Value="True">
                                                                 <Setter Property="Fill" Value="{StaticResource MouseOverColor}" TargetName="arrow"/>
                                                             </Trigger>
@@ -76,10 +103,10 @@
                             </Border>
                             
                             <!--Header-->
-                            <ContentControl Grid.Column="1" Grid.Row="0" Content="{TemplateBinding ExpanderHeader}"/>
+                            <ContentControl Grid.Column="1" Grid.Row="0" Content="{TemplateBinding Header}"/>
                             
                             <!--Body-->
-                            <ContentPresenter Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top"
+                            <ContentPresenter Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                               Visibility="{TemplateBinding BodyVisibility}"/>
                         </Grid>
                     </Border>

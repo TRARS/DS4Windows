@@ -1,9 +1,4 @@
-﻿#if DEBUG
-global using Console = System.Diagnostics.Debug;
-#else
-#endif
-
-using CustomMacroBase.Helper;
+﻿using CustomMacroBase.Helper;
 using System;
 using System.Threading.Tasks;
 using System.Windows;

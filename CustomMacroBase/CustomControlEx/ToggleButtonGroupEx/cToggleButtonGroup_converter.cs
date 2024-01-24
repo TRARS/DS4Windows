@@ -2,6 +2,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
@@ -98,6 +99,28 @@ namespace CustomMacroBase.CustomControlEx.ToggleButtonGroupEx
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    class cToggleButtonGroup_converter_count2arrowvisibility : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            var count = 0;
+
+            if (values[0] is ObservableCollection<GateBase> list)
+            {
+                count += list.Count(gate => !gate.HideSelf);
+            }
+            if (values[1] is ObservableCollection<Func<dynamic>> delegateList && double.Parse($"{values[2]}") > 0)
+            {
+                count += delegateList.Count;
+            }
+            return count > 0 ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

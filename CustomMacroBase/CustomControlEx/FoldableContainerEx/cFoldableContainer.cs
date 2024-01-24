@@ -22,25 +22,25 @@ namespace CustomMacroBase.CustomControlEx.FoldableContainerEx
 
     public partial class cFoldableContainer
     {
-        public object ExpanderHeader
+        public object Header
         {
-            get { return (object)GetValue(ExpanderHeaderProperty); }
-            set { SetValue(ExpanderHeaderProperty, value); }
+            get { return (object)GetValue(HeaderProperty); }
+            set { SetValue(HeaderProperty, value); }
         }
-        public static readonly DependencyProperty ExpanderHeaderProperty = DependencyProperty.Register(
-            name: "ExpanderHeader",
+        public static readonly DependencyProperty HeaderProperty = DependencyProperty.Register(
+            name: "Header",
             propertyType: typeof(object),
             ownerType: typeof(cFoldableContainer),
             typeMetadata: new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
         );
 
-        public Visibility ExpanderVisibility
+        public Visibility ArrowVisibility
         {
-            get { return (Visibility)GetValue(ExpanderVisibilityProperty); }
-            set { SetValue(ExpanderVisibilityProperty, value); }
+            get { return (Visibility)GetValue(ArrowVisibilityProperty); }
+            set { SetValue(ArrowVisibilityProperty, value); }
         }
-        public static readonly DependencyProperty ExpanderVisibilityProperty = DependencyProperty.Register(
-            name: "ExpanderVisibility",
+        public static readonly DependencyProperty ArrowVisibilityProperty = DependencyProperty.Register(
+            name: "ArrowVisibility",
             propertyType: typeof(Visibility),
             ownerType: typeof(cFoldableContainer),
             typeMetadata: new FrameworkPropertyMetadata(Visibility.Collapsed, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)

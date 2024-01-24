@@ -7,6 +7,7 @@
     <local:cMenuItemForHotkey_converter_datacontext2hotkeyinfolist x:Key="cMenuItemForHotkey_converter_datacontext2hotkeyinfolist"/>
     
     <!--MouseOverColor-->
+    <SolidColorBrush x:Key="BorderColor" Color="White"/>
     <SolidColorBrush x:Key="MouseOverColor" Color="DarkCyan"/>
 
     <!--ListBoxItem_ComboBoxTextBox-->
@@ -329,19 +330,19 @@
                     <Border x:Name="border"
                             CornerRadius="2.5" 
                             BorderThickness="1"
-                            BorderBrush="Crimson"
-                            Background="#FF2E2F34"
+                            BorderBrush="{StaticResource BorderColor}"
+                            Background="Black"
                             Padding="4">
                         <Grid>
                             <ListBox Grid.Row="1"
-                                     ItemsSource="{Binding Source, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource cMenuItemForHotkey_converter_datacontext2hotkeyinfolist}}"
+                                     ItemsSource="{TemplateBinding Source, Converter={StaticResource cMenuItemForHotkey_converter_datacontext2hotkeyinfolist}}"
                                      Style="{StaticResource ListBoxStyle}"/>
                         </Grid>
                     </Border>
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <!--<Setter Property="BorderBrush" Value="Cyan" TargetName="border"/>-->
+                            <Setter Property="BorderBrush" Value="Cyan" TargetName="border"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
