@@ -8,6 +8,7 @@ using CustomMacroBase.Helper.ProConSimulate;
 using CustomMacroBase.PreBase;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -225,11 +226,11 @@ namespace CustomMacroBase.PreBase
         /// <summary>
         /// 获取当前滑块开关的子项列表，用以存放与宿主类型相同的对象
         /// </summary>
-        public List<GateBase> Children { get; init; } = new();
+        public ObservableCollection<GateBase> Children { get; init; } = new();
         /// <summary>
         /// 获取当前滑块开关的额外子项列表，用以存放委托
         /// </summary>
-        public List<Func<dynamic>> ChildrenEx { get; init; } = new();
+        public ObservableCollection<Func<dynamic>> ChildrenEx { get; init; } = new();
     }
 }
 

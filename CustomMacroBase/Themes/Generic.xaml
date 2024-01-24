@@ -8,12 +8,14 @@
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/ContextMenuEx/cContextMenu_cMenuItem_style.xaml"/>
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/ContextMenuEx/cMenuItem_style.xaml"/>
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/ContextMenuEx/cMenuItemForHotkey_style.xaml"/>
+        <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/FoldableContainerEx/cFoldableContainer_style.xaml"/>
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/NormalButtonEx/cNormalButton_style.xaml"/>
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/ScrollViewerEx/cScrollViewer_style.xaml"/>
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/SliderEx/cSlider_style.xaml"/>
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/StackPanelEx/cStackPanel_style.xaml"/>
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/TitleBarButtonEx/cTitleBarButton_style.xaml"/>
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/ToggleButtonEx/cToggleButton_style.xaml"/>
+        <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/ToggleButtonGroupEx/cToggleButtonGroup_style.xaml"/>
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/ValueIndicatorEx/cValueIndicator_style.xaml"/>
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/VerticalButtonEx/cVerticalButtonBase_style.xaml"/>
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/VerticalButtonEx/cVerticalButton_style.xaml"/>

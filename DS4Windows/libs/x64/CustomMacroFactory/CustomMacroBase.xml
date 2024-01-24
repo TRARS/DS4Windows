@@ -232,7 +232,7 @@
         <member name="M:CustomMacroBase.Helper.Tools.OtherManager.StickFixInfo.#ctor(System.Int32,System.Double,System.Double)">
             <summary>
             <para>_a：内圈死区&amp;反死区(0~127)</para>
-            <para>_b：输出放大(128~640)</para>
+            <para>_b：输出放大(128(1+1)~1280(1+0.1))</para>
             <para>_c：外圈死区(64~180)</para>
             </summary>
         </member>

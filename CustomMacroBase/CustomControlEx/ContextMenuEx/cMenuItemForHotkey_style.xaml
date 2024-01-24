@@ -4,7 +4,8 @@
                     xmlns:scrollviewerex="clr-namespace:CustomMacroBase.CustomControlEx.ScrollViewerEx">
     
     <local:cMenuItemForHotkey_converter_enum2string x:Key="cMenuItemForHotkey_converter_enum2string"/>
-
+    <local:cMenuItemForHotkey_converter_datacontext2hotkeyinfolist x:Key="cMenuItemForHotkey_converter_datacontext2hotkeyinfolist"/>
+    
     <!--MouseOverColor-->
     <SolidColorBrush x:Key="MouseOverColor" Color="DarkCyan"/>
 
@@ -333,8 +334,7 @@
                             Padding="4">
                         <Grid>
                             <ListBox Grid.Row="1"
-                                     DataContext="{TemplateBinding DataContext}"
-                                     ItemsSource="{Binding HotkeyInfoList}"
+                                     ItemsSource="{Binding Source, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource cMenuItemForHotkey_converter_datacontext2hotkeyinfolist}}"
                                      Style="{StaticResource ListBoxStyle}"/>
                         </Grid>
                     </Border>

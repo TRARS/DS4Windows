@@ -3,7 +3,7 @@ using System;
 
 namespace CustomMacroBase.Helper.Tools.OtherManager
 {
-    //L:10 640 127 //R:10 160 127
+    //L:10 1280 127 //R:10 160 127
     public struct StickFixInfo
     {
         public int fix0_fix1_clip = 10;
@@ -12,13 +12,13 @@ namespace CustomMacroBase.Helper.Tools.OtherManager
 
         /// <summary>
         /// <para>_a：内圈死区&amp;反死区(0~127)</para>
-        /// <para>_b：输出放大(128~640)</para>
+        /// <para>_b：输出放大(128(1+1)~1280(1+0.1))</para>
         /// <para>_c：外圈死区(64~180)</para>
         /// </summary>
         public StickFixInfo(int _a, double _b, double _c = 127d)
         {
             fix0_fix1_clip = Math.Clamp(_a, 0, 127);
-            fix2_radius_max = Math.Clamp(_b, 128, 640);
+            fix2_radius_max = Math.Clamp(_b, 128, 1280);
             fix3_radius_max = Math.Clamp(_c, 64, 180);
         }
     }
@@ -54,10 +54,10 @@ namespace CustomMacroBase.Helper.Tools.OtherManager
         }
 
         private void SetDeadZoneLeft(int _a) => left_stick_fix_info.fix0_fix1_clip = Math.Clamp(_a, 0, 127);
-        private void SetEnlargementFactorLeft(int _b) => left_stick_fix_info.fix2_radius_max = Math.Clamp(_b, 128, 640);
+        private void SetEnlargementFactorLeft(int _b) => left_stick_fix_info.fix2_radius_max = Math.Clamp(_b, 128, 1280);
         private void SetClipRadiusLeft(int _c) => left_stick_fix_info.fix3_radius_max = Math.Clamp(_c, 64, 180);
         private void SetDeadZoneRight(int _a) => right_stick_fix_info.fix0_fix1_clip = Math.Clamp(_a, 0, 127);
-        private void SetEnlargementFactorRight(int _b) => right_stick_fix_info.fix2_radius_max = Math.Clamp(_b, 128, 640);
+        private void SetEnlargementFactorRight(int _b) => right_stick_fix_info.fix2_radius_max = Math.Clamp(_b, 128, 1280);
         private void SetClipRadiusRight(int _c) => right_stick_fix_info.fix3_radius_max = Math.Clamp(_c, 64, 180);
     }
 
@@ -100,7 +100,7 @@ namespace CustomMacroBase.Helper.Tools.OtherManager
             x = (byte)Math.Clamp(128 + nx * ratio_final, 0, 255);
             y = (byte)Math.Clamp(128 + ny * ratio_final, 0, 255);
         }
-        //将圆放大（必要） 128=0.61  160=0.65  192=0.68  224=0.71  256=0.73  288=0.75  320=0.76  352=0.77  384=0.79  416=0.8  640=0.85
+        //将圆放大（必要） 128=0.61  160=0.65  192=0.68  224=0.71  256=0.73  288=0.75  320=0.76  352=0.77  384=0.79  416=0.8  1280=0.85
         private void fix2(ref byte x, ref byte y, double radius_max)
         {
             int nx = x - 128;

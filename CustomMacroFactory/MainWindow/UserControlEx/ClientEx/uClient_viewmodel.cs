@@ -1,6 +1,6 @@
 ﻿using CustomMacroBase.CustomControlEx.ConsoleListBoxEx;
-using CustomMacroBase.CustomControlEx.ContextMenuEx;
 using CustomMacroBase.CustomControlEx.ToggleButtonEx;
+using CustomMacroBase.CustomControlEx.ToggleButtonGroupEx;
 using CustomMacroBase.CustomControlEx.VerticalButtonEx;
 using CustomMacroBase.CustomControlEx.VerticalRadioButtonEx;
 using CustomMacroBase.Helper;
@@ -175,108 +175,104 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.ClientEx
     partial class uClient_viewmodel
     {
         //递归遍历所有子项
-        private void GetChildren(StackPanel sp,
-                                 CustomMacroBase.PreBase.GateBase parent_model,
-                                 Thickness margin = new(),
-                                 cToggleButton? parent_view = null,
-                                 double container_bk_opacity = 0.0)
-        {
-            //container_bk_opacity = Math.Clamp(container_bk_opacity + 0.3, 0, 1);
-            //var container_bk_color = Colors.DarkSlateGray;
+        //private void GetChildren(StackPanel sp,
+        //                         CustomMacroBase.PreBase.GateBase parent_model,
+        //                         Thickness margin = new(),
+        //                         cToggleButton? parent_view = null)
+        //{
+        //    var mg = margin with { Left = margin.Left + 15, Top = 0 };
+        //    var isroot = parent_view is null;
 
-            var mg = margin with { Left = margin.Left + 15, Top = 0 };
-            var isroot = parent_view is null;
+        //    if (isroot)
+        //    {
+        //        cToggleButton root_view = new() { VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0) };
+        //        root_view.SetBinding(cToggleButton.TextProperty, new Binding("Text") { Source = parent_model, Mode = BindingMode.OneWay });
+        //        root_view.SetBinding(cToggleButton.IsCheckedProperty, new Binding("Enable") { Source = parent_model, Mode = BindingMode.TwoWay });
+        //        root_view.SetBinding(cToggleButton.VisibilityProperty, new Binding("HideSelf") { Source = parent_model, Mode = BindingMode.OneWay, Converter = new uClient_converter_bool2visibility() });
+        //        root_view.SetBinding(cToggleButton.DisableSliderButtonProperty, new Binding("DisableSliderButton") { Source = parent_model, Mode = BindingMode.OneWay });
+        //        root_view.ContextMenu = ((Func<cContextMenu>)(() =>
+        //        {
+        //            var temp = new cContextMenu();
+        //            {
+        //                temp.StaysOpen = true;
+        //                temp.Focusable = true;
+        //                temp.Items.Add(new cMenuItemForHotkey() { Source = parent_model });
+        //            }
+        //            return temp;
+        //        })).Invoke();
+        //        sp.Children.Add(root_view);
+        //    }
 
-            if (isroot)
-            {
-                cToggleButton root_view = new() { VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0) };
-                root_view.SetBinding(cToggleButton.TextProperty, new Binding("Text") { Source = parent_model, Mode = BindingMode.OneWay });
-                root_view.SetBinding(cToggleButton.IsCheckedProperty, new Binding("Enable") { Source = parent_model, Mode = BindingMode.TwoWay });
-                root_view.SetBinding(cToggleButton.VisibilityProperty, new Binding("HideSelf") { Source = parent_model, Mode = BindingMode.OneWay, Converter = new uClient_converter_bool2visibility() });
-                root_view.SetBinding(cToggleButton.DisableSliderButtonProperty, new Binding("DisableSliderButton") { Source = parent_model, Mode = BindingMode.OneWay });
-                //root_view.BackgroundColor = new SolidColorBrush(Color.FromArgb((byte)Math.Clamp(container_bk_opacity * 255, 0, 255), container_bk_color.R, container_bk_color.G, container_bk_color.B));
-                root_view.ContextMenu = ((Func<cContextMenu>)(() =>
-                {
-                    var temp = new cContextMenu();
-                    {
-                        temp.StaysOpen = true;
-                        temp.Focusable = true;
-                        temp.Items.Add(new cMenuItemForHotkey(parent_model));
-                    }
-                    return temp;
-                })).Invoke();
-                sp.Children.Add(root_view);
-            }
+        //    //Children
+        //    foreach (var child_model in parent_model.Children)
+        //    {
+        //        cToggleButton child_view = new() { VerticalAlignment = VerticalAlignment.Center, Margin = mg };
+        //        if (isroot)
+        //        {
+        //            child_view.SetBinding(cToggleButton.EnableProperty, new Binding("Enable") { Source = parent_model, Mode = BindingMode.OneWay });
+        //        }
+        //        if (!isroot)
+        //        {
+        //            Binding b1 = new("Enable") { Source = parent_view, Mode = BindingMode.OneWay };
+        //            Binding b2 = new("Enable") { Source = parent_model, Mode = BindingMode.OneWay };
+        //            MultiBinding mb = new();
+        //            mb.Bindings.Add(b1);
+        //            mb.Bindings.Add(b2);
+        //            mb.Converter = new uClient_converter_boolbool2bool();
+        //            child_view.SetBinding(cToggleButton.EnableProperty, mb);
+        //        }
+        //        child_view.SetBinding(cToggleButton.TextProperty, new Binding("Text") { Source = child_model, Mode = BindingMode.OneWay });
+        //        child_view.SetBinding(cToggleButton.IsCheckedProperty, new Binding("Enable") { Source = child_model, Mode = BindingMode.TwoWay });
+        //        child_view.SetBinding(cToggleButton.VisibilityProperty, new Binding("HideSelf") { Source = child_model, Mode = BindingMode.OneWay, Converter = new uClient_converter_bool2visibility() });
+        //        child_view.SetBinding(cToggleButton.DisableSliderButtonProperty, new Binding("DisableSliderButton") { Source = child_model, Mode = BindingMode.OneWay });
+        //        sp.Children.Add(child_view);
 
-            //Children
-            foreach (var child_model in parent_model.Children)
-            {
-                cToggleButton child_view = new() { VerticalAlignment = VerticalAlignment.Center, Margin = mg };
-                if (isroot)
-                {
-                    child_view.SetBinding(cToggleButton.EnableProperty, new Binding("Enable") { Source = parent_model, Mode = BindingMode.OneWay });
-                }
-                if (!isroot)
-                {
-                    Binding b1 = new("Enable") { Source = parent_view, Mode = BindingMode.OneWay };
-                    Binding b2 = new("Enable") { Source = parent_model, Mode = BindingMode.OneWay };
-                    MultiBinding mb = new();
-                    mb.Bindings.Add(b1);
-                    mb.Bindings.Add(b2);
-                    mb.Converter = new uClient_converter_boolbool2bool();
-                    child_view.SetBinding(cToggleButton.EnableProperty, mb);
-                }
-                child_view.SetBinding(cToggleButton.TextProperty, new Binding("Text") { Source = child_model, Mode = BindingMode.OneWay });
-                child_view.SetBinding(cToggleButton.IsCheckedProperty, new Binding("Enable") { Source = child_model, Mode = BindingMode.TwoWay });
-                child_view.SetBinding(cToggleButton.VisibilityProperty, new Binding("HideSelf") { Source = child_model, Mode = BindingMode.OneWay, Converter = new uClient_converter_bool2visibility() });
-                child_view.SetBinding(cToggleButton.DisableSliderButtonProperty, new Binding("DisableSliderButton") { Source = child_model, Mode = BindingMode.OneWay });
-                //child_view.BackgroundColor = new SolidColorBrush(Color.FromArgb((byte)Math.Clamp(container_bk_opacity * 255, 0, 255), container_bk_color.R, container_bk_color.G, container_bk_color.B));
-                sp.Children.Add(child_view);
+        //        GetChildren(sp, child_model, mg, child_view);
+        //    }
 
-                GetChildren(sp, child_model, mg, child_view, container_bk_opacity);
-            }
+        //    //ChildrenEx
+        //    foreach (var child_delegate in parent_model.ChildrenEx)
+        //    {
+        //        Grid child_view = new() { VerticalAlignment = VerticalAlignment.Center, Margin = mg };
+        //        if (isroot)
+        //        {
+        //            child_view.SetBinding(Grid.OpacityProperty, new Binding("Enable") { Source = parent_model, Mode = BindingMode.OneWay, Converter = new uClient_converter_bool2opacity(), ConverterParameter = 0.25 });//
+        //            child_view.SetBinding(Grid.IsHitTestVisibleProperty, new Binding("Enable") { Source = parent_model, Mode = BindingMode.OneWay });//
+        //        }
+        //        if (!isroot)
+        //        {
+        //            Binding b1 = new("Enable") { Source = parent_view, Mode = BindingMode.OneWay };
+        //            Binding b2 = new("Enable") { Source = parent_model, Mode = BindingMode.OneWay };
+        //            {
+        //                MultiBinding mb = new();
+        //                mb.Bindings.Add(b1);
+        //                mb.Bindings.Add(b2);
+        //                mb.Converter = new uClient_converter_boolbool2bool();//禁用时，禁止鼠标命中
+        //                child_view.SetBinding(Grid.IsHitTestVisibleProperty, mb);
+        //            }
+        //            {
+        //                MultiBinding mb = new() { ConverterParameter = 0.25 };
+        //                mb.Bindings.Add(b1);
+        //                mb.Bindings.Add(b2);
+        //                mb.Converter = new uClient_converter_boolbool2double();//禁用时，降低不透明度
+        //                child_view.SetBinding(Grid.OpacityProperty, mb);
+        //            }
+        //        }
 
-            //ChildrenEx
-            foreach (var child_delegate in parent_model.ChildrenEx)
-            {
-                Grid child_view = new() { VerticalAlignment = VerticalAlignment.Center, Margin = mg };
-                if (isroot)
-                {
-                    child_view.SetBinding(Grid.OpacityProperty, new Binding("Enable") { Source = parent_model, Mode = BindingMode.OneWay, Converter = new uClient_converter_bool2opacity(), ConverterParameter = 0.25 });//
-                    child_view.SetBinding(Grid.IsHitTestVisibleProperty, new Binding("Enable") { Source = parent_model, Mode = BindingMode.OneWay });//
-                }
-                if (!isroot)
-                {
-                    Binding b1 = new("Enable") { Source = parent_view, Mode = BindingMode.OneWay };
-                    Binding b2 = new("Enable") { Source = parent_model, Mode = BindingMode.OneWay };
-                    {
-                        MultiBinding mb = new();
-                        mb.Bindings.Add(b1);
-                        mb.Bindings.Add(b2);
-                        mb.Converter = new uClient_converter_boolbool2bool();//禁用时，禁止鼠标命中
-                        child_view.SetBinding(Grid.IsHitTestVisibleProperty, mb);
-                    }
-                    {
-                        MultiBinding mb = new() { ConverterParameter = 0.25 };
-                        mb.Bindings.Add(b1);
-                        mb.Bindings.Add(b2);
-                        mb.Converter = new uClient_converter_boolbool2double();//禁用时，降低不透明度
-                        child_view.SetBinding(Grid.OpacityProperty, mb);
-                    }
-                }
+        //        dynamic? obj = child_delegate.Invoke();//生成额外子项
+        //        if (obj is not null)
+        //        {
+        //            try { obj.SetBinding(UIElement.AllowDropProperty, new Binding("Enable") { Source = parent_model, Mode = BindingMode.OneWay }); }
+        //            catch { }
+        //            child_view.Children.Add(obj);
+        //            sp.Children.Add(child_view);
+        //        }
+        //    }
+        //}
 
-                dynamic? obj = child_delegate.Invoke();//生成额外子项
-                if (obj is not null)
-                {
-                    try { obj.SetBinding(UIElement.AllowDropProperty, new Binding("Enable") { Source = parent_model, Mode = BindingMode.OneWay }); }
-                    catch { }
-                    child_view.Children.Add(obj);
-                    sp.Children.Add(child_view);
-                }
-            }
-        }
-
-        //载入数据
+        /// <summary>
+        /// 载入数据
+        /// </summary>
         private void Init()
         {
             //获取MacroManager.MacroInfo，创建些许控件并分配给 TopContent_Middle 和 TopContent_Right
@@ -403,13 +399,14 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.ClientEx
                     //TopContent_Right 每个按钮对应具体内容
                     ContentControl RC = new();
                     {
-                        Grid grid = new() { Margin = new Thickness(4) };
+                        Grid grid = new() { Margin = new Thickness(0, 4, 4, 4) };
                         {
-                            StackPanel sp = new() { Orientation = Orientation.Vertical };
-                            {
-                                GetChildren(sp, item.MainGate);
-                            }
-                            grid.Children.Add(sp);
+                            //StackPanel sp = new() { Orientation = Orientation.Vertical };
+                            //{
+                            //    GetChildren(sp, item.MainGate);
+                            //}
+                            //grid.Children.Add(sp);
+                            grid.Children.Add(new cToggleButtonGroup(item.MainGate));
                         }
                         RC.Content = grid;
                         RC.SetBinding(ContentControl.VisibilityProperty, new Binding("Selected") { Source = item, Mode = BindingMode.OneWay, Converter = new BooleanToVisibilityConverter() });
@@ -425,7 +422,9 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.ClientEx
             }
         }
 
-        //
+        /// <summary>
+        /// 载入MenuItem
+        /// </summary>
         private void Init2()
         {
             //临时隐藏

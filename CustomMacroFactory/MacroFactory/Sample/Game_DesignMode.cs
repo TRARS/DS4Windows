@@ -14,6 +14,8 @@ namespace CustomMacroFactory.MacroFactory.Sample
 
             MainGate.Add(CreateGateBase("[0]"));
             MainGate[0].Add(CreateGateBase("[0][0]"));
+            MainGate[0][0].Add(CreateGateBase("[0][0][0]"));
+            MainGate[0][0][0].Add(CreateGateBase("[0][0][0][0]"));
             MainGate[0].AddEx(() => CreateTextBlock("- This sample is applicable only to design mode.", Colors.Crimson));
 
             MainGate.Add(CreateGateBase("[1]"));

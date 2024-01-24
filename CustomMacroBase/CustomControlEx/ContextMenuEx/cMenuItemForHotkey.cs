@@ -10,10 +10,25 @@ namespace CustomMacroBase.CustomControlEx.ContextMenuEx
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(cMenuItemForHotkey), new FrameworkPropertyMetadata(typeof(cMenuItemForHotkey)));
         }
-        public cMenuItemForHotkey(GateBase gb)
+
+        public cMenuItemForHotkey()
         {
             this.StaysOpenOnClick = true;
-            this.DataContext = new cMenuItemForHotkey_viewmodel(gb.Text, gb.Feature, gb.EnableReverse);
         }
+    }
+
+    public partial class cMenuItemForHotkey
+    {
+        public GateBase? Source
+        {
+            get { return (GateBase)GetValue(SourceProperty); }
+            set { SetValue(SourceProperty, value); }
+        }
+        public static readonly DependencyProperty SourceProperty = DependencyProperty.Register(
+            name: "Source",
+            propertyType: typeof(GateBase),
+            ownerType: typeof(cMenuItemForHotkey),
+            typeMetadata: new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
+        );
     }
 }
