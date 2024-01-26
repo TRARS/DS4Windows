@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CustomMacroBase.Helper;
+using System;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
@@ -18,6 +19,10 @@ namespace CustomMacroBase.CustomControlEx.ValueIndicatorEx
                 if (double.TryParse($"{values[0]}", out var propValue) && propValueColorSwitcher is not null)
                 {
                     return propValueColorSwitcher.Invoke(propValue);
+                }
+                if (bool.TryParse($"{values[0]}", out var flag) && propValueColorSwitcher is not null)
+                {
+                    return propValueColorSwitcher.Invoke(flag ? 1 : 0);
                 }
 
                 return propValueColor;

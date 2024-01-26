@@ -13,6 +13,7 @@
         <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/CheckBoxEx/cCheckBox_style.xaml"/>
         <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/ComboBoxEx/cComboBox_style.xaml"/>
         <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/ContextMenuEx/cContextMenu_style.xaml"/>
+        <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/ExpanderEx/cExpander_style.xaml"/>
         <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/GridViewColumnHeaderEx/cGridViewColumnHeader_style.xaml"/>
         <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/GroupBoxEx/cGroupBox_style.xaml"/>
         <ResourceDictionary Source="/DS4WinWPF.UI;component/Control/CustomStyleEx/LabelEx/cLabel_style.xaml"/>
@@ -58,6 +59,7 @@
     <!--<Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource cCheckBoxStyle}"/>-->
     <!--<Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource cComboBoxStyle}"/>-->
     <!--<Style TargetType="{x:Type ContextMenu}" BasedOn="{StaticResource cContextMenuStyle}"/>-->
+    <!--<Style TargetType="{x:Type Expander}" BasedOn="{StaticResource cExpanderStyle}"/>-->
     <!--<Style TargetType="{x:Type GridViewColumnHeader}" BasedOn="{StaticResource cGridViewColumnHeaderStyle}"/>-->
     <!--<Style TargetType="{x:Type GroupBox}" BasedOn="{StaticResource cGroupBoxStyle}"/>-->
     <!--<Style TargetType="{x:Type Label}" BasedOn="{StaticResource cLabelStyle}"/>-->
