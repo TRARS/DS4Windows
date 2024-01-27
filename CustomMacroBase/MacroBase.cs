@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -67,7 +68,18 @@ namespace CustomMacroBase.PreBase
         /// <summary>
         /// <para>往自身ChildrenEx列表添加子项</para>
         /// </summary>
-        public void AddEx(Func<UIElement> child) => ChildrenEx.Add(child);
+        //public void AddEx(Func<UIElement> child) => ChildrenEx.Add(child);
+        public void AddEx(Func<UIElement> child)
+        {
+            if (Children.LastOrDefault() is GateBase item)
+            {
+                item.ChildrenEx.Add(child);
+            }
+            else
+            {
+                this.ChildrenExZero.Add(child);
+            }
+        }
 
         /// <summary>
         /// 滑块开关状态反转
@@ -231,6 +243,10 @@ namespace CustomMacroBase.PreBase
         /// 获取当前滑块开关的额外子项列表，用以存放委托
         /// </summary>
         public ObservableCollection<Func<dynamic>> ChildrenEx { get; init; } = new();
+        /// <summary>
+        /// ?
+        /// </summary>
+        public ObservableCollection<Func<dynamic>> ChildrenExZero { get; init; } = new();
     }
 }
 

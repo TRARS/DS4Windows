@@ -28,6 +28,7 @@
 
   <ItemGroup>
     <PackageReference Include="Fastenshtein" Version="1.0.0.8" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.77" />
     <PackageReference Include="OpenCvSharp4.Extensions" Version="4.9.0.20240103" />
     <PackageReference Include="OpenCvSharp4.Windows" Version="4.9.0.20240103" />
     <PackageReference Include="SharpDX.DirectInput" Version="4.2.0" />

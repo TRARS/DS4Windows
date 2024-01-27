@@ -113,10 +113,15 @@ namespace CustomMacroBase.CustomControlEx.ToggleButtonGroupEx
             {
                 count += list.Count(gate => !gate.HideSelf);
             }
-            if (values[1] is ObservableCollection<Func<dynamic>> delegateList && double.Parse($"{values[2]}") > 0)
+            if (values[1] is ObservableCollection<Func<dynamic>> delegateList)
             {
                 count += delegateList.Count;
             }
+            if (double.Parse($"{values[2]}") > 0)
+            {
+                count++;
+            }
+
             return count > 0 ? Visibility.Visible : Visibility.Collapsed;
         }
 

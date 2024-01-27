@@ -756,6 +756,11 @@
             获取当前滑块开关的额外子项列表，用以存放委托
             </summary>
         </member>
+        <member name="P:CustomMacroBase.PreBase.GateBase.ChildrenExZero">
+            <summary>
+            ?
+            </summary>
+        </member>
         <member name="T:CustomMacroBase.PreBase.MacroModel">
             <summary>
             脚本基类模型

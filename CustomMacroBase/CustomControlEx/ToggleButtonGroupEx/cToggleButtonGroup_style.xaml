@@ -16,7 +16,8 @@
         <Style.Resources>
             <!--Placement-->
             <Thickness x:Key="ChildrenPlacement">0,0,0,0</Thickness>
-            <Thickness x:Key="ChildrenExPlacement">16,0,0,0</Thickness>
+            <Thickness x:Key="ChildrenExPlacement">0,0,0,0</Thickness>
+            <Thickness x:Key="ChildrenExZeroPlacement">16,0,0,0</Thickness>
             
             <!--GateBaseContainerStyleB-->
             <Style x:Key="GateBaseContainerStyleB" TargetType="{x:Type ContentPresenter}">
@@ -28,8 +29,8 @@
                                     <foldablecontainerex:cFoldableContainer.ArrowVisibility>
                                         <MultiBinding Converter="{StaticResource cToggleButtonGroup_converter_count2arrowvisibility}" Mode="OneWay">
                                             <Binding Path="Children"/>
-                                            <Binding Path="ChildrenEx"/>
-                                            <Binding Path="ActualHeight" ElementName="childrenex"/>
+                                            <Binding Path="ChildrenExZero"/>
+                                            <Binding Path="ActualHeight" ElementName="childrenexzero"/>
                                         </MultiBinding>
                                     </foldablecontainerex:cFoldableContainer.ArrowVisibility>
                                     <foldablecontainerex:cFoldableContainer.Header>
@@ -47,9 +48,23 @@
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="auto"/>
                                             <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="auto"/>
                                         </Grid.RowDefinitions>
+                                        <!--ChildrenExZero-->
+                                        <local:cChildrenExContainer Grid.Row="0" x:Name="childrenexzero"
+                                                                    ItemsSource="{Binding ChildrenExZero, Converter={StaticResource cToggleButtonGroup_converter_delegate2uielement}}"
+                                                                    Margin="{StaticResource ChildrenExZeroPlacement}"
+                                                                    Opacity="{Binding EnableChildren, ElementName=children, Converter={StaticResource cToggleButtonGroup_converter_bool2opacity}, ConverterParameter=0.25, Mode=OneWay}"
+                                                                    IsHitTestVisible="{Binding EnableChildren, ElementName=children}">
+                                            <ItemsControl.Template>
+                                                <ControlTemplate TargetType="{x:Type ItemsControl}">
+                                                    <StackPanel IsItemsHost="True" Orientation="Vertical" Background="Transparent"/>
+                                                </ControlTemplate>
+                                            </ItemsControl.Template>
+                                        </local:cChildrenExContainer>
                                         <!--Children-->
-                                        <local:cChildrenContainer Grid.Row="0" x:Name="children"
+                                        <local:cChildrenContainer Grid.Row="1" x:Name="children"
+                                                                  DataContext="{Binding}"
                                                                   ItemsSource="{Binding Children}"
                                                                   Margin="{StaticResource ChildrenPlacement}">
                                             <local:cChildrenContainer.EnableChildren>
@@ -68,14 +83,14 @@
                                             </ItemsControl.ItemContainerStyle>
                                         </local:cChildrenContainer>
                                         <!--ChildrenEx-->
-                                        <local:cChildrenExContainer Grid.Row="1" x:Name="childrenex"
+                                        <local:cChildrenExContainer Grid.Row="2" x:Name="childrenex"
                                                                     ItemsSource="{Binding ChildrenEx, Converter={StaticResource cToggleButtonGroup_converter_delegate2uielement}}"
                                                                     Margin="{StaticResource ChildrenExPlacement}"
-                                                                    Opacity="{Binding EnableChildren, ElementName=children, Converter={StaticResource cToggleButtonGroup_converter_bool2opacity}, ConverterParameter=0.25, Mode=OneWay}"
-                                                                    IsHitTestVisible="{Binding EnableChildren, ElementName=children}">
+                                                                    Opacity="{Binding EnableChildren, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Converter={StaticResource cToggleButtonGroup_converter_bool2opacity}, ConverterParameter=0.25, Mode=OneWay}"
+                                                                    IsHitTestVisible="{Binding EnableChildren, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}">
                                             <ItemsControl.Template>
                                                 <ControlTemplate TargetType="{x:Type ItemsControl}">
-                                                    <StackPanel Grid.Column="1" IsItemsHost="True" Orientation="Vertical"/>
+                                                    <StackPanel IsItemsHost="True" Orientation="Vertical"/>
                                                 </ControlTemplate>
                                             </ItemsControl.Template>
                                             </local:cChildrenExContainer>
@@ -98,8 +113,8 @@
                                     <foldablecontainerex:cFoldableContainer.ArrowVisibility>
                                         <MultiBinding Converter="{StaticResource cToggleButtonGroup_converter_count2arrowvisibility}" Mode="OneWay">
                                             <Binding Path="Children"/>
-                                            <Binding Path="ChildrenEx"/>
-                                            <Binding Path="ActualHeight" ElementName="childrenex"/>
+                                            <Binding Path="ChildrenExZero"/>
+                                            <Binding Path="ActualHeight" ElementName="childrenexzero"/>
                                         </MultiBinding>
                                     </foldablecontainerex:cFoldableContainer.ArrowVisibility>
                                     <foldablecontainerex:cFoldableContainer.Header>
@@ -117,9 +132,23 @@
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="auto"/>
                                             <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="auto"/>
                                         </Grid.RowDefinitions>
+                                        <!--ChildrenExZero-->
+                                        <local:cChildrenExContainer Grid.Row="0" x:Name="childrenexzero"
+                                                                    ItemsSource="{Binding ChildrenExZero, Converter={StaticResource cToggleButtonGroup_converter_delegate2uielement}}"
+                                                                    Margin="{StaticResource ChildrenExZeroPlacement}"
+                                                                    Opacity="{Binding EnableChildren, ElementName=children, Converter={StaticResource cToggleButtonGroup_converter_bool2opacity}, ConverterParameter=0.25, Mode=OneWay}"
+                                                                    IsHitTestVisible="{Binding EnableChildren, ElementName=children}">
+                                            <ItemsControl.Template>
+                                                <ControlTemplate TargetType="{x:Type ItemsControl}">
+                                                    <StackPanel IsItemsHost="True" Orientation="Vertical" Background="Transparent"/>
+                                                </ControlTemplate>
+                                            </ItemsControl.Template>
+                                        </local:cChildrenExContainer>
                                         <!--Children-->
-                                        <local:cChildrenContainer Grid.Row="0" x:Name="children"
+                                        <local:cChildrenContainer Grid.Row="1" x:Name="children"
+                                                                  DataContext="{Binding}"
                                                                   ItemsSource="{Binding Children}"
                                                                   Margin="{StaticResource ChildrenPlacement}">
                                             <local:cChildrenContainer.EnableChildren>
@@ -138,14 +167,14 @@
                                             </ItemsControl.ItemContainerStyle>
                                         </local:cChildrenContainer>
                                         <!--ChildrenEx-->
-                                        <local:cChildrenExContainer Grid.Row="1" x:Name="childrenex"
+                                        <local:cChildrenExContainer Grid.Row="2" x:Name="childrenex"
                                                                     ItemsSource="{Binding ChildrenEx, Converter={StaticResource cToggleButtonGroup_converter_delegate2uielement}}"
                                                                     Margin="{StaticResource ChildrenExPlacement}"
-                                                                    Opacity="{Binding EnableChildren, ElementName=children, Converter={StaticResource cToggleButtonGroup_converter_bool2opacity}, ConverterParameter=0.25, Mode=OneWay}"
-                                                                    IsHitTestVisible="{Binding EnableChildren, ElementName=children}">
+                                                                    Opacity="{Binding EnableChildren, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Converter={StaticResource cToggleButtonGroup_converter_bool2opacity}, ConverterParameter=0.25, Mode=OneWay}"
+                                                                    IsHitTestVisible="{Binding EnableChildren, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}">
                                             <ItemsControl.Template>
                                                 <ControlTemplate TargetType="{x:Type ItemsControl}">
-                                                    <StackPanel Grid.Column="1" IsItemsHost="True" Orientation="Vertical"/>
+                                                    <StackPanel IsItemsHost="True" Orientation="Vertical"/>
                                                 </ControlTemplate>
                                             </ItemsControl.Template>
                                             </local:cChildrenExContainer>
@@ -194,9 +223,23 @@
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="auto"/>
                                         <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
                                     </Grid.RowDefinitions>
+                                    <!--ChildrenExZero-->
+                                    <local:cChildrenExContainer Grid.Row="0" x:Name="childrenexzero"
+                                                                DataContext="{TemplateBinding DataContext}"
+                                                                ItemsSource="{Binding ChildrenExZero, Converter={StaticResource cToggleButtonGroup_converter_delegate2uielement}}"
+                                                                Margin="{StaticResource ChildrenExZeroPlacement}"
+                                                                Opacity="{Binding Enable, Converter={StaticResource cToggleButtonGroup_converter_bool2opacity}, ConverterParameter=0.25, Mode=OneWay}"
+                                                                IsHitTestVisible="{Binding Enable}">
+                                        <ItemsControl.Template>
+                                            <ControlTemplate TargetType="{x:Type ItemsControl}">
+                                                <StackPanel IsItemsHost="True" Orientation="Vertical"/>
+                                            </ControlTemplate>
+                                        </ItemsControl.Template>
+                                    </local:cChildrenExContainer>
                                     <!--Children-->
-                                    <local:cChildrenContainer Grid.Row="0"
+                                    <local:cChildrenContainer Grid.Row="1"
                                                               DataContext="{TemplateBinding DataContext}"
                                                               ItemsSource="{Binding Children}"
                                                               EnableChildren="{Binding Enable, Mode=OneWay}"
@@ -211,7 +254,7 @@
                                         </ItemsControl.ItemContainerStyle>
                                     </local:cChildrenContainer>
                                     <!--ChildrenEx-->
-                                    <local:cChildrenExContainer Grid.Row="1" x:Name="childrenex"
+                                    <local:cChildrenExContainer Grid.Row="2" x:Name="childrenex"
                                                                 DataContext="{TemplateBinding DataContext}"
                                                                 ItemsSource="{Binding ChildrenEx, Converter={StaticResource cToggleButtonGroup_converter_delegate2uielement}}"
                                                                 Margin="{StaticResource ChildrenExPlacement}"
@@ -219,7 +262,7 @@
                                                                 IsHitTestVisible="{Binding Enable}">
                                         <ItemsControl.Template>
                                             <ControlTemplate TargetType="{x:Type ItemsControl}">
-                                                <StackPanel Grid.Column="1" IsItemsHost="True" Orientation="Vertical"/>
+                                                <StackPanel IsItemsHost="True" Orientation="Vertical"/>
                                             </ControlTemplate>
                                         </ItemsControl.Template>
                                     </local:cChildrenExContainer>
