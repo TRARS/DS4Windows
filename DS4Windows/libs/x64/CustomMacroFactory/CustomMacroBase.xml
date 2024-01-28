@@ -678,7 +678,7 @@
         </member>
         <member name="M:CustomMacroBase.PreBase.GateBase.AddEx(System.Func{System.Windows.UIElement})">
             <summary>
-            <para>往自身ChildrenEx列表添加子项</para>
+            <para>往最新Children成员（不存在时则往自身）的ChildrenEx列表添加子项</para>
             </summary>
         </member>
         <member name="M:CustomMacroBase.PreBase.GateBase.EnableReverse">
@@ -748,17 +748,17 @@
         </member>
         <member name="P:CustomMacroBase.PreBase.GateBase.Children">
             <summary>
-            获取当前滑块开关的子项列表，用以存放与宿主类型相同的对象
+            获取当前滑块开关的子项列表，用以存放与宿主类型相同的对象（1）
             </summary>
         </member>
         <member name="P:CustomMacroBase.PreBase.GateBase.ChildrenEx">
             <summary>
-            获取当前滑块开关的额外子项列表，用以存放委托
+            获取当前滑块开关的额外子项列表，用以存放委托（2）
             </summary>
         </member>
         <member name="P:CustomMacroBase.PreBase.GateBase.ChildrenExZero">
             <summary>
-            ?
+            获取当前滑块开关的额外子项列表，用以存放委托（0）
             </summary>
         </member>
         <member name="T:CustomMacroBase.PreBase.MacroModel">

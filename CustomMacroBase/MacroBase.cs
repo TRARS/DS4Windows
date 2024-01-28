@@ -66,9 +66,8 @@ namespace CustomMacroBase.PreBase
         public void Add(GateBase child) => Children.Add(child);
 
         /// <summary>
-        /// <para>往自身ChildrenEx列表添加子项</para>
+        /// <para>往最新Children成员（不存在时则往自身）的ChildrenEx列表添加子项</para>
         /// </summary>
-        //public void AddEx(Func<UIElement> child) => ChildrenEx.Add(child);
         public void AddEx(Func<UIElement> child)
         {
             if (Children.LastOrDefault() is GateBase item)
@@ -236,15 +235,15 @@ namespace CustomMacroBase.PreBase
         private string _Feature = GenerateRandomString(32);
 
         /// <summary>
-        /// 获取当前滑块开关的子项列表，用以存放与宿主类型相同的对象
+        /// 获取当前滑块开关的子项列表，用以存放与宿主类型相同的对象（1）
         /// </summary>
         public ObservableCollection<GateBase> Children { get; init; } = new();
         /// <summary>
-        /// 获取当前滑块开关的额外子项列表，用以存放委托
+        /// 获取当前滑块开关的额外子项列表，用以存放委托（2）
         /// </summary>
         public ObservableCollection<Func<dynamic>> ChildrenEx { get; init; } = new();
         /// <summary>
-        /// ?
+        /// 获取当前滑块开关的额外子项列表，用以存放委托（0）
         /// </summary>
         public ObservableCollection<Func<dynamic>> ChildrenExZero { get; init; } = new();
     }

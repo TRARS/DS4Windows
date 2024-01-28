@@ -2,6 +2,9 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:CustomMacroBase.CustomControlEx.FoldableContainerEx">
 
+    <local:cFoldableContainer_converter_height2height x:Key="cFoldableContainer_converter_height2height"/>
+    <local:cFoldableContainer_converter_visibility2visibility x:Key="cFoldableContainer_converter_visibility2visibility"/>
+
     <SolidColorBrush x:Key="MouseOverColor" Color="Yellow"/>
     <SolidColorBrush x:Key="MousePressedColor" Color="Cyan"/>
     <SolidColorBrush x:Key="ContractedColor" Color="DimGray"/>
@@ -101,12 +104,29 @@
                                     </Button.Style>
                                 </Button>
                             </Border>
+
+                            <!--DashedLine-->
+                            <Line Grid.Column="0" Grid.Row="1"
+                                  Y1="-2"
+                                  Y2="{Binding ActualHeight, ElementName=body, Converter={StaticResource cFoldableContainer_converter_height2height}, Mode=OneWay}"
+                                  Stroke="#80696969"
+                                  StrokeThickness="1"
+                                  StrokeDashArray="4 1.5"
+                                  HorizontalAlignment="Center"
+                                  Margin="3.5,0,0,0">
+                                <Line.Visibility>
+                                    <MultiBinding Converter="{StaticResource cFoldableContainer_converter_visibility2visibility}">
+                                        <Binding Path="ArrowVisibility" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                        <Binding Path="BodyVisibility" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                    </MultiBinding>
+                                </Line.Visibility>
+                            </Line>
                             
                             <!--Header-->
                             <ContentControl Grid.Column="1" Grid.Row="0" Content="{TemplateBinding Header}"/>
                             
                             <!--Body-->
-                            <ContentPresenter Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            <ContentPresenter x:Name="body" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                               Visibility="{TemplateBinding BodyVisibility}"/>
                         </Grid>
                     </Border>

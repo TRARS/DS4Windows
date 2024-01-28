@@ -202,7 +202,7 @@
                                     <MultiBinding Converter="{StaticResource cToggleButtonGroup_converter_count2arrowvisibility}" Mode="OneWay">
                                         <Binding Path="DataContext.Children" RelativeSource="{RelativeSource TemplatedParent}"/>
                                         <Binding Path="DataContext.ChildrenEx" RelativeSource="{RelativeSource TemplatedParent}"/>
-                                        <Binding Path="ActualHeight" ElementName="childrenex"/>
+                                        <Binding Path="ActualHeight" ElementName="childrenexzero"/>
                                     </MultiBinding>
                                 </foldablecontainerex:cFoldableContainer.ArrowVisibility>
                                 <foldablecontainerex:cFoldableContainer.Header>
