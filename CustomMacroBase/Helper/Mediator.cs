@@ -19,6 +19,7 @@ namespace CustomMacroBase.Helper
         GetFrame,                 //好像是获取截图用
         PixelPickerOnOff,         //拾色器区域 展开/关闭 
         WindowPosReset,           //窗体位置恢复至左上角
+        CanUpdateFrames
     }
 
     //私有字段/属性/方法

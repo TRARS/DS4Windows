@@ -305,6 +305,19 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.ClientEx
                         new() { SubFlag = true, Text = "Resize", Command = () => { CustomMacroBase.PixelMatcher.PixelMatcherHost.SetTargetWindowSizeEx(1920, 1080); }, ToolTip = "Resize the target window (client area) to 1920x1080" },
                     }
                 });
+                this.TopContent_Left.Add(new()
+                {
+                    Text = "Settings",
+                    Command = () => { Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, "Right-click on this button to adjust settings related to the analog stick"); },
+                    RightClickContent = ((Func<ObservableCollection<UIElement>>)(() =>
+                    {
+                        if (MacroFactory.MacroManager.PreSettings is CustomMacroBase.MacroBase pre)
+                        {
+                            return new() { new cToggleButtonGroup(pre.MainGate) };
+                        }
+                        return null;
+                    })).Invoke(),
+                });
                 this.TopContent_Left.Add(((Func<cVerticalButton>)(() =>
                 {
                     string pathData = "M512 857.6c-190.592 0-345.6-155.008-345.6-345.6S321.408 166.4 512 166.4s345.6 155.008 345.6 345.6-155.008 345.6-345.6 345.6z m0-640C349.696 217.6 217.6 349.696 217.6 512s132.096 294.4 294.4 294.4c162.304 0 294.4-132.096 294.4-294.4S674.304 217.6 512 217.6z" +
@@ -438,7 +451,4 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.ClientEx
             });
         }
     }
-
-
-
 }

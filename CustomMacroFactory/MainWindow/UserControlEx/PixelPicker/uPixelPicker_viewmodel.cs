@@ -340,8 +340,9 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
 
             Mediator.Instance.Register(MessageType.PixelPickerOnOff, (_) =>
             {
-                bool flag = (this.Visibility == Visibility.Visible);
-                this.Visibility = flag ? Visibility.Collapsed : Visibility.Visible;
+                this.Visibility = (this.Visibility is Visibility.Visible) ? Visibility.Collapsed : Visibility.Visible;
+
+                Mediator.Instance.NotifyColleagues(MessageType.CanUpdateFrames, this.Visibility == Visibility.Visible);
             });
 
             Mediator.Instance.Register(MessageType.WindowKeyDown, (para) =>

@@ -71,6 +71,18 @@ namespace CustomMacroBase.CustomControlEx.ToggleButtonEx
             typeMetadata: new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
         );
 
+        public Visibility GuideLineVisibility
+        {
+            get { return (Visibility)GetValue(GuideLineVisibilityProperty); }
+            set { SetValue(GuideLineVisibilityProperty, value); }
+        }
+        public static readonly DependencyProperty GuideLineVisibilityProperty = DependencyProperty.Register(
+            name: "GuideLineVisibility",
+            propertyType: typeof(Visibility),
+            ownerType: typeof(cToggleButton),
+            typeMetadata: new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
+        );
+
         public SolidColorBrush GuideLineColor
         {
             get { return (SolidColorBrush)GetValue(GuideLineColorProperty); }
@@ -150,6 +162,18 @@ namespace CustomMacroBase.CustomControlEx.ToggleButtonEx
         }
         public static readonly DependencyProperty DisableSliderButtonProperty = DependencyProperty.Register(
             name: "DisableSliderButton",
+            propertyType: typeof(bool),
+            ownerType: typeof(cToggleButton),
+            typeMetadata: new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
+        );
+
+        public bool UseAlternateDotColor
+        {
+            get { return (bool)GetValue(UseAlternateDotColorProperty); }
+            set { SetValue(UseAlternateDotColorProperty, value); }
+        }
+        public static readonly DependencyProperty UseAlternateDotColorProperty = DependencyProperty.Register(
+            name: "UseAlternateDotColor",
             propertyType: typeof(bool),
             ownerType: typeof(cToggleButton),
             typeMetadata: new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)

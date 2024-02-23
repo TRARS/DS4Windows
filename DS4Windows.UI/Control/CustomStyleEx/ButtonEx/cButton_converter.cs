@@ -125,14 +125,18 @@ namespace DS4WinWPF.UI.Control.CustomStyleEx.ButtonEx
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            var w = double.Parse($"{values[0]}");
-            var h = double.Parse($"{values[1]}");
-            var tk = (Thickness)values[2];
-            var result = Math.Min(w - (tk.Left + tk.Right), h - (tk.Top + tk.Bottom));
+            try
+            {
+                var w = double.Parse($"{values[0]}");
+                var h = double.Parse($"{values[1]}");
+                var tk = (Thickness)values[2];
+                var result = Math.Min(w - (tk.Left + tk.Right), h - (tk.Top + tk.Bottom));
 
-            if (result is 0 || result is double.NaN || result < 0) { return Binding.DoNothing; }
+                if (result is 0 || result is double.NaN || result < 0) { return Binding.DoNothing; }
 
-            return result;//选 Max 会导致圆形被切一刀不好看所以取 Min，放大倍数取(长边*2/短边)
+                return result;//选 Max 会导致圆形被切一刀不好看所以取 Min，放大倍数取(长边*2/短边)
+            }
+            catch { return Binding.DoNothing; }
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
@@ -217,16 +221,20 @@ namespace DS4WinWPF.UI.Control.CustomStyleEx.ButtonEx
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            var w = double.Parse($"{values[0]}");
-            var h = double.Parse($"{values[1]}");
-            var tk = (Thickness)values[2];
-            var op = double.Parse($"{values[3]}");
-            var result = Math.Min(w - (tk.Left + tk.Right), h - (tk.Top + tk.Bottom));
-            result = (w + h) * ((1 - op) / 1);
+            try
+            {
+                var w = double.Parse($"{values[0]}");
+                var h = double.Parse($"{values[1]}");
+                var tk = (Thickness)values[2];
+                var op = double.Parse($"{values[3]}");
+                var result = Math.Min(w - (tk.Left + tk.Right), h - (tk.Top + tk.Bottom));
+                result = (w + h) * ((1 - op) / 1);
 
-            if (result is 0 || result is double.NaN || result < 0) { return Binding.DoNothing; }
+                if (result is 0 || result is double.NaN || result < 0) { return Binding.DoNothing; }
 
-            return result;//选 Max 会导致圆形被切一刀不好看所以取 Min，放大倍数取(长边*2/短边)
+                return result;//选 Max 会导致圆形被切一刀不好看所以取 Min，放大倍数取(长边*2/短边)
+            }
+            catch { return Binding.DoNothing; }
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

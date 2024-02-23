@@ -2,6 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/AggregateBindingControl/cAggregateBindingControl_style.xaml"/>
+        
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/ColorfulTextBlockEx/cColorfulTextBlock_style.xaml"/>
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/ComboBoxEx/cComboBox_style.xaml"/>
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/ConsoleListBoxEx/cConsoleListBox_style.xaml"/>

@@ -191,6 +191,88 @@
       "runtime.ubuntu.14.04-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {},
       "runtime.ubuntu.16.04-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {},
       "runtime.ubuntu.16.10-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {},
+      "Sdcb.PaddleInference/2.5.0.1": {
+        "runtime": {
+          "lib/net6.0/Sdcb.PaddleInference.dll": {
+            "assemblyVersion": "2.5.0.1",
+            "fileVersion": "2.5.0.1"
+          }
+        }
+      },
+      "Sdcb.PaddleInference.runtime.win64.cuda102_cudnn76_sm61_75/2.4.0": {
+        "runtimeTargets": {
+          "runtimes/win-x64/native/libiomp5md.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "5.0.2019.109"
+          },
+          "runtimes/win-x64/native/mkldnn.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "2.6.0.0"
+          },
+          "runtimes/win-x64/native/mklml.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/paddle_inference_c.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "Sdcb.PaddleOCR/2.7.0.1": {
+        "dependencies": {
+          "OpenCvSharp4": "4.9.0.20240103",
+          "Sdcb.PaddleInference": "2.5.0.1"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Sdcb.PaddleOCR.dll": {
+            "assemblyVersion": "2.7.0.1",
+            "fileVersion": "2.7.0.1"
+          }
+        }
+      },
+      "Sdcb.PaddleOCR.Models.Local/2.7.0": {
+        "dependencies": {
+          "Sdcb.PaddleOCR": "2.7.0.1",
+          "Sdcb.PaddleOCR.Models.LocalV3": "2.7.0",
+          "Sdcb.PaddleOCR.Models.LocalV4": "2.7.0",
+          "Sdcb.PaddleOCR.Models.Shared": "2.7.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Sdcb.PaddleOCR.Models.Local.dll": {
+            "assemblyVersion": "2.7.0.0",
+            "fileVersion": "2.7.0.0"
+          }
+        }
+      },
+      "Sdcb.PaddleOCR.Models.LocalV3/2.7.0": {
+        "runtime": {
+          "lib/netstandard2.0/Sdcb.PaddleOCR.Models.LocalV3.dll": {
+            "assemblyVersion": "2.7.0.0",
+            "fileVersion": "2.7.0.0"
+          }
+        }
+      },
+      "Sdcb.PaddleOCR.Models.LocalV4/2.7.0": {
+        "runtime": {
+          "lib/netstandard2.0/Sdcb.PaddleOCR.Models.LocalV4.dll": {
+            "assemblyVersion": "2.7.0.0",
+            "fileVersion": "2.7.0.0"
+          }
+        }
+      },
+      "Sdcb.PaddleOCR.Models.Shared/2.7.0": {
+        "runtime": {
+          "lib/netstandard2.0/Sdcb.PaddleOCR.Models.Shared.dll": {
+            "assemblyVersion": "2.7.0.0",
+            "fileVersion": "2.7.0.0"
+          }
+        }
+      },
       "SharpDX/4.2.0": {
         "dependencies": {
           "NETStandard.Library": "1.6.1"
@@ -791,6 +873,10 @@
           "Microsoft.Xaml.Behaviors.Wpf": "1.1.77",
           "OpenCvSharp4.Extensions": "4.9.0.20240103",
           "OpenCvSharp4.Windows": "4.9.0.20240103",
+          "Sdcb.PaddleInference": "2.5.0.1",
+          "Sdcb.PaddleInference.runtime.win64.cuda102_cudnn76_sm61_75": "2.4.0",
+          "Sdcb.PaddleOCR": "2.7.0.1",
+          "Sdcb.PaddleOCR.Models.Local": "2.7.0",
           "SharpDX.DirectInput": "4.2.0",
           "Tesseract": "5.2.0"
         },
@@ -994,6 +1080,55 @@
       "sha512": "sha512-VB5cn/7OzUfzdnC8tqAIMQciVLiq2epm2NrAm1E9OjNRyG4lVhfR61SMcLizejzQP8R8Uf/0l5qOIbUEi+RdEg==",
       "path": "runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl/4.3.0",
       "hashPath": "runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512"
+    },
+    "Sdcb.PaddleInference/2.5.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-mhTFsVo5U06agc31pA0Wb5kX0H328Dqe9985G6D4aGbU0GXzET4ZUyzFgt8jGD1drFezMY4PdZH63lhMTzpnpQ==",
+      "path": "sdcb.paddleinference/2.5.0.1",
+      "hashPath": "sdcb.paddleinference.2.5.0.1.nupkg.sha512"
+    },
+    "Sdcb.PaddleInference.runtime.win64.cuda102_cudnn76_sm61_75/2.4.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-OSNN/YIg7x9WmdCRDQGGaH1Oq4n4QwWwhIcj+iFuWb0R/TKj/pVtE6fq8e4I01zVC8A32RwEtqZ0rvv/vO8V8Q==",
+      "path": "sdcb.paddleinference.runtime.win64.cuda102_cudnn76_sm61_75/2.4.0",
+      "hashPath": "sdcb.paddleinference.runtime.win64.cuda102_cudnn76_sm61_75.2.4.0.nupkg.sha512"
+    },
+    "Sdcb.PaddleOCR/2.7.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-G6pi36+uRutsGZeqyhebupCaV19dpO353IilOnzG2B0ODuwf4RkXNDOPwfAJuX9TmHW8qU6UnQN2FJ+vcED9lw==",
+      "path": "sdcb.paddleocr/2.7.0.1",
+      "hashPath": "sdcb.paddleocr.2.7.0.1.nupkg.sha512"
+    },
+    "Sdcb.PaddleOCR.Models.Local/2.7.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-/qARARoqGy4YWb/drm/gOFbF3M4bejA9LBGP4TRD6unvefOxokzTW0YI2s4fqhaaAOZNObnYgaE1/q+SmP1NQw==",
+      "path": "sdcb.paddleocr.models.local/2.7.0",
+      "hashPath": "sdcb.paddleocr.models.local.2.7.0.nupkg.sha512"
+    },
+    "Sdcb.PaddleOCR.Models.LocalV3/2.7.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-eqyTyyfOz+cfUvCc7jk1z1eOjUlgmNPyAZzDUqFRv+gs6g2aTdcd0qlWupaAgSDyHOstU/C95PS5hG9jQGakQA==",
+      "path": "sdcb.paddleocr.models.localv3/2.7.0",
+      "hashPath": "sdcb.paddleocr.models.localv3.2.7.0.nupkg.sha512"
+    },
+    "Sdcb.PaddleOCR.Models.LocalV4/2.7.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-iKGb/qSPDHca5OXIKWQJqhVFajlolF01EV5PKjD4a8Djv+xXO/y07mBDRnUwj7zSjvmJjMpqiI6suEhGYDMvUA==",
+      "path": "sdcb.paddleocr.models.localv4/2.7.0",
+      "hashPath": "sdcb.paddleocr.models.localv4.2.7.0.nupkg.sha512"
+    },
+    "Sdcb.PaddleOCR.Models.Shared/2.7.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-1UlN5XOhO+a5mR82eE5RoCjB2tS4U8SKMnMk1AnQ+HphqcYwo3fHYSmEnxnpGe3/iU2hjRDDFRgOaf339T5gKg==",
+      "path": "sdcb.paddleocr.models.shared/2.7.0",
+      "hashPath": "sdcb.paddleocr.models.shared.2.7.0.nupkg.sha512"
     },
     "SharpDX/4.2.0": {
       "type": "package",

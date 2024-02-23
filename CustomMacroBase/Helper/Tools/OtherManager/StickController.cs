@@ -6,9 +6,9 @@ namespace CustomMacroBase.Helper.Tools.OtherManager
     //L:10 1280 127 //R:10 160 127
     public struct StickFixInfo
     {
-        public int fix0_fix1_clip = 10;
-        public double fix2_radius_max = 160;
-        public double fix3_radius_max = 127;
+        public int? fix0_fix1_clip = 10;
+        public double? fix2_radius_max = 160;
+        public double? fix3_radius_max = 127;
 
         /// <summary>
         /// <para>_a：内圈死区&amp;反死区(0~127)</para>
@@ -52,13 +52,26 @@ namespace CustomMacroBase.Helper.Tools.OtherManager
             SetEnlargementFactorRight(_b);
             SetClipRadiusRight(_c);
         }
+        public void SetLeft(double _a, double _b, double _c)
+        {
+            SetDeadZoneLeft(_a);
+            SetEnlargementFactorLeft(_b);
+            SetClipRadiusLeft(_c);
+        }
+        public void SetRight(double _a, double _b, double _c)
+        {
+            SetDeadZoneRight(_a);
+            SetEnlargementFactorRight(_b);
+            SetClipRadiusRight(_c);
+        }
 
-        private void SetDeadZoneLeft(int _a) => left_stick_fix_info.fix0_fix1_clip = Math.Clamp(_a, 0, 127);
-        private void SetEnlargementFactorLeft(int _b) => left_stick_fix_info.fix2_radius_max = Math.Clamp(_b, 128, 1280);
-        private void SetClipRadiusLeft(int _c) => left_stick_fix_info.fix3_radius_max = Math.Clamp(_c, 64, 180);
-        private void SetDeadZoneRight(int _a) => right_stick_fix_info.fix0_fix1_clip = Math.Clamp(_a, 0, 127);
-        private void SetEnlargementFactorRight(int _b) => right_stick_fix_info.fix2_radius_max = Math.Clamp(_b, 128, 1280);
-        private void SetClipRadiusRight(int _c) => right_stick_fix_info.fix3_radius_max = Math.Clamp(_c, 64, 180);
+        private void SetDeadZoneLeft(double _a) => left_stick_fix_info.fix0_fix1_clip = _a is not double.NaN ? (int)Math.Clamp(_a, 0, 127) : null;
+        private void SetEnlargementFactorLeft(double _b) => left_stick_fix_info.fix2_radius_max = _b is not double.NaN ? Math.Clamp(_b, 128, 1280) : null;
+        private void SetClipRadiusLeft(double _c) => left_stick_fix_info.fix3_radius_max = _c is not double.NaN ? Math.Clamp(_c, 64, 180) : null;
+
+        private void SetDeadZoneRight(double _a) => right_stick_fix_info.fix0_fix1_clip = _a is not double.NaN ? (int)Math.Clamp(_a, 0, 127) : null;
+        private void SetEnlargementFactorRight(double _b) => right_stick_fix_info.fix2_radius_max = _b is not double.NaN ? Math.Clamp(_b, 128, 1280) : null;
+        private void SetClipRadiusRight(double _c) => right_stick_fix_info.fix3_radius_max = _c is not double.NaN ? Math.Clamp(_c, 64, 180) : null;
     }
 
     public sealed partial class StickController
@@ -72,7 +85,7 @@ namespace CustomMacroBase.Helper.Tools.OtherManager
         private void LStickFix(in DS4StateLite _v, StickFixInfo _) => fix_all(ref _v.LX, ref _v.LY, _.fix0_fix1_clip, _.fix2_radius_max, _.fix3_radius_max);
         private void RStickFix(in DS4StateLite _v, StickFixInfo _) => fix_all(ref _v.RX, ref _v.RY, _.fix0_fix1_clip, _.fix2_radius_max, _.fix3_radius_max);
 
-        private void fix_all(ref byte x, ref byte y, int clip, double radius_2 = 128.0, double radius_3 = 127.0)
+        private void fix_all(ref byte x, ref byte y, int? clip, double? radius_2 = 128.0, double? radius_3 = 127.0)
         {
             if (fix0(ref x, ref y, clip) is false)
             {
@@ -83,42 +96,46 @@ namespace CustomMacroBase.Helper.Tools.OtherManager
         }
 
         //死区（必要）
-        private bool fix0(ref byte x, ref byte y, int clip)
+        private bool fix0(ref byte x, ref byte y, int? clip)
         {
-            if (Math.Pow(x - 128, 2.0) + Math.Pow(y - 128, 2.0) <= Math.Pow(clip, 2.0)) { x = y = 128; return true; }
+            if (clip is null) { return false; }
+            if (Math.Pow(x - 128, 2.0) + Math.Pow(y - 128, 2.0) <= Math.Pow(clip.Value, 2.0)) { x = y = 128; return true; }
             return false;
         }
         //反死区（必要）
-        private void fix1(ref byte x, ref byte y, double clip)
+        private void fix1(ref byte x, ref byte y, double? clip)
         {
+            if (clip is null) { return; }
             int nx = x - 128;
             int ny = y - 128;
             double input = Math.Sqrt(Math.Pow(nx, 2.0) + Math.Pow(ny, 2.0));
-            double ratio_reduce = (input - clip) / input;
-            double ratio_magnify = 128.0 / (128.0 - clip);
+            double ratio_reduce = (input - clip.Value) / input;
+            double ratio_magnify = 128.0 / (128.0 - clip.Value);
             double ratio_final = ratio_reduce * ratio_magnify;
             x = (byte)Math.Clamp(128 + nx * ratio_final, 0, 255);
             y = (byte)Math.Clamp(128 + ny * ratio_final, 0, 255);
         }
         //将圆放大（必要） 128=0.61  160=0.65  192=0.68  224=0.71  256=0.73  288=0.75  320=0.76  352=0.77  384=0.79  416=0.8  1280=0.85
-        private void fix2(ref byte x, ref byte y, double radius_max)
+        private void fix2(ref byte x, ref byte y, double? radius_max)
         {
+            if (radius_max is null) { return; }
             int nx = x - 128;
             int ny = y - 128;
             double input = Math.Sqrt(Math.Pow(nx, 2.0) + Math.Pow(ny, 2.0));
             double ratio_limit = 128.0 / Math.Max(Math.Abs(nx), Math.Abs(ny));
-            double ratio_target = 1.0 + (input / radius_max);
+            double ratio_target = 1.0 + (input / radius_max.Value);
             double ratio_final = Math.Min(ratio_target, ratio_limit);
             x = (byte)Math.Clamp(128 + nx * ratio_final, 0, 255);
             y = (byte)Math.Clamp(128 + ny * ratio_final, 0, 255);
         }
         //从外至内裁剪圆（非必要） 
-        private void fix3(ref byte x, ref byte y, double radius_max)
+        private void fix3(ref byte x, ref byte y, double? radius_max)
         {
+            if (radius_max is null) { return; }
             int nx = x - 128;
             int ny = y - 128;
             double input = Math.Sqrt(Math.Pow(nx, 2.0) + Math.Pow(ny, 2.0));
-            double ratio_target = radius_max / input;
+            double ratio_target = radius_max.Value / input;
             double ratio_final = Math.Min(ratio_target, 1.0);
             x = (byte)Math.Clamp(128 + nx * ratio_final, 0, 255);
             y = (byte)Math.Clamp(128 + ny * ratio_final, 0, 255);

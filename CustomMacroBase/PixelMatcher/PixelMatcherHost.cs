@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using static CustomMacroBase.PixelMatcher.OpenCV;
 
 namespace CustomMacroBase.PixelMatcher
 {
@@ -50,12 +51,22 @@ namespace CustomMacroBase.PixelMatcher
             if (flag) { UpdateFrames?.Invoke(); }
             return MatchNumber(rect, isWhiteText, zoomratio);
         }
+        public static string FindNumber(Rectangle rect, bool isWhiteText, DeviceType deviceType, double zoomratio, bool flag)
+        {
+            if (flag) { UpdateFrames?.Invoke(); }
+            return MatchNumber(rect, isWhiteText, deviceType, zoomratio);
+        }
 
         //找字
         public static string FindText(Rectangle rect, bool isWhiteText, string language, string whitelist, double zoomratio, bool flag)
         {
             if (flag) { UpdateFrames?.Invoke(); }
             return MatchText(rect, isWhiteText, language, whitelist, zoomratio);
+        }
+        public static string FindText(Rectangle rect, bool isWhiteText, DeviceType deviceType, ModelType language, double zoomratio, bool flag)
+        {
+            if (flag) { UpdateFrames?.Invoke(); }
+            return MatchText(rect, isWhiteText, deviceType, language, zoomratio);
         }
     }
 }

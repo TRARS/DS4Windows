@@ -92,6 +92,10 @@ namespace CustomMacroBase.CustomControlEx.ContextMenuEx
                     HotKeyManager.Instance.RegisterHotKey(_accesskey, this.GetKeys, _callback);
                     Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, $"RegisterHotKey: {_text}, {string.Join(",", this.GetKeys)}");
                 }
+                else
+                {
+                    Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, $"UnregisterHotKey: {_text}");
+                }
             }
         }
     }

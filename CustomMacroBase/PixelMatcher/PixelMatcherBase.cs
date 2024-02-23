@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using static CustomMacroBase.PixelMatcher.OpenCV;
 
 namespace CustomMacroBase.PixelMatcher
 {
@@ -265,6 +266,14 @@ namespace CustomMacroBase.PixelMatcher
             if (screenshot is null) { return string.Empty; }
             return OpenCV.Instance.MatchNumber(ref screenshot, rect, isWhiteText, zoomratio);
         }
+        /// <summary>
+        /// 范围找字_尝试识别区域内的数字 (PaddleSharp)
+        /// </summary>
+        private protected static string MatchNumber(Rectangle rect, bool isWhiteText, DeviceType deviceType, double zoomratio)
+        {
+            if (screenshot is null) { return string.Empty; }
+            return OpenCV.Instance.MatchNumber(ref screenshot, rect, isWhiteText, deviceType, ModelType.EnglishV3, zoomratio);
+        }
         #endregion
 
         #region 范围找字
@@ -275,6 +284,14 @@ namespace CustomMacroBase.PixelMatcher
         {
             if (screenshot is null) { return string.Empty; }
             return OpenCV.Instance.MatchText(ref screenshot, rect, isWhiteText, language, whitelist, zoomratio);
+        }
+        /// <summary>
+        /// 范围找字_尝试识别区域内的文字，需指定语言 (PaddleSharp)
+        /// </summary>
+        private protected static string MatchText(Rectangle rect, bool isWhiteText, DeviceType deviceType, ModelType language, double zoomratio)
+        {
+            if (screenshot is null) { return string.Empty; }
+            return OpenCV.Instance.MatchText(ref screenshot, rect, isWhiteText, deviceType, language, zoomratio);
         }
         #endregion
     }

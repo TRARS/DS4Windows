@@ -155,4 +155,20 @@ namespace CustomMacroBase.CustomControlEx.VerticalButtonEx
             typeMetadata: new FrameworkPropertyMetadata("+", FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
         );
     }
+
+    //
+    public partial class cVerticalButton
+    {
+        public object RightClickContent
+        {
+            get { return (object)GetValue(RightClickContentProperty); }
+            set { SetValue(RightClickContentProperty, value); }
+        }
+        public static readonly DependencyProperty RightClickContentProperty = DependencyProperty.Register(
+            name: "RightClickContent",
+            propertyType: typeof(object),
+            ownerType: typeof(cVerticalButton),
+            typeMetadata: new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
+        );
+    }
 }

@@ -1,9 +1,12 @@
-﻿using CustomMacroBase.CustomControlEx.ComboBoxEx;
+﻿using CustomMacroBase.CustomControlEx.AggregateBindingControl;
+using CustomMacroBase.CustomControlEx.ComboBoxEx;
 using CustomMacroBase.CustomControlEx.SliderEx;
 using CustomMacroBase.CustomControlEx.StackPanelEx;
+using CustomMacroBase.CustomControlEx.ToggleButtonEx;
 using CustomMacroBase.CustomControlEx.ValueIndicatorEx;
 using CustomMacroBase.GamePadState;
 using CustomMacroBase.Helper;
+using CustomMacroBase.Helper.Converter;
 using CustomMacroBase.Helper.ProConSimulate;
 using CustomMacroBase.PreBase;
 using System;
@@ -20,6 +23,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Media;
+using static CustomMacroBase.PixelMatcher.OpenCV;
 
 //GateBase
 namespace CustomMacroBase.PreBase
@@ -437,9 +441,24 @@ namespace CustomMacroBase
         /// <para>-</para>
         /// <para>返回值：<see cref="string"/> 类型，识别成功返回字符串，识别失败返回空字符串</para>
         /// </summary>
+        [Obsolete]
         protected static string FindNumber(Rectangle rect, double zoomratio = 2.0, bool flag = true)
         {
             return PixelMatcher.PixelMatcherHost.FindNumber(rect, true, zoomratio, flag);
+        }
+        /// <summary>
+        /// <para>范围找字（仅限数字0~9）</para>
+        /// <para>-</para>
+        /// <para>参数 rect：<see cref="Rectangle"/> 类型，描述查找范围的矩形（比如填'new(10, 20, 30, 40)'意为将范围限定在'x=10,y=20,width=30,height=40'的矩形内）</para>
+        /// <para>参数 deviceType：<see cref="DeviceType"/> 类型，指定设备类型（Mkldnn/Onnx/Openblas/Gpu）</para>
+        /// <para>参数 zoomratio：<see cref="double"/> 类型，缩放比例（比如填'2'意为宽高均拉伸至原来的2倍）</para>
+        /// <para>参数 flag：<see cref="bool"/> 类型，是否获取最新画面（比如填'false'意为不获取新截图而是采用旧的截图进行找字）</para>
+        /// <para>-</para>
+        /// <para>返回值：<see cref="string"/> 类型，识别成功返回字符串，识别失败返回空字符串</para>
+        /// </summary>
+        protected static string FindNumber(Rectangle rect, DeviceType deviceType, double zoomratio = 2.0, bool flag = true)
+        {
+            return PixelMatcher.PixelMatcherHost.FindNumber(rect, true, deviceType, zoomratio, flag);
         }
 
         /// <summary>
@@ -454,6 +473,7 @@ namespace CustomMacroBase
         /// <para>-</para>
         /// <para>返回值：<see cref="string"/> 类型，识别成功返回字符串，识别失败返回空字符串</para>
         /// </summary>
+        [Obsolete]
         protected static string FindText(Rectangle rect, bool iswhitetext = true, string language = "eng", string whitelist = "", double zoomratio = 2.0, bool flag = true)
         {
             return PixelMatcher.PixelMatcherHost.FindText(rect, iswhitetext, language, whitelist, zoomratio, flag);
@@ -469,9 +489,26 @@ namespace CustomMacroBase
         /// <para>-</para>
         /// <para>返回值：<see cref="string"/> 类型，识别成功返回字符串，识别失败返回空字符串</para>
         /// </summary>
+        [Obsolete]
         protected static string FindText(Rectangle rect, string language = "eng", string whitelist = "", double zoomratio = 2.0, bool flag = true)
         {
             return PixelMatcher.PixelMatcherHost.FindText(rect, true, language, whitelist, zoomratio, flag);
+        }
+
+        /// <summary>
+        /// <para>范围找字</para>
+        /// <para>-</para>
+        /// <para>参数 rect：<see cref="Rectangle"/> 类型，描述查找范围的矩形（比如填'new(10, 20, 30, 40)'意为将范围限定在'x=10,y=20,width=30,height=40'的矩形内）</para>
+        /// <para>参数 deviceType：<see cref="DeviceType"/> 类型，指定设备类型（Mkldnn/Onnx/Openblas/Gpu）</para>
+        /// <para>参数 language：<see cref="ModelType"/> 类型，指定语言（EnglishV3/JapanV3/ChineseV3/TraditionalChineseV3）</para>
+        /// <para>参数 zoomratio：<see cref="double"/> 类型，缩放比例（比如填'2'意为宽高均拉伸至原来的2倍）</para>
+        /// <para>参数 flag：<see cref="bool"/> 类型，是否获取最新画面（比如填'false'意为不获取新截图而是采用旧的截图进行找字）</para>
+        /// <para>-</para>
+        /// <para>返回值：<see cref="string"/> 类型，识别成功返回字符串，识别失败返回空字符串</para>
+        /// </summary>
+        protected static string FindText(Rectangle rect, DeviceType deviceType, ModelType language = ModelType.EnglishV3, double zoomratio = 2.0, bool flag = true)
+        {
+            return PixelMatcher.PixelMatcherHost.FindText(rect, true, deviceType, language, zoomratio, flag);
         }
 
         /// <summary>
@@ -796,6 +833,100 @@ namespace CustomMacroBase
                     textblock.Inlines.Add(run_suf);
 
                     BindingOperations.SetBinding(run_value, Run.TextProperty, new Binding(propName) { Source = model, Mode = BindingMode.OneWay, StringFormat = $"{(flag ? "0" : "0.00")}" });
+                }
+
+                stackpanel.Children.Add(slider);
+                stackpanel.Children.Add(textblock);
+                stackpanel.Visibility = hideself ? Visibility.Hidden : Visibility.Visible;
+                stackpanel.Height = hideself ? 0 : stackpanel.Height;
+                stackpanel.IsHitTestVisible = hideself is false;
+                stackpanel.Margin = hideself ? new(0) : new(0, 1, 0, 1);
+            }
+
+            return stackpanel;
+        }
+        /// <summary>
+        /// CreateSlider2
+        /// </summary>
+        protected static UIElement CreateSlider2(double minimum,
+                                                  double maximum,
+                                                  object model,
+                                                  string propName,
+                                                  double tickFrequency = 1,
+                                                  string sliderTextPrefix = "",
+                                                  double defalutValue = 0,
+                                                  string sliderTextSuffix = "",
+                                                  bool hideself = false,
+                                                  bool useonoffswitch = true)
+        {
+            var stackpanel = new cStackPanel() { GuideLineColor = new(Colors.WhiteSmoke) };
+            {
+                var slider = new cSlider()
+                {
+                    Orientation = Orientation.Horizontal,
+                    HorizontalAlignment = System.Windows.HorizontalAlignment.Left,
+                    VerticalAlignment = System.Windows.VerticalAlignment.Center,
+                    Width = 100,
+                    Maximum = maximum,
+                    Minimum = minimum,
+                    TickFrequency = tickFrequency,
+                    LargeChange = tickFrequency,
+                    SmallChange = tickFrequency,
+                    IsSnapToTickEnabled = true,
+                    DefalutValue = defalutValue,
+                };
+                {
+                    slider.Loaded += (s, e) =>
+                    {
+                        slider.Value = defalutValue;
+                    };
+                    slider.PreviewMouseWheel += (s, e) =>
+                    {
+                        if (e.Delta > 0) { slider.Value = Math.Min(slider.Value + tickFrequency, slider.Maximum); }
+                        if (e.Delta < 0) { slider.Value = Math.Max(slider.Value - tickFrequency, slider.Minimum); }
+                        e.Handled = true;
+                    };
+                    slider.PreviewMouseRightButtonUp += (s, e) =>
+                    {
+                        slider.Value = Math.Clamp(slider.DefalutValue, slider.Minimum, slider.Maximum);
+                    };
+                }
+
+                var textblock = new TextBlock() { Foreground = new SolidColorBrush(Colors.White), VerticalAlignment = VerticalAlignment.Center, Margin = new(5, 0, 0, 0) };
+                {
+                    bool flag = (tickFrequency % 1 == 0);
+
+                    var run_pre = new Run($"{sliderTextPrefix}{(sliderTextPrefix.Length == 0 ? "" : " ")}");
+                    var run_value = new Run();
+                    var run_suf = new Run($"{(sliderTextSuffix.Length == 0 ? "" : " ")}{sliderTextSuffix}");
+                    textblock.Inlines.Add(run_pre);
+                    textblock.Inlines.Add(run_value);
+                    textblock.Inlines.Add(run_suf);
+
+                    BindingOperations.SetBinding(run_value, Run.TextProperty, new Binding(propName) { Source = model, Mode = BindingMode.OneWay, StringFormat = $"{(flag ? "0" : "0.00")}" });
+                }
+
+                if (useonoffswitch)
+                {
+                    //doublebool2double
+                    var temp = new cAggregateBindingControl() { Visibility = Visibility.Collapsed };
+                    var btn = new cToggleButton() { GuideLineVisibility = Visibility.Collapsed, IsChecked = true, UseAlternateDotColor = true };
+                    {
+                        //将cToggleButton.IsChecked和Slider.Value绑定至cAggregateBindingControl的TextBlock.Text上
+                        MultiBinding multiBinding = new MultiBinding() { Converter = new cSlider_converter_doublebool2double(), Mode = BindingMode.OneWay };
+                        {
+                            multiBinding.Bindings.Add(new Binding(nameof(Slider.Value)) { Source = slider });
+                            multiBinding.Bindings.Add(new Binding(nameof(cToggleButton.IsChecked)) { Source = btn });
+                        }
+                        BindingOperations.SetBinding(temp, cAggregateBindingControl.DoubleTemp1Property, multiBinding);
+                        BindingOperations.SetBinding(temp, cAggregateBindingControl.DoubleTemp2Property, new Binding(propName) { Source = model, Mode = BindingMode.OneWayToSource });
+                    }
+                    stackpanel.Children.Add(temp);
+                    stackpanel.Children.Add(btn);
+                }
+                else
+                {
+                    BindingOperations.SetBinding(slider, Slider.ValueProperty, new Binding(propName) { Source = model });
                 }
 
                 stackpanel.Children.Add(slider);
