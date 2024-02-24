@@ -706,7 +706,7 @@
             组名字典
             </summary>
         </member>
-        <member name="M:CustomMacroBase.PreBase.GateBase.RegisteGroupName(System.String,CustomMacroBase.PreBase.GateBase)">
+        <member name="M:CustomMacroBase.PreBase.GateBase.RegisterGroupName(System.String,CustomMacroBase.PreBase.GateBase)">
             <summary>
             注册进组
             </summary>

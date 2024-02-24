@@ -128,7 +128,7 @@ namespace CustomMacroBase.PreBase
         /// <summary>
         /// 注册进组
         /// </summary>
-        private static void RegisteGroupName(string groupname, GateBase item)
+        private static void RegisterGroupName(string groupname, GateBase item)
         {
             if (GroupNameList.ContainsKey(groupname) is false)
             {
@@ -164,7 +164,7 @@ namespace CustomMacroBase.PreBase
                 _groupname = value;
                 if (_groupname is not null)
                 {
-                    RegisteGroupName(_groupname, this);
+                    RegisterGroupName(_groupname, this);
                     NotifyGroupMemberUpdate(this);
                 }
             }

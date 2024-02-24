@@ -302,7 +302,8 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.ClientEx
                     SubContent = new()
                     {
                         new() { SubFlag = true, Text = "Snapshot", Command = () => { CustomMacroBase.PixelMatcher.PixelMatcherHost.CopyToClipboardEx(); }, ToolTip = "Get a screenshot of the target window" },
-                        new() { SubFlag = true, Text = "Resize", Command = () => { CustomMacroBase.PixelMatcher.PixelMatcherHost.SetTargetWindowSizeEx(1920, 1080); }, ToolTip = "Resize the target window (client area) to 1920x1080" },
+                        new() { SubFlag = true, Text = "Resize(1080P)", Command = () => { CustomMacroBase.PixelMatcher.PixelMatcherHost.SetTargetWindowSizeEx(1920, 1080); }, ToolTip = "Resize the target window (client area) to 1920x1080" },
+                        new() { SubFlag = true, Text = "Resize(720P)", Command = () => { CustomMacroBase.PixelMatcher.PixelMatcherHost.SetTargetWindowSizeEx(1280, 720); }, ToolTip = "Resize the target window (client area) to 1280x720" },
                     }
                 });
                 this.TopContent_Left.Add(new()
