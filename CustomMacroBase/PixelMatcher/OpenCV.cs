@@ -526,12 +526,14 @@ namespace CustomMacroBase.PixelMatcher
                     _ => throw new NotImplementedException()
                 };
 
+                var usegpu = _devicetype == DeviceType.Gpu; //gpu跑够快，用V4模型更准
+
                 var model = _modeltype switch
                 {
-                    ModelType.EnglishV3 => LocalFullModels.EnglishV3,
-                    ModelType.JapanV3 => LocalFullModels.JapanV3,
-                    ModelType.ChineseV3 => LocalFullModels.ChineseV3,
-                    ModelType.TraditionalChineseV3 => LocalFullModels.TraditionalChineseV3,
+                    ModelType.EnglishV3 => usegpu ? LocalFullModels.EnglishV4 : LocalFullModels.EnglishV3,
+                    ModelType.JapanV3 => usegpu ? LocalFullModels.JapanV4 : LocalFullModels.JapanV3,
+                    ModelType.ChineseV3 => usegpu ? LocalFullModels.ChineseV4 : LocalFullModels.ChineseV3,
+                    ModelType.TraditionalChineseV3 => LocalFullModels.TraditionalChineseV3, //无V4
                     _ => throw new NotImplementedException()
                 };
 
@@ -614,7 +616,5 @@ namespace CustomMacroBase.PixelMatcher
             }
             Cv2.LUT(src, lut, dst);
         }
-
-        //
     }
 }

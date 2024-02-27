@@ -1048,7 +1048,9 @@ namespace CustomMacroBase
             /// <para>propnamecolor: 属性名的颜色</para>
             /// <para>propvaluecolor: 属性值的颜色</para>
             /// <para>propvaluecolorswitcher: 属性值的颜色的选择</para>
+            /// <para>coloncolor: 冒号颜色</para>
             /// <para>backgroundcolor: 背景颜色</para>
+            /// <para>backgroundcornerradius: 背景圆角半径</para>
             /// </summary>
             public ValueIndicatorPacket(string propname,
                                         SolidColorBrush? propnamecolor = null,
