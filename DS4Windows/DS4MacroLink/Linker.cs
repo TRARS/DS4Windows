@@ -109,10 +109,13 @@ namespace DS4Windows
             cState.R2Btn = v.R2 > 0;
         }
 
-        public static void Entry(in DS4State currentState)
+        public static void Entry(in int ind, in DS4State currentState)
         {
+            var mix = GamepadInputMixer.Instance.AllowMix();
+            if ((mix && ind > 1) || (mix is false && ind != 0)) { return; }
+
             StateConverter(in currentState, out DS4StateLite realState, out DS4StateLite virtualState);
-            CustomMacroFactoryInstance.MainView.DS4StateCustomUpdateMain(in realState, in virtualState);
+            CustomMacroFactoryInstance.MainView.DS4StateCustomUpdateMain(in ind, in realState, in virtualState);
             StateConverter(in virtualState, in currentState);
         }
     }

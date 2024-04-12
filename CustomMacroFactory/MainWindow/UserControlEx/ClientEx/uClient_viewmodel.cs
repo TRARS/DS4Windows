@@ -383,6 +383,21 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.ClientEx
                         ToolTipService.SetInitialShowDelay(self, 256);
                     }
                 });
+                this.TopContent_LeftEx.Add(new cToggleButton()
+                {
+                    Margin = new(4, 0, 4, 0),
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    GuideLineColor = new SolidColorBrush(Colors.OrangeRed),
+                    Text = "Ex3",
+                    ToolTip = "Allow the 2nd controller to access the Macro.",
+                    CheckedAct = () => { GamepadInputMixer.Instance.Reset(0); },
+                    UncheckedAct = () => { GamepadInputMixer.Instance.Reset(1); },
+                    LoadedAct = (self) =>
+                    {
+                        ToolTipService.SetInitialShowDelay(self, 256);
+                    }
+                });
             }
 
             //TopContent_Middle

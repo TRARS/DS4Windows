@@ -21,7 +21,17 @@ namespace CustomMacroBase.Helper
             if (slot != 0) { OnSlotConsumed?.Invoke(); }
             return flag;
         }
-        public void Reset(int value = 0) => Interlocked.Exchange(ref slot, value);
+        public void Reset(int value = 0)
+        {
+            Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, value switch
+            {
+                0 => "Virtual DS4 controller can now be plugged in.",
+                1 => "Ex1 toggle switch has been reset.",
+                _ => throw new NotImplementedException()
+            });
+
+            Interlocked.Exchange(ref slot, value);
+        }
     }
 
     public sealed partial class SingleDs4Accessor

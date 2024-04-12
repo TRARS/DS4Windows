@@ -15,10 +15,10 @@ namespace CustomMacroFactory.MacroFactory
         public static List<MacroBase> GameList => Creator.CurrentGameList;
         public static MacroBase? PreSettings => Creator.PreSettingsMacro;
 
-        public static void Entry(in DS4StateLite _realState, in DS4StateLite _virtualState)
+        public static void Entry(in int ind, in DS4StateLite _realState, in DS4StateLite _virtualState)
         {
-            Creator.PreSettingsMacro?.UpdateEntry(in _realState, in _virtualState); //Inner
-            Creator.CurrentRunnableMacro?.UpdateEntry(in _realState, in _virtualState);
+            Creator.PreSettingsMacro?.UpdateEntry(in ind, in _realState, in _virtualState); //Inner
+            Creator.CurrentRunnableMacro?.UpdateEntry(in ind, in _realState, in _virtualState);
         }
     }
 }

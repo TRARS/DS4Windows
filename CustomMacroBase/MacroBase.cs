@@ -330,6 +330,7 @@ namespace CustomMacroBase
         #region 仅限基类内部访问的 字段
         private static DS4StateLite? rStateLite;//真实手柄
         private static DS4StateLite? vStateLite;//虚拟手柄
+        private static int vIndex = -1;
         private readonly MacroModel model = new();
         #endregion
 
@@ -347,6 +348,11 @@ namespace CustomMacroBase
         /// 获取虚拟手柄按键状态
         /// </summary>
         protected static DS4StateLite VirtualDS4 => vStateLite;
+
+        /// <summary>
+        /// 获取手柄Index
+        /// </summary>
+        protected static int Ind => vIndex;
 
         /// <summary>
         /// <para>通过反射更新虚拟手柄按键状态</para>
@@ -570,10 +576,11 @@ namespace CustomMacroBase
         /// <summary>
         /// 入口
         /// </summary>
-        public void UpdateEntry(in DS4StateLite _realState, in DS4StateLite _virtualState)
+        public void UpdateEntry(in int _ind, in DS4StateLite _realState, in DS4StateLite _virtualState)
         {
             rStateLite = _realState;
             vStateLite = _virtualState;
+            vIndex = _ind;
             this.UpdateState();
         }
         #endregion
@@ -980,6 +987,48 @@ namespace CustomMacroBase
             return stackpanel;
         }
 
+        /// <summary>
+        /// CreateComboBox
+        /// </summary>
+        protected static UIElement CreateComboBox(object model,
+                                                  string itemSourcePropName,
+                                                  string selectedItemPropName,
+                                                  string selectedIndexPropName,
+                                                  string commentText = "",
+                                                  int defalutIndex = 0,
+                                                  bool hideself = false)
+        {
+            var stackpanel = new cStackPanel() { GuideLineColor = new(Colors.WhiteSmoke) };
+            {
+                var combobox = new cComboBox()
+                {
+                    HorizontalAlignment = System.Windows.HorizontalAlignment.Left,
+                    VerticalAlignment = System.Windows.VerticalAlignment.Center,
+                    Width = 100
+                };
+                {
+                    combobox.Loaded += (s, e) =>
+                    {
+                        combobox.SelectedIndex = defalutIndex;
+                    };
+
+                    BindingOperations.SetBinding(combobox, ComboBox.ItemsSourceProperty, new Binding(itemSourcePropName) { Source = model });
+                    BindingOperations.SetBinding(combobox, ComboBox.SelectedItemProperty, new Binding(selectedItemPropName) { Source = model });
+                    BindingOperations.SetBinding(combobox, ComboBox.SelectedIndexProperty, new Binding(selectedIndexPropName) { Source = model });
+                }
+
+                var textblock = new TextBlock() { Text = commentText, Foreground = new SolidColorBrush(Colors.White), VerticalAlignment = VerticalAlignment.Center, Margin = new(5, 0, 0, 0) };
+
+                stackpanel.Children.Add(combobox);
+                stackpanel.Children.Add(textblock);
+                stackpanel.Visibility = hideself ? Visibility.Hidden : Visibility.Visible;
+                stackpanel.Height = hideself ? 0 : stackpanel.Height;
+                stackpanel.IsHitTestVisible = hideself is false;
+                stackpanel.Margin = hideself ? new(0) : new(0, 1, 0, 1);
+            }
+
+            return stackpanel;
+        }
 
         ///// <summary>
         ///// CreateValueIndicator

@@ -39,6 +39,11 @@
         <member name="P:CustomMacroBase.CustomEffect.MagnifyEffect.AspectRatio">
             <summary>The aspect ratio (width / height) of the input.</summary>
         </member>
+        <member name="M:CustomMacroBase.CustomEffect.PolarCoordinatesEffect.PolarCoordinatesEffect.#ctor">
+            <summary>
+            极坐标
+            </summary>
+        </member>
         <member name="M:CustomMacroBase.CustomEffect.TranslationalEffect.#ctor">
             <summary>
             线性减淡+平移
@@ -820,6 +825,11 @@
             获取虚拟手柄按键状态
             </summary>
         </member>
+        <member name="P:CustomMacroBase.MacroBase.Ind">
+            <summary>
+            获取手柄Index
+            </summary>
+        </member>
         <member name="M:CustomMacroBase.MacroBase.UpdateNow(System.String@,System.Byte@)">
             <summary>
             <para>通过反射更新虚拟手柄按键状态</para>
@@ -959,7 +969,7 @@
             <para>按钮文本染色</para>
             </summary>
         </member>
-        <member name="M:CustomMacroBase.MacroBase.UpdateEntry(CustomMacroBase.GamePadState.DS4StateLite@,CustomMacroBase.GamePadState.DS4StateLite@)">
+        <member name="M:CustomMacroBase.MacroBase.UpdateEntry(System.Int32@,CustomMacroBase.GamePadState.DS4StateLite@,CustomMacroBase.GamePadState.DS4StateLite@)">
             <summary>
             入口
             </summary>
@@ -1018,6 +1028,11 @@
             </summary>
         </member>
         <member name="M:CustomMacroBase.MacroBase.CreateComboBox(System.Object,System.String,System.String,System.String,System.Int32,System.Boolean)">
+            <summary>
+            CreateComboBox
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.MacroBase.CreateComboBox(System.Object,System.String,System.String,System.String,System.String,System.Int32,System.Boolean)">
             <summary>
             CreateComboBox
             </summary>

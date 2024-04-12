@@ -75,14 +75,8 @@
   <ItemGroup>
     <Resource Include="CustomEffect\InvertedColorEffect\InvertedColorEffect.ps" />
     <Resource Include="CustomEffect\MagnifyEffect\MagnifyEffect.ps" />
+    <Resource Include="CustomEffect\PolarCoordinatesEffect\PolarCoordinatesEffect.ps" />
     <Resource Include="CustomEffect\TranslationalEffect\TranslationalEffect.ps" />
   </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="C:\Users\arsTemp\.nuget\packages\tesseract\5.2.0\build\\..\x86\leptonica-1.82.0.dll" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="C:\Users\arsTemp\.nuget\packages\tesseract\5.2.0\build\\..\x86\tesseract50.dll" />
-  </ItemGroup>
+  
 </Project>

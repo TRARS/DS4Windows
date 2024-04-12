@@ -31,12 +31,12 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.TitleBarEx
 
     public partial class uTitleBar
     {
-        public new bool IsActive
+        public bool IsActive
         {
             get { return (bool)GetValue(IsActiveProperty); }
             set { SetValue(IsActiveProperty, value); }
         }
-        public static new readonly DependencyProperty IsActiveProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty IsActiveProperty = DependencyProperty.Register(
             name: "IsActive",
             propertyType: typeof(bool),
             ownerType: typeof(uTitleBar),

@@ -175,9 +175,9 @@ namespace CustomMacroFactory.MainWindow
     //Entry
     public partial class MainWindow
     {
-        public void DS4StateCustomUpdateMain(in DS4StateLite _realState, in DS4StateLite _virtualState)
+        public void DS4StateCustomUpdateMain(in int ind, in DS4StateLite _realState, in DS4StateLite _virtualState)
         {
-            MacroManager.Entry(in _realState, in _virtualState);
+            MacroManager.Entry(in ind, in _realState, in _virtualState);
         }
     }
 }

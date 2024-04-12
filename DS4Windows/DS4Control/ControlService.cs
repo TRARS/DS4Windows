@@ -2760,7 +2760,8 @@ namespace DS4Windows
                         }
                     }
 
-                    if (ind == 0) { CustomMacroLink.Entry(in cState); }
+                    CustomMacroLink.Entry(in ind, in cState);
+
                     outputDevices[ind]?.ConvertandSendReport(cState, ind);
                     //testNewReport(ref x360reports[ind], cState, ind);
                     //x360controls[ind]?.SendReport(x360reports[ind]);

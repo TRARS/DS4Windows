@@ -115,9 +115,10 @@ namespace CustomMacroBase.CustomControlEx.ToggleButtonGroupEx
             }
             if (values[1] is ObservableCollection<Func<dynamic>> delegateList)
             {
-                count += delegateList.Count;
+                count += delegateList.Count();
             }
-            if (double.Parse($"{values[2]}") > 0)
+            if ((double.TryParse($"{values[2]}", out var childrenexzero) && childrenexzero > 0) ||
+                (double.TryParse($"{values[3]}", out var children) && children > 0))
             {
                 count++;
             }

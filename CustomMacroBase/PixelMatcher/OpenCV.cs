@@ -47,7 +47,7 @@ namespace CustomMacroBase.PixelMatcher
         {
             Mkldnn = 0,
             Onnx,
-            Openblas, 
+            Openblas,
             Gpu
         }
 
@@ -140,7 +140,7 @@ namespace CustomMacroBase.PixelMatcher
             catch (Exception ex) { Print($"{ex.Message}"); }
             return string.Empty;
         }
-        public string MatchText(ref Bitmap bmpA, Rectangle rect, bool isWhiteText, DeviceType deviceType ,ModelType language, double zoomratio)
+        public string MatchText(ref Bitmap bmpA, Rectangle rect, bool isWhiteText, DeviceType deviceType, ModelType language, double zoomratio)
         {
             try
             {

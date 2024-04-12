@@ -1,7 +1,6 @@
 ﻿using CustomMacroBase;
 using CustomMacroBase.Helper;
 using CustomMacroBase.Helper.Tools.OtherManager;
-using CustomMacroBase.PreBase;
 using System;
 
 namespace CustomMacroFactory.MacroFactory.InnerMacro
@@ -152,7 +151,7 @@ namespace CustomMacroFactory.MacroFactory.InnerMacro
         }
         private void RightStickFix(bool canExecute)
         {
-            if (canExecute is false) 
+            if (canExecute is false)
             {
                 SM.SetRight(double.NaN, double.NaN, double.NaN); return;
             }
