@@ -611,7 +611,7 @@ namespace CustomMacroBase.Helper
 
     public static partial class Win32_Ex_Transparency
     {
-        public static void setTransparency(Window window_obj)
+        public static void SetTransparency(Window window_obj)
         {
             ((HwndSource)PresentationSource.FromVisual(window_obj)).AddHook((IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled) =>
             {

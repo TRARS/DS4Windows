@@ -85,6 +85,11 @@ namespace CustomMacroBase.PreBase
         }
 
         /// <summary>
+        /// <para>往自身的ChildrenEx列表添加子项</para>
+        /// </summary>
+        public void AddExSelf(Func<UIElement> child) => this.ChildrenEx.Add(child);
+
+        /// <summary>
         /// 滑块开关状态反转
         /// </summary>
         public void EnableReverse() => this.Enable = !this.Enable;
@@ -614,7 +619,14 @@ namespace CustomMacroBase
             Title = Regex.Replace(this.GetType().Name, "Game_", string.Empty);
             MainGate.Text = "MainGate";
 
-            this.Init();
+            try
+            {
+                this.Init();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{ex.Message}", $"{this.GetType().Name}.cs -> Init()", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
 
@@ -791,9 +803,11 @@ namespace CustomMacroBase
                                                 string sliderTextPrefix = "",
                                                 double defalutValue = 0,
                                                 string sliderTextSuffix = "",
-                                                bool hideself = false)
+                                                bool hideself = false,
+                                                HorizontalAlignment horizontalAlignment = HorizontalAlignment.Stretch,
+                                                VerticalAlignment verticalAlignment = VerticalAlignment.Stretch)
         {
-            var stackpanel = new cStackPanel() { GuideLineColor = new(Colors.WhiteSmoke) };
+            var stackpanel = new cStackPanel() { GuideLineColor = new(Colors.WhiteSmoke), HorizontalAlignment = horizontalAlignment, VerticalAlignment = verticalAlignment };
             {
                 var slider = new cSlider()
                 {
@@ -864,9 +878,11 @@ namespace CustomMacroBase
                                                   double defalutValue = 0,
                                                   string sliderTextSuffix = "",
                                                   bool hideself = false,
-                                                  bool useonoffswitch = true)
+                                                  bool useonoffswitch = true,
+                                                  HorizontalAlignment horizontalAlignment = HorizontalAlignment.Stretch,
+                                                  VerticalAlignment verticalAlignment = VerticalAlignment.Stretch)
         {
-            var stackpanel = new cStackPanel() { GuideLineColor = new(Colors.WhiteSmoke) };
+            var stackpanel = new cStackPanel() { GuideLineColor = new(Colors.WhiteSmoke), HorizontalAlignment = horizontalAlignment, VerticalAlignment = verticalAlignment };
             {
                 var slider = new cSlider()
                 {
@@ -954,9 +970,11 @@ namespace CustomMacroBase
                                                   string selectedItemPropName,
                                                   string commentText = "",
                                                   int defalutIndex = 0,
-                                                  bool hideself = false)
+                                                  bool hideself = false,
+                                                  HorizontalAlignment horizontalAlignment = HorizontalAlignment.Stretch,
+                                                  VerticalAlignment verticalAlignment = VerticalAlignment.Stretch)
         {
-            var stackpanel = new cStackPanel() { GuideLineColor = new(Colors.WhiteSmoke) };
+            var stackpanel = new cStackPanel() { GuideLineColor = new(Colors.WhiteSmoke), HorizontalAlignment = horizontalAlignment, VerticalAlignment = verticalAlignment };
             {
                 var combobox = new cComboBox()
                 {
@@ -996,9 +1014,11 @@ namespace CustomMacroBase
                                                   string selectedIndexPropName,
                                                   string commentText = "",
                                                   int defalutIndex = 0,
-                                                  bool hideself = false)
+                                                  bool hideself = false,
+                                                  HorizontalAlignment horizontalAlignment = HorizontalAlignment.Stretch,
+                                                  VerticalAlignment verticalAlignment = VerticalAlignment.Stretch)
         {
-            var stackpanel = new cStackPanel() { GuideLineColor = new(Colors.WhiteSmoke) };
+            var stackpanel = new cStackPanel() { GuideLineColor = new(Colors.WhiteSmoke), HorizontalAlignment = horizontalAlignment, VerticalAlignment = verticalAlignment };
             {
                 var combobox = new cComboBox()
                 {
@@ -1056,7 +1076,7 @@ namespace CustomMacroBase
         protected static UIElement CreateValueIndicator(object model,
                                                         params ValueIndicatorPacket[] propPackets)
         {
-            var stackpanel = new cStackPanel() { Orientation = Orientation.Vertical, GuideLineColor = new(Colors.SeaShell) };
+            var stackpanel = new cStackPanel() { Orientation = Orientation.Vertical, GuideLineColor = new(Colors.SeaShell), VerticalAlignment = VerticalAlignment.Center };
             {
                 foreach (var item in propPackets)
                 {

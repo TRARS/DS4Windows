@@ -9,9 +9,9 @@
              Visibility="{Binding Visibility}" 
              d:Visibility="Visible"
              >
-    <d:UserControl.DataContext>
+    <!--<d:UserControl.DataContext>
         <local:uPixelPicker_viewmodel/>
-    </d:UserControl.DataContext>
+    </d:UserControl.DataContext>-->
 
     <Grid>
         <Rectangle d:Width="480" d:Height="272">

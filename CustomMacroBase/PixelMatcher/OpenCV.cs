@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Tesseract;
@@ -28,7 +27,7 @@ namespace CustomMacroBase.PixelMatcher
 
         private OpenCV() { }
 
-        private void Print([CallerMemberName] string str = "")
+        private void Print(string str = "")
         {
             Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, str);
         }
@@ -517,34 +516,37 @@ namespace CustomMacroBase.PixelMatcher
 
             if (device2ocrall.ContainsKey(key) is false)
             {
-                var device = _devicetype switch
+                Print($"Creating PaddleOcrAll object: {key}");
                 {
-                    DeviceType.Mkldnn => PaddleDevice.Mkldnn(),
-                    DeviceType.Onnx => PaddleDevice.Onnx(),
-                    DeviceType.Openblas => PaddleDevice.Openblas(),
-                    DeviceType.Gpu => PaddleDevice.Gpu(),
-                    _ => throw new NotImplementedException()
-                };
+                    var device = _devicetype switch
+                    {
+                        DeviceType.Mkldnn => PaddleDevice.Mkldnn(),
+                        DeviceType.Onnx => PaddleDevice.Onnx(),
+                        DeviceType.Openblas => PaddleDevice.Openblas(),
+                        DeviceType.Gpu => PaddleDevice.Gpu(),
+                        _ => throw new NotImplementedException()
+                    };
 
-                var usegpu = _devicetype == DeviceType.Gpu; //gpu跑够快，用V4模型更准
+                    var usegpu = _devicetype == DeviceType.Gpu; //gpu跑够快，用V4模型更准
 
-                var model = _modeltype switch
-                {
-                    ModelType.EnglishV3 => usegpu ? LocalFullModels.EnglishV4 : LocalFullModels.EnglishV3,
-                    ModelType.JapanV3 => usegpu ? LocalFullModels.JapanV4 : LocalFullModels.JapanV3,
-                    ModelType.ChineseV3 => usegpu ? LocalFullModels.ChineseV4 : LocalFullModels.ChineseV3,
-                    ModelType.TraditionalChineseV3 => LocalFullModels.TraditionalChineseV3, //无V4
-                    _ => throw new NotImplementedException()
-                };
+                    var model = _modeltype switch
+                    {
+                        ModelType.EnglishV3 => usegpu ? LocalFullModels.EnglishV4 : LocalFullModels.EnglishV3,
+                        ModelType.JapanV3 => usegpu ? LocalFullModels.JapanV4 : LocalFullModels.JapanV3,
+                        ModelType.ChineseV3 => usegpu ? LocalFullModels.ChineseV4 : LocalFullModels.ChineseV3,
+                        ModelType.TraditionalChineseV3 => LocalFullModels.TraditionalChineseV3, //无V4
+                        _ => throw new NotImplementedException()
+                    };
 
-                var all = new PaddleOcrAll(model, device)
-                {
-                    AllowRotateDetection = false, /* 允许识别有角度的文字 */
-                    Enable180Classification = false, /* 允许识别旋转角度大于90度的文字 */
-                };
+                    var all = new PaddleOcrAll(model, device)
+                    {
+                        AllowRotateDetection = false, /* 允许识别有角度的文字 */
+                        Enable180Classification = false, /* 允许识别旋转角度大于90度的文字 */
+                    };
 
-                device2ocrall.Add(key, all);
-                Print($"create ocrall: {key}");
+                    device2ocrall.Add(key, all);
+                }
+                Print($"Successfully created PaddleOcrAll object: {key}");
             }
 
             return device2ocrall[key];

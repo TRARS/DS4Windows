@@ -1,0 +1,70 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:CustomMacroBase.CustomControlEx.PointCurveChartEx" 
+                    xmlns:scrollviewerex="clr-namespace:CustomMacroBase.CustomControlEx.ScrollViewerEx">
+
+    <local:cPointCurveChart_converter_size2width x:Key="cPointCurveChart_converter_size2width"/>
+    <local:cPointCurveChart_converter_size2height x:Key="cPointCurveChart_converter_size2height"/>
+    <local:cPointCurveChart_converter_format x:Key="cPointCurveChart_converter_format"/>
+    
+    <Style TargetType="{x:Type local:cPointCurveChart}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:cPointCurveChart}">
+                    <Border x:Name="border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            MinWidth="200"
+                            MinHeight="100">
+                        
+                        <Grid>
+                            <!--网格-->
+                            <Border/>
+                            
+                            <!--曲线集合-->
+                            <Border>
+                                <scrollviewerex:cScrollViewer x:Name="ScrollViewer"
+                                                              Width="{TemplateBinding ChartSize,
+                                                                                      Converter={StaticResource cPointCurveChart_converter_size2width},
+                                                                                      ConverterParameter=200}"
+                                                              Height="{TemplateBinding ChartSize,
+                                                                                       Converter={StaticResource cPointCurveChart_converter_size2height},
+                                                                                       ConverterParameter=100}"
+                                                              BackgroundColor="#80808080"
+                                                              BackgroundCornerRadius="2.5"
+                                                              VerticalScrollBarVisibility="Hidden"
+                                                              HorizontalScrollBarVisibility="Auto"
+                                                              Margin="0,0,0,0">
+                                
+                                    <ItemsControl RenderTransformOrigin="0.5,0.5">
+                                        <!--<ItemsControl.RenderTransform>
+                                            <ScaleTransform ScaleY="-1"/>
+                                        </ItemsControl.RenderTransform>-->
+
+                                        <ItemsControl.ItemsSource>
+                                            <MultiBinding Converter="{StaticResource cPointCurveChart_converter_format}">
+                                                <Binding Path="PointLists" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                                <Binding Path="ColorList" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                                <Binding Path="ChartSize" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                                <Binding Path="ZoomRatio" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                                <Binding Path="PenSize" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                            </MultiBinding>
+                                        </ItemsControl.ItemsSource>
+
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <Grid/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                    </ItemsControl>
+                                </scrollviewerex:cScrollViewer>
+                            </Border>
+                        </Grid>
+                    
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

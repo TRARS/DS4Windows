@@ -1,101 +1,104 @@
 ﻿using CustomMacroBase;
 using CustomMacroBase.Helper;
+using CustomMacroBase.Helper.Attributes;
 using CustomMacroBase.Helper.Tools.OtherManager;
 using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace CustomMacroFactory.MacroFactory.InnerMacro
 {
-    partial class Settings_AnalogStick
+    partial class Settings_0_AnalogStick
     {
-        class InnerModel : NotificationObject
+        class InnerModel
         {
-            //
-            private double _LeftStickDeadZone = 0;
+            public ObservableCollection<double> DoubleList = new(Enumerable.Repeat(0d, 20));
+        }
+
+        class InnerViewModel : NotificationObject
+        {
+            InnerModel model = new();
+
             public double LeftStickDeadZone
             {
-                get => _LeftStickDeadZone;
+                get => model.DoubleList[0];
                 set
                 {
-                    if (_LeftStickDeadZone != value)
+                    if (model.DoubleList[0] != value)
                     {
-                        _LeftStickDeadZone = Math.Floor(value);
+                        model.DoubleList[0] = Math.Floor(value);
                         NotifyPropertyChanged();
                     }
                 }
             }
-            private double _LeftStickEnlargementFactor = 0;
             public double LeftStickEnlargementFactor
             {
-                get => _LeftStickEnlargementFactor;
+                get => model.DoubleList[1];
                 set
                 {
-                    if (_LeftStickEnlargementFactor != value)
+                    if (model.DoubleList[1] != value)
                     {
-                        _LeftStickEnlargementFactor = Math.Floor(value);
+                        model.DoubleList[1] = Math.Floor(value);
                         NotifyPropertyChanged();
                     }
                 }
             }
-            private double _LeftStickClipRadius = 0;
             public double LeftStickClipRadius
             {
-                get => _LeftStickClipRadius;
+                get => model.DoubleList[2];
                 set
                 {
-                    if (_LeftStickClipRadius != value)
+                    if (model.DoubleList[2] != value)
                     {
-                        _LeftStickClipRadius = Math.Floor(value);
+                        model.DoubleList[2] = Math.Floor(value);
                         NotifyPropertyChanged();
                     }
                 }
             }
 
-            //
-            private double _RightStickDeadZone = 0;
             public double RightStickDeadZone
             {
-                get => _RightStickDeadZone;
+                get => model.DoubleList[3];
                 set
                 {
-                    if (_RightStickDeadZone != value)
+                    if (model.DoubleList[3] != value)
                     {
-                        _RightStickDeadZone = Math.Floor(value);
+                        model.DoubleList[3] = Math.Floor(value);
                         NotifyPropertyChanged();
                     }
                 }
             }
-            private double _RightStickEnlargementFactor = 0;
             public double RightStickEnlargementFactor
             {
-                get => _RightStickEnlargementFactor;
+                get => model.DoubleList[4];
                 set
                 {
-                    if (_RightStickEnlargementFactor != value)
+                    if (model.DoubleList[4] != value)
                     {
-                        _RightStickEnlargementFactor = Math.Floor(value);
+                        model.DoubleList[4] = Math.Floor(value);
                         NotifyPropertyChanged();
                     }
                 }
             }
-            private double _RightStickClipRadius = 0;
             public double RightStickClipRadius
             {
-                get => _RightStickClipRadius;
+                get => model.DoubleList[5];
                 set
                 {
-                    if (_RightStickClipRadius != value)
+                    if (model.DoubleList[5] != value)
                     {
-                        _RightStickClipRadius = Math.Floor(value);
+                        model.DoubleList[5] = Math.Floor(value);
                         NotifyPropertyChanged();
                     }
                 }
             }
         }
 
-        InnerModel model = new();
+        static InnerViewModel viewmodel = new();
     }
 
-    partial class Settings_AnalogStick : MacroBase
+    [SortIndex(0)]
+    partial class Settings_0_AnalogStick : MacroBase
     {
         public override void Init()
         {
@@ -104,16 +107,16 @@ namespace CustomMacroFactory.MacroFactory.InnerMacro
 
             MainGate.Add(CreateGateBase("LeftStick"));//[0]
             {
-                MainGate[0].AddEx(() => CreateSlider2(0, 127, model, nameof(model.LeftStickDeadZone), 1, "DeadZone", defalutValue: 0));
-                MainGate[0].AddEx(() => CreateSlider2(128, 1280, model, nameof(model.LeftStickEnlargementFactor), 1, "EnlargementFactor", defalutValue: 1280));
-                MainGate[0].AddEx(() => CreateSlider2(64, 180, model, nameof(model.LeftStickClipRadius), 1, "ClipRadius", defalutValue: 128));
+                MainGate[0].AddEx(() => CreateSlider2(0, 127, viewmodel, nameof(viewmodel.LeftStickDeadZone), 1, "DeadZone", defalutValue: 0));
+                MainGate[0].AddEx(() => CreateSlider2(128, 1280, viewmodel, nameof(viewmodel.LeftStickEnlargementFactor), 1, "EnlargementFactor", defalutValue: 1280));
+                MainGate[0].AddEx(() => CreateSlider2(64, 180, viewmodel, nameof(viewmodel.LeftStickClipRadius), 1, "ClipRadius", defalutValue: 128));
             }
 
             MainGate.Add(CreateGateBase("RightStick"));//[1]
             {
-                MainGate[1].AddEx(() => CreateSlider2(0, 127, model, nameof(model.RightStickDeadZone), 1, "DeadZone", defalutValue: 0));
-                MainGate[1].AddEx(() => CreateSlider2(128, 1280, model, nameof(model.RightStickEnlargementFactor), 1, "EnlargementFactor", defalutValue: 1280));
-                MainGate[1].AddEx(() => CreateSlider2(64, 180, model, nameof(model.RightStickClipRadius), 1, "ClipRadius", defalutValue: 128));
+                MainGate[1].AddEx(() => CreateSlider2(0, 127, viewmodel, nameof(viewmodel.RightStickDeadZone), 1, "DeadZone", defalutValue: 0));
+                MainGate[1].AddEx(() => CreateSlider2(128, 1280, viewmodel, nameof(viewmodel.RightStickEnlargementFactor), 1, "EnlargementFactor", defalutValue: 1280));
+                MainGate[1].AddEx(() => CreateSlider2(64, 180, viewmodel, nameof(viewmodel.RightStickClipRadius), 1, "ClipRadius", defalutValue: 128));
             }
         }
 
@@ -131,7 +134,7 @@ namespace CustomMacroFactory.MacroFactory.InnerMacro
         }
     }
 
-    partial class Settings_AnalogStick
+    partial class Settings_0_AnalogStick
     {
         StickController SM = new(new(0, 1280), new(0, 1280));
 
@@ -142,9 +145,9 @@ namespace CustomMacroFactory.MacroFactory.InnerMacro
                 SM.SetLeft(double.NaN, double.NaN, double.NaN); return;
             }
 
-            var deadzone = model.LeftStickDeadZone;
-            var factor = model.LeftStickEnlargementFactor;
-            var clip = model.LeftStickClipRadius;
+            var deadzone = viewmodel.LeftStickDeadZone;
+            var factor = viewmodel.LeftStickEnlargementFactor;
+            var clip = viewmodel.LeftStickClipRadius;
 
             SM.SetLeft(deadzone, factor, clip);
             SM.ExecuteAction(VirtualDS4);
@@ -156,9 +159,9 @@ namespace CustomMacroFactory.MacroFactory.InnerMacro
                 SM.SetRight(double.NaN, double.NaN, double.NaN); return;
             }
 
-            var deadzone = model.RightStickDeadZone;
-            var factor = model.RightStickEnlargementFactor;
-            var clip = model.RightStickClipRadius;
+            var deadzone = viewmodel.RightStickDeadZone;
+            var factor = viewmodel.RightStickEnlargementFactor;
+            var clip = viewmodel.RightStickClipRadius;
 
             SM.SetRight(deadzone, factor, clip);
             SM.ExecuteAction(VirtualDS4);

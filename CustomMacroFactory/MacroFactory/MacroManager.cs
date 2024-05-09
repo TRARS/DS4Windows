@@ -12,12 +12,12 @@ namespace CustomMacroFactory.MacroFactory
 
     public static partial class MacroManager
     {
-        public static List<MacroBase> GameList => Creator.CurrentGameList;
-        public static MacroBase? PreSettings => Creator.PreSettingsMacro;
+        public static List<MacroBase> CurrentGameList => Creator.CurrentGameList;
+        public static MacroBase? AnalogStickMacro => Creator.AnalogStickMacro;
 
         public static void Entry(in int ind, in DS4StateLite _realState, in DS4StateLite _virtualState)
         {
-            Creator.PreSettingsMacro?.UpdateEntry(in ind, in _realState, in _virtualState); //Inner
+            Creator.AnalogStickMacro?.UpdateEntry(in ind, in _realState, in _virtualState); //Inner
             Creator.CurrentRunnableMacro?.UpdateEntry(in ind, in _realState, in _virtualState);
         }
     }

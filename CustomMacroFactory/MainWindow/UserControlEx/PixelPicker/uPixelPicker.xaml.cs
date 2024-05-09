@@ -1,23 +1,52 @@
-﻿using System.Windows.Controls;
+﻿using CustomMacroBase.Helper;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
 {
     public partial class uPixelPicker : UserControl
     {
-        uPixelPicker_viewmodel viewmodel = new();
+        static readonly uPixelPicker_viewmodel viewmodel = new();
+        static int count = 0;
 
         public uPixelPicker()
         {
             InitializeComponent();
-            this.DataContext = viewmodel;
 
-            this.Loaded += (s, e) => { viewmodel.Loaded?.Invoke(s, e); };
-            this.PreviewMouseRightButtonUp += (s, e) => { viewmodel.PreviewMouseRightButtonUp?.Invoke(s, e); };
-            this.PreviewMouseLeftButtonDown += (s, e) => { viewmodel.PreviewMouseLeftButtonDown?.Invoke(s, e); };
-            this.PreviewMouseLeftButtonUp += (s, e) => { viewmodel.PreviewMouseLeftButtonUp?.Invoke(s, e); };
-            this.MouseEnter += (s, e) => { viewmodel.MouseEnter?.Invoke(s, e); };
-            this.MouseLeave += (s, e) => { viewmodel.MouseLeave?.Invoke(s, e); };
-            this.MouseMove += (s, e) => { viewmodel.MouseMove?.Invoke(s, e); };
+            if (count++ == 0)
+            {
+                this.DataContext = viewmodel;
+
+                this.Loaded += OnLoaded;
+                this.PreviewMouseRightButtonUp += OnPreviewMouseRightButtonUp;
+                this.PreviewMouseLeftButtonDown += OnPreviewMouseLeftButtonDown;
+                this.PreviewMouseLeftButtonUp += OnPreviewMouseLeftButtonUp;
+                this.MouseEnter += OnMouseEnter;
+                this.MouseLeave += OnMouseLeave;
+                this.MouseMove += OnMouseMove;
+            }
+            else
+            {
+                Task.Run(() =>
+                {
+                    var msg = "An exception occurred in uPixelPicker, resulting in duplicate loading.";
+                    Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, msg);
+                    MessageBox.Show(msg);
+                });
+            }
         }
+    }
+
+    public partial class uPixelPicker
+    {
+        private void OnLoaded(object s, RoutedEventArgs e) => viewmodel.Loaded?.Invoke(s, e);
+        private void OnPreviewMouseRightButtonUp(object s, MouseButtonEventArgs e) => viewmodel.PreviewMouseRightButtonUp?.Invoke(s, e);
+        private void OnPreviewMouseLeftButtonDown(object s, MouseButtonEventArgs e) => viewmodel.PreviewMouseLeftButtonDown?.Invoke(s, e);
+        private void OnPreviewMouseLeftButtonUp(object s, MouseButtonEventArgs e) => viewmodel.PreviewMouseLeftButtonUp?.Invoke(s, e);
+        private void OnMouseEnter(object s, MouseEventArgs e) => viewmodel.MouseEnter?.Invoke(s, e);
+        private void OnMouseLeave(object s, MouseEventArgs e) => viewmodel.MouseLeave?.Invoke(s, e);
+        private void OnMouseMove(object s, MouseEventArgs e) => viewmodel.MouseMove?.Invoke(s, e);
     }
 }

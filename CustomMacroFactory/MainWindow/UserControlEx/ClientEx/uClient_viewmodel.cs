@@ -312,7 +312,7 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.ClientEx
                     Command = () => { Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, "Right-click on this button to adjust settings related to the analog stick"); },
                     RightClickContent = ((Func<ObservableCollection<UIElement>>)(() =>
                     {
-                        if (MacroFactory.MacroManager.PreSettings is CustomMacroBase.MacroBase pre)
+                        if (MacroFactory.MacroManager.AnalogStickMacro is CustomMacroBase.MacroBase pre)
                         {
                             return new() { new cToggleButtonGroup(pre.MainGate) };
                         }
@@ -402,7 +402,7 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.ClientEx
 
             //TopContent_Middle
             {
-                foreach (var item in MacroFactory.MacroManager.GameList)
+                foreach (var item in MacroFactory.MacroManager.CurrentGameList)
                 {
                     //TopContent_Middle 每个游戏类安排一个按钮
                     cVerticalRadioButton MC = new();
@@ -423,7 +423,7 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.ClientEx
 
             // TopContent_Right
             {
-                foreach (var item in MacroFactory.MacroManager.GameList)
+                foreach (var item in MacroFactory.MacroManager.CurrentGameList)
                 {
                     //TopContent_Right 每个按钮对应具体内容
                     ContentControl RC = new();

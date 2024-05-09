@@ -151,6 +151,7 @@
                                    ViewportSize="{TemplateBinding ViewportWidth}" 
                                    Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
                                    Style="{StaticResource ScrollBarEx}"
+                                   Margin="0,-4.5,0,-4.5"
                                    Background="{TemplateBinding ScrollBarBackgroundColor}"
                                    Foreground="{TemplateBinding ScrollBarColor}"/>
                     </Grid>

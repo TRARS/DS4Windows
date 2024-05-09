@@ -294,11 +294,15 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
             }
 
         }
-        private void AddWhenHostLoaded(dynamic? host)
+        private void AddWhenHostLoaded(Grid host)
         {
-            host?.Children.Add(Image);
-            //host?.Children.Add(RedBox);
-            host?.Children.Add(myGrid);//Magnify
+            var collection = host.Children;
+            {
+                if (collection.Contains(Image)) { collection.Remove(Image); }
+                if (collection.Contains(myGrid)) { collection.Remove(myGrid); }
+                collection.Add(Image);
+                collection.Add(myGrid);
+            }
         }
     }
     //RegisterDelegate
@@ -391,7 +395,7 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
                 host.MaxHeight = host.ActualHeight;
                 RenderOptions.SetBitmapScalingMode(host, BitmapScalingMode.Fant);
 
-                AddWhenHostLoaded(host.Content);
+                AddWhenHostLoaded((Grid)(host.Content));
             };
             PreviewMouseRightButtonUp = (s, e) => { ImageMargin = new(0); };
             PreviewMouseLeftButtonDown = (s, e) =>

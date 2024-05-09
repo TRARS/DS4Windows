@@ -22,9 +22,9 @@ namespace CustomMacroBase.Helper.Extensions
             //反射读取特性
             foreach (Attribute item in Attribute.GetCustomAttributes(t))
             {
-                if (item is DoNotLoadAttribute)
+                if (item is DoNotLoadAttribute attribute)
                 {
-                    flag = ((DoNotLoadAttribute)item).DoNotLoad; break;//该值指示是否被载入
+                    flag = attribute.DoNotLoad; break;//该值指示是否被载入
                 }
             }
             //反射读取属性
@@ -42,23 +42,24 @@ namespace CustomMacroBase.Helper.Extensions
             return flag;
         }
 
-        public static int GetIndex(this MacroBase target)
+        /// <summary>
+        /// 若SortIndex不存在，返回10000
+        /// </summary>
+        public static int GetSortIndex(this MacroBase target)
         {
-            int index = 10000;
-
             //反射
             Type t = target.GetType();
 
             //反射读取特性
             foreach (Attribute item in Attribute.GetCustomAttributes(t))
             {
-                if (item is SortIndexAttribute)
+                if (item is SortIndexAttribute attribute)
                 {
-                    index = ((SortIndexAttribute)item).SortIndex; break;//排序用
+                    return attribute.SortIndex;
                 }
             }
 
-            return index;
+            return 10000;
         }
 
         private static void Print(string _str, int _delay)

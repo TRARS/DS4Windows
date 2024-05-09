@@ -54,7 +54,7 @@
                 
                 <scrollviewerex:cScrollViewer VerticalScrollBarVisibility="Hidden"
                                               ScrollBarBackgroundColor="Snow"
-                                              BackgroundColor="#5A4344"
+                                              BackgroundColor="#46435A"
                                               BackgroundCornerRadius="4">
                     <StackPanel Orientation ="Vertical"
                                 AttachedProperty:PanelExtensions.Spacing="2">
@@ -62,7 +62,7 @@
                         <togglebuttonex:cToggleButton Text="cToggleButton" 
                                                       IsChecked="True"/>
                         <sliderex:cSlider Maximum="255"
-                                          TickPlacement="TopLeft" 
+                                          TickPlacement="Both" 
                                           TickFrequency="64" 
                                           LargeChange="1"
                                           SmallChange="1"
@@ -71,9 +71,9 @@
                                           Value="192"/>
                         <comboboxex:cComboBox d:ItemsSource="{d:SampleData ItemCount=5}" 
                                               SelectedIndex="0"/>
-                        <valueindicatorex:cValueIndicator PropName="someProp"
+                        <valueindicatorex:cValueIndicator PropName="cValueIndicator"
                                                           PropValue="-999" 
-                                                          PropNameColor="Red"
+                                                          PropNameColor="Crimson"
                                                           PropValueColor="LawnGreen"
                                                           ColonColor="Yellow"
                                                           BackgroundColor="#210F19" 

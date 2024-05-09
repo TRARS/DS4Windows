@@ -50,7 +50,7 @@ namespace CustomMacroBase.PixelMatcher
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            Win32_Ex_Transparency.setTransparency(this);
+            Win32_Ex_Transparency.SetTransparency(this);
         }
     }
 

@@ -9,6 +9,7 @@
              xmlns:gridex="clr-namespace:CustomMacroBase.CustomControlEx.GridEx;assembly=CustomMacroBase" 
              xmlns:togglebuttonex="clr-namespace:CustomMacroBase.CustomControlEx.ToggleButtonEx;assembly=CustomMacroBase"
              xmlns:contextmenuex="clr-namespace:CustomMacroBase.CustomControlEx.ContextMenuEx;assembly=CustomMacroBase"
+             xmlns:pointcurvechartex="clr-namespace:CustomMacroBase.CustomControlEx.PointCurveChartEx;assembly=CustomMacroBase"
              mc:Ignorable="d"
              d:MinWidth="240"
              d:MinHeight="240"
@@ -203,6 +204,7 @@
                                 </ItemsControl.Template>
                             </ItemsControl>
                         </scrollviewerex:cScrollViewer>
+                        <!--<pointcurvechartex:cPointCurveChart HorizontalAlignment="Stretch"/>-->
                     </Grid>
                 </Grid>
             </Border>

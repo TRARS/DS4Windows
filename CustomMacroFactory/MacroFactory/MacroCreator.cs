@@ -52,9 +52,6 @@ namespace CustomMacroFactory.MacroFactory
             {
                 is_busy = true;
 
-                //临时列表
-                var temp = new List<MacroBase>();
-
                 //载入外部Macro
                 if (is_in_designmode is false)
                 {
@@ -70,19 +67,12 @@ namespace CustomMacroFactory.MacroFactory
                                                 (IsNamespaceMatch(t.Namespace)) &&
                                                 (IsClassNameMatch(t.Name))
                                           select t);
-                            foreach (var item in tpList)
-                            {
-                                try
-                                {
-                                    if (item.FullName is not null && item.Assembly.CreateInstance(item.FullName) is MacroBase obj)
-                                    {
-                                        temp.Add(obj);
-                                    }
-                                }
-                                catch (Exception ex) { MessageBox.Show($"{item.Name}: {ex.Message}"); }
-                            }
+
+                            PushToList(ref game_list_main, tpList);
                         }
                     }
+
+                    ReSort(ref game_list_main);
                 }
 
                 //载入内部Macro
@@ -97,17 +87,9 @@ namespace CustomMacroFactory.MacroFactory
                                         (Regex.IsMatch(t.Namespace, _GameClassNamespace)) &&
                                         (Regex.IsMatch(t.Name, _GameClassNamePrefix))
                                   select t);
-                    foreach (Type item in tpList)
-                    {
-                        try
-                        {
-                            if (item.FullName is not null && item.Assembly.CreateInstance(item.FullName) is MacroBase obj)
-                            {
-                                temp.Add(obj);
-                            }
-                        }
-                        catch (Exception ex) { MessageBox.Show($"{item.Name}: {ex.Message}"); }
-                    }
+
+                    PushToList(ref game_list_main, tpList);
+                    ReSort(ref game_list_main);
                 }
 
                 //载入摇杆调节Macro
@@ -122,29 +104,10 @@ namespace CustomMacroFactory.MacroFactory
                                         (Regex.IsMatch(t.Namespace, _GameClassNamespace)) &&
                                         (Regex.IsMatch(t.Name, _GameClassNamePrefix))
                                   select t);
-                    foreach (Type item in tpList)
-                    {
-                        try
-                        {
-                            if (item.FullName is not null && item.Assembly.CreateInstance(item.FullName) is MacroBase obj)
-                            {
-                                //temp.Add(obj);//先当做常规macro测试
-                                game_list_pre.Add(obj);
-                            }
-                        }
-                        catch (Exception ex) { MessageBox.Show($"{item.Name}: {ex.Message}"); }
-                    }
-                }
 
-                //排个序
-                temp = temp.OrderBy(x => x.GetIndex()).ToList();
-                temp.ForEach(x =>
-                {
-                    if (x.IsUnused() is false)
-                    { //被标记为[DoNotLoad]的游戏类将不会被载入，省得老是要手动排除
-                        game_list_main.Add(x);
-                    }
-                });
+                    PushToList(ref game_list_pre, tpList);
+                    ReSort(ref game_list_pre);
+                }
             }
             catch (Exception ex) { MessageBox.Show($"GetGameList Error: {ex.Message}"); }
             finally { is_busy = false; }
@@ -155,6 +118,41 @@ namespace CustomMacroFactory.MacroFactory
     {
         public List<MacroBase> CurrentGameList => this.game_list_main;
         public MacroBase? CurrentRunnableMacro => is_busy ? null : game_list_main.Find(item => item.Selected);
-        public MacroBase? PreSettingsMacro => is_busy ? null : game_list_pre.FirstOrDefault();
+        public MacroBase? AnalogStickMacro => is_busy ? null : game_list_pre[0];
+    }
+
+    public partial class MacroCreator
+    {
+        private void PushToList(ref List<MacroBase> list, IEnumerable<Type> tpList)
+        {
+            foreach (Type item in tpList)
+            {
+                try
+                {
+                    if (item.FullName is not null && item.Assembly.CreateInstance(item.FullName) is MacroBase obj)
+                    {
+                        list.Add(obj);
+                    }
+                }
+                catch (Exception ex) { MessageBox.Show($"{item.Name}: {ex.Message}"); }
+            }
+        }
+
+        private void ReSort(ref List<MacroBase> list)
+        {
+            if (list.Any() is false || list.Count == 1) { return; }
+
+            var temp = new List<MacroBase>();
+
+            foreach (var item in list.OrderBy(x => x.GetSortIndex()).ToList())
+            {
+                if (item.IsUnused() is false)
+                {
+                    temp.Add(item);//被标记为[DoNotLoad]的游戏类将不会被载入
+                }
+            }
+
+            list = temp;
+        }
     }
 }

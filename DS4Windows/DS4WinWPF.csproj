@@ -69,15 +69,15 @@
 
   <ItemGroup>
     <PackageReference Include="bloomtom.HttpProgress" Version="2.3.2" />
-    <PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" Version="5.0.106" />
-    <PackageReference Include="H.NotifyIcon.Wpf" Version="2.0.74" />
-    <PackageReference Include="MdXaml" Version="1.16.2" />
-    <PackageReference Include="NLog" Version="5.1.1" />
+    <PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" Version="5.0.115" />
+    <PackageReference Include="H.NotifyIcon.Wpf" Version="2.0.124" />
+    <PackageReference Include="MdXaml" Version="1.27.0" />
+    <PackageReference Include="NLog" Version="5.2.8" />
     <!--<PackageReference Include="Nefarius.ViGEm.Client" Version="1.21.230" />-->
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
-    <PackageReference Include="System.Management" Version="7.0.2" />
+    <PackageReference Include="System.Management" Version="8.0.0" />
     <PackageReference Include="TaskScheduler" Version="2.10.1" />
-    <PackageReference Include="WPFLocalizeExtension" Version="3.9.4" />
+    <PackageReference Include="WPFLocalizeExtension" Version="3.10.0" />
     <PackageReference Include="WpfScreenHelper" Version="2.1.0" />
     
     <Reference Include="FakerInputWrapper">
