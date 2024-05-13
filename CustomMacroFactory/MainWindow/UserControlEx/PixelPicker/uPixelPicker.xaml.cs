@@ -1,4 +1,5 @@
 ﻿using CustomMacroBase.Helper;
+using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -6,12 +7,18 @@ using System.Windows.Input;
 
 namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
 {
-    public partial class uPixelPicker : UserControl
+    public partial class uPixelPicker
     {
         static readonly uPixelPicker_viewmodel viewmodel = new();
         static int count = 0;
+    }
 
-        public uPixelPicker()
+    public partial class uPixelPicker : UserControl
+    {
+        private static readonly Lazy<uPixelPicker> lazyObject = new(() => new uPixelPicker());
+        public static uPixelPicker Instance => lazyObject.Value;
+
+        private uPixelPicker()
         {
             InitializeComponent();
 
@@ -33,7 +40,7 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
                 {
                     var msg = "An exception occurred in uPixelPicker, resulting in duplicate loading.";
                     Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, msg);
-                    MessageBox.Show(msg);
+                    MessageBox.Show($"{DateTime.Now.ToString("HH:mm:ss")} -> {msg}");
                 });
             }
         }

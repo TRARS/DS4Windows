@@ -3,13 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:AttachedProperty="clr-namespace:CustomMacroBase.Helper.Extensions;assembly=CustomMacroBase"
              xmlns:local="clr-namespace:CustomMacroFactory.MainWindow.UserControlEx.ClientEx"
              xmlns:scrollviewerex="clr-namespace:CustomMacroBase.CustomControlEx.ScrollViewerEx;assembly=CustomMacroBase" 
              xmlns:gridex="clr-namespace:CustomMacroBase.CustomControlEx.GridEx;assembly=CustomMacroBase" 
-             xmlns:togglebuttonex="clr-namespace:CustomMacroBase.CustomControlEx.ToggleButtonEx;assembly=CustomMacroBase"
              xmlns:contextmenuex="clr-namespace:CustomMacroBase.CustomControlEx.ContextMenuEx;assembly=CustomMacroBase"
-             xmlns:pointcurvechartex="clr-namespace:CustomMacroBase.CustomControlEx.PointCurveChartEx;assembly=CustomMacroBase"
              mc:Ignorable="d"
              d:MinWidth="240"
              d:MinHeight="240"
@@ -204,7 +201,6 @@
                                 </ItemsControl.Template>
                             </ItemsControl>
                         </scrollviewerex:cScrollViewer>
-                        <!--<pointcurvechartex:cPointCurveChart HorizontalAlignment="Stretch"/>-->
                     </Grid>
                 </Grid>
             </Border>

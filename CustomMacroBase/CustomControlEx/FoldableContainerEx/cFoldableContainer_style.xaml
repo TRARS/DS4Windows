@@ -5,6 +5,7 @@
 
     <local:cFoldableContainer_converter_height2height x:Key="cFoldableContainer_converter_height2height"/>
     <local:cFoldableContainer_converter_visibility2visibility x:Key="cFoldableContainer_converter_visibility2visibility"/>
+    <local:cFoldableContainer_converter_visibility2ishittestvisible x:Key="cFoldableContainer_converter_visibility2ishittestvisible"/>
 
     <SolidColorBrush x:Key="MouseOverColor" Color="Yellow"/>
     <SolidColorBrush x:Key="MousePressedColor" Color="Cyan"/>
@@ -124,6 +125,12 @@
                                                                                  RelativeSource={RelativeSource AncestorType={x:Type local:cFoldableContainer}}}" />
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
+                                <Border.IsHitTestVisible>
+                                    <MultiBinding Converter="{StaticResource cFoldableContainer_converter_visibility2ishittestvisible}">
+                                        <Binding Path="ArrowVisibility" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                        <Binding Path="BodyVisibility" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                    </MultiBinding>
+                                </Border.IsHitTestVisible>
 
                                 <Line Y1="-2"
                                       Y2="{Binding ActualHeight, ElementName=body, Converter={StaticResource cFoldableContainer_converter_height2height}, Mode=OneWay}"

@@ -446,7 +446,7 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.ClientEx
 
             //BottomContent 打印栏
             {
-                this.BottomContent_Top.Add(new() { Content = new uPixelPicker() });
+                this.BottomContent_Top.Add(new() { Content = uPixelPicker.Instance });
                 this.BottomContent_Bottom.Add(new() { Content = new cConsoleListBox() });
             }
         }

@@ -258,14 +258,14 @@ namespace CustomMacroBase.PixelMatcher
         #endregion
 
         #region 范围找数字
-        /// <summary>
-        /// 范围找字_尝试识别区域内的数字 (Tesseract)
-        /// </summary>
-        private protected static string MatchNumber(Rectangle rect, bool isWhiteText, double zoomratio)
-        {
-            if (screenshot is null) { return string.Empty; }
-            return OpenCV.Instance.MatchNumber(ref screenshot, rect, isWhiteText, zoomratio);
-        }
+        ///// <summary>
+        ///// 范围找字_尝试识别区域内的数字 (Tesseract)
+        ///// </summary>
+        //private protected static string MatchNumber(Rectangle rect, bool isWhiteText, double zoomratio)
+        //{
+        //    if (screenshot is null) { return string.Empty; }
+        //    return OpenCV.Instance.MatchNumber(ref screenshot, rect, isWhiteText, zoomratio);
+        //}
         /// <summary>
         /// 范围找字_尝试识别区域内的数字 (PaddleSharp)
         /// </summary>
@@ -277,14 +277,14 @@ namespace CustomMacroBase.PixelMatcher
         #endregion
 
         #region 范围找字
-        /// <summary>
-        /// 范围找字_尝试识别区域内的文字，需指定语言 (Tesseract)
-        /// </summary>
-        private protected static string MatchText(Rectangle rect, bool isWhiteText, string language, string whitelist, double zoomratio)
-        {
-            if (screenshot is null) { return string.Empty; }
-            return OpenCV.Instance.MatchText(ref screenshot, rect, isWhiteText, language, whitelist, zoomratio);
-        }
+        ///// <summary>
+        ///// 范围找字_尝试识别区域内的文字，需指定语言 (Tesseract)
+        ///// </summary>
+        //private protected static string MatchText(Rectangle rect, bool isWhiteText, string language, string whitelist, double zoomratio)
+        //{
+        //    if (screenshot is null) { return string.Empty; }
+        //    return OpenCV.Instance.MatchText(ref screenshot, rect, isWhiteText, language, whitelist, zoomratio);
+        //}
         /// <summary>
         /// 范围找字_尝试识别区域内的文字，需指定语言 (PaddleSharp)
         /// </summary>

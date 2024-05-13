@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,40 +13,10 @@ namespace CustomMacroBase.CustomControlEx.PointCurveChartEx
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(cPointCurveChart), new FrameworkPropertyMetadata(typeof(cPointCurveChart)));
         }
-
-        public cPointCurveChart()
-        {
-            //this.ChartSize = new(400, 200);
-            //this.ZoomRatio = new(10, 0);
-            //this.PointLists = new()
-            //{
-            //    new List<Point>() { new(0, 0), new(1, 450), new(2, 40), new(3, 20), new(4, 60), new(5, 10),   new(6, 0), new(7, 150), new(8, 10), new(9, 60), new(10, 20), new(11, 100) },
-            //    new List<Point>() { new(0, 0), new(1, 150), new(2, 10), new(3, 60), new(4, 20), new(5, 100),  new(6, 0), new(7, 450), new(8, 40), new(9, 20), new(10, 60), new(11, 10)},
-            //};
-            //this.ColorList = new()
-            //{
-            //    new SolidColorBrush(Colors.Crimson),
-            //    new SolidColorBrush(Colors.Yellow),
-            //};
-        }
     }
 
     public partial class cPointCurveChart
     {
-        /// <summary>
-        /// PenSize
-        /// </summary>
-        public double PenSize
-        {
-            get { return (double)GetValue(PenSizeProperty); }
-            set { SetValue(PenSizeProperty, value); }
-        }
-        public static readonly DependencyProperty PenSizeProperty = DependencyProperty.Register(
-            name: "PenSize",
-            propertyType: typeof(double),
-            ownerType: typeof(cPointCurveChart),
-            typeMetadata: new FrameworkPropertyMetadata(1.0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
-        );
 
         /// <summary>
         /// min-size: 200x100
@@ -60,6 +31,21 @@ namespace CustomMacroBase.CustomControlEx.PointCurveChartEx
             propertyType: typeof(Size),
             ownerType: typeof(cPointCurveChart),
             typeMetadata: new FrameworkPropertyMetadata(new Size(200, 100), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
+        );
+
+        /// <summary>
+        /// PenSize
+        /// </summary>
+        public double PenSize
+        {
+            get { return (double)GetValue(PenSizeProperty); }
+            set { SetValue(PenSizeProperty, value); }
+        }
+        public static readonly DependencyProperty PenSizeProperty = DependencyProperty.Register(
+            name: "PenSize",
+            propertyType: typeof(double),
+            ownerType: typeof(cPointCurveChart),
+            typeMetadata: new FrameworkPropertyMetadata(1.0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
         );
 
         /// <summary>
@@ -105,6 +91,75 @@ namespace CustomMacroBase.CustomControlEx.PointCurveChartEx
             propertyType: typeof(Point),
             ownerType: typeof(cPointCurveChart),
             typeMetadata: new FrameworkPropertyMetadata(new Point(1, 1), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
+        );
+
+        /// <summary>
+        /// PointMarkers
+        /// </summary>
+        public ObservableCollection<bool> PointMarkers
+        {
+            get { return (ObservableCollection<bool>)GetValue(PointMarkersProperty); }
+            set { SetValue(PointMarkersProperty, value); }
+        }
+        public static readonly DependencyProperty PointMarkersProperty = DependencyProperty.Register(
+            name: "PointMarkers",
+            propertyType: typeof(ObservableCollection<bool>),
+            ownerType: typeof(cPointCurveChart),
+            typeMetadata: new FrameworkPropertyMetadata(new ObservableCollection<bool> { true }, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
+        );
+
+        /// <summary>
+        /// CurveType
+        /// </summary>
+        public CurveType CurveType
+        {
+            get { return (CurveType)GetValue(CurveTypeProperty); }
+            set { SetValue(CurveTypeProperty, value); }
+        }
+        public static readonly DependencyProperty CurveTypeProperty = DependencyProperty.Register(
+            name: "CurveType",
+            propertyType: typeof(CurveType),
+            ownerType: typeof(cPointCurveChart),
+            typeMetadata: new FrameworkPropertyMetadata(CurveType.Straight, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
+        );
+    }
+
+    public partial class cPointCurveChart
+    {
+        public Func<ObservableCollection<List<Point>>, double> MaxValueDelegate
+        {
+            get { return (Func<ObservableCollection<List<Point>>, double>)GetValue(MaxValueDelegateProperty); }
+            set { SetValue(MaxValueDelegateProperty, value); }
+        }
+        public static readonly DependencyProperty MaxValueDelegateProperty = DependencyProperty.Register(
+            name: "MaxValueDelegate",
+            propertyType: typeof(Func<ObservableCollection<List<Point>>, double>),
+            ownerType: typeof(cPointCurveChart),
+            typeMetadata: new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
+        );
+
+        public Func<ObservableCollection<List<Point>>, double> MinValueDelegate
+        {
+            get { return (Func<ObservableCollection<List<Point>>, double>)GetValue(MinValueDelegateProperty); }
+            set { SetValue(MinValueDelegateProperty, value); }
+        }
+        public static readonly DependencyProperty MinValueDelegateProperty = DependencyProperty.Register(
+            name: "MinValueDelegate",
+            propertyType: typeof(Func<ObservableCollection<List<Point>>, double>),
+            ownerType: typeof(cPointCurveChart),
+            typeMetadata: new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
+        );
+
+        public Func<ObservableCollection<List<Point>>, double> AvgValueDelegate
+        {
+            get { return (Func<ObservableCollection<List<Point>>, double>)GetValue(AvgValueDelegateProperty); }
+            set { SetValue(AvgValueDelegateProperty, value); }
+        }
+        public static readonly DependencyProperty AvgValueDelegateProperty = DependencyProperty.Register(
+            name: "AvgValueDelegate",
+            propertyType: typeof(Func<ObservableCollection<List<Point>>, double>),
+            ownerType: typeof(cPointCurveChart),
+            typeMetadata: new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
         );
     }
 }

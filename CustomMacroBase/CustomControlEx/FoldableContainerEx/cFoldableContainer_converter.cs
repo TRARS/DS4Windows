@@ -43,4 +43,25 @@ namespace CustomMacroBase.CustomControlEx.FoldableContainerEx
             throw new NotImplementedException();
         }
     }
+
+    class cFoldableContainer_converter_visibility2ishittestvisible : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (values[0] is Visibility ArrowVisibility && values[1] is Visibility BodyVisibility)
+            {
+                if (ArrowVisibility is Visibility.Visible && BodyVisibility is Visibility.Visible)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

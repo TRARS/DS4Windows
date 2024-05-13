@@ -334,8 +334,7 @@
                             Background="Black"
                             Padding="4">
                         <Grid>
-                            <ListBox Grid.Row="1"
-                                     ItemsSource="{TemplateBinding Source, Converter={StaticResource cMenuItemForHotkey_converter_datacontext2hotkeyinfolist}}"
+                            <ListBox ItemsSource="{TemplateBinding Source, Converter={StaticResource cMenuItemForHotkey_converter_datacontext2hotkeyinfolist}}"
                                      Style="{StaticResource ListBoxStyle}"/>
                         </Grid>
                     </Border>

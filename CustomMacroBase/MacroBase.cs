@@ -452,11 +452,11 @@ namespace CustomMacroBase
         /// <para>-</para>
         /// <para>返回值：<see cref="string"/> 类型，识别成功返回字符串，识别失败返回空字符串</para>
         /// </summary>
-        [Obsolete]
-        protected static string FindNumber(Rectangle rect, double zoomratio = 2.0, bool flag = true)
-        {
-            return PixelMatcher.PixelMatcherHost.FindNumber(rect, true, zoomratio, flag);
-        }
+        //[Obsolete]
+        //protected static string FindNumber(Rectangle rect, double zoomratio = 2.0, bool flag = true)
+        //{
+        //    return PixelMatcher.PixelMatcherHost.FindNumber(rect, true, zoomratio, flag);
+        //}
         /// <summary>
         /// <para>范围找字（仅限数字0~9）</para>
         /// <para>-</para>
@@ -484,11 +484,11 @@ namespace CustomMacroBase
         /// <para>-</para>
         /// <para>返回值：<see cref="string"/> 类型，识别成功返回字符串，识别失败返回空字符串</para>
         /// </summary>
-        [Obsolete]
-        protected static string FindText(Rectangle rect, bool iswhitetext = true, string language = "eng", string whitelist = "", double zoomratio = 2.0, bool flag = true)
-        {
-            return PixelMatcher.PixelMatcherHost.FindText(rect, iswhitetext, language, whitelist, zoomratio, flag);
-        }
+        //[Obsolete]
+        //protected static string FindText(Rectangle rect, bool iswhitetext = true, string language = "eng", string whitelist = "", double zoomratio = 2.0, bool flag = true)
+        //{
+        //    return PixelMatcher.PixelMatcherHost.FindText(rect, iswhitetext, language, whitelist, zoomratio, flag);
+        //}
         /// <summary>
         /// <para>范围找字</para>
         /// <para>-</para>
@@ -500,11 +500,11 @@ namespace CustomMacroBase
         /// <para>-</para>
         /// <para>返回值：<see cref="string"/> 类型，识别成功返回字符串，识别失败返回空字符串</para>
         /// </summary>
-        [Obsolete]
-        protected static string FindText(Rectangle rect, string language = "eng", string whitelist = "", double zoomratio = 2.0, bool flag = true)
-        {
-            return PixelMatcher.PixelMatcherHost.FindText(rect, true, language, whitelist, zoomratio, flag);
-        }
+        //[Obsolete]
+        //protected static string FindText(Rectangle rect, string language = "eng", string whitelist = "", double zoomratio = 2.0, bool flag = true)
+        //{
+        //    return PixelMatcher.PixelMatcherHost.FindText(rect, true, language, whitelist, zoomratio, flag);
+        //}
 
         /// <summary>
         /// <para>范围找字</para>

@@ -3,13 +3,14 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/AggregateBindingControl/cAggregateBindingControl_style.xaml"/>
-        
+
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/ColorfulTextBlockEx/cColorfulTextBlock_style.xaml"/>
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/ComboBoxEx/cComboBox_style.xaml"/>
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/ConsoleListBoxEx/cConsoleListBox_style.xaml"/>
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/ContextMenuEx/cContextMenu_cMenuItem_style.xaml"/>
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/ContextMenuEx/cMenuItem_style.xaml"/>
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/ContextMenuEx/cMenuItemForHotkey_style.xaml"/>
+        <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/ContextMenuEx/cMenuItemForInfoButton_style.xaml"/>
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/FoldableContainerEx/cFoldableContainer_style.xaml"/>
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/NormalButtonEx/cNormalButton_style.xaml"/>
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/PointCurveChartEx/cPointCurveChart_style.xaml"/>
@@ -20,10 +21,11 @@
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/TitleBarButtonEx/cTitleBarButton_style.xaml"/>
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/ToggleButtonEx/cToggleButton_style.xaml"/>
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/ToggleButtonGroupEx/cToggleButtonGroup_style.xaml"/>
+        <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/TooltipInfoButtonEx/cTooltipInfoButton_style.xaml"/>
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/ValueIndicatorEx/cValueIndicator_style.xaml"/>
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/VerticalButtonEx/cVerticalButtonBase_style.xaml"/>
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/VerticalButtonEx/cVerticalButton_style.xaml"/>
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/VerticalRadioButtonEx/cVerticalRadioButton_style.xaml"/>
     </ResourceDictionary.MergedDictionaries>
-
+    
 </ResourceDictionary>

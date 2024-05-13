@@ -6,10 +6,8 @@ using Sdcb.PaddleOCR.Models.Local;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Tesseract;
 using Point = OpenCvSharp.Point;
 using Rect = OpenCvSharp.Rect;
 using SD = System.Drawing;
@@ -102,18 +100,18 @@ namespace CustomMacroBase.PixelMatcher
             return null;
         }
 
-        public string MatchNumber(ref Bitmap bmpA, Rectangle rect, bool isWhiteText, double zoomratio)
-        {
-            try
-            {
-                using (Mat refMat = OpenCvSharp.Extensions.BitmapConverter.ToMat(bmpA)) //大图
-                {
-                    return MatchTextBase(refMat, rect, isWhiteText, "eng", @"1234567890", zoomratio, TextType.Number);
-                }
-            }
-            catch (Exception ex) { Print($"{ex.Message}"); }
-            return string.Empty;
-        }
+        //public string MatchNumber(ref Bitmap bmpA, Rectangle rect, bool isWhiteText, double zoomratio)
+        //{
+        //    try
+        //    {
+        //        using (Mat refMat = OpenCvSharp.Extensions.BitmapConverter.ToMat(bmpA)) //大图
+        //        {
+        //            return MatchTextBase(refMat, rect, isWhiteText, "eng", @"1234567890", zoomratio, TextType.Number);
+        //        }
+        //    }
+        //    catch (Exception ex) { Print($"{ex.Message}"); }
+        //    return string.Empty;
+        //}
         public string MatchNumber(ref Bitmap bmpA, Rectangle rect, bool isWhiteText, DeviceType deviceType, ModelType language, double zoomratio)
         {
             try
@@ -127,18 +125,18 @@ namespace CustomMacroBase.PixelMatcher
             return string.Empty;
         }
 
-        public string MatchText(ref Bitmap bmpA, Rectangle rect, bool isWhiteText, string language, string whitelist, double zoomratio)
-        {
-            try
-            {
-                using (Mat refMat = OpenCvSharp.Extensions.BitmapConverter.ToMat(bmpA)) //大图
-                {
-                    return MatchTextBase(refMat, rect, isWhiteText, language, whitelist, zoomratio, TextType.Word);
-                };
-            }
-            catch (Exception ex) { Print($"{ex.Message}"); }
-            return string.Empty;
-        }
+        //public string MatchText(ref Bitmap bmpA, Rectangle rect, bool isWhiteText, string language, string whitelist, double zoomratio)
+        //{
+        //    try
+        //    {
+        //        using (Mat refMat = OpenCvSharp.Extensions.BitmapConverter.ToMat(bmpA)) //大图
+        //        {
+        //            return MatchTextBase(refMat, rect, isWhiteText, language, whitelist, zoomratio, TextType.Word);
+        //        };
+        //    }
+        //    catch (Exception ex) { Print($"{ex.Message}"); }
+        //    return string.Empty;
+        //}
         public string MatchText(ref Bitmap bmpA, Rectangle rect, bool isWhiteText, DeviceType deviceType, ModelType language, double zoomratio)
         {
             try
@@ -377,80 +375,80 @@ namespace CustomMacroBase.PixelMatcher
             //(x,y)=>{ Cv2.Erode(x, y, Cv2.GetStructuringElement(MorphShapes.Ellipse, new OpenCvSharp.Size(2, 2)));},//腐蚀（黑吃白）
         };
 
-        private string MatchTextBase(Mat _refMat, Rectangle _cropRect, bool isWhiteText, string language, string whitelist, double zoomratio, TextType textType)
-        {
-            //判断是白字还是黑字
-            var pre_white_or_black = isWhiteText switch
-            {
-                true => PreActionWhiteText,
-                false => PreActionBlackText
-            };
-            //判断是数字还是文字
-            var pre_number_or_word = textType switch
-            {
-                TextType.Number => PreActionNumber,
-                TextType.Word => PreActionText,
-                _ => throw new InvalidOperationException()
-            };
-            //储存字符串
-            List<string> resultStrList = new();
+        //private string MatchTextBase(Mat _refMat, Rectangle _cropRect, bool isWhiteText, string language, string whitelist, double zoomratio, TextType textType)
+        //{
+        //    //判断是白字还是黑字
+        //    var pre_white_or_black = isWhiteText switch
+        //    {
+        //        true => PreActionWhiteText,
+        //        false => PreActionBlackText
+        //    };
+        //    //判断是数字还是文字
+        //    var pre_number_or_word = textType switch
+        //    {
+        //        TextType.Number => PreActionNumber,
+        //        TextType.Word => PreActionText,
+        //        _ => throw new InvalidOperationException()
+        //    };
+        //    //储存字符串
+        //    List<string> resultStrList = new();
 
-            using (Mat cropMat = _refMat.Clone(new Rect(_cropRect.X, _cropRect.Y, _cropRect.Width, _cropRect.Height)).CvtColor(ColorConversionCodes.BGRA2GRAY))
-            using (Mat flowMat = new())
-            {
-                //1.预处理
-                foreach (var action in PreActionResize)//缩放 对应流程
-                {
-                    action.Invoke(cropMat, cropMat, zoomratio);
-                    SaveToFlow(cropMat, flowMat);//储存流程
-                }
-                foreach (var action in pre_white_or_black)//白字/黑字 对应流程
-                {
-                    action.Invoke(cropMat, cropMat);
-                    SaveToFlow(cropMat, flowMat);//储存流程
-                }
-                foreach (var action in pre_number_or_word)//数字/常规字 对应流程
-                {
-                    action.Invoke(cropMat, cropMat);
-                    SaveToFlow(cropMat, flowMat);//储存流程
-                }
+        //    using (Mat cropMat = _refMat.Clone(new Rect(_cropRect.X, _cropRect.Y, _cropRect.Width, _cropRect.Height)).CvtColor(ColorConversionCodes.BGRA2GRAY))
+        //    using (Mat flowMat = new())
+        //    {
+        //        //1.预处理
+        //        foreach (var action in PreActionResize)//缩放 对应流程
+        //        {
+        //            action.Invoke(cropMat, cropMat, zoomratio);
+        //            SaveToFlow(cropMat, flowMat);//储存流程
+        //        }
+        //        foreach (var action in pre_white_or_black)//白字/黑字 对应流程
+        //        {
+        //            action.Invoke(cropMat, cropMat);
+        //            SaveToFlow(cropMat, flowMat);//储存流程
+        //        }
+        //        foreach (var action in pre_number_or_word)//数字/常规字 对应流程
+        //        {
+        //            action.Invoke(cropMat, cropMat);
+        //            SaveToFlow(cropMat, flowMat);//储存流程
+        //        }
 
-                using (Mat blackMat = cropMat.Clone())//黑底白字，用来膨胀找矩形
-                using (Mat whiteMat = cropMat.Clone())//白底黑字，用来画矩形
-                {
-                    Cv2.Dilate(blackMat, blackMat, Cv2.GetStructuringElement(MorphShapes.Ellipse, new OpenCvSharp.Size(16, 16)), null, 3);//膨胀3次
-                    Cv2.FindContours(blackMat, out var contours, out _, RetrievalModes.External, ContourApproximationModes.ApproxSimple);//找到轮廓
+        //        using (Mat blackMat = cropMat.Clone())//黑底白字，用来膨胀找矩形
+        //        using (Mat whiteMat = cropMat.Clone())//白底黑字，用来画矩形
+        //        {
+        //            Cv2.Dilate(blackMat, blackMat, Cv2.GetStructuringElement(MorphShapes.Ellipse, new OpenCvSharp.Size(16, 16)), null, 3);//膨胀3次
+        //            Cv2.FindContours(blackMat, out var contours, out _, RetrievalModes.External, ContourApproximationModes.ApproxSimple);//找到轮廓
 
-                    Cv2.BitwiseNot(cropMat, cropMat);//获得白底黑字
-                    Cv2.BitwiseNot(whiteMat, whiteMat);//获得白底黑字
+        //            Cv2.BitwiseNot(cropMat, cropMat);//获得白底黑字
+        //            Cv2.BitwiseNot(whiteMat, whiteMat);//获得白底黑字
 
-                    Cv2.CvtColor(cropMat, cropMat, ColorConversionCodes.GRAY2BGR);//cropMat转为彩图
-                    Cv2.CvtColor(flowMat, flowMat, ColorConversionCodes.GRAY2BGR);//resultMat转为彩图
+        //            Cv2.CvtColor(cropMat, cropMat, ColorConversionCodes.GRAY2BGR);//cropMat转为彩图
+        //            Cv2.CvtColor(flowMat, flowMat, ColorConversionCodes.GRAY2BGR);//resultMat转为彩图
 
-                    int count = 0;
-                    foreach (var contour in contours)
-                    {
-                        var biggestContourRect = Cv2.BoundingRect(contour);//获得包含轮廓的最小矩形
-                        resultStrList.Add(TesseractGetText(whiteMat.Clone(biggestContourRect), language, whitelist));
+        //            int count = 0;
+        //            foreach (var contour in contours)
+        //            {
+        //                var biggestContourRect = Cv2.BoundingRect(contour);//获得包含轮廓的最小矩形
+        //                resultStrList.Add(TesseractGetText(whiteMat.Clone(biggestContourRect), language, whitelist));
 
-                        if (count > 2) { count = 0; }
-                        switch (count)
-                        {
-                            case 0: Cv2.Rectangle(cropMat, biggestContourRect, new Scalar(0, 0, 255), 2); break;//把矩形画上去
-                            case 1: Cv2.Rectangle(cropMat, biggestContourRect, new Scalar(0, 255, 0), 2); break;
-                            case 2: Cv2.Rectangle(cropMat, biggestContourRect, new Scalar(255, 0, 0), 2); break;
-                        }
-                        count++;
-                    }
+        //                if (count > 2) { count = 0; }
+        //                switch (count)
+        //                {
+        //                    case 0: Cv2.Rectangle(cropMat, biggestContourRect, new Scalar(0, 0, 255), 2); break;//把矩形画上去
+        //                    case 1: Cv2.Rectangle(cropMat, biggestContourRect, new Scalar(0, 255, 0), 2); break;
+        //                    case 2: Cv2.Rectangle(cropMat, biggestContourRect, new Scalar(255, 0, 0), 2); break;
+        //                }
+        //                count++;
+        //            }
 
-                    SaveToFlow(cropMat, flowMat);//储存流程 
-                }
+        //            SaveToFlow(cropMat, flowMat);//储存流程 
+        //        }
 
-                UpdateManager?.CanUpdate()?.UpdateFrames(flowMat.Clone());//展示流程(用Clone以防止flowMat被过早地回收)
+        //        UpdateManager?.CanUpdate()?.UpdateFrames(flowMat.Clone());//展示流程(用Clone以防止flowMat被过早地回收)
 
-                return string.Join("\n", resultStrList.ToArray());
-            }
-        }
+        //        return string.Join("\n", resultStrList.ToArray());
+        //    }
+        //}
     }
 
     //MatchTextBase_PaddleSharp
@@ -562,27 +560,27 @@ namespace CustomMacroBase.PixelMatcher
     public partial class OpenCV
     {
         //OCR读取文本
-        private string TesseractGetText(Mat input, string language, string? whitelist = null)
-        {
-            using (var tesseract = new TesseractEngine(@".\tessdata", language))//"eng"
-            {
-                if (whitelist is not null && (whitelist.Trim().Length > 0))
-                {
-                    tesseract.SetVariable("tessedit_char_whitelist", whitelist);
-                }//@"1234567890"
+        //private string TesseractGetText(Mat input, string language, string? whitelist = null)
+        //{
+        //    using (var tesseract = new TesseractEngine(@".\tessdata", language))//"eng"
+        //    {
+        //        if (whitelist is not null && (whitelist.Trim().Length > 0))
+        //        {
+        //            tesseract.SetVariable("tessedit_char_whitelist", whitelist);
+        //        }//@"1234567890"
 
-                using (var ms = new MemoryStream())
-                {
-                    OpenCvSharp.Extensions.BitmapConverter.ToBitmap(input).Save(ms, SD.Imaging.ImageFormat.Png);
+        //        using (var ms = new MemoryStream())
+        //        {
+        //            OpenCvSharp.Extensions.BitmapConverter.ToBitmap(input).Save(ms, SD.Imaging.ImageFormat.Png);
 
-                    using (var img = Pix.LoadFromMemory(ms.ToArray()))
-                    using (var page = tesseract.Process(img, PageSegMode.Auto))//
-                    {
-                        return page.GetText();
-                    }
-                }
-            }
-        }
+        //            using (var img = Pix.LoadFromMemory(ms.ToArray()))
+        //            using (var page = tesseract.Process(img, PageSegMode.Auto))//
+        //            {
+        //                return page.GetText();
+        //            }
+        //        }
+        //    }
+        //}
 
         //将流程储存至单个Mat以便展示
         private void SaveToFlow(Mat input, Mat flow)

@@ -6,6 +6,7 @@
     <local:cPointCurveChart_converter_size2width x:Key="cPointCurveChart_converter_size2width"/>
     <local:cPointCurveChart_converter_size2height x:Key="cPointCurveChart_converter_size2height"/>
     <local:cPointCurveChart_converter_format x:Key="cPointCurveChart_converter_format"/>
+    <local:cPointCurveChart_converter_maxminavg x:Key="cPointCurveChart_converter_maxminavg"/>
     
     <Style TargetType="{x:Type local:cPointCurveChart}">
         <Setter Property="Template">
@@ -19,11 +20,13 @@
                             MinHeight="100">
                         
                         <Grid>
-                            <!--网格-->
-                            <Border/>
-                            
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+
                             <!--曲线集合-->
-                            <Border>
+                            <Border Grid.Column="0">
                                 <scrollviewerex:cScrollViewer x:Name="ScrollViewer"
                                                               Width="{TemplateBinding ChartSize,
                                                                                       Converter={StaticResource cPointCurveChart_converter_size2width},
@@ -36,12 +39,8 @@
                                                               VerticalScrollBarVisibility="Hidden"
                                                               HorizontalScrollBarVisibility="Auto"
                                                               Margin="0,0,0,0">
-                                
-                                    <ItemsControl RenderTransformOrigin="0.5,0.5">
-                                        <!--<ItemsControl.RenderTransform>
-                                            <ScaleTransform ScaleY="-1"/>
-                                        </ItemsControl.RenderTransform>-->
 
+                                    <ItemsControl>
                                         <ItemsControl.ItemsSource>
                                             <MultiBinding Converter="{StaticResource cPointCurveChart_converter_format}">
                                                 <Binding Path="PointLists" RelativeSource="{RelativeSource TemplatedParent}"/>
@@ -49,6 +48,8 @@
                                                 <Binding Path="ChartSize" RelativeSource="{RelativeSource TemplatedParent}"/>
                                                 <Binding Path="ZoomRatio" RelativeSource="{RelativeSource TemplatedParent}"/>
                                                 <Binding Path="PenSize" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                                <Binding Path="PointMarkers" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                                <Binding Path="CurveType" RelativeSource="{RelativeSource TemplatedParent}"/>
                                             </MultiBinding>
                                         </ItemsControl.ItemsSource>
 
@@ -59,6 +60,20 @@
                                         </ItemsControl.ItemsPanel>
                                     </ItemsControl>
                                 </scrollviewerex:cScrollViewer>
+                            </Border>
+
+                            <!--最大值最小值均值-->
+                            <Border Grid.Column="1" Margin="2,0,2,0">
+                                <ContentControl>
+                                    <ContentControl.Content>
+                                        <MultiBinding Converter="{StaticResource cPointCurveChart_converter_maxminavg}">
+                                            <Binding Path="PointLists" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                            <Binding Path="MaxValueDelegate" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                            <Binding Path="MinValueDelegate" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                            <Binding Path="AvgValueDelegate" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                        </MultiBinding>
+                                    </ContentControl.Content>
+                                </ContentControl>
                             </Border>
                         </Grid>
                     
