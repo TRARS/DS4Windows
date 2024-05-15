@@ -997,6 +997,7 @@ Suspend support not enabled.", true);
                 notifyIcon = null;
             }
 
+            CustomMacroLink.Exit();
             Application.Current.Shutdown();
         }
 

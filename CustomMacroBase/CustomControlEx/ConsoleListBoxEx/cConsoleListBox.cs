@@ -27,6 +27,8 @@ namespace CustomMacroBase.CustomControlEx.ConsoleListBoxEx
 
     public class cConsoleListBox : ListBox
     {
+        private readonly LimitedSizeObservableCollection<string> _list = new();
+
         static cConsoleListBox()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(cConsoleListBox), new FrameworkPropertyMetadata(typeof(cConsoleListBox)));
@@ -39,19 +41,18 @@ namespace CustomMacroBase.CustomControlEx.ConsoleListBoxEx
             ScrollViewer.SetHorizontalScrollBarVisibility(this, ScrollBarVisibility.Disabled);
             ScrollViewer.SetVerticalScrollBarVisibility(this, ScrollBarVisibility.Disabled);
 
-            LimitedSizeObservableCollection<string> LSOC = new();
-            this.ItemsSource = LSOC;
+            this.ItemsSource = _list;
 
             Mediator.Instance.Register(MessageType.PrintNewMessage, para =>
             {
                 this.Dispatcher.BeginInvoke(() =>
                 {
-                    LSOC.Add($"{DateTime.Now.ToString("HH:mm:ss")} -> {(string)para}");
+                    _list.Add($"{DateTime.Now.ToString("HH:mm:ss")} -> {(string)para}");
                 });
             });
             Mediator.Instance.Register(MessageType.PrintCleanup, _ =>
             {
-                this.Dispatcher.BeginInvoke(() => { LSOC.Clear(); });
+                this.Dispatcher.BeginInvoke(() => { _list.Clear(); });
             });
         }
     }

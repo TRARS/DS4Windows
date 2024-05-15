@@ -167,6 +167,8 @@ namespace CustomMacroFactory.MainWindow
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
+            if (canExit) { return; }
+
             e.Cancel = true;
             this.WindowState = (this.WindowState == WindowState.Minimized ? WindowState.Normal : WindowState.Minimized);
         }
@@ -178,6 +180,19 @@ namespace CustomMacroFactory.MainWindow
         public void DS4StateCustomUpdateMain(in int ind, in DS4StateLite _realState, in DS4StateLite _virtualState)
         {
             MacroManager.Entry(in ind, in _realState, in _virtualState);
+        }
+    }
+
+    //Exit
+    public partial class MainWindow
+    {
+        private bool canExit = false;
+
+        public void Exit()
+        {
+            canExit = true; this.Close();
+
+            Environment.Exit(0);
         }
     }
 }

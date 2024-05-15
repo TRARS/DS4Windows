@@ -143,4 +143,12 @@ namespace DS4Windows
             return hasAnyZero;
         }
     }
+
+    public static partial class CustomMacroLink
+    {
+        public static void Exit()
+        {
+            CustomMacroFactoryInstance.MainView.Exit();
+        }
+    }
 }

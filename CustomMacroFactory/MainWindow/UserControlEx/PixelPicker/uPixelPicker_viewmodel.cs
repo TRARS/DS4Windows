@@ -96,7 +96,6 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
     //直接操作的内部属性
     partial class uPixelPicker_viewmodel
     {
-        private bool IsMouseO2ver { get; set; } = false;
         private bool IsMouseOver { get; set; } = false;
         private bool IsMouseLeftDown { get; set; } = false;
         private Point GetMousePoint { get; set; } = new();

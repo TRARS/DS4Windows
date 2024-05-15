@@ -60,8 +60,8 @@
                                     <Storyboard FillBehavior="Stop" RepeatBehavior="Forever">
                                         <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Opacity" Storyboard.TargetName="contentBorder">
                                             <EasingDoubleKeyFrame KeyTime="0:0:0" Value="1"/>
-                                            <EasingDoubleKeyFrame KeyTime="0:0:1.5" Value="0.25"/>
-                                            <EasingDoubleKeyFrame KeyTime="0:0:3" Value="1"/>
+                                            <EasingDoubleKeyFrame KeyTime="0:0:1" Value="0.25"/>
+                                            <EasingDoubleKeyFrame KeyTime="0:0:2" Value="1"/>
                                         </DoubleAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </BeginStoryboard>
