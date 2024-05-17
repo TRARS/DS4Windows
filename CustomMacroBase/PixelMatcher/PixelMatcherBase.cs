@@ -42,10 +42,20 @@ namespace CustomMacroBase.PixelMatcher
         private protected static bool Enable = true;
         private protected static MediatorProxy mediatorProxy = new();
         private protected static Bitmap? screenshot = null;
+        private protected static Stopwatch timer = Stopwatch.StartNew();
 
         private protected static Action UpdateFrames = delegate
         {
             if (Enable is false) { return; }
+
+            if (timer.Elapsed.TotalMilliseconds > 100)
+            {
+                timer.Restart();
+            }
+            else
+            {
+                return;
+            }
 
             screenshot?.Dispose();
             screenshot = GetTargetWindowCaptureByHandle();

@@ -205,15 +205,10 @@ namespace CustomMacroBase.CustomControlEx.PointCurveChartEx
 
                     return sp;
                 }
-                else
-                {
-                    return Binding.DoNothing;
-                }
             }
-            catch
-            {
-                return Binding.DoNothing;
-            }
+            catch { }
+
+            return Binding.DoNothing;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

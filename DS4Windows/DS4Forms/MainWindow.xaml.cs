@@ -998,7 +998,7 @@ Suspend support not enabled.", true);
             }
 
             CustomMacroLink.Exit();
-            Application.Current.Shutdown();
+            Application.Current.Shutdown(); 
         }
 
         protected override void OnSourceInitialized(EventArgs e)

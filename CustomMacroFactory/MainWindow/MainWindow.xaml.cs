@@ -190,9 +190,7 @@ namespace CustomMacroFactory.MainWindow
 
         public void Exit()
         {
-            canExit = true; this.Close();
-
-            Environment.Exit(0);
+            canExit = true;
         }
     }
 }
