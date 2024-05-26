@@ -5,18 +5,15 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
 {
     public class uPixelPicker_model
     {
-        public class PixelDetail
-        {
-            public int Stride;
-            public byte[]? Values;
-        }
+        public Visibility Visibility { get; set; } = Visibility.Collapsed;
+        public UIElement CurrentScreenshot { get; set; } = new();
+        public UIElement AdditionalInfo { get; set; } = new();
+        public UIElement Magnifier { get; set; } = new();
 
         public ImageSource? ImageSource = null;//BitmapImage即可
         public Thickness ImageMargin { get; set; } = new();
         public Thickness ImageMarginWhenLeftDown { get; set; } = new();
         public PixelDetail BGRA { get; set; } = new();
-
-        public Visibility Visibility { get; set; } = Visibility.Collapsed;
 
         public Rect ViewboxRect { get; set; } = new();
 

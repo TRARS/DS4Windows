@@ -62,7 +62,7 @@
                           Height="{Binding Width, RelativeSource={RelativeSource Self}}"/>
                 </Grid>
             </titlebarbuttonex:cTitleBarButton>
-            <TextBlock x:Name="TextBlock2" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="4,0,4,0"
+            <TextBlock TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="4,0,4,0"
                        Text="{Binding DataContext.Title, FallbackValue=Title, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl}}"
                        Foreground="Snow"
                        Opacity="{Binding IsActive, 

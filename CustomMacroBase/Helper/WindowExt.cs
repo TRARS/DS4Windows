@@ -13,7 +13,7 @@ namespace CustomMacroBase.Helper
 
         private static readonly double ratioX = 0;//0.152;
         private static readonly double ratioY = 0;//0.8;
-        private static Func<Window, double> GetMultiple = (Window para) =>
+        private static Func<Window, double> GetDeviceScaleFactor = (Window para) =>
         {
             return 1 / PresentationSource.FromVisual(para).CompositionTarget.TransformToDevice.M11;
         };
@@ -42,14 +42,14 @@ namespace CustomMacroBase.Helper
             double opacity = 0d;
 
             //据观察子窗体在创建时依赖于主窗体当前所在屏的DPI，若主窗体过早地移动会导致子窗体生成时是以副屏DPI为基准创建 会歪掉，故延迟移动
-            Task.Run(() =>
+            Task.Run(async () =>
             {
-                window.Dispatcher.BeginInvoke((Action)delegate { opacity = window.Opacity; window.Opacity = 0; });
+                await window.Dispatcher.BeginInvoke((Action)delegate { opacity = window.Opacity; window.Opacity = 0; });
                 {
                     //延时
-                    Task.Delay(32).Wait();
+                    await Task.Delay(32);
                     //先移动到主/副屏左上角，然后再按ratio偏移
-                    window.Dispatcher.BeginInvoke((Action)delegate
+                    await window.Dispatcher.BeginInvoke((Action)delegate
                     {
                         //获取目标屏
                         Screen? TargetScreen = secondaryScreen is null ? primaryScreen : secondaryScreen;
@@ -77,17 +77,17 @@ namespace CustomMacroBase.Helper
             if (_isRelative is false)
             {
                 //单次位移于跨窗体时可能遭受DPI变动导致未抵达正确位置
-                window.Left = goalX * GetMultiple(window);
-                window.Top = goalY * GetMultiple(window);
+                window.Left = goalX * GetDeviceScaleFactor(window);
+                window.Top = goalY * GetDeviceScaleFactor(window);
 
                 //故二次位移保险点
-                window.Left = goalX * GetMultiple(window);
-                window.Top = goalY * GetMultiple(window);
+                window.Left = goalX * GetDeviceScaleFactor(window);
+                window.Top = goalY * GetDeviceScaleFactor(window);
             }
             else
             {
-                window.Left += goalX * GetMultiple(window);
-                window.Top += goalY * GetMultiple(window);
+                window.Left += goalX * GetDeviceScaleFactor(window);
+                window.Top += goalY * GetDeviceScaleFactor(window);
             }
         }
         #endregion
@@ -100,7 +100,7 @@ namespace CustomMacroBase.Helper
         private static void ReSetSizeFunc(this Window window, Rect size)
         {
             //承接缩放倍率
-            double multiple = 1 / PresentationSource.FromVisual(window).CompositionTarget.TransformToDevice.M11;
+            double multiple = GetDeviceScaleFactor(window);
 
             window.Width = (size.Width * multiple);
             window.Height = (size.Height * multiple);

@@ -29,9 +29,9 @@ namespace CustomMacroBase.PixelMatcher
                 {
                     task_is_running = true;
 
-                    Task.Run(() =>
+                    Task.Run(async () =>
                     {
-                        Mediator.Instance.NotifyColleagues(MessageType.GetFrame, source);
+                        await MediatorAsync.Instance.NotifyColleagues(AsyncMessageType.AsyncSnapshot, source);
                         source.Dispose();
                     }).ContinueWith(_ => { task_is_running = false; Print("GetWindowCapture Done"); });
                 }
@@ -48,6 +48,7 @@ namespace CustomMacroBase.PixelMatcher
         {
             if (Enable is false) { return; }
 
+            // 限制刷新频率
             if (timer.Elapsed.TotalMilliseconds > 100)
             {
                 timer.Restart();
@@ -268,14 +269,6 @@ namespace CustomMacroBase.PixelMatcher
         #endregion
 
         #region 范围找数字
-        ///// <summary>
-        ///// 范围找字_尝试识别区域内的数字 (Tesseract)
-        ///// </summary>
-        //private protected static string MatchNumber(Rectangle rect, bool isWhiteText, double zoomratio)
-        //{
-        //    if (screenshot is null) { return string.Empty; }
-        //    return OpenCV.Instance.MatchNumber(ref screenshot, rect, isWhiteText, zoomratio);
-        //}
         /// <summary>
         /// 范围找字_尝试识别区域内的数字 (PaddleSharp)
         /// </summary>
@@ -287,14 +280,6 @@ namespace CustomMacroBase.PixelMatcher
         #endregion
 
         #region 范围找字
-        ///// <summary>
-        ///// 范围找字_尝试识别区域内的文字，需指定语言 (Tesseract)
-        ///// </summary>
-        //private protected static string MatchText(Rectangle rect, bool isWhiteText, string language, string whitelist, double zoomratio)
-        //{
-        //    if (screenshot is null) { return string.Empty; }
-        //    return OpenCV.Instance.MatchText(ref screenshot, rect, isWhiteText, language, whitelist, zoomratio);
-        //}
         /// <summary>
         /// 范围找字_尝试识别区域内的文字，需指定语言 (PaddleSharp)
         /// </summary>

@@ -16,10 +16,10 @@ namespace CustomMacroBase.Helper
         Ds4Latency,               //调用DS4Windows方法（获取输入延迟）
         PrintNewMessage,          //打印新消息至日志区域
         PrintCleanup,             //清空日志
-        GetFrame,                 //好像是获取截图用
+        GetFrames,                //更新截图（弃用）
         PixelPickerOnOff,         //拾色器区域 展开/关闭 
         WindowPosReset,           //窗体位置恢复至左上角
-        CanUpdateFrames
+        CanUpdateFrames,          //
     }
 
     //私有字段/属性/方法

@@ -9,6 +9,7 @@
     <local:cToggleButtonGroup_converter_bool2opacity x:Key="cToggleButtonGroup_converter_bool2opacity"/>
     <local:cToggleButtonGroup_converter_boolbool2bool x:Key="cToggleButtonGroup_converter_boolbool2bool"/>
     <local:cToggleButtonGroup_converter_delegate2uielement x:Key="cToggleButtonGroup_converter_delegate2uielement"/>
+    <local:cToggleButtonGroup_converter_string2bool x:Key="cToggleButtonGroup_converter_string2bool"/>
     <local:cToggleButtonGroup_converter_count2expander x:Key="cToggleButtonGroup_converter_count2expander"/>
     <local:cToggleButtonGroup_converter_count2arrowvisibility x:Key="cToggleButtonGroup_converter_count2arrowvisibility"/>
 
@@ -42,7 +43,11 @@
                                                                       IsChecked="{Binding Enable, Mode=TwoWay}"
                                                                       Visibility="{Binding HideSelf, Mode=OneWay, Converter={StaticResource cToggleButtonGroup_converter_bool2visibility}}"
                                                                       DisableSliderButton="{Binding DisableSliderButton, Mode=OneWay}"
-                                                                      Enable="{Binding EnableChildren, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Mode=OneWay}">
+                                                                      Enable="{Binding EnableChildren, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Mode=OneWay}"
+                                                                      ToolTip="{Binding TooltipText, Mode=OneWay}"
+                                                                      ToolTipService.IsEnabled="{Binding TooltipText, Mode=OneWay, Converter={StaticResource cToggleButtonGroup_converter_string2bool}}"
+                                                                      ToolTipService.Placement="Top"
+                                                                      ToolTipService.InitialShowDelay="256">
                                         </togglebuttonex:cToggleButton>
                                     </foldablecontainerex:cFoldableContainer.Header>
                                     
@@ -127,7 +132,11 @@
                                                                       IsChecked="{Binding Enable, Mode=TwoWay}"
                                                                       Visibility="{Binding HideSelf, Mode=OneWay, Converter={StaticResource cToggleButtonGroup_converter_bool2visibility}}"
                                                                       DisableSliderButton="{Binding DisableSliderButton, Mode=OneWay}"
-                                                                      Enable="{Binding EnableChildren, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Mode=OneWay}">
+                                                                      Enable="{Binding EnableChildren, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Mode=OneWay}"
+                                                                      ToolTip="{Binding TooltipText, Mode=OneWay}"
+                                                                      ToolTipService.IsEnabled="{Binding TooltipText, Mode=OneWay, Converter={StaticResource cToggleButtonGroup_converter_string2bool}}"
+                                                                      ToolTipService.Placement="Top"
+                                                                      ToolTipService.InitialShowDelay="256">
                                         </togglebuttonex:cToggleButton>
                                     </foldablecontainerex:cFoldableContainer.Header>
 
@@ -214,7 +223,11 @@
                                     <togglebuttonex:cToggleButton Text="{Binding Text, Mode=OneWay}"
                                                                   IsChecked="{Binding Enable, Mode=TwoWay}"
                                                                   Visibility="{Binding HideSelf, Mode=OneWay, Converter={StaticResource cToggleButtonGroup_converter_bool2visibility}}"
-                                                                  DisableSliderButton="{Binding DisableSliderButton, Mode=OneWay}">
+                                                                  DisableSliderButton="{Binding DisableSliderButton, Mode=OneWay}"
+                                                                  ToolTip="{Binding TooltipText, Mode=OneWay}"
+                                                                  ToolTipService.IsEnabled="{Binding TooltipText, Mode=OneWay, Converter={StaticResource cToggleButtonGroup_converter_string2bool}}"
+                                                                  ToolTipService.Placement="Top"
+                                                                  ToolTipService.InitialShowDelay="256">
                                         <togglebuttonex:cToggleButton.ContextMenu>
                                             <contextmenuex:cContextMenu StaysOpen="True" Focusable="True">
                                                 <contextmenuex:cMenuItemForHotkey Source="{TemplateBinding DataContext}"/>

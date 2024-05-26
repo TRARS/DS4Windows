@@ -30,7 +30,9 @@
         <Grid DockPanel.Dock="Top" Width="450" Margin="0,8,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0">
@@ -47,28 +49,39 @@
                     <Rectangle x:Name="lsValRec" Width="6" Height="6" Canvas.Left="62" Canvas.Top="62" Fill="{DynamicResource ForegroundColor}">
                     </Rectangle>
                 </Canvas>
-                <StackPanel Orientation="Horizontal">
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="LX (I): " />
-                        <Label x:Name="lxInValLb" Content="" Width="30" Padding="2,5"  />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="LX (O): " />
-                        <Label x:Name="lxOutValLb" Content="" Width="30" Padding="2,5" />
-                    </StackPanel>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="LY (I): "/>
-                        <Label x:Name="lyInValLb" Content="" Width="30" Padding="2,5" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="LY (O): " />
-                        <Label x:Name="lyOutValLb" Content="" Width="30" />
-                    </StackPanel>
-                </StackPanel>
+                <Grid MinHeight="30">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Label Content="LX (I): "
+                           Grid.Column="0" Grid.Row="0"/>
+                    <Label x:Name="lxInValLb" Content="" Padding="2,5"
+                           Grid.Column="1" Grid.Row="0"/>
+                    <Label Content="LX (O): "
+                           Grid.Column="2" Grid.Row="0"/>
+                    <Label x:Name="lxOutValLb" Content="" Padding="2,5"
+                           Grid.Column="3" Grid.Row="0"/>
+
+                    <Label Content="LY (I): "
+                           Grid.Column="0" Grid.Row="1"/>
+                    <Label x:Name="lyInValLb" Content="" Padding="2,5"
+                           Grid.Column="1" Grid.Row="1"/>
+                    <Label Content="LY (O): "
+                           Grid.Column="2" Grid.Row="1"/>
+                    <Label x:Name="lyOutValLb" Content="" Padding="2,5"
+                           Grid.Column="3" Grid.Row="1"/>
+                </Grid>
             </StackPanel>
-            <StackPanel Grid.Column="1">
+            <Rectangle Grid.Column="1" Width="1" Opacity="0.2" Fill="{DynamicResource ForegroundColor}"/>
+            <StackPanel Grid.Column="2">
                 <Label Content="{lex:Loc RightStick}" HorizontalAlignment="Center" Padding="0"/>
                 <Label Content="" HorizontalAlignment="Center" Padding="0"/>
                 <Canvas x:Name="rsCanvas" Width="130" Height="130" ClipToBounds="True">
@@ -83,28 +96,39 @@
                     <Rectangle x:Name="rsValRec" Width="6" Height="6" Canvas.Left="62" Canvas.Top="62" Fill="{DynamicResource ForegroundColor}">
                     </Rectangle>
                 </Canvas>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="RX (I): "/>
-                        <Label x:Name="rxInValLb" Content="" Width="30" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="RX (O): "/>
-                        <Label x:Name="rxOutValLb" Content="" Width="30" />
-                    </StackPanel>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="RY (I): "/>
-                        <Label x:Name="ryInValLb" Content="" Width="30" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="RY (O): "/>
-                        <Label x:Name="ryOutValLb" Content="" Width="30" />
-                    </StackPanel>
-                </StackPanel>
+                <Grid MinHeight="30">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Label Content="RX (I): "
+                           Grid.Column="0" Grid.Row="0"/>
+                    <Label x:Name="rxInValLb" Content="" Padding="2,5"
+                           Grid.Column="1" Grid.Row="0"/>
+                    <Label Content="RX (O): "
+                           Grid.Column="2" Grid.Row="0"/>
+                    <Label x:Name="rxOutValLb" Content="" Padding="2,5"
+                           Grid.Column="3" Grid.Row="0"/>
+
+                    <Label Content="RY (I): "
+                           Grid.Column="0" Grid.Row="1"/>
+                    <Label x:Name="ryInValLb" Content="" Padding="2,5"
+                           Grid.Column="1" Grid.Row="1"/>
+                    <Label Content="RY (O): "
+                           Grid.Column="2" Grid.Row="1"/>
+                    <Label x:Name="ryOutValLb" Content="" Padding="2,5"
+                           Grid.Column="3" Grid.Row="1"/>
+                </Grid>
             </StackPanel>
-            <StackPanel Grid.Column="2">
+            <Rectangle Grid.Column="3" Width="1" Opacity="0.2" Fill="{DynamicResource ForegroundColor}"/>
+            <StackPanel Grid.Column="4">
                 <TextBlock Text="{lex:Loc ReadingsControl.SixAxisXText}" TextWrapping="Wrap" HorizontalAlignment="Center" TextAlignment="Center"/>
                 <Canvas x:Name="sixaxisCanvas" Width="130" Height="130" ClipToBounds="True">
                     <Rectangle Width="{Binding Path=Width, ElementName=sixaxisCanvas}"
@@ -119,26 +143,36 @@
                     </Rectangle>
                     <Ellipse x:Name="gyroCalEllipse" Fill="#FF1FCF1F" Height="32" Canvas.Left="90" Canvas.Top="10" Width="32"/>
                 </Canvas>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="X (I): "/>
-                        <Label x:Name="sixAxisXInValLb" Content="" Width="40" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="X (O): "/>
-                        <Label x:Name="sixAxisXOutValLb" Content="" Width="40" />
-                    </StackPanel>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="Z (I): "/>
-                        <Label x:Name="sixAxisZInValLb" Content="" Width="40" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="Z (O): "/>
-                        <Label x:Name="sixAxisZOutValLb" Content="" Width="40" />
-                    </StackPanel>
-                </StackPanel>
+                <Grid MinHeight="30">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Label Content="X (I): "
+                           Grid.Column="0" Grid.Row="0"/>
+                    <Label x:Name="sixAxisXInValLb" Content="" Padding="2,5"
+                           Grid.Column="1" Grid.Row="0"/>
+                    <Label Content="X (O): "
+                           Grid.Column="2" Grid.Row="0"/>
+                    <Label x:Name="sixAxisXOutValLb" Content="" Padding="2,5"
+                           Grid.Column="3" Grid.Row="0"/>
+
+                    <Label Content="Z (I): "
+                           Grid.Column="0" Grid.Row="1"/>
+                    <Label x:Name="sixAxisZInValLb" Content="" Padding="2,5"
+                           Grid.Column="1" Grid.Row="1"/>
+                    <Label Content="Z (O): "
+                           Grid.Column="2" Grid.Row="1"/>
+                    <Label x:Name="sixAxisZOutValLb" Content="" Padding="2,5"
+                           Grid.Column="3" Grid.Row="1"/>
+                </Grid>
             </StackPanel>
         </Grid>
         <Grid DockPanel.Dock="Top" Margin="8,40,8,8">

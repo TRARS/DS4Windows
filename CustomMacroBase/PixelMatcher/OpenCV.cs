@@ -1,13 +1,10 @@
 ﻿using CustomMacroBase.Helper;
 using OpenCvSharp;
-using Sdcb.PaddleInference;
 using Sdcb.PaddleOCR;
-using Sdcb.PaddleOCR.Models.Local;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Point = OpenCvSharp.Point;
 using Rect = OpenCvSharp.Rect;
 using SD = System.Drawing;
@@ -29,6 +26,13 @@ namespace CustomMacroBase.PixelMatcher
         {
             Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, str);
         }
+    }
+
+    //Updater
+    public partial class OpenCV
+    {
+        readonly FrameManager FrameManager = new();
+        readonly PaddleOcrAllManager PaddleOcrAllManager = new();
     }
 
     //MatchType
@@ -155,56 +159,6 @@ namespace CustomMacroBase.PixelMatcher
 //对内
 namespace CustomMacroBase.PixelMatcher
 {
-    //ActionController
-    public partial class OpenCV
-    {
-        sealed partial class UpdateController
-        {
-            bool can_update = false;
-            bool task_is_running = false;
-
-            public UpdateController()
-            {
-                Mediator.Instance.Register(MessageType.CanUpdateFrames, (para) =>
-                {
-                    can_update = (bool)para;
-                });
-            }
-
-            /// <summary>
-            /// 截图区域未展开时不更新
-            /// </summary>
-            public UpdateController? CanUpdate()
-            {
-                return can_update ? this : null;
-            }
-
-            /// <summary>
-            /// 将指定的Mat推给MacroWindow
-            /// </summary>
-            public void UpdateFrames(Mat source)
-            {
-                if (task_is_running is false)
-                {
-                    task_is_running = true;
-
-                    Task.Run(() =>
-                    {
-                        Mediator.Instance.NotifyColleagues(MessageType.GetFrame, OpenCvSharp.Extensions.BitmapConverter.ToBitmap(source));
-                        source.Dispose();
-
-                    }).ContinueWith(_ => { task_is_running = false; });
-                }
-                else
-                {
-                    source.Dispose();
-                }
-            }
-        }
-
-        UpdateController? UpdateManager = new();
-    }
-
     //MatchColorBase
     public partial class OpenCV
     {
@@ -241,7 +195,7 @@ namespace CustomMacroBase.PixelMatcher
                 Cv2.InRange(_refMat, minScalar, maxScalar, _refMat);//取出指定颜色（前景白背景黑）
                 SaveToFlow(_refMat.CvtColor(ColorConversionCodes.GRAY2BGR), flowMat);//储存流程
 
-                UpdateManager?.CanUpdate()?.UpdateFrames(flowMat.Clone());
+                FrameManager.CanUpdate()?.UpdateFrames(flowMat.Clone());
 
                 //unsafe
                 //{
@@ -314,7 +268,7 @@ namespace CustomMacroBase.PixelMatcher
                     //
                 }
 
-                UpdateManager?.CanUpdate()?.UpdateFrames(original);//
+                FrameManager.CanUpdate()?.UpdateFrames(original);//
             }
 
             return result;
@@ -454,8 +408,6 @@ namespace CustomMacroBase.PixelMatcher
     //MatchTextBase_PaddleSharp
     public partial class OpenCV
     {
-        Dictionary<string, PaddleOcrAll> device2ocrall = new();
-
         private string MatchTextBase(Mat _refMat, Rectangle _cropRect, bool isWhiteText, DeviceType _deviceType, ModelType _modelType, double zoomratio, TextType textType = TextType.Word)
         {
             var text = string.Empty;
@@ -468,91 +420,47 @@ namespace CustomMacroBase.PixelMatcher
                     false => PreActionBlackText
                 };
 
-                using (PaddleOcrAll all = GetPaddleOcrAll(_deviceType, _modelType))
-                using (Mat cropMat = _refMat.Clone(new Rect(_cropRect.X, _cropRect.Y, _cropRect.Width, _cropRect.Height)).CvtColor(ColorConversionCodes.BGRA2BGR))
-                using (Mat flowMat = new())
+                if (PaddleOcrAllManager.GetPaddleOcrAll(_deviceType, _modelType) is PaddleOcrAll all)
                 {
-                    foreach (var action in PreActionResize)//缩放 对应流程
+                    using (all.Clone())
+                    using (Mat cropMat = _refMat.Clone(new Rect(_cropRect.X, _cropRect.Y, _cropRect.Width, _cropRect.Height)).CvtColor(ColorConversionCodes.BGRA2BGR))
+                    using (Mat flowMat = new())
                     {
-                        action.Invoke(cropMat, cropMat, zoomratio);
-                        SaveToFlow(cropMat, flowMat); //储存流程
-                    }
-                    foreach (var action in pre_white_or_black)//白字/黑字 对应流程
-                    {
-                        action.Invoke(cropMat, cropMat);
-                        SaveToFlow(cropMat, flowMat);//储存流程
-                    }
+                        foreach (var action in PreActionResize)//缩放 对应流程
+                        {
+                            action.Invoke(cropMat, cropMat, zoomratio);
+                            SaveToFlow(cropMat, flowMat); //储存流程
+                        }
+                        foreach (var action in pre_white_or_black)//白字/黑字 对应流程
+                        {
+                            action.Invoke(cropMat, cropMat);
+                            SaveToFlow(cropMat, flowMat);//储存流程
+                        }
 
-                    UpdateManager?.CanUpdate()?.UpdateFrames(flowMat.Clone());
+                        FrameManager.CanUpdate()?.UpdateFrames(flowMat.Clone());
 
-                    //PaddleOCR读取文本
-                    switch (textType)
-                    {
-                        case TextType.Word:
-                            {
-                                text = all.Run(cropMat.Clone()).Text;
-                                break;
-                            }
-                        case TextType.Number:
-                            {
-                                var input = all.Run(cropMat.Clone()).Text;
-                                var match = Regex.Match(input, @"\d+", RegexOptions.Singleline);
-                                text = match.Success ? match.Value : string.Empty;
-                                break;
-                            }
-                        default: throw new NotImplementedException();
+                        //PaddleOCR读取文本
+                        switch (textType)
+                        {
+                            case TextType.Word:
+                                {
+                                    text = all.Run(cropMat.Clone()).Text;
+                                    break;
+                                }
+                            case TextType.Number:
+                                {
+                                    var input = all.Run(cropMat.Clone()).Text;
+                                    var match = Regex.Match(input, @"\d+", RegexOptions.Singleline);
+                                    text = match.Success ? match.Value : string.Empty;
+                                    break;
+                                }
+                            default: throw new NotImplementedException();
+                        }
                     }
                 }
             }
 
             return text;
-        }
-
-        private PaddleOcrAll CreatePaddleOcrAllOnDeviceOrModelChange(DeviceType _devicetype, ModelType _modeltype)
-        {
-            var key = $"{_devicetype}_{_modeltype}";
-
-            if (device2ocrall.ContainsKey(key) is false)
-            {
-                Print($"Creating PaddleOcrAll object: {key}");
-                {
-                    var device = _devicetype switch
-                    {
-                        DeviceType.Mkldnn => PaddleDevice.Mkldnn(),
-                        DeviceType.Onnx => PaddleDevice.Onnx(),
-                        DeviceType.Openblas => PaddleDevice.Openblas(),
-                        DeviceType.Gpu => PaddleDevice.Gpu(),
-                        _ => throw new NotImplementedException()
-                    };
-
-                    var usegpu = _devicetype == DeviceType.Gpu; //gpu跑够快，用V4模型更准
-
-                    var model = _modeltype switch
-                    {
-                        ModelType.EnglishV3 => usegpu ? LocalFullModels.EnglishV4 : LocalFullModels.EnglishV3,
-                        ModelType.JapanV3 => usegpu ? LocalFullModels.JapanV4 : LocalFullModels.JapanV3,
-                        ModelType.ChineseV3 => usegpu ? LocalFullModels.ChineseV4 : LocalFullModels.ChineseV3,
-                        ModelType.TraditionalChineseV3 => LocalFullModels.TraditionalChineseV3, //无V4
-                        _ => throw new NotImplementedException()
-                    };
-
-                    var all = new PaddleOcrAll(model, device)
-                    {
-                        AllowRotateDetection = false, /* 允许识别有角度的文字 */
-                        Enable180Classification = false, /* 允许识别旋转角度大于90度的文字 */
-                    };
-
-                    device2ocrall.Add(key, all);
-                }
-                Print($"Successfully created PaddleOcrAll object: {key}");
-            }
-
-            return device2ocrall[key];
-        }
-
-        private PaddleOcrAll GetPaddleOcrAll(DeviceType _devicetype, ModelType _modeltype)
-        {
-            return CreatePaddleOcrAllOnDeviceOrModelChange(_devicetype, _modeltype).Clone();
         }
     }
 

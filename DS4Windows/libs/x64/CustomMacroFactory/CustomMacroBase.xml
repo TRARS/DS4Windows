@@ -104,6 +104,21 @@
             若SortIndex不存在，返回10000
             </summary>
         </member>
+        <member name="T:CustomMacroBase.Helper.AsyncMessageType">
+            <summary>
+            适用于 MediatorAsync 的消息枚举
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.Helper.MediatorAsync.Register(CustomMacroBase.Helper.AsyncMessageType,System.Func{System.Object,System.Threading.CancellationToken,System.Threading.Tasks.Task{System.Object}})">
+            <summary>
+            注册异步方法供日后使用（每种消息只能注册一次）
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.Helper.MediatorAsync.NotifyColleagues(CustomMacroBase.Helper.AsyncMessageType,System.Object,System.Nullable{System.Threading.CancellationToken})">
+            <summary>
+            获取异步方法提供的返回值
+            </summary>
+        </member>
         <member name="P:CustomMacroBase.Helper.Tools.FlowManager.ActionInfoV0.Action">
             <summary>
             待执行的动作
@@ -796,9 +811,14 @@
             特征码
             </summary>
         </member>
-        <member name="P:CustomMacroBase.PreBase.GateBase.Children">
+        <member name="P:CustomMacroBase.PreBase.GateBase.TooltipText">
             <summary>
+            气泡注释
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.PreBase.GateBase.Children">
             获取当前滑块开关的子项列表，用以存放与宿主类型相同的对象（1）
+            <summary>
             </summary>
         </member>
         <member name="P:CustomMacroBase.PreBase.GateBase.ChildrenEx">
@@ -1001,6 +1021,11 @@
             默认构造函数
             </summary>
         </member>
+        <member name="M:CustomMacroBase.MacroBase.SetTooltipText(CustomMacroBase.PreBase.GateBase,System.Boolean,System.String)">
+            <summary>
+            提示下标
+            </summary>
+        </member>
         <member name="M:CustomMacroBase.MacroBase.ProConSendReport(System.UInt32)">
             <summary>
             <para>将虚拟DS4手柄的按键状态转发给蓝牙模拟的Pro手柄</para>
@@ -1080,14 +1105,19 @@
             OpenCvSharp封装
             </summary>
         </member>
-        <member name="M:CustomMacroBase.PixelMatcher.OpenCV.UpdateController.CanUpdate">
+        <member name="M:CustomMacroBase.PixelMatcher.FrameManager.CanUpdate">
             <summary>
             截图区域未展开时不更新
             </summary>
         </member>
-        <member name="M:CustomMacroBase.PixelMatcher.OpenCV.UpdateController.UpdateFrames(OpenCvSharp.Mat)">
+        <member name="M:CustomMacroBase.PixelMatcher.FrameManager.UpdateFrames(OpenCvSharp.Mat)">
             <summary>
             将指定的Mat推给MacroWindow
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.PixelMatcher.PaddleOcrAllManager.GetPaddleOcrAll(CustomMacroBase.PixelMatcher.OpenCV.DeviceType,CustomMacroBase.PixelMatcher.OpenCV.ModelType)">
+            <summary>
+            获取PaddleOcrAll对象
             </summary>
         </member>
         <member name="M:CustomMacroBase.PixelMatcher.PixelMatcherBase.MediatorProxy.UpdateFrames(System.Drawing.Bitmap)">

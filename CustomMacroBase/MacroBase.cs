@@ -107,22 +107,32 @@ namespace CustomMacroBase.PreBase
     public partial class GateBase
     {
         private static Random random = new Random();
+        private static HashSet<string> generatedStrings = new HashSet<string>();
+
         /// <summary>
         /// 加盐
         /// </summary>
         private static string GenerateRandomString(int length)
         {
             const string chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-            StringBuilder stringBuilder = new StringBuilder();
+            string newString = string.Empty;
 
-            for (int i = 0; i < length; i++)
+            do
             {
-                int index = random.Next(chars.Length);
-                stringBuilder.Append(chars[index]);
-            }
+                var stringBuilder = new StringBuilder();
 
-            return stringBuilder.ToString();
+                for (int i = 0; i < length; i++)
+                {
+                    int index = random.Next(chars.Length);
+                    stringBuilder.Append(chars[index]);
+                }
+
+                newString = stringBuilder.ToString();
+            } while (generatedStrings.Contains(newString));
+
+            return newString;
         }
+
     }
     public partial class GateBase
     {
@@ -244,7 +254,21 @@ namespace CustomMacroBase.PreBase
         private string _Feature = GenerateRandomString(32);
 
         /// <summary>
+        /// 气泡注释
+        /// </summary>
+        public string TooltipText
+        {
+            get { return _TooltipText; }
+            set
+            {
+                _TooltipText = value;
+                NotifyPropertyChanged();
+            }
+        }
+        private string _TooltipText = string.Empty;
+
         /// 获取当前滑块开关的子项列表，用以存放与宿主类型相同的对象（1）
+        /// <summary>
         /// </summary>
         public ObservableCollection<GateBase> Children { get; init; } = new();
         /// <summary>
@@ -284,7 +308,7 @@ namespace CustomMacroBase.PreBase
         /// <summary>
         /// 主开关，既位于最外层的开关
         /// </summary>
-        public GateBase MainGate { get; } = new() { Text = "Main_NoName", Enable = true };
+        public GateBase MainGate { get; } = new() { Text = "Main_NoName", Enable = true, TooltipText = "Root" };
     }
 }
 
@@ -622,6 +646,7 @@ namespace CustomMacroBase
             try
             {
                 this.Init();
+                this.SetTooltipText(MainGate, true, "Root");
             }
             catch (Exception ex)
             {
@@ -629,7 +654,20 @@ namespace CustomMacroBase
             }
         }
 
+        /// <summary>
+        /// 提示下标
+        /// </summary>
+        private void SetTooltipText(GateBase node, bool isRoot, string tip)
+        {
+            if (node is null) return;
 
+            node.TooltipText = tip;
+
+            for (int i = 0; i < node.Children.Count; i++)
+            {
+                SetTooltipText(node.Children[i], false, $"{(isRoot ? tip + " - " : tip)}[{i}]");
+            }
+        }
         #endregion
     }
     /// <summary>
@@ -1049,26 +1087,6 @@ namespace CustomMacroBase
 
             return stackpanel;
         }
-
-        ///// <summary>
-        ///// CreateValueIndicator
-        ///// </summary>
-        //protected static UIElement CreateValueIndicator(object model, params string[] propNames)
-        //{
-        //    var stackpanel = new cStackPanel() { Orientation = Orientation.Vertical, GuideLineColor = new(Colors.SeaShell) };
-        //    {
-        //        foreach (var propName in propNames)
-        //        {
-        //            var valueindicator = new cValueIndicator() { PropName = propName, BackgroundColor = new(Colors.Black) };
-
-        //            BindingOperations.SetBinding(valueindicator, cValueIndicator.PropValueProperty, new Binding(propName) { Source = model });
-
-        //            stackpanel.Children.Add(valueindicator);
-        //        }
-        //    }
-
-        //    return stackpanel;
-        //}
 
         /// <summary>
         /// CreateValueIndicator

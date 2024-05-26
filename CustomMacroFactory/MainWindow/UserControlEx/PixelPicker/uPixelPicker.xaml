@@ -6,15 +6,18 @@
              xmlns:local="clr-namespace:CustomMacroFactory.MainWindow.UserControlEx.PixelPicker"
              mc:Ignorable="d"
              ClipToBounds="True"
-             Visibility="{Binding Visibility}" 
-             d:Visibility="Visible"
-             >
-    <!--<d:UserControl.DataContext>
+             Visibility="{Binding Visibility}"
+             
+             d:Width="480" 
+             d:Height="272" 
+             d:Visibility="Visible">
+    <d:UserControl.DataContext>
         <local:uPixelPicker_viewmodel/>
-    </d:UserControl.DataContext>-->
+    </d:UserControl.DataContext>
 
     <Grid>
-        <Rectangle d:Width="480" d:Height="272">
+        <!--Background-->
+        <Rectangle>
             <Rectangle.Fill>
                 <VisualBrush TileMode="Tile" 
                              Viewport="0,0,40,40" ViewportUnits="Absolute" 
@@ -30,6 +33,21 @@
                 </VisualBrush>
             </Rectangle.Fill>
         </Rectangle>
+
+        <!--Screenshot-->
+        <ContentControl Content="{Binding CurrentScreenshot}"/>
+        
+        <!--Info + Magnifier-->
+        <Grid VerticalAlignment="Bottom" d:Background="#80FF0041" d:MinHeight="50">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+            <ContentControl Grid.Column="0" Content="{Binding AdditionalInfo}"/>
+            <ContentControl Grid.Column="1" Content="{Binding Magnifier}"/>
+        </Grid>
+        
     </Grid>
 
 </UserControl>

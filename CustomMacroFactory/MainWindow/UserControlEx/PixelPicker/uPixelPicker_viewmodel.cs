@@ -1,7 +1,10 @@
 ﻿using CustomMacroBase.CustomEffect;
 using CustomMacroBase.Helper;
+using CustomMacroBase.Helper.Extensions;
 using System;
+using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -13,11 +16,64 @@ using SD = System.Drawing;
 
 namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
 {
-    //绑定用的属性？
     partial class uPixelPicker_viewmodel : NotificationObject
     {
         private uPixelPicker_model model = new();
 
+        public Visibility Visibility
+        {
+            get { return model.Visibility; }
+            set
+            {
+                model.Visibility = value;
+                NotifyPropertyChanged();
+            }
+        }
+        public UIElement CurrentScreenshot
+        {
+            get { return model.CurrentScreenshot; }
+            set
+            {
+                model.CurrentScreenshot = value;
+                NotifyPropertyChanged();
+            }
+        }
+        public UIElement AdditionalInfo
+        {
+            get { return model.AdditionalInfo; }
+            set
+            {
+                model.AdditionalInfo = value;
+                NotifyPropertyChanged();
+            }
+        }
+        public UIElement Magnifier
+        {
+            get { return model.Magnifier; }
+            set
+            {
+                model.Magnifier = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public uPixelPicker_viewmodel()
+        {
+            CreateImageControl();
+            RegisterDelegate();
+            HostEventInit();
+            ViewModelInit();
+        }
+    }
+    partial class uPixelPicker_viewmodel
+    {
+        private bool IsMouseOver { get; set; } = false;
+        private bool IsMouseLeftDown { get; set; } = false;
+        private Point GetMousePoint { get; set; } = new();
+        private double LocalRatio = 1;
+    }
+    partial class uPixelPicker_viewmodel
+    {
         public ImageSource? ImageSource
         {
             get { return model.ImageSource; }
@@ -45,21 +101,12 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
                 NotifyPropertyChanged();
             }
         }
-        public uPixelPicker_model.PixelDetail BGRA
+        public PixelDetail BGRA
         {
             get { return model.BGRA; }
             set
             {
                 model.BGRA = value;
-                NotifyPropertyChanged();
-            }
-        }
-        public Visibility Visibility
-        {
-            get { return model.Visibility; }
-            set
-            {
-                model.Visibility = value;
                 NotifyPropertyChanged();
             }
         }
@@ -91,40 +138,9 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
                 NotifyPropertyChanged(); NotifyPropertyChanged("MessageStr");
             }
         }
-        public string MessageStr => (SizeInfo.Equals(string.Empty) ? "" : $" size{SizeInfo} {(ClickPointInfo.Equals(string.Empty) ? "" : $"-> {ClickPointInfo}")} {""}");
-    }
-    //直接操作的内部属性
-    partial class uPixelPicker_viewmodel
-    {
-        private bool IsMouseOver { get; set; } = false;
-        private bool IsMouseLeftDown { get; set; } = false;
-        private Point GetMousePoint { get; set; } = new();
-        private double LocalRatio = 1;
+        public string MessageStr => (SizeInfo.Equals(string.Empty) ? "" : $" size{SizeInfo} {ClickPointInfo} {""}");
     }
 
-    //些许方法
-    partial class uPixelPicker_viewmodel
-    {
-        private Func<Point, Point, Point> GetPointDiff = (p1, p2) =>
-        {
-            return new Point(p1.X - p2.X, p1.Y - p2.Y);
-        };
-        private Func<UIElement, double> GetMultiple = (UIElement para) =>
-        {
-            return 1 / PresentationSource.FromVisual(para).CompositionTarget.TransformToDevice.M11;
-        };
-    }
-
-    //构造函数
-    partial class uPixelPicker_viewmodel
-    {
-        public uPixelPicker_viewmodel()
-        {
-            CreateImageControl();
-            RegisterDelegate();
-            HostEventInit();
-        }
-    }
     //CreateImageControl
     partial class uPixelPicker_viewmodel
     {
@@ -135,20 +151,9 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
             VerticalAlignment = VerticalAlignment.Top,
             Stretch = Stretch.None
         };
-        //红框示意
-        Border RedBox = new()
-        {
-            HorizontalAlignment = HorizontalAlignment.Left,
-            VerticalAlignment = VerticalAlignment.Top,
-            BorderThickness = new Thickness(1),
-            BorderBrush = new SolidColorBrush(Colors.Red),
-            Background = new SolidColorBrush(Colors.Transparent),
-            Width = 10,
-            Height = 10,
-        };
 
         //左_附加信息栏
-        Border MsgBorder = new()
+        Border MessageBox = new()
         {
             HorizontalAlignment = HorizontalAlignment.Left,
             VerticalAlignment = VerticalAlignment.Bottom,
@@ -161,7 +166,7 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
         };
 
         //右_放大镜外边框
-        Border BoxBorder = new()
+        Border MagnifierBox = new()
         {
             UseLayoutRounding = true,
             HorizontalAlignment = HorizontalAlignment.Right,
@@ -174,23 +179,13 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
             Height = 128,
         };
 
-
-        //
-        Grid myGrid = new Grid()
-        {
-            HorizontalAlignment = HorizontalAlignment.Stretch,
-            VerticalAlignment = VerticalAlignment.Bottom,
-        };
-
         private void CreateImageControl()
         {
             //Image
-            Image.SetBinding(Image.SourceProperty, new Binding("ImageSource") { Source = this });
-            Image.SetBinding(Image.MarginProperty, new Binding("ImageMargin") { Source = this });
-            //
+            Image.SetBinding(Image.SourceProperty, new Binding(nameof(ImageSource)));
+            Image.SetBinding(Image.MarginProperty, new Binding(nameof(ImageMargin)));
 
-
-            //MsgBorder
+            //MessageBox
             {
                 Grid Grid = new();
                 {
@@ -204,10 +199,10 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
 
                     Grid.Children.Add(tb);
                 }
-                MsgBorder.Child = Grid;
+                MessageBox.Child = Grid;
             }
 
-            //BoxBorder
+            //MagnifierBox
             {
                 Grid Grid = new();
                 {
@@ -278,67 +273,78 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
                     Grid.Children.Add(rect);
                     Grid.Children.Add(reticle);
                 }
-                BoxBorder.Child = Grid;
-            }
-
-            //左右结构
-            {
-                myGrid.ColumnDefinitions.Add(new() { Width = new(1.0, GridUnitType.Star) });
-                myGrid.ColumnDefinitions.Add(new() { Width = new(1.0, GridUnitType.Auto) });
-
-                Grid.SetColumn(MsgBorder, 0); Grid.SetColumn(BoxBorder, 1);
-
-                myGrid.Children.Add(MsgBorder);
-                myGrid.Children.Add(BoxBorder);
-            }
-
-        }
-        private void AddWhenHostLoaded(Grid host)
-        {
-            var collection = host.Children;
-            {
-                if (collection.Contains(Image)) { collection.Remove(Image); }
-                if (collection.Contains(myGrid)) { collection.Remove(myGrid); }
-                collection.Add(Image);
-                collection.Add(myGrid);
+                MagnifierBox.Child = Grid;
             }
         }
     }
     //RegisterDelegate
     partial class uPixelPicker_viewmodel
     {
+        private Stopwatch timer = Stopwatch.StartNew();
+
         private void RegisterDelegate()
         {
-            Mediator.Instance.Register(MessageType.GetFrame, (para) =>
+            MediatorAsync.Instance.Register(AsyncMessageType.AsyncSnapshot, async (para, token) => 
             {
-                if (para is not null)
+                var source = await Task.Run(async () => 
                 {
-                    using (var bmp = para as SD.Bitmap)
+                    await Task.Yield();
+
+                    if (para is SD.Bitmap bmp)
                     {
-                        SD.Imaging.BitmapData data = bmp.LockBits(new SD.Rectangle(0, 0, bmp.Width, bmp.Height), SD.Imaging.ImageLockMode.ReadWrite, SD.Imaging.PixelFormat.Format32bppArgb);
-                        IntPtr ptr = data.Scan0;
-                        int bytes = Math.Abs(data.Stride) * bmp.Height;//w*h*4
-
-                        SizeInfo = $"({bmp.Width},{bmp.Height})";
-
-                        BGRA.Stride = data.Width;
-                        BGRA.Values = new byte[bytes];
-                        System.Runtime.InteropServices.Marshal.Copy(ptr, BGRA.Values, 0, bytes);
-                        bmp.UnlockBits(data);
-
-                        var bitmapImage = new BitmapImage();
-                        using (MemoryStream ms = new MemoryStream())
+                        // 限制刷新频率
+                        if (timer.Elapsed.TotalMilliseconds > 100)
                         {
-                            bmp.Save(ms, SD.Imaging.ImageFormat.Png);
-                            bitmapImage.BeginInit();
-                            bitmapImage.StreamSource = ms;
-                            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                            bitmapImage.EndInit();
-                            bitmapImage.Freeze();
+                            timer.Restart();
+
+                            using (bmp)
+                            {
+                                SD.Imaging.BitmapData data = bmp.LockBits(new SD.Rectangle(0, 0, bmp.Width, bmp.Height), SD.Imaging.ImageLockMode.ReadWrite, SD.Imaging.PixelFormat.Format32bppArgb);
+                                IntPtr ptr = data.Scan0;
+                                int bytes = Math.Abs(data.Stride) * bmp.Height;//w*h*4
+
+                                SizeInfo = $"({bmp.Width},{bmp.Height})";
+
+                                BGRA.Stride = data.Width;
+                                BGRA.Values = new byte[bytes];
+                                System.Runtime.InteropServices.Marshal.Copy(ptr, BGRA.Values, 0, bytes);
+                                bmp.UnlockBits(data);
+
+                                var bitmapImage = new BitmapImage();
+                                using (MemoryStream ms = new MemoryStream())
+                                {
+                                    bmp.Save(ms, SD.Imaging.ImageFormat.Png);
+                                    bitmapImage.BeginInit();
+                                    bitmapImage.StreamSource = ms;
+                                    bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                                    bitmapImage.EndInit();
+                                    bitmapImage.Freeze();
+                                }
+                                return bitmapImage;
+                            }
                         }
-                        ImageSource = bitmapImage;
+                        else
+                        {
+                            bmp.Dispose();
+                        }
                     }
+
+                    return null;
+                });
+
+                if (source is not null)
+                {
+                    await Application.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        var old = ImageSource as BitmapImage;
+                        {
+                            ImageSource = source;
+                        }
+                        old?.StreamSource?.Dispose();
+                    });
                 }
+
+                return null;
             });
 
             Mediator.Instance.Register(MessageType.PixelPickerOnOff, (_) =>
@@ -384,6 +390,8 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
         public Action<object, MouseEventArgs>? MouseLeave;
         public Action<object, MouseEventArgs>? MouseMove;
 
+        private Point old_click_pos = new(0, 0);
+
         private void HostEventInit()
         {
             Loaded = (s, e) =>
@@ -393,8 +401,6 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
                 host.MinHeight = 400;
                 host.MaxHeight = host.ActualHeight;
                 RenderOptions.SetBitmapScalingMode(host, BitmapScalingMode.Fant);
-
-                AddWhenHostLoaded((Grid)(host.Content));
             };
             PreviewMouseRightButtonUp = (s, e) => { ImageMargin = new(0); };
             PreviewMouseLeftButtonDown = (s, e) =>
@@ -408,22 +414,34 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
                 IsMouseLeftDown = false;
                 if (BGRA.Values is not null)
                 {
-                    ClickPointInfo = $"{GetColorInfo(e.GetPosition(Image))}";
+                    var click = GetColorInfo(e.GetPosition(Image));
+                    {
+                        if (click.IsSuccess is false)
+                        {
+                            old_click_pos = new(0, 0);
+                            ClickPointInfo = $"{click.Info}";
+                        }
+                        else
+                        {
+                            ClickPointInfo = $"\n -> {click.Info} " + $"\n -> Rect<{click.GetBoundingRect(old_click_pos!)}> ";
+                            old_click_pos = click.Point;
+                        }
+                    }
                 }
             };
-            MouseEnter = (s, e) => { IsMouseOver = true; LocalRatio = GetMultiple((dynamic)s); };
+            MouseEnter = (s, e) => { IsMouseOver = true; LocalRatio = GetDeviceScaleFactor((dynamic)s); };
             MouseLeave = (s, e) => { IsMouseOver = IsMouseLeftDown = false; };
             MouseMove = (s, e) =>
             {
                 if (IsMouseLeftDown && ImageSource != null)
                 {
-                    var p = GetPointDiff(e.GetPosition((dynamic)s), GetMousePoint);
+                    var p = ((Point)e.GetPosition((dynamic)s)).GetDiff(GetMousePoint);
                     ImageMargin = new Thickness(ImageMarginWhenLeftDown.Left + p.X, ImageMarginWhenLeftDown.Top + p.Y, 0, 0);
                 }
                 if (BGRA.Values is not null && !IsMouseLeftDown)
                 {
-                    var str = GetColorInfo(e.GetPosition(Image));
-                    if (string.IsNullOrWhiteSpace(str) is false) { Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, str); }
+                    var click = GetColorInfo(e.GetPosition(Image));
+                    if (click.IsSuccess) { Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, click.Info); }
                 }
 
                 { //放大镜
@@ -433,17 +451,42 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
                 }
             };
         }
-        private string GetColorInfo(Point p)
+    }
+    //ViewModelInit
+    partial class uPixelPicker_viewmodel
+    {
+        private void ViewModelInit()
         {
-            string result = string.Empty;
+            this.CurrentScreenshot = Image;
+            this.AdditionalInfo = MessageBox;
+            this.Magnifier = MagnifierBox;
+        }
+    }
+
+    //Method
+    partial class uPixelPicker_viewmodel
+    {
+        private double GetDeviceScaleFactor(UIElement para)
+        {
+            return 1 / PresentationSource.FromVisual(para).CompositionTarget.TransformToDevice.M11;
+        }
+
+        private ClickInfo GetColorInfo(Point p)
+        {
+            if (BGRA.Values is null) { return new(); }
+
+            var str = string.Empty;
             var pt = new Point((int)(p.X / LocalRatio), (int)(p.Y / LocalRatio));
             var ptr = ((int)pt.Y * BGRA.Stride + (int)pt.X) << 2;
             if (pt.X >= 0 && pt.Y >= 0 && pt.X < BGRA.Stride && ptr < BGRA.Values.Length)
             {
-                result = $"{BGRA.Values[ptr + 2].ToString("X2")},{BGRA.Values[ptr + 1].ToString("X2")},{BGRA.Values[ptr + 0].ToString("X2")}";
-                result = $"({pt})_(RGB)_({result})";
+                str = $"{BGRA.GetHexRGB(ptr)}";
+                str = $"Click<{pt}> (RGB)_({str})";
+
+                return new(true, str, pt);
             }
-            return result;
+
+            return new();
         }
     }
 }

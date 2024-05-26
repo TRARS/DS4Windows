@@ -118,22 +118,22 @@ namespace CustomMacroFactory.MainWindow
             return null;
         }
 
-        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.WindowState = WindowState.Minimized;
-        }
-        private void MaximizeButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.WindowState = (this.WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized);
-        }
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.WindowState = WindowState.Minimized;
-        }
-        private void Window_StateChanged(object sender, EventArgs e)
-        {
-            if (this.WindowState == WindowState.Maximized) { this.WindowState = WindowState.Normal; }
-        }
+        //private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    this.WindowState = WindowState.Minimized;
+        //}
+        //private void MaximizeButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    this.WindowState = (this.WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized);
+        //}
+        //private void CloseButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    this.WindowState = WindowState.Minimized;
+        //}
+        //private void Window_StateChanged(object sender, EventArgs e)
+        //{
+        //    if (this.WindowState == WindowState.Maximized) { this.WindowState = WindowState.Normal; }
+        //}
     }
 
     //构造函数

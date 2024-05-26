@@ -86,6 +86,19 @@ namespace CustomMacroBase.CustomControlEx.ToggleButtonGroupEx
         }
     }
 
+    class cToggleButtonGroup_converter_string2bool : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return (string.IsNullOrWhiteSpace((string)value)) ? false : true;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     class cToggleButtonGroup_converter_count2expander : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
