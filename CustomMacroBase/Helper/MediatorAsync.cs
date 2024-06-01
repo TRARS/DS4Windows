@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -37,7 +34,7 @@ namespace CustomMacroBase.Helper
         public void Register(AsyncMessageType type, Func<object?, CancellationToken, Task<object?>> callback)
         {
 
-            if (internalDictionary.TryAdd(type, callback) is false) 
+            if (internalDictionary.TryAdd(type, callback) is false)
             {
                 Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, $"duplicate registration messages: {type}");
             }

@@ -726,6 +726,11 @@
             <para>_groupname：开关分组</para>
             </summary>
         </member>
+        <member name="P:CustomMacroBase.PreBase.GateBase.GateBaseList">
+            <summary>
+            获取Children中类型为GateBase的成员
+            </summary>
+        </member>
         <member name="P:CustomMacroBase.PreBase.GateBase.Item(System.Int32)">
             <summary>
             <para>通过下标访问自身Children列表中对应的子项</para>
@@ -733,17 +738,12 @@
         </member>
         <member name="M:CustomMacroBase.PreBase.GateBase.Add(CustomMacroBase.PreBase.GateBase)">
             <summary>
-            <para>往自身Children列表添加子项</para>
+            <para>往Children列表添加作为节点的子项</para>
             </summary>
         </member>
         <member name="M:CustomMacroBase.PreBase.GateBase.AddEx(System.Func{System.Windows.UIElement})">
             <summary>
-            <para>往最新Children成员（不存在时则往自身）的ChildrenEx列表添加子项</para>
-            </summary>
-        </member>
-        <member name="M:CustomMacroBase.PreBase.GateBase.AddExSelf(System.Func{System.Windows.UIElement})">
-            <summary>
-            <para>往自身的ChildrenEx列表添加子项</para>
+            <para>往Children列表添加作为附加内容的子项</para>
             </summary>
         </member>
         <member name="M:CustomMacroBase.PreBase.GateBase.EnableReverse">
@@ -781,6 +781,11 @@
             通知同组控件做出反应
             </summary>
         </member>
+        <member name="P:CustomMacroBase.PreBase.GateBase.Parent">
+            <summary>
+            父节点
+            </summary>
+        </member>
         <member name="P:CustomMacroBase.PreBase.GateBase.GroupName">
             <summary>
             获取或设置组名，使得处于相同组里的滑块开关在任意时刻最多只有一个处于启用状态
@@ -791,9 +796,14 @@
             获取或设置文本内容，用作滑块开关控件的注释
             </summary>
         </member>
+        <member name="P:CustomMacroBase.PreBase.GateBase.IsChecked">
+            <summary>
+            获取或设置滑块开关状态（供UI绑定）
+            </summary>
+        </member>
         <member name="P:CustomMacroBase.PreBase.GateBase.Enable">
             <summary>
-            获取或设置滑块开关状态
+            获取或设置滑块开关状态（若父节点Enable为false，则必然返回false）
             </summary>
         </member>
         <member name="P:CustomMacroBase.PreBase.GateBase.HideSelf">
@@ -817,18 +827,8 @@
             </summary>
         </member>
         <member name="P:CustomMacroBase.PreBase.GateBase.Children">
-            获取当前滑块开关的子项列表，用以存放与宿主类型相同的对象（1）
             <summary>
-            </summary>
-        </member>
-        <member name="P:CustomMacroBase.PreBase.GateBase.ChildrenEx">
-            <summary>
-            获取当前滑块开关的额外子项列表，用以存放委托（2）
-            </summary>
-        </member>
-        <member name="P:CustomMacroBase.PreBase.GateBase.ChildrenExZero">
-            <summary>
-            获取当前滑块开关的额外子项列表，用以存放委托（0）
+            获取当前滑块开关的子成员列表（同时包含节点成员和非节点成员）
             </summary>
         </member>
         <member name="T:CustomMacroBase.PreBase.MacroModel">

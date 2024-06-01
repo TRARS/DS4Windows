@@ -25,6 +25,27 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using static CustomMacroBase.PixelMatcher.OpenCV;
 
+//GateNode
+namespace CustomMacroBase.PreBase
+{
+    public enum GateNodeType
+    {
+        GateBase, Delegate
+    }
+
+    public sealed class GateNode
+    {
+        public GateNodeType Type { get; init; }
+        public object Content { get; init; }
+
+        public GateNode(GateNodeType type, object content)
+        {
+            Type = type;
+            Content = content;
+        }
+    }
+}
+
 //GateBase
 namespace CustomMacroBase.PreBase
 {
@@ -43,6 +64,34 @@ namespace CustomMacroBase.PreBase
             this.Text = _text ?? this.Text;
             this.Enable = _enable ?? this.Enable;
             this.GroupName = _groupname ?? this.GroupName;
+
+            this.Children.CollectionChanged += (s, e) =>
+            {
+                _isCacheValid = false; // 当 Children 集合发生变化时，标记缓存为无效
+            };
+        }
+    }
+    public partial class GateBase
+    {
+        private List<GateBase?> _cachedGateBaseList;
+        private bool _isCacheValid = false;
+
+        /// <summary>
+        /// 获取Children中类型为GateBase的成员
+        /// </summary>
+        public List<GateBase?> GateBaseList
+        {
+            get
+            {
+                if (_isCacheValid is false)
+                {
+                    _cachedGateBaseList = Children.Where(node => node.Type is GateNodeType.GateBase)
+                                                  .Select(node => node.Content as GateBase)
+                                                  .ToList();
+                    _isCacheValid = true;
+                }
+                return _cachedGateBaseList;
+            }
         }
 
         /// <summary>
@@ -52,42 +101,33 @@ namespace CustomMacroBase.PreBase
         {
             get
             {
-                if ((idx >= 0) && (idx < Children.Count))
+                if ((idx >= 0) && (idx < GateBaseList.Count))
                 {
-                    return Children[idx];
+                    return GateBaseList[idx] ?? this;
                 }
                 else
                 {
-                    MessageBox.Show($"Index was outside the bounds of the array", $"Children[{idx}]");
+                    MessageBox.Show($"Index was outside the bounds of the array", $"{this.TooltipText}->[{idx}]");
                     return this;
                 }
             }
         }
 
         /// <summary>
-        /// <para>往自身Children列表添加子项</para>
+        /// <para>往Children列表添加作为节点的子项</para>
         /// </summary>
-        public void Add(GateBase child) => Children.Add(child);
-
-        /// <summary>
-        /// <para>往最新Children成员（不存在时则往自身）的ChildrenEx列表添加子项</para>
-        /// </summary>
-        public void AddEx(Func<UIElement> child)
+        public void Add(GateBase child)
         {
-            if (Children.LastOrDefault() is GateBase item)
-            {
-                item.ChildrenEx.Add(child);
-            }
-            else
-            {
-                this.ChildrenExZero.Add(child);
-            }
+            child.Parent = this; Children.Add(new(GateNodeType.GateBase, child));
         }
 
         /// <summary>
-        /// <para>往自身的ChildrenEx列表添加子项</para>
+        /// <para>往Children列表添加作为附加内容的子项</para>
         /// </summary>
-        public void AddExSelf(Func<UIElement> child) => this.ChildrenEx.Add(child);
+        public void AddEx(Func<UIElement> child)
+        {
+            Children.Add(new(GateNodeType.Delegate, child));
+        }
 
         /// <summary>
         /// 滑块开关状态反转
@@ -169,6 +209,16 @@ namespace CustomMacroBase.PreBase
     public partial class GateBase : NotificationObject
     {
         /// <summary>
+        /// 父节点
+        /// </summary>
+        private GateBase? Parent
+        {
+            get { return _parent; }
+            set { _parent ??= value; }
+        }
+        private GateBase? _parent;
+
+        /// <summary>
         /// 获取或设置组名，使得处于相同组里的滑块开关在任意时刻最多只有一个处于启用状态
         /// </summary>
         public string? GroupName
@@ -197,15 +247,29 @@ namespace CustomMacroBase.PreBase
         private string _text = "Sub_NoName";
 
         /// <summary>
-        /// 获取或设置滑块开关状态
+        /// 获取或设置滑块开关状态（供UI绑定）
         /// </summary>
-        public bool Enable
+        public bool IsChecked
         {
             get { return _enable; }
             set
             {
                 _enable = value;
                 NotifyPropertyChanged();
+                NotifyGroupMemberUpdate(this);
+            }
+        }
+        /// <summary>
+        /// 获取或设置滑块开关状态（若父节点Enable为false，则必然返回false）
+        /// </summary>
+        public bool Enable
+        {
+            get { return _enable && (this.Parent?.Enable ?? true); }
+            set
+            {
+                _enable = value;
+                NotifyPropertyChanged();
+                NotifyPropertyChanged(nameof(IsChecked));
                 NotifyGroupMemberUpdate(this);
             }
         }
@@ -267,18 +331,10 @@ namespace CustomMacroBase.PreBase
         }
         private string _TooltipText = string.Empty;
 
-        /// 获取当前滑块开关的子项列表，用以存放与宿主类型相同的对象（1）
         /// <summary>
+        /// 获取当前滑块开关的子成员列表（同时包含节点成员和非节点成员）
         /// </summary>
-        public ObservableCollection<GateBase> Children { get; init; } = new();
-        /// <summary>
-        /// 获取当前滑块开关的额外子项列表，用以存放委托（2）
-        /// </summary>
-        public ObservableCollection<Func<dynamic>> ChildrenEx { get; init; } = new();
-        /// <summary>
-        /// 获取当前滑块开关的额外子项列表，用以存放委托（0）
-        /// </summary>
-        public ObservableCollection<Func<dynamic>> ChildrenExZero { get; init; } = new();
+        public ObservableCollection<GateNode> Children { get; init; } = new();
     }
 }
 
@@ -663,9 +719,13 @@ namespace CustomMacroBase
 
             node.TooltipText = tip;
 
-            for (int i = 0; i < node.Children.Count; i++)
+            List<GateBase> list = node.Children.Where(node => node.Type is GateNodeType.GateBase)
+                                               .Select(node => node.Content as GateBase)
+                                               .ToList()!;
+
+            for (int i = 0; i < list.Count; i++)
             {
-                SetTooltipText(node.Children[i], false, $"{(isRoot ? tip + " - " : tip)}[{i}]");
+                SetTooltipText(list[i], false, $"{(isRoot ? tip + " - " : tip)}[{i}]");
             }
         }
         #endregion

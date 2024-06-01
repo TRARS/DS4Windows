@@ -284,9 +284,9 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
 
         private void RegisterDelegate()
         {
-            MediatorAsync.Instance.Register(AsyncMessageType.AsyncSnapshot, async (para, token) => 
+            MediatorAsync.Instance.Register(AsyncMessageType.AsyncSnapshot, async (para, token) =>
             {
-                var source = await Task.Run(async () => 
+                var source = await Task.Run(async () =>
                 {
                     await Task.Yield();
 

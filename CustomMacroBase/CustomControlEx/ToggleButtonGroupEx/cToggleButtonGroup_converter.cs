@@ -55,17 +55,9 @@ namespace CustomMacroBase.CustomControlEx.ToggleButtonGroupEx
         {
             try
             {
-                if (value is ObservableCollection<Func<dynamic>> delegateList)
+                if (value is Func<dynamic> delegateFunc)
                 {
-                    ObservableCollection<UIElement> uIElements = new();
-
-                    foreach (var uielement in delegateList)
-                    {
-                        dynamic? obj = uielement.Invoke();
-                        uIElements.Add(obj);
-                    }
-
-                    return uIElements;
+                    return new ObservableCollection<UIElement>() { delegateFunc.Invoke() };
                 }
             }
             catch (Exception ex)
@@ -126,12 +118,8 @@ namespace CustomMacroBase.CustomControlEx.ToggleButtonGroupEx
             {
                 count += list.Count(gate => !gate.HideSelf);
             }
-            if (values[1] is ObservableCollection<Func<dynamic>> delegateList)
-            {
-                count += delegateList.Count();
-            }
-            if ((double.TryParse($"{values[2]}", out var childrenexzero) && childrenexzero > 0) ||
-                (double.TryParse($"{values[3]}", out var children) && children > 0))
+
+            if ((double.TryParse($"{values[1]}", out var children) && children > 0))
             {
                 count++;
             }
