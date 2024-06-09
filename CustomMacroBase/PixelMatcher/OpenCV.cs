@@ -24,7 +24,7 @@ namespace CustomMacroBase.PixelMatcher
         private static readonly Lazy<OpenCV> lazyObject = new(() => new OpenCV());
         public static OpenCV Instance => lazyObject.Value;
 
-        private OpenCV() 
+        private OpenCV()
         {
             this.Init();
         }
@@ -45,7 +45,7 @@ namespace CustomMacroBase.PixelMatcher
         {
             Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, str);
         }
-        private void UpdateToSnapshotArea(Func<Mat> func, string? msg = null)
+        private void UpdateToSnapshotArea(Mat source, string? msg = null)
         {
             if (can_update is false) { return; } //截图区域未展开时不更新
 
@@ -55,7 +55,7 @@ namespace CustomMacroBase.PixelMatcher
 
                 Task.Run(async () =>
                 {
-                    using (var source = func.Invoke())
+                    using (source)
                     {
                         await MediatorAsync.Instance.NotifyColleagues(AsyncMessageType.AsyncSnapshot, OpenCvSharp.Extensions.BitmapConverter.ToBitmap(source));
 
@@ -286,7 +286,7 @@ namespace CustomMacroBase.PixelMatcher
                 Cv2.InRange(_refMat, minScalar, maxScalar, _refMat);//取出指定颜色（前景白背景黑）
                 SaveToFlow(_refMat.CvtColor(ColorConversionCodes.GRAY2BGR), flowMat);//储存流程
 
-                this.UpdateToSnapshotArea(() => flowMat.Clone());
+                this.UpdateToSnapshotArea(flowMat.Clone());
 
                 //unsafe
                 //{
@@ -359,7 +359,7 @@ namespace CustomMacroBase.PixelMatcher
                     //
                 }
 
-                this.UpdateToSnapshotArea(() => original);//
+                this.UpdateToSnapshotArea(original.Clone());//
             }
 
             return result;
@@ -528,7 +528,7 @@ namespace CustomMacroBase.PixelMatcher
                             SaveToFlow(cropMat, flowMat);//储存流程
                         }
 
-                        this.UpdateToSnapshotArea(() => flowMat.Clone());
+                        this.UpdateToSnapshotArea(flowMat.Clone());
 
                         //PaddleOCR读取文本
                         switch (textType)

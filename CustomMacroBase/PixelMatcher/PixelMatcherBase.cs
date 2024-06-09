@@ -48,11 +48,14 @@ namespace CustomMacroBase.PixelMatcher
 
                     Task.Run(async () =>
                     {
-                        using (var source = func.Invoke())
+                        if (func.Invoke() is Bitmap source)
                         {
-                            await MediatorAsync.Instance.NotifyColleagues(AsyncMessageType.AsyncSnapshot, source);
+                            using (source)
+                            {
+                                await MediatorAsync.Instance.NotifyColleagues(AsyncMessageType.AsyncSnapshot, source);
 
-                            if (msg is not null) { Print($"{msg}"); }
+                                if (msg is not null) { Print($"{msg}"); }
+                            }
                         }
                     }).ContinueWith(_ => { task_is_running = false; });
                 }
@@ -124,6 +127,21 @@ namespace CustomMacroBase.PixelMatcher
 
                 return false;
             }
+            private void TryRestoreMinimizedWindow(ref bool flag)
+            {
+                if (flag) { return; }
+                if (this.IsNotWindow()) { return; }
+
+                if ((flag is false) && this.IsWindowMinimized() && canRetry)
+                {
+                    retryLimiter.Restart();
+
+                    if (this.IsWindowVisible())
+                    {
+                        retryLimiter.Stop(); flag = true;
+                    }
+                }
+            }
 
             private WindowRect GetWindowRect()
             {
@@ -167,10 +185,10 @@ namespace CustomMacroBase.PixelMatcher
         {
             public Bitmap? GetScreenshot()
             {
-                if (featureEnable is false)
-                {
-                    this.TryRestoreMinimizedWindow(ref featureEnable); return null;
-                }
+                this.TryRestoreMinimizedWindow(ref featureEnable);
+
+                if (this.IsNotWindow(true)) { featureEnable = false; return null; }
+                if (this.IsWindowMinimized(true)) { featureEnable = false; return null; }
 
                 // 限制刷新频率
                 if (refreshLimiter.Elapsed.TotalMilliseconds > 100)
@@ -184,20 +202,7 @@ namespace CustomMacroBase.PixelMatcher
                 return this.screenshot;
             }
 
-            public void TryRestoreMinimizedWindow(ref bool flag)
-            {
-                if (this.IsNotWindow()) { return; }
 
-                if ((flag is false) && this.IsWindowMinimized() && canRetry)
-                {
-                    retryLimiter.Restart();
-
-                    if (this.IsWindowVisible())
-                    {
-                        retryLimiter.Stop(); flag = true;
-                    }
-                }
-            }
             public void GetWindowSnapshot()
             {
                 if (this.IsNotWindow(true)) { featureEnable = false; return; }
@@ -298,8 +303,8 @@ namespace CustomMacroBase.PixelMatcher
         private protected static int MatchColor(int argb, Rectangle? rect, int? tolerance)
         {
             if (targetWindow.GetScreenshot() is Bitmap bmp)
-            { 
-               return OpenCV.Instance.MatchColor(bmp, argb, rect, tolerance);
+            {
+                return OpenCV.Instance.MatchColor(bmp, argb, rect, tolerance);
             }
 
             return 0;

@@ -339,7 +339,7 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
                         old?.StreamSource?.Dispose();
                     });
                 }
-                
+
                 return null;
             });
 
