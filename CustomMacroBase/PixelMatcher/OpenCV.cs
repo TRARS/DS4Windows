@@ -1,10 +1,14 @@
 ﻿using CustomMacroBase.Helper;
 using OpenCvSharp;
+using Sdcb.PaddleInference;
 using Sdcb.PaddleOCR;
+using Sdcb.PaddleOCR.Models.Local;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Point = OpenCvSharp.Point;
 using Rect = OpenCvSharp.Rect;
 using SD = System.Drawing;
@@ -20,22 +24,135 @@ namespace CustomMacroBase.PixelMatcher
         private static readonly Lazy<OpenCV> lazyObject = new(() => new OpenCV());
         public static OpenCV Instance => lazyObject.Value;
 
-        private OpenCV() { }
+        private OpenCV() 
+        {
+            this.Init();
+        }
+    }
+    public partial class OpenCV
+    {
+        private bool can_update = false;
+        private bool task_is_running = false;
 
+        private void Init()
+        {
+            Mediator.Instance.Register(MessageType.CanUpdateFrames, (para) =>
+            {
+                can_update = (bool)para;
+            });
+        }
         private void Print(string str = "")
         {
             Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, str);
         }
-    }
+        private void UpdateToSnapshotArea(Func<Mat> func, string? msg = null)
+        {
+            if (can_update is false) { return; } //截图区域未展开时不更新
 
-    //Updater
+            if (task_is_running is false)
+            {
+                task_is_running = true;
+
+                Task.Run(async () =>
+                {
+                    using (var source = func.Invoke())
+                    {
+                        await MediatorAsync.Instance.NotifyColleagues(AsyncMessageType.AsyncSnapshot, OpenCvSharp.Extensions.BitmapConverter.ToBitmap(source));
+
+                        if (msg is not null) { Print($"{msg}"); }
+                    }
+                }).ContinueWith(_ => { task_is_running = false; });
+            }
+        }
+    }
     public partial class OpenCV
     {
-        readonly FrameManager FrameManager = new();
-        readonly PaddleOcrAllManager PaddleOcrAllManager = new();
-    }
+        private struct PaddleOcrAllParameter
+        {
+            public DeviceType device { get; set; }
+            public ModelType model { get; set; }
 
-    //MatchType
+            public PaddleOcrAllParameter(DeviceType d, ModelType m)
+            {
+                device = d;
+                model = m;
+            }
+        }
+        private sealed class PaddleOcrAllManager
+        {
+            ConcurrentDictionary<string, bool> device2flag = new(); //lock
+            ConcurrentDictionary<string, PaddleOcrAll> device2ocrall = new();
+
+            /// <summary>
+            /// 获取PaddleOcrAll对象
+            /// </summary>
+            public PaddleOcrAll? GetPaddleOcrAll(DeviceType _devicetype, ModelType _modeltype)
+            {
+                var key = $"{_devicetype}_{_modeltype}";
+
+                if (device2flag.ContainsKey(key) is false)
+                {
+                    device2flag.TryAdd(key, false);
+                    {
+                        Print($"Creating PaddleOcrAll object: {key}");
+                        {
+                            device2ocrall.TryAdd(key, CreatePaddleOcrAll(_devicetype, _modeltype));
+                        }
+                        Print($"Successfully created PaddleOcrAll object: {key}");
+                    }
+                    device2flag[key] = true;
+                }
+
+                device2ocrall.TryGetValue(key, out var result);
+
+                return result;
+            }
+
+            /// <summary>
+            /// 打印至MacroWindow
+            /// </summary>
+            private void Print(string str = "")
+            {
+                Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, str);
+            }
+
+            /// <summary>
+            /// 创建PaddleOcrAll对象
+            /// </summary>
+            private PaddleOcrAll CreatePaddleOcrAll(DeviceType _devicetype, ModelType _modeltype)
+            {
+                var device = _devicetype switch
+                {
+                    DeviceType.Mkldnn => PaddleDevice.Mkldnn(),
+                    DeviceType.Onnx => PaddleDevice.Onnx(),
+                    DeviceType.Openblas => PaddleDevice.Openblas(),
+                    DeviceType.Gpu => PaddleDevice.Gpu(),
+                    _ => throw new NotImplementedException()
+                };
+
+                var usegpu = _devicetype == DeviceType.Gpu; //gpu跑够快，用V4模型更准
+
+                var model = _modeltype switch
+                {
+                    ModelType.EnglishV3 => usegpu ? LocalFullModels.EnglishV4 : LocalFullModels.EnglishV3,
+                    ModelType.JapanV3 => usegpu ? LocalFullModels.JapanV4 : LocalFullModels.JapanV3,
+                    ModelType.ChineseV3 => usegpu ? LocalFullModels.ChineseV4 : LocalFullModels.ChineseV3,
+                    ModelType.TraditionalChineseV3 => LocalFullModels.TraditionalChineseV3, //无V4
+                    _ => throw new NotImplementedException()
+                };
+
+                var all = new PaddleOcrAll(model, device)
+                {
+                    AllowRotateDetection = false, /* 允许识别有角度的文字 */
+                    Enable180Classification = false, /* 允许识别旋转角度大于90度的文字 */
+                };
+
+                return all;
+            }
+        }
+
+        private readonly PaddleOcrAllManager paddleOcrAllManager = new();
+    }
     public partial class OpenCV
     {
         public enum TextType
@@ -43,7 +160,6 @@ namespace CustomMacroBase.PixelMatcher
             Number = 0,
             Word = 1,
         }
-
         public enum DeviceType
         {
             Mkldnn = 0,
@@ -51,7 +167,6 @@ namespace CustomMacroBase.PixelMatcher
             Openblas,
             Gpu
         }
-
         public enum ModelType
         {
             EnglishV3 = 0,
@@ -64,7 +179,7 @@ namespace CustomMacroBase.PixelMatcher
     //对外公开方法
     public partial class OpenCV
     {
-        public int MatchColor(ref Bitmap bmpA, int argb, Rectangle? rect, int? tolerance)
+        public int MatchColor(Bitmap bmpA, int argb, Rectangle? rect, int? tolerance)
         {
             try
             {
@@ -77,7 +192,7 @@ namespace CustomMacroBase.PixelMatcher
             return 0;
         }
 
-        public SD.Point? MatchImage(ref Bitmap bmpA, ref Bitmap bmpB, Rectangle? rect, double? tolerance)
+        public SD.Point? MatchImage(Bitmap bmpA, Bitmap bmpB, Rectangle? rect, double? tolerance)
         {
             try
             {
@@ -90,7 +205,7 @@ namespace CustomMacroBase.PixelMatcher
             catch (Exception ex) { Print($"{ex.Message}"); }
             return null;
         }
-        public SD.Point? MatchImage(ref Bitmap bmpA, string pathB, Rectangle? rect, double? tolerance)
+        public SD.Point? MatchImage(Bitmap bmpA, string pathB, Rectangle? rect, double? tolerance)
         {
             try
             {
@@ -104,19 +219,7 @@ namespace CustomMacroBase.PixelMatcher
             return null;
         }
 
-        //public string MatchNumber(ref Bitmap bmpA, Rectangle rect, bool isWhiteText, double zoomratio)
-        //{
-        //    try
-        //    {
-        //        using (Mat refMat = OpenCvSharp.Extensions.BitmapConverter.ToMat(bmpA)) //大图
-        //        {
-        //            return MatchTextBase(refMat, rect, isWhiteText, "eng", @"1234567890", zoomratio, TextType.Number);
-        //        }
-        //    }
-        //    catch (Exception ex) { Print($"{ex.Message}"); }
-        //    return string.Empty;
-        //}
-        public string MatchNumber(ref Bitmap bmpA, Rectangle rect, bool isWhiteText, DeviceType deviceType, ModelType language, double zoomratio)
+        public string MatchNumber(Bitmap bmpA, Rectangle rect, bool isWhiteText, DeviceType deviceType, ModelType language, double zoomratio)
         {
             try
             {
@@ -129,19 +232,7 @@ namespace CustomMacroBase.PixelMatcher
             return string.Empty;
         }
 
-        //public string MatchText(ref Bitmap bmpA, Rectangle rect, bool isWhiteText, string language, string whitelist, double zoomratio)
-        //{
-        //    try
-        //    {
-        //        using (Mat refMat = OpenCvSharp.Extensions.BitmapConverter.ToMat(bmpA)) //大图
-        //        {
-        //            return MatchTextBase(refMat, rect, isWhiteText, language, whitelist, zoomratio, TextType.Word);
-        //        };
-        //    }
-        //    catch (Exception ex) { Print($"{ex.Message}"); }
-        //    return string.Empty;
-        //}
-        public string MatchText(ref Bitmap bmpA, Rectangle rect, bool isWhiteText, DeviceType deviceType, ModelType language, double zoomratio)
+        public string MatchText(Bitmap bmpA, Rectangle rect, bool isWhiteText, DeviceType deviceType, ModelType language, double zoomratio)
         {
             try
             {
@@ -195,7 +286,7 @@ namespace CustomMacroBase.PixelMatcher
                 Cv2.InRange(_refMat, minScalar, maxScalar, _refMat);//取出指定颜色（前景白背景黑）
                 SaveToFlow(_refMat.CvtColor(ColorConversionCodes.GRAY2BGR), flowMat);//储存流程
 
-                FrameManager.CanUpdate()?.UpdateFrames(flowMat.Clone());
+                this.UpdateToSnapshotArea(() => flowMat.Clone());
 
                 //unsafe
                 //{
@@ -268,7 +359,7 @@ namespace CustomMacroBase.PixelMatcher
                     //
                 }
 
-                FrameManager.CanUpdate()?.UpdateFrames(original);//
+                this.UpdateToSnapshotArea(() => original);//
             }
 
             return result;
@@ -420,7 +511,7 @@ namespace CustomMacroBase.PixelMatcher
                     false => PreActionBlackText
                 };
 
-                if (PaddleOcrAllManager.GetPaddleOcrAll(_deviceType, _modelType) is PaddleOcrAll all)
+                if (paddleOcrAllManager.GetPaddleOcrAll(_deviceType, _modelType) is PaddleOcrAll all)
                 {
                     using (all.Clone())
                     using (Mat cropMat = _refMat.Clone(new Rect(_cropRect.X, _cropRect.Y, _cropRect.Width, _cropRect.Height)).CvtColor(ColorConversionCodes.BGRA2BGR))
@@ -437,7 +528,7 @@ namespace CustomMacroBase.PixelMatcher
                             SaveToFlow(cropMat, flowMat);//储存流程
                         }
 
-                        FrameManager.CanUpdate()?.UpdateFrames(flowMat.Clone());
+                        this.UpdateToSnapshotArea(() => flowMat.Clone());
 
                         //PaddleOCR读取文本
                         switch (textType)

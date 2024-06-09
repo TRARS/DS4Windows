@@ -55,7 +55,7 @@ namespace CustomMacroBase.CustomControlEx.ToggleButtonGroupEx
         {
             try
             {
-                if (value is Func<dynamic> delegateFunc)
+                if (value is Func<UIElement> delegateFunc)
                 {
                     return new ObservableCollection<UIElement>() { delegateFunc.Invoke() };
                 }

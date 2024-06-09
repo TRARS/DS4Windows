@@ -5,187 +5,241 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using static CustomMacroBase.PixelMatcher.OpenCV;
 
 namespace CustomMacroBase.PixelMatcher
 {
     public abstract partial class PixelMatcherBase
     {
-        private protected class MediatorProxy
+        private partial class WindowManager
         {
-            bool task_is_running = false;
+            public IntPtr Handle { get; set; } = IntPtr.Zero;
+            public string Title { get; set; } = string.Empty;
+            public string ClassName { get; set; } = string.Empty;
 
-            public void Print([CallerMemberName] string str = "", int delay = 0)
+            public WindowManager(IntPtr hwnd)
+            {
+                this.Handle = hwnd;
+                this.Init();
+            }
+        }
+        private partial class WindowManager
+        {
+            private bool can_update = false;
+            private bool task_is_running = false;
+
+            private void Init()
+            {
+                Mediator.Instance.Register(MessageType.CanUpdateFrames, (para) =>
+                {
+                    can_update = (bool)para;
+                });
+            }
+            private void Print(string str = "")
             {
                 Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, str);
             }
-
-            /// <summary>
-            /// 将指定的Bitmap推送至MacroWindow
-            /// </summary>
-            public void UpdateFrames(Bitmap? source)
+            private void UpdateToSnapshotArea(Func<Bitmap?> func, string? msg = null)
             {
-                if (task_is_running is false && source is not null)
+                if (can_update is false) { return; } //截图区域未展开时不更新
+
+                if (task_is_running is false)
                 {
                     task_is_running = true;
 
                     Task.Run(async () =>
                     {
-                        await MediatorAsync.Instance.NotifyColleagues(AsyncMessageType.AsyncSnapshot, source);
-                        source.Dispose();
-                    }).ContinueWith(_ => { task_is_running = false; Print("GetWindowCapture Done"); });
+                        using (var source = func.Invoke())
+                        {
+                            await MediatorAsync.Instance.NotifyColleagues(AsyncMessageType.AsyncSnapshot, source);
+
+                            if (msg is not null) { Print($"{msg}"); }
+                        }
+                    }).ContinueWith(_ => { task_is_running = false; });
                 }
             }
         }
-
-        //私有字段/属性/方法
-        private protected static bool Enable = true;
-        private protected static MediatorProxy mediatorProxy = new();
-        private protected static Bitmap? screenshot = null;
-        private protected static Stopwatch timer = Stopwatch.StartNew();
-
-        private protected static Action UpdateFrames = delegate
+        private partial class WindowManager
         {
-            if (Enable is false) { return; }
-
-            // 限制刷新频率
-            if (timer.Elapsed.TotalMilliseconds > 100)
+            private enum PWnFlag
             {
-                timer.Restart();
+                PW_CLIENTONLY = 0x1,
+                PW_RENDERFULLCONTENT = 0x2,
+                PW_CLIENTONLY_OR_RENDERFULLCONTENT = 0x3
             }
-            else
+            private struct WindowRect
             {
-                return;
+                private Win32.RECT rect;
+
+                public int X => rect.Left;
+                public int Y => rect.Top;
+                public int Width => rect.Right - rect.Left;
+                public int Height => rect.Bottom - rect.Top;
+
+                public WindowRect(Win32.RECT _rect)
+                {
+                    rect = _rect;
+                }
             }
 
-            screenshot?.Dispose();
-            screenshot = GetTargetWindowCaptureByHandle();
-        };
-        private protected static Action CopyToClipboard = delegate
+            private Bitmap? screenshot = null;
+
+            private bool featureEnable = true;
+            private Stopwatch refreshLimiter = Stopwatch.StartNew();
+            private Stopwatch retryLimiter = Stopwatch.StartNew();
+            private bool canRetry => retryLimiter.IsRunning is false || retryLimiter.Elapsed.TotalSeconds > 2;
+
+            private bool IsNotWindow(bool print = false, [CallerMemberName] string caller = "")
+            {
+                if (this.Handle == IntPtr.Zero || (Win32.IsWindow(this.Handle) is false))
+                {
+                    if (print)
+                    {
+                        Print($"{caller} Error: Target Window not found");
+                    }
+                    return true;
+                }
+
+                return false;
+            }
+            private bool IsWindowMinimized(bool print = false, [CallerMemberName] string caller = "")
+            {
+                if (Win32.IsIconic(this.Handle))
+                {
+                    if (print)
+                    {
+                        Print($"{caller} Error: Target Window is minimized");
+                    }
+                    return true;
+                }
+
+                return false;
+            }
+            private bool IsWindowVisible([CallerMemberName] string caller = "")
+            {
+                if (Win32.ShowWindow(this.Handle, (int)Win32.ShowWindowOptions.SHOWDEFAULT))
+                {
+                    Print($"{caller} message: Target window has been restored");
+                    return true;
+                }
+
+                return false;
+            }
+
+            private WindowRect GetWindowRect()
+            {
+                Win32.GetWindowRect(this.Handle, out Win32.RECT lpRect);
+                return new WindowRect(lpRect);
+            }
+            private WindowRect GetClientRect()
+            {
+                Win32.GetClientRect(this.Handle, out Win32.RECT lpRect);
+                return new WindowRect(lpRect);
+            }
+            private void MoveWindow(int cw, int ch)
+            {
+                var fullRect = this.GetWindowRect();
+                var clientRect = this.GetClientRect();
+
+                int delta_width = fullRect.Width - clientRect.Width;//边框宽度（不包含客户区）
+                int delta_height = fullRect.Height - clientRect.Height;//边框高度（不包含客户区）
+
+                Win32.MoveWindow(this.Handle, fullRect.X, fullRect.Y, cw + delta_width, ch + delta_height, true);
+            }
+            private bool PrintWindow(nint hDC, uint nFlag)
+            {
+                return User32.PrintWindow(this.Handle, hDC, nFlag);
+            }
+
+            private Bitmap? GetWindowCapture()
+            {
+                var clientRect = this.GetClientRect();
+
+                var img = new Bitmap(clientRect.Width, clientRect.Height);
+                var memg = Graphics.FromImage(img);
+                IntPtr dc = memg.GetHdc();
+                bool success = this.PrintWindow(dc, (uint)(PWnFlag.PW_CLIENTONLY | PWnFlag.PW_RENDERFULLCONTENT));//3最好使，虽然没得标题栏，但截RemotePlay不黑屏（有时候会有蜜汁镂空）
+                memg.ReleaseHdc(dc);
+                memg.Dispose();
+                return success ? img : null;
+            }
+        }
+        private partial class WindowManager
         {
-            mediatorProxy.UpdateFrames(GetTargetWindowCaptureByHandle());//需要同步，否则会被过早释放
-
+            public Bitmap? GetScreenshot()
             {
-                //System.Threading.Thread sta_thread = new System.Threading.Thread(() =>
-                //{
-                //    try
-                //    {
-                //        using (var temp = GetTargetWindowCaptureByHandle())
-                //        {
-                //            if (temp is not null)
-                //            {
-                //                {
-                //                    var bitmapImage = new System.Windows.Media.Imaging.BitmapImage();
-                //                    using (System.IO.MemoryStream ms = new())
-                //                    {
-                //                        temp.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-                //                        bitmapImage.BeginInit();
-                //                        bitmapImage.StreamSource = ms;
-                //                        bitmapImage.CacheOption = System.Windows.Media.Imaging.BitmapCacheOption.OnLoad;
-                //                        bitmapImage.EndInit();
-                //                        bitmapImage.Freeze();
-                //                    }
-                //                    System.Windows.Clipboard.SetImage(bitmapImage);
-                //                }//弄到剪贴板必然发生内存泄漏，无解
-                //            }
-                //        }
-                //    }
-                //    catch (Exception ex)
-                //    {
-                //        mp.PrintHint($"error: {ex.Message}");
-                //    }
-                //});
-                //sta_thread.SetApartmentState(System.Threading.ApartmentState.STA);
-                //sta_thread.Start();
-            } //剪贴板相关_不再使用
-        };
+                if (featureEnable is false)
+                {
+                    this.TryRestoreMinimizedWindow(ref featureEnable); return null;
+                }
 
-        #region 通过窗体句柄获取窗体截图，顺便改改窗体尺寸
-        private protected static IntPtr TargetWindowHandle = Process.GetProcessesByName("RemotePlay").ToList().FirstOrDefault()?.MainWindowHandle ?? IntPtr.Zero;
-        private protected static string TargetWindowTitle = string.Empty;
-        private protected static string TargetWindowClassName = string.Empty;
+                // 限制刷新频率
+                if (refreshLimiter.Elapsed.TotalMilliseconds > 100)
+                {
+                    refreshLimiter.Restart();
 
+                    screenshot?.Dispose();
+                    screenshot = this.GetWindowCapture();
+                }
+
+                return this.screenshot;
+            }
+
+            public void TryRestoreMinimizedWindow(ref bool flag)
+            {
+                if (this.IsNotWindow()) { return; }
+
+                if ((flag is false) && this.IsWindowMinimized() && canRetry)
+                {
+                    retryLimiter.Restart();
+
+                    if (this.IsWindowVisible())
+                    {
+                        retryLimiter.Stop(); flag = true;
+                    }
+                }
+            }
+            public void GetWindowSnapshot()
+            {
+                if (this.IsNotWindow(true)) { featureEnable = false; return; }
+                if (this.IsWindowMinimized(true)) { featureEnable = false; return; }
+
+                this.UpdateToSnapshotArea(GetWindowCapture, "GetWindowCapture Done");
+            }
+            public void SetWindowSize(int cw, int ch)
+            {
+                if (this.IsNotWindow(true)) { featureEnable = false; return; }
+                if (this.IsWindowMinimized(true)) { featureEnable = false; return; }
+
+                this.MoveWindow(cw, ch);
+            }
+            public void SetWindowHandle(IntPtr _hwnd, string _title, string _classname)
+            {
+                this.Handle = _hwnd;
+                this.Title = _title;
+                this.ClassName = _classname;
+
+                featureEnable = true;
+            }
+        }
+
+        #region 私有字段/属性/方法
+        private static WindowManager targetWindow = new(Process.GetProcessesByName("RemotePlay").ToList().FirstOrDefault()?.MainWindowHandle ?? IntPtr.Zero);
+
+        //private protected static void UpdateFrames()
+        //{
+        //    targetWindow.UpdateFrames();
+        //}
+        private protected static void GetTargetWindowSnapshot()
+        {
+            targetWindow.GetWindowSnapshot();
+        }
         private protected static void SetTargetWindowHandle(IntPtr _hwnd, string _title, string _classname)
         {
-            TargetWindowHandle = _hwnd;
-            TargetWindowTitle = _title;
-            TargetWindowClassName = _classname;
-            Enable = true;
+            targetWindow.SetWindowHandle(_hwnd, _title, _classname);
         }
-        private protected static void SetTargetWindowSizeByHandle(int x = 1920, int y = 1080)//1920 + 26, 1080 + 71
+        private protected static void SetTargetWindowSize(int cw = 1920, int ch = 1080)
         {
-            IntPtr _handle = TargetWindowHandle;
-            if (_handle == IntPtr.Zero || (Win32.IsWindow(_handle) is false))
-            {
-                mediatorProxy.Print("SetTargetWindowSize Error: Target Window not found");
-                return;
-            }
-            if (Win32.IsIconic(_handle))
-            {
-                mediatorProxy.Print("SetTargetWindowSize Error: Target Window is minimized");
-                return;
-            }
-
-            Win32.GetWindowRect(_handle, out Win32.RECT lpRect);
-            int orginal_width = lpRect.Right - lpRect.Left;
-            int orginal_height = lpRect.Bottom - lpRect.Top; //获得left top width height
-
-            Win32.GetClientRect(_handle, out Win32.RECT clientRect);
-            int client_width = clientRect.Right - clientRect.Left;
-            int client_height = clientRect.Bottom - clientRect.Top;
-
-            int delta_width = orginal_width - client_width;//边框宽度（不包含客户区）
-            int delta_height = orginal_height - client_height;//边框高度（不包含客户区）
-
-            Point BaseSize = new Point() { X = x + delta_width, Y = y + delta_height };
-            Win32.MoveWindow(_handle, lpRect.Left, lpRect.Top, BaseSize.X, BaseSize.Y, true);
-        }
-        private protected static Bitmap? GetTargetWindowCaptureByHandle()
-        {
-            IntPtr _handle = TargetWindowHandle;
-            if (_handle == IntPtr.Zero || (Win32.IsWindow(_handle) is false))
-            {
-                mediatorProxy.Print("GetTargetWindowFrame Error: Target Window not found");
-                Enable = false; return null;
-            }
-            if (Win32.IsIconic(_handle))
-            {
-                mediatorProxy.Print("GetTargetWindowFrame Error: Target Window is minimized");
-                Enable = false; return null;
-            }
-
-
-            //IntPtr hdcSrc = User32.GetWindowDC(_handle);
-            //Win32.RECT windowRect = new();
-            //Win32.GetWindowRect(_handle, ref windowRect);
-            //int width = windowRect.Right - windowRect.Left;
-            //int height = windowRect.Bottom - windowRect.Top;
-            {//这样搞无法对chrome浏览器截图，对obs也只能截一次
-                //IntPtr hdcDest = GDI32.CreateCompatibleDC(hdcSrc);
-                //IntPtr hBitmap = GDI32.CreateCompatibleBitmap(hdcSrc, width, height);
-                //IntPtr hOld = GDI32.SelectObject(hdcDest, hBitmap);
-                //GDI32.BitBlt(hdcDest, 0, 0, width, height, hdcSrc, 0, 0, GDI32.SRCCOPY);
-                //GDI32.SelectObject(hdcDest, hOld);
-                //GDI32.DeleteDC(hdcDest);
-                //User32.ReleaseDC(_handle, hdcSrc);
-                //Bitmap img = Image.FromHbitmap(hBitmap, IntPtr.Zero);
-                //GDI32.DeleteObject(hBitmap);
-            }
-
-            Win32.GetClientRect(_handle, out Win32.RECT clientRect);
-            int client_width = clientRect.Right - clientRect.Left;
-            int client_height = clientRect.Bottom - clientRect.Top;
-
-            var img = new Bitmap(client_width, client_height);
-            var memg = Graphics.FromImage(img);
-            IntPtr dc = memg.GetHdc();
-            bool success = User32.PrintWindow(_handle, dc, 3);//3最好使，虽然没得标题栏，但截RemotePlay不黑屏（有时候会有蜜汁镂空）
-                                                              //PW_CLIENTONLY = 0x1
-                                                              //PW_RENDERFULLCONTENT = 0x2
-                                                              //PW_CLIENTONLY | PW_RENDERFULLCONTENT = 0x3
-            memg.ReleaseHdc(dc);
-            memg.Dispose();
-            return success ? img : null;
+            targetWindow.SetWindowSize(cw, ch);
         }
         #endregion
 
@@ -243,10 +297,13 @@ namespace CustomMacroBase.PixelMatcher
         /// </summary>
         private protected static int MatchColor(int argb, Rectangle? rect, int? tolerance)
         {
-            if (screenshot is null) { return 0; }
-            return OpenCV.Instance.MatchColor(ref screenshot, argb, rect, tolerance);
-        }
+            if (targetWindow.GetScreenshot() is Bitmap bmp)
+            { 
+               return OpenCV.Instance.MatchColor(bmp, argb, rect, tolerance);
+            }
 
+            return 0;
+        }
         #endregion
 
         #region 范围找图
@@ -255,16 +312,24 @@ namespace CustomMacroBase.PixelMatcher
         /// </summary>
         private protected static Point? MatchImage(ref Bitmap bitmap, Rectangle? rect, double? tolerance)
         {
-            if (screenshot is null) { return null; }
-            return OpenCV.Instance.MatchImage(ref screenshot, ref bitmap, rect, tolerance);
+            if (targetWindow.GetScreenshot() is Bitmap bmp)
+            {
+                return OpenCV.Instance.MatchImage(bmp, bitmap, rect, tolerance);
+            }
+
+            return null;
         }
         /// <summary>
         /// 范围找图_判断区域内是否包含小图 (OpenCV)
         /// </summary>
         private protected static Point? MatchImage(string path, Rectangle? rect, double? tolerance)
         {
-            if (screenshot is null) { return null; }
-            return OpenCV.Instance.MatchImage(ref screenshot, path, rect, tolerance);
+            if (targetWindow.GetScreenshot() is Bitmap bmp)
+            {
+                return OpenCV.Instance.MatchImage(bmp, path, rect, tolerance);
+            }
+
+            return null;
         }
         #endregion
 
@@ -272,10 +337,14 @@ namespace CustomMacroBase.PixelMatcher
         /// <summary>
         /// 范围找字_尝试识别区域内的数字 (PaddleSharp)
         /// </summary>
-        private protected static string MatchNumber(Rectangle rect, bool isWhiteText, DeviceType deviceType, double zoomratio)
+        private protected static string MatchNumber(Rectangle rect, bool isWhiteText, OpenCV.DeviceType deviceType, double zoomratio)
         {
-            if (screenshot is null) { return string.Empty; }
-            return OpenCV.Instance.MatchNumber(ref screenshot, rect, isWhiteText, deviceType, ModelType.EnglishV3, zoomratio);
+            if (targetWindow.GetScreenshot() is Bitmap bmp)
+            {
+                return OpenCV.Instance.MatchNumber(bmp, rect, isWhiteText, deviceType, OpenCV.ModelType.EnglishV3, zoomratio);
+            }
+
+            return string.Empty;
         }
         #endregion
 
@@ -283,10 +352,14 @@ namespace CustomMacroBase.PixelMatcher
         /// <summary>
         /// 范围找字_尝试识别区域内的文字，需指定语言 (PaddleSharp)
         /// </summary>
-        private protected static string MatchText(Rectangle rect, bool isWhiteText, DeviceType deviceType, ModelType language, double zoomratio)
+        private protected static string MatchText(Rectangle rect, bool isWhiteText, OpenCV.DeviceType deviceType, OpenCV.ModelType language, double zoomratio)
         {
-            if (screenshot is null) { return string.Empty; }
-            return OpenCV.Instance.MatchText(ref screenshot, rect, isWhiteText, deviceType, language, zoomratio);
+            if (targetWindow.GetScreenshot() is Bitmap bmp)
+            {
+                return OpenCV.Instance.MatchText(bmp, rect, isWhiteText, deviceType, language, zoomratio);
+            }
+
+            return string.Empty;
         }
         #endregion
     }

@@ -73,20 +73,20 @@ namespace CustomMacroBase.PreBase
     }
     public partial class GateBase
     {
-        private List<GateBase?> _cachedGateBaseList;
+        private List<GateBase> _cachedGateBaseList;
         private bool _isCacheValid = false;
 
         /// <summary>
         /// 获取Children中类型为GateBase的成员
         /// </summary>
-        public List<GateBase?> GateBaseList
+        public List<GateBase> GateBaseList
         {
             get
             {
                 if (_isCacheValid is false)
                 {
                     _cachedGateBaseList = Children.Where(node => node.Type is GateNodeType.GateBase)
-                                                  .Select(node => node.Content as GateBase)
+                                                  .Select(node => (GateBase)node.Content)
                                                   .ToList();
                     _isCacheValid = true;
                 }
@@ -468,13 +468,12 @@ namespace CustomMacroBase
         /// <para>参数 color：<see cref="System.Int32"/> 类型，匹配的颜色（比如填'0xFF0000'意为待查找颜色为红色）</para>
         /// <para>参数 rect：<see cref="System.Drawing.Rectangle"/>? 类型，描述匹配范围的矩形（比如填'new(10, 20, 30, 40)'意为将范围限定在'x=10,y=20,width=30,height=40'的矩形内，填'null'默认全图）</para>
         /// <para>参数 tolerance：<see cref="System.Int32"/>? 类型，匹配的容差（比如填'20'意为被对比的两个颜色之间RGB分量差值允许浮动±20，填'null'默认20）</para>
-        /// <para>参数 flag：<see cref="System.Boolean"/> 类型，是否获取最新画面（比如填'false'意为不获取新截图而是采用旧的截图进行找色）</para>
         /// <para>-</para>
         /// <para>返回值：<see cref="int"/> 类型，匹配到的颜色数量</para>
         /// </summary>
-        protected static int FindColor(int color, Rectangle? rect, int? tolerance, bool flag = true)
+        protected static int FindColor(int color, Rectangle? rect, int? tolerance)
         {
-            return PixelMatcher.PixelMatcherHost.FindColor(color, rect, tolerance, flag);
+            return PixelMatcher.PixelMatcherHost.FindColor(color, rect, tolerance);
         }
 
 
@@ -484,13 +483,12 @@ namespace CustomMacroBase
         /// <para>参数 bitmap：<see cref="Bitmap"/>类型，匹配的小图</para>
         /// <para>参数 rect：<see cref="Rectangle"/>? 类型，描述匹配范围的矩形（比如填'new(10, 20, 30, 40)'意为将范围限定在'x=10,y=20,width=30,height=40'的矩形内，填'null'默认全图）</para>
         /// <para>参数 tolerance：<see cref="double"/>? 类型，匹配的相似度（范围0~1，比如填'null'意为使用默认值0.8）</para>
-        /// <para>参数 flag：<see cref="bool"/> 类型，是否获取最新画面（比如填'true'意为先获取新截图再进行找图）</para>
         /// <para>-</para>
         /// <para>返回值：<see cref="System.Drawing.Point"/>? 类型，匹配成功返矩形左上角坐标，匹配失败返回null</para>
         /// </summary>
-        protected static System.Drawing.Point? FindImage(ref Bitmap bitmap, Rectangle? rect, double? tolerance, bool flag = true)
+        protected static System.Drawing.Point? FindImage(ref Bitmap bitmap, Rectangle? rect, double? tolerance)
         {
-            return PixelMatcher.PixelMatcherHost.FindImage(ref bitmap, rect, tolerance, flag);
+            return PixelMatcher.PixelMatcherHost.FindImage(ref bitmap, rect, tolerance);
         }
 
         /// <summary>
@@ -499,92 +497,27 @@ namespace CustomMacroBase
         /// <para>参数 path：<see cref="string"/> 类型，匹配的小图的绝对路径</para>
         /// <para>参数 rect：<see cref="Rectangle"/>? 类型，描述匹配范围的矩形（比如填'new(10, 20, 30, 40)'意为将范围限定在'x=10,y=20,width=30,height=40'的矩形内，填'null'默认全图）</para>
         /// <para>参数 tolerance：<see cref="double"/>? 类型，相似度（范围0~1，比如填'null'意为使用默认值0.8）</para>
-        /// <para>参数 flag：<see cref="bool"/> 类型，是否获取最新画面（比如填'false'意为不获取新截图而是采用旧的截图进行找图）</para>
         /// <para>-</para>
         /// <para>返回值：<see cref="System.Drawing.Point"/>? 类型，匹配成功返矩形左上角坐标，匹配失败返回null</para>
         /// </summary>
-        protected static System.Drawing.Point? FindImage(string path, Rectangle? rect, double? tolerance, bool flag = true)
+        protected static System.Drawing.Point? FindImage(string path, Rectangle? rect, double? tolerance)
         {
-            return PixelMatcher.PixelMatcherHost.FindImage(path, rect, tolerance, flag);
+            return PixelMatcher.PixelMatcherHost.FindImage(path, rect, tolerance);
         }
 
-        //暂时先不判断黑底白字白底黑字，反正就自用，到时候再说
-        ///// <summary>
-        ///// <para>范围找字（仅限数字0~9）</para>
-        ///// <para>-</para>
-        ///// <para>参数 rect：<see cref="Rectangle"/> 类型，描述查找范围的矩形（比如填'new(10, 20, 30, 40)'意为将范围限定在'x=10,y=20,width=30,height=40'的矩形内）</para>
-        ///// <para>参数 isWhiteText：<see cref="bool"/> 类型，输入图像是否为黑底白字</para>
-        ///// <para>参数 flag：<see cref="bool"/> 类型，是否获取最新画面（比如填'false'意为不获取新截图而是采用旧的截图进行找字）</para>
-        ///// <para>-</para>
-        ///// <para>返回值：<see cref="string"/> 类型，识别成功返回字符串，识别失败返回空字符串</para>
-        ///// </summary>
-        //protected static string FindNumber(Rectangle rect, bool isWhiteText, bool flag = true)
-        //{
-        //    return PixelMatcher.PixelMatcherHost.FindNumber(rect, isWhiteText, flag);
-        //}
-
-        /// <summary>
-        /// <para>范围找字（仅限数字0~9）</para>
-        /// <para>-</para>
-        /// <para>参数 rect：<see cref="Rectangle"/> 类型，描述查找范围的矩形（比如填'new(10, 20, 30, 40)'意为将范围限定在'x=10,y=20,width=30,height=40'的矩形内）</para>
-        /// <para>参数 zoomratio：<see cref="double"/> 类型，缩放比例（比如填'2'意为宽高均拉伸至原来的2倍）</para>
-        /// <para>参数 flag：<see cref="bool"/> 类型，是否获取最新画面（比如填'false'意为不获取新截图而是采用旧的截图进行找字）</para>
-        /// <para>-</para>
-        /// <para>返回值：<see cref="string"/> 类型，识别成功返回字符串，识别失败返回空字符串</para>
-        /// </summary>
-        //[Obsolete]
-        //protected static string FindNumber(Rectangle rect, double zoomratio = 2.0, bool flag = true)
-        //{
-        //    return PixelMatcher.PixelMatcherHost.FindNumber(rect, true, zoomratio, flag);
-        //}
         /// <summary>
         /// <para>范围找字（仅限数字0~9）</para>
         /// <para>-</para>
         /// <para>参数 rect：<see cref="Rectangle"/> 类型，描述查找范围的矩形（比如填'new(10, 20, 30, 40)'意为将范围限定在'x=10,y=20,width=30,height=40'的矩形内）</para>
         /// <para>参数 deviceType：<see cref="DeviceType"/> 类型，指定设备类型（Mkldnn/Onnx/Openblas/Gpu）</para>
         /// <para>参数 zoomratio：<see cref="double"/> 类型，缩放比例（比如填'2'意为宽高均拉伸至原来的2倍）</para>
-        /// <para>参数 flag：<see cref="bool"/> 类型，是否获取最新画面（比如填'false'意为不获取新截图而是采用旧的截图进行找字）</para>
         /// <para>-</para>
         /// <para>返回值：<see cref="string"/> 类型，识别成功返回字符串，识别失败返回空字符串</para>
         /// </summary>
-        protected static string FindNumber(Rectangle rect, DeviceType deviceType, double zoomratio = 2.0, bool flag = true)
+        protected static string FindNumber(Rectangle rect, DeviceType deviceType, double zoomratio = 2.0)
         {
-            return PixelMatcher.PixelMatcherHost.FindNumber(rect, true, deviceType, zoomratio, flag);
+            return PixelMatcher.PixelMatcherHost.FindNumber(rect, true, deviceType, zoomratio);
         }
-
-        /// <summary>
-        /// <para>范围找字</para>
-        /// <para>-</para>
-        /// <para>参数 rect：<see cref="Rectangle"/> 类型，描述查找范围的矩形（比如填'new(10, 20, 30, 40)'意为将范围限定在'x=10,y=20,width=30,height=40'的矩形内）</para>
-        /// <para>参数 iswhitetext：<see cref="bool"/> 类型，指定是否黑底白字（比如填'false'意为传入图像为白底黑字）</para>
-        /// <para>参数 language：<see cref="string"/> 类型，指定语言（比如填'eng'、"jpn"，需在~/tessdata文件夹内存在对应训练数据）</para>
-        /// <para>参数 whitelist：<see cref="string"/> 类型，指定白名单（比如填'abcd'意为只查找这几个字母，填null或空文本则意为不使用白名单）</para>
-        /// <para>参数 zoomratio：<see cref="double"/> 类型，缩放比例（比如填'2'意为宽高均拉伸至原来的2倍）</para>
-        /// <para>参数 flag：<see cref="bool"/> 类型，是否获取最新画面（比如填'false'意为不获取新截图而是采用旧的截图进行找字）</para>
-        /// <para>-</para>
-        /// <para>返回值：<see cref="string"/> 类型，识别成功返回字符串，识别失败返回空字符串</para>
-        /// </summary>
-        //[Obsolete]
-        //protected static string FindText(Rectangle rect, bool iswhitetext = true, string language = "eng", string whitelist = "", double zoomratio = 2.0, bool flag = true)
-        //{
-        //    return PixelMatcher.PixelMatcherHost.FindText(rect, iswhitetext, language, whitelist, zoomratio, flag);
-        //}
-        /// <summary>
-        /// <para>范围找字</para>
-        /// <para>-</para>
-        /// <para>参数 rect：<see cref="Rectangle"/> 类型，描述查找范围的矩形（比如填'new(10, 20, 30, 40)'意为将范围限定在'x=10,y=20,width=30,height=40'的矩形内）</para>
-        /// <para>参数 language：<see cref="string"/> 类型，指定语言（比如填'eng'、"jpn"，需在~/tessdata文件夹内存在对应训练数据）</para>
-        /// <para>参数 whitelist：<see cref="string"/> 类型，指定白名单（比如填'abcd'意为只查找这几个字母，填null或空文本则意为不使用白名单）</para>
-        /// <para>参数 zoomratio：<see cref="double"/> 类型，缩放比例（比如填'2'意为宽高均拉伸至原来的2倍）</para>
-        /// <para>参数 flag：<see cref="bool"/> 类型，是否获取最新画面（比如填'false'意为不获取新截图而是采用旧的截图进行找字）</para>
-        /// <para>-</para>
-        /// <para>返回值：<see cref="string"/> 类型，识别成功返回字符串，识别失败返回空字符串</para>
-        /// </summary>
-        //[Obsolete]
-        //protected static string FindText(Rectangle rect, string language = "eng", string whitelist = "", double zoomratio = 2.0, bool flag = true)
-        //{
-        //    return PixelMatcher.PixelMatcherHost.FindText(rect, true, language, whitelist, zoomratio, flag);
-        //}
 
         /// <summary>
         /// <para>范围找字</para>
@@ -593,13 +526,12 @@ namespace CustomMacroBase
         /// <para>参数 deviceType：<see cref="DeviceType"/> 类型，指定设备类型（Mkldnn/Onnx/Openblas/Gpu）</para>
         /// <para>参数 language：<see cref="ModelType"/> 类型，指定语言（EnglishV3/JapanV3/ChineseV3/TraditionalChineseV3）</para>
         /// <para>参数 zoomratio：<see cref="double"/> 类型，缩放比例（比如填'2'意为宽高均拉伸至原来的2倍）</para>
-        /// <para>参数 flag：<see cref="bool"/> 类型，是否获取最新画面（比如填'false'意为不获取新截图而是采用旧的截图进行找字）</para>
         /// <para>-</para>
         /// <para>返回值：<see cref="string"/> 类型，识别成功返回字符串，识别失败返回空字符串</para>
         /// </summary>
-        protected static string FindText(Rectangle rect, DeviceType deviceType, ModelType language = ModelType.EnglishV3, double zoomratio = 2.0, bool flag = true)
+        protected static string FindText(Rectangle rect, DeviceType deviceType, ModelType language = ModelType.EnglishV3, double zoomratio = 2.0)
         {
-            return PixelMatcher.PixelMatcherHost.FindText(rect, true, deviceType, language, zoomratio, flag);
+            return PixelMatcher.PixelMatcherHost.FindText(rect, true, deviceType, language, zoomratio);
         }
 
         /// <summary>
@@ -719,9 +651,7 @@ namespace CustomMacroBase
 
             node.TooltipText = tip;
 
-            List<GateBase> list = node.Children.Where(node => node.Type is GateNodeType.GateBase)
-                                               .Select(node => node.Content as GateBase)
-                                               .ToList()!;
+            List<GateBase> list = node.GateBaseList;
 
             for (int i = 0; i < list.Count; i++)
             {

@@ -6,6 +6,26 @@ namespace CustomMacroBase.Helper
 {
     public static class Win32
     {
+        public enum ShowWindowOptions
+        {
+            FORCEMINIMIZE = 11,
+            HIDE = 0,
+            MAXIMIZE = 3,
+            MINIMIZE = 6,
+            RESTORE = 9,
+            SHOW = 5,
+            SHOWDEFAULT = 10,
+            SHOWMAXIMIZED = 3,
+            SHOWMINIMIZED = 2,
+            SHOWMINNOACTIVE = 7,
+            SHOWNA = 8,
+            SHOWNOACTIVATE = 4,
+            SHOWNORMAL = 1
+        }
+
+        [DllImport("user32.dll")]
+        public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
         [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall, ExactSpelling = true, SetLastError = true)]
         public static extern void MoveWindow(IntPtr hwnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
 

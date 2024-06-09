@@ -292,13 +292,13 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
 
                     if (para is SD.Bitmap bmp)
                     {
-                        // 限制刷新频率
-                        if (timer.Elapsed.TotalMilliseconds > 100)
+                        using (bmp)
                         {
-                            timer.Restart();
-
-                            using (bmp)
+                            // 限制刷新频率
+                            if (timer.Elapsed.TotalMilliseconds > 100)
                             {
+                                timer.Restart();
+
                                 SD.Imaging.BitmapData data = bmp.LockBits(new SD.Rectangle(0, 0, bmp.Width, bmp.Height), SD.Imaging.ImageLockMode.ReadWrite, SD.Imaging.PixelFormat.Format32bppArgb);
                                 IntPtr ptr = data.Scan0;
                                 int bytes = Math.Abs(data.Stride) * bmp.Height;//w*h*4
@@ -313,7 +313,7 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
                                 var bitmapImage = new BitmapImage();
                                 using (MemoryStream ms = new MemoryStream())
                                 {
-                                    bmp.Save(ms, SD.Imaging.ImageFormat.Png);
+                                    bmp.Save(ms, SD.Imaging.ImageFormat.Bmp);
                                     bitmapImage.BeginInit();
                                     bitmapImage.StreamSource = ms;
                                     bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
@@ -322,10 +322,6 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
                                 }
                                 return bitmapImage;
                             }
-                        }
-                        else
-                        {
-                            bmp.Dispose();
                         }
                     }
 
@@ -343,7 +339,7 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
                         old?.StreamSource?.Dispose();
                     });
                 }
-
+                
                 return null;
             });
 
