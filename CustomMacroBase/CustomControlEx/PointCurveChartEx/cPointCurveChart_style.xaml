@@ -34,10 +34,10 @@
                                                               Height="{TemplateBinding ChartSize,
                                                                                        Converter={StaticResource cPointCurveChart_converter_size2height},
                                                                                        ConverterParameter=100}"
-                                                              BackgroundColor="#80808080"
                                                               BackgroundCornerRadius="2.5"
+                                                              BackgroundColor="#80808080"
                                                               VerticalScrollBarVisibility="Hidden"
-                                                              HorizontalScrollBarVisibility="Auto"
+                                                              HorizontalScrollBarVisibility="Visible"
                                                               Margin="0,0,0,0">
 
                                     <ItemsControl>
@@ -55,7 +55,7 @@
 
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
-                                                <Grid/>
+                                                <Grid Margin="2"/>
                                             </ItemsPanelTemplate>
                                         </ItemsControl.ItemsPanel>
                                     </ItemsControl>

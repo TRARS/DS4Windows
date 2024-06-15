@@ -14,7 +14,8 @@
              xmlns:valueindicatorex="clr-namespace:CustomMacroBase.CustomControlEx.ValueIndicatorEx;assembly=CustomMacroBase"
              xmlns:scrollviewerex="clr-namespace:CustomMacroBase.CustomControlEx.ScrollViewerEx;assembly=CustomMacroBase" 
              xmlns:comboboxex="clr-namespace:CustomMacroBase.CustomControlEx.ComboBoxEx;assembly=CustomMacroBase" 
-             xmlns:colorfultextblockex="clr-namespace:CustomMacroBase.CustomControlEx.ColorfulTextBlockEx;assembly=CustomMacroBase" xmlns:tooltipinfobuttonex="clr-namespace:CustomMacroBase.CustomControlEx.TooltipInfoButtonEx;assembly=CustomMacroBase"
+             xmlns:colorfultextblockex="clr-namespace:CustomMacroBase.CustomControlEx.ColorfulTextBlockEx;assembly=CustomMacroBase" 
+             xmlns:tooltipinfobuttonex="clr-namespace:CustomMacroBase.CustomControlEx.TooltipInfoButtonEx;assembly=CustomMacroBase"
              mc:Ignorable="d" 
              
              SnapsToDevicePixels="True" 
@@ -88,7 +89,7 @@
                         
                     </StackPanel>
                 </scrollviewerex:cScrollViewer>
-                
+
                 <scrollviewerex:cScrollViewer VerticalScrollBarVisibility="Hidden"
                                               ScrollBarBackgroundColor="Snow"
                                               BackgroundColor="#5A4350"
@@ -102,7 +103,7 @@
                             M990.891676 102.096l-145.584 45.376c-16.928 5.296-20.112 19.44-7.072 31.456l38.592 35.6L557.499676 507.712 362.827676 325.472c-9.04-8.464-23.104-8.64-32.368-0.384L8.027676 612.576c-9.888 8.816-10.768 23.984-1.936 33.872 4.736 5.328 11.312 8.032 17.92 8.032 5.664 0 11.376-2 15.952-6.096l306.064-272.912 194.912 182.48c9.152 8.576 23.392 8.64 32.64 0.16l338.656-310.96 42.72 39.392c13.024 12.048 26.528 7.664 30-9.744l30.4-152.688C1018.827676 106.736 1007.803676 96.8 990.891676 102.096z
                         </Geometry>
                     </ScrollViewer.Resources>
-                    
+
                     <StackPanel Orientation ="Vertical"
                                 AttachedProperty:PanelExtensions.Spacing="2">
                         <tooltipinfobuttonex:cTooltipInfoButton Height="20" 
@@ -115,7 +116,7 @@
                                   Stretch="Uniform" 
                                   Width="18"
                                   Height="{Binding Width, RelativeSource={RelativeSource Self}}"/>
-                            
+
                             <tooltipinfobuttonex:cTooltipInfoButton.ToolTipContent>
                                 <Grid Width="25" Height="25" Background="Yellow"/>
                             </tooltipinfobuttonex:cTooltipInfoButton.ToolTipContent>

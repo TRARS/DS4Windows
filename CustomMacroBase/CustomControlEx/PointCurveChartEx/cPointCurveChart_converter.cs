@@ -45,6 +45,22 @@ namespace CustomMacroBase.CustomControlEx.PointCurveChartEx
 
     internal class cPointCurveChart_converter_format : IMultiValueConverter
     {
+        struct MaxMinInfo
+        {
+            public double MinX;
+            public double MaxX;
+            public double MinY;
+            public double MaxY;
+
+            public MaxMinInfo(double x0, double x1, double y0, double y1)
+            {
+                MinX = x0;
+                MaxX = x1;
+                MinY = y0;
+                MaxY = y1;
+            }
+        }
+
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             try
@@ -57,9 +73,14 @@ namespace CustomMacroBase.CustomControlEx.PointCurveChartEx
                 var pointmarkers = (ObservableCollection<bool>)values[5];
                 var curvetype = (CurveType)values[6];
 
-                return CreatePathCollection(points, colors, size, zoomratio, pensize, pointmarkers, curvetype);
+                if (points.Any() && points[0].Any())
+                {
+                    return CreatePathCollection(points, colors, size, zoomratio, pensize, pointmarkers, curvetype);
+                }
+
+                return Binding.DoNothing;
             }
-            catch
+            catch (Exception ex)
             {
                 return Binding.DoNothing;
             }
@@ -70,27 +91,35 @@ namespace CustomMacroBase.CustomControlEx.PointCurveChartEx
             throw new NotImplementedException();
         }
 
-        private List<Point> FormatPointList(List<Point> points, Point maxPoint, Size containerSize, Point zoomratio)
+        private List<Point> FormatPointList(List<Point> points, MaxMinInfo mmi, Size containerSize, Point zoomratio)
         {
             var offset = new Point(0, 1);
 
-            var maxX = maxPoint.X;
-            var maxY = maxPoint.Y;
+            var maxX = mmi.MaxX;
+            var maxY = mmi.MaxY;
+            var minX = mmi.MinX;
+            var minY = mmi.MinY;
+
+            var panelMargin = 2;
+
             var horizontalScrollBar = 4.5 + 4.5 + offset.Y;
-            var w = Math.Max(containerSize.Width, 10);
-            var h = Math.Max(containerSize.Height - horizontalScrollBar, 10);
+            var w = Math.Max(containerSize.Width - panelMargin * 2, 10);
+            var h = Math.Max(containerSize.Height - horizontalScrollBar - panelMargin * 2, 10);
             var rx = Math.Max(zoomratio.X, 0);
             var ry = Math.Max(zoomratio.Y, 0);
 
-            var coefficientX = maxX <= w ? Math.Max(w / maxX, rx) : maxX / w;
+            var only1 = points.Count == 1;
+
+            var coefficientX = only1 ? 1.0 : Math.Max(maxX <= w ? w / maxX : maxX / w, rx);
             var coefficientY = maxY <= h ? 1.0 : Math.Max(h / maxY, ry);
 
-            return points.Select(p => new Point((p.X * coefficientX) + offset.X, h - (p.Y * coefficientY) + offset.Y)).ToList();
+            return points.Select(p => new Point(p.X - minX, p.Y - minY)).
+                          Select(p => new Point((p.X * coefficientX) + offset.X, h - (p.Y * coefficientY) + offset.Y)).ToList();
         }
         private Path CreatePath(List<Point> points, SolidColorBrush? color = null, double pensize = 1.0, Point zoomratio = default, bool marker = false, CurveType curvetype = CurveType.Straight)
         {
             // 创建路径字符串
-            StringBuilder data = new StringBuilder("M");
+            StringBuilder data = new StringBuilder();
 
             // 创建几何组合
             GeometryGroup geometryGroup = new GeometryGroup();
@@ -101,23 +130,39 @@ namespace CustomMacroBase.CustomControlEx.PointCurveChartEx
                 case CurveType.Bezier:
                     {
                         // 三次方贝塞尔曲线
-                        data.AppendFormat("{0},{1} C", points[0].X, points[0].Y);
-                        for (int i = 1; i < points.Count; i++)
+                        if (points.Count == 1)
                         {
-                            Point pre = new Point((points[i - 1].X + points[i].X) / 2, points[i - 1].Y);  //控制点
-                            Point next = new Point((points[i - 1].X + points[i].X) / 2, points[i].Y);     //控制点
-                            data.AppendFormat(" {0},{1} {2},{3} {4},{5}", pre.X, pre.Y, next.X, next.Y, points[i].X, points[i].Y);
+                            data.AppendFormat("M {0},{1} C {2},{3}", points[0].X, points[0].Y, points[0].X, points[0].Y);
                         }
+                        else
+                        {
+                            data.AppendFormat("M {0},{1} C", points[0].X, points[0].Y);
+                            for (int i = 1; i < points.Count; i++)
+                            {
+                                Point pre = new Point((points[i - 1].X + points[i].X) / 2, points[i - 1].Y);  //控制点
+                                Point next = new Point((points[i - 1].X + points[i].X) / 2, points[i].Y);     //控制点
+                                data.AppendFormat(" {0},{1} {2},{3} {4},{5}", pre.X, pre.Y, next.X, next.Y, points[i].X, points[i].Y);
+                            }
+                        }
+
                         geometryGroup.Children.Add(Geometry.Parse(data.ToString())); break;
                     }
                 case CurveType.Straight:
                     {
                         // 折线
-                        data.AppendFormat("{0},{1} L", points[0].X, points[0].Y);
-                        for (int i = 1; i < points.Count; i++)
+                        if (points.Count == 1)
                         {
-                            data.AppendFormat(" {0},{1}", points[i].X, points[i].Y);
+                            data.AppendFormat("M {0},{1} L {2},{3}", points[0].X, points[0].Y, points[0].X, points[0].Y);
                         }
+                        else
+                        {
+                            data.AppendFormat("M {0},{1} L", points[0].X, points[0].Y);
+                            for (int i = 1; i < points.Count; i++)
+                            {
+                                data.AppendFormat(" {0},{1}", points[i].X, points[i].Y);
+                            }
+                        }
+
                         geometryGroup.Children.Add(Geometry.Parse(data.ToString())); break;
                     }
             };
@@ -125,7 +170,7 @@ namespace CustomMacroBase.CustomControlEx.PointCurveChartEx
             // 创建圆圈
             if (marker)
             {
-                var radius = pensize + 0.25;
+                var radius = Math.Max(pensize + 0.25, 0.75);
                 foreach (var point in points)
                 {
                     EllipseGeometry ellipseGeometry = new EllipseGeometry(point, radius, radius);
@@ -137,7 +182,7 @@ namespace CustomMacroBase.CustomControlEx.PointCurveChartEx
             var path = new Path
             {
                 Stroke = color ?? Brushes.Yellow,
-                StrokeThickness = pensize,
+                StrokeThickness = Math.Max(pensize, 0.5),
                 Data = geometryGroup,//Geometry.Parse(data.ToString()),
                 StrokeStartLineCap = PenLineCap.Round,
                 StrokeEndLineCap = PenLineCap.Round
@@ -153,8 +198,11 @@ namespace CustomMacroBase.CustomControlEx.PointCurveChartEx
                                                                 ObservableCollection<bool> markers,
                                                                 CurveType curvetype)
         {
+            var minX = curves.SelectMany(v => v.Select(point => point.X)).Min();
             var maxX = curves.SelectMany(v => v.Select(point => point.X)).Max();
+            var minY = curves.SelectMany(v => v.Select(point => point.Y)).Min();
             var maxY = curves.SelectMany(v => v.Select(point => point.Y)).Max();
+            var maxininfo = new MaxMinInfo(minX, maxX, minY, maxY);
 
             var list = new List<Path>();
             var collection = new ObservableCollection<Path>();
@@ -167,7 +215,7 @@ namespace CustomMacroBase.CustomControlEx.PointCurveChartEx
                     var color = (colors != null && i < colors.Count) ? colors[i] : defaultColor;
                     var marker = (markers != null && i < markers.Count) ? markers[i] : false;
 
-                    var curve = FormatPointList(points, new Point(maxX, maxY), size, zoomratio);
+                    var curve = FormatPointList(points, maxininfo, size, zoomratio);
                     var path = CreatePath(curve, color, pensize, zoomratio, marker, curvetype);
 
                     list.Add(path);
