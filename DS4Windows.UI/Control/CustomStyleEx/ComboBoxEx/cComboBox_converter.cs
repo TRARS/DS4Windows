@@ -18,16 +18,29 @@ namespace DS4WinWPF.UI.Control.CustomStyleEx.ComboBoxEx
                 "DS4WinWPF.DS4Forms.ViewModels.Util.EnumChoiceSelection`1[DS4WinWPF.DS4Control.PresetOption+OutputContChoice]" => $"{((dynamic)value).DisplayName}",
                 "DS4WinWPF.DS4Forms.ViewModels.Util.EnumChoiceSelection`1[DS4Windows.Mouse+TouchButtonActivationMode]" => $"{((dynamic)value).DisplayName}",
                 "DS4WinWPF.DS4Forms.ViewModels.Util.EnumChoiceSelection`1[DS4Windows.DS4TriggerOutputMode]" => $"{((dynamic)value).DisplayName}",
+                "DS4WinWPF.DS4Forms.ViewModels.Util.EnumChoiceSelection`1[DS4Windows.StickModifiers.StickOutCurve+Curve]" => $"{((dynamic)value).DisplayName}",
                 "DS4WinWPF.DS4Forms.ViewModels.TwoStageChoice" => $"{((dynamic)value).DisplayName}",
                 "DS4WinWPF.DS4Forms.ViewModels.TriggerEffectChoice" => $"{((dynamic)value).DisplayName}",
                 "DS4WinWPF.ProfileEntity" => $"{((dynamic)value).Name}",
                 _ => ((Func<string>)(() =>
                 {
-                    if (value is not string)
+                    var result = string.Empty;
                     {
-                        Debug.WriteLine(value);
+                        var type = value.GetType();
+                        var displayNameProp = type?.GetProperty("DisplayName");
+
+                        if (type is not null && displayNameProp is not null)
+                        {
+                            result = $"{value} -> {displayNameProp.GetValue(value)}";
+                        }
+                        else
+                        {
+                            result = $"{value}";
+                        }
+
+                        Debug.WriteLine($"{result}");
                     }
-                    return $"{value}";
+                    return $"{result}";
                 })).Invoke()
             };
 
