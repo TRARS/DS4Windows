@@ -78,9 +78,9 @@
                                                     <BeginStoryboard Name="Anm">
                                                         <Storyboard>
                                                             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Effect.HorizontalOffset" 
-                                                                           Duration="0:0:5" 
-                                                                           AutoReverse="False" 
-                                                                           RepeatBehavior="Forever">
+                                                                                           Duration="0:0:5" 
+                                                                                           AutoReverse="False" 
+                                                                                           RepeatBehavior="Forever">
                                                                 <LinearDoubleKeyFrame KeyTime="0:0:0" Value="1"/>
                                                                 <LinearDoubleKeyFrame KeyTime="0:0:5" Value="0"/>
                                                             </DoubleAnimationUsingKeyFrames>
@@ -88,7 +88,7 @@
                                                     </BeginStoryboard>
                                                 </Trigger.EnterActions>
                                                 <Trigger.ExitActions>
-                                                    <RemoveStoryboard BeginStoryboardName="Anm"></RemoveStoryboard>
+                                                    <RemoveStoryboard BeginStoryboardName="Anm"/>
                                                 </Trigger.ExitActions>
                                             </Trigger>
                                         </Style.Triggers>

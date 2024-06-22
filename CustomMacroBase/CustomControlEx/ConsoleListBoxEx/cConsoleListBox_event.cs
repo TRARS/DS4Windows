@@ -19,9 +19,9 @@ namespace CustomMacroBase.CustomControlEx.ConsoleListBoxEx
 
         private void SetTextToClipboard(string? obj)
         {
-            if (obj is null) { return; }
+            if (string.IsNullOrEmpty(obj)) { return; }
 
-            System.Threading.Thread sta_thread = new System.Threading.Thread(() =>
+            var sta_thread = new System.Threading.Thread(() =>
             {
                 try { Clipboard.SetText(obj); }
                 catch (Exception ex) { MessageBox.Show($"{ex.Message}"); }

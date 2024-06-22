@@ -126,7 +126,7 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
             set
             {
                 model.SizeInfo = value;
-                NotifyPropertyChanged(); NotifyPropertyChanged("MessageStr");
+                NotifyPropertyChanged(); NotifyPropertyChanged(nameof(MessageStr));
             }
         }
         public string ClickPointInfo
@@ -135,7 +135,7 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
             set
             {
                 model.ClickPointInfo = value;
-                NotifyPropertyChanged(); NotifyPropertyChanged("MessageStr");
+                NotifyPropertyChanged(); NotifyPropertyChanged(nameof(MessageStr));
             }
         }
         public string MessageStr => (SizeInfo.Equals(string.Empty) ? "" : $" size{SizeInfo} {ClickPointInfo} {""}");

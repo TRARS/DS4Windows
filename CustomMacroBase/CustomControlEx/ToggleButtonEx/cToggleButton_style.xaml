@@ -200,7 +200,7 @@
                             </MultiDataTrigger.ExitActions>
                         </MultiDataTrigger>
 
-                        <!--后补色蓝-->
+                        <!--候补色蓝-->
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
                                 <Condition Binding="{Binding UseAlternateDotColor, RelativeSource={RelativeSource Self}}" Value="true"/>

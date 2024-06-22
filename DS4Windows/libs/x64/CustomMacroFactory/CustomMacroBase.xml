@@ -185,6 +185,21 @@
             该值为true时令脚本可以循环
             </summary>
         </member>
+        <member name="P:CustomMacroBase.Helper.Tools.FlowManager.FlowControllerV0.OnIterationStart">
+            <summary>
+            于循环结束时被执行的回调函数
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.Helper.Tools.FlowManager.FlowControllerV0.OnIterationEnd">
+            <summary>
+            于每次迭代后被执行的回调函数
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.Helper.Tools.FlowManager.FlowControllerV0.OnLoopEnd">
+            <summary>
+            于循环结束时被执行的回调函数
+            </summary>
+        </member>
         <member name="P:CustomMacroBase.Helper.Tools.FlowManager.ActionInfoV1.Key">
             <summary>
             按键名
@@ -821,9 +836,14 @@
             特征码
             </summary>
         </member>
-        <member name="P:CustomMacroBase.PreBase.GateBase.TooltipText">
+        <member name="P:CustomMacroBase.PreBase.GateBase.TooltipPrefix">
             <summary>
-            气泡注释
+            气泡注释前缀
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.PreBase.GateBase.TooltipSuffix">
+            <summary>
+            气泡注释后缀
             </summary>
         </member>
         <member name="P:CustomMacroBase.PreBase.GateBase.Children">
@@ -1016,7 +1036,7 @@
             默认构造函数
             </summary>
         </member>
-        <member name="M:CustomMacroBase.MacroBase.SetTooltipText(CustomMacroBase.PreBase.GateBase,System.Boolean,System.String)">
+        <member name="M:CustomMacroBase.MacroBase.SetTooltipPrefix(CustomMacroBase.PreBase.GateBase,System.Boolean,System.String)">
             <summary>
             提示下标
             </summary>

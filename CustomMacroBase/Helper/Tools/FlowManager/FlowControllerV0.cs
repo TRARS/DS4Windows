@@ -101,6 +101,19 @@ namespace CustomMacroBase.Helper.Tools.FlowManager
         /// 该值为true时令脚本可以循环
         /// </summary>
         public bool Repeat_Condition { get => macro_repeat_condition; set { if (macro_repeat_condition != value) macro_repeat_condition = value; } }
+
+        /// <summary>
+        /// 于循环结束时被执行的回调函数
+        /// </summary>
+        public Action? OnIterationStart { get; set; }
+        /// <summary>
+        /// 于每次迭代后被执行的回调函数
+        /// </summary>
+        public Action? OnIterationEnd { get; set; }
+        /// <summary>
+        /// 于循环结束时被执行的回调函数
+        /// </summary>
+        public Action? OnLoopEnd { get; set; }
     }
 
     public sealed partial class FlowControllerV0
@@ -152,18 +165,22 @@ namespace CustomMacroBase.Helper.Tools.FlowManager
                                         {
                                             do
                                             {
-                                                foreach (var item in macro_actioninfo_list)
+                                                this.OnIterationStart?.Invoke();
                                                 {
-                                                    if (macro_task_cancelflag) { break; }
-
-                                                    macro_act = item.Action;
-
-                                                    var duration = item.GetDuration;
-                                                    var token = duration < 120 ? CancellationToken.None : current_token;
+                                                    foreach (var item in macro_actioninfo_list)
                                                     {
-                                                        await Task.Delay(duration, token).ConfigureAwait(false);
+                                                        if (macro_task_cancelflag) { break; }
+
+                                                        macro_act = item.Action;
+
+                                                        var duration = item.GetDuration;
+                                                        var token = duration < 120 ? CancellationToken.None : current_token;
+                                                        {
+                                                            await Task.Delay(duration, token).ConfigureAwait(false);
+                                                        }
                                                     }
                                                 }
+                                                this.OnIterationEnd?.Invoke();
                                             }
                                             while (macro_repeat_condition &&
                                                    macro_task_cancelflag is false);
@@ -172,6 +189,7 @@ namespace CustomMacroBase.Helper.Tools.FlowManager
                                         {
                                             canceled = true;
                                         }
+                                        this.OnLoopEnd?.Invoke();
                                     }
                                     macro_task_is_running = false;
                                 }

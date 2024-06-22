@@ -107,7 +107,7 @@ namespace CustomMacroBase.PreBase
                 }
                 else
                 {
-                    MessageBox.Show($"Index was outside the bounds of the array", $"{this.TooltipText}->[{idx}]");
+                    MessageBox.Show($"Index was outside the bounds of the array", $"{this.TooltipPrefix}->[{idx}]");
                     return this;
                 }
             }
@@ -318,18 +318,32 @@ namespace CustomMacroBase.PreBase
         private string _Feature = GenerateRandomString(32);
 
         /// <summary>
-        /// 气泡注释
+        /// 气泡注释前缀
         /// </summary>
-        public string TooltipText
+        public string TooltipPrefix
         {
-            get { return _TooltipText; }
+            get { return _TooltipPrefix; }
             set
             {
-                _TooltipText = value;
+                _TooltipPrefix = value;
                 NotifyPropertyChanged();
             }
         }
-        private string _TooltipText = string.Empty;
+        private string _TooltipPrefix = string.Empty;
+
+        /// <summary>
+        /// 气泡注释后缀
+        /// </summary>
+        public string TooltipSuffix
+        {
+            get { return _TooltipSuffix; }
+            set
+            {
+                _TooltipSuffix = value;
+                NotifyPropertyChanged();
+            }
+        }
+        private string _TooltipSuffix = string.Empty;
 
         /// <summary>
         /// 获取当前滑块开关的子成员列表（同时包含节点成员和非节点成员）
@@ -364,7 +378,7 @@ namespace CustomMacroBase.PreBase
         /// <summary>
         /// 主开关，既位于最外层的开关
         /// </summary>
-        public GateBase MainGate { get; } = new() { Text = "Main_NoName", Enable = true, TooltipText = "Root" };
+        public GateBase MainGate { get; } = new() { Text = "Main_NoName", Enable = true, TooltipPrefix = "Root" };
     }
 }
 
@@ -634,7 +648,7 @@ namespace CustomMacroBase
             try
             {
                 this.Init();
-                this.SetTooltipText(MainGate, true, "Root");
+                this.SetTooltipPrefix(MainGate, true, "Root");
             }
             catch (Exception ex)
             {
@@ -645,17 +659,17 @@ namespace CustomMacroBase
         /// <summary>
         /// 提示下标
         /// </summary>
-        private void SetTooltipText(GateBase node, bool isRoot, string tip)
+        private void SetTooltipPrefix(GateBase node, bool isRoot, string tip)
         {
             if (node is null) return;
 
-            node.TooltipText = tip;
+            node.TooltipPrefix = tip;
 
             List<GateBase> list = node.GateBaseList;
 
             for (int i = 0; i < list.Count; i++)
             {
-                SetTooltipText(list[i], false, $"{(isRoot ? tip + " - " : tip)}[{i}]");
+                SetTooltipPrefix(list[i], false, $"{(isRoot ? tip + " - " : tip)}[{i}]");
             }
         }
         #endregion
@@ -898,17 +912,17 @@ namespace CustomMacroBase
         /// CreateSlider2
         /// </summary>
         protected static UIElement CreateSlider2(double minimum,
-                                                  double maximum,
-                                                  object model,
-                                                  string propName,
-                                                  double tickFrequency = 1,
-                                                  string sliderTextPrefix = "",
-                                                  double defalutValue = 0,
-                                                  string sliderTextSuffix = "",
-                                                  bool hideself = false,
-                                                  bool useonoffswitch = true,
-                                                  HorizontalAlignment horizontalAlignment = HorizontalAlignment.Stretch,
-                                                  VerticalAlignment verticalAlignment = VerticalAlignment.Stretch)
+                                                 double maximum,
+                                                 object model,
+                                                 string propName,
+                                                 double tickFrequency = 1,
+                                                 string sliderTextPrefix = "",
+                                                 double defalutValue = 0,
+                                                 string sliderTextSuffix = "",
+                                                 bool hideself = false,
+                                                 bool useonoffswitch = true,
+                                                 HorizontalAlignment horizontalAlignment = HorizontalAlignment.Stretch,
+                                                 VerticalAlignment verticalAlignment = VerticalAlignment.Stretch)
         {
             var stackpanel = new cStackPanel() { GuideLineColor = new(Colors.WhiteSmoke), HorizontalAlignment = horizontalAlignment, VerticalAlignment = verticalAlignment };
             {

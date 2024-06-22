@@ -427,6 +427,15 @@ namespace DS4WinWPF.DS4Forms.ViewModels
             items.Add(minimizeItem);
             items.Add(openProgramItem);
             items.Add(new Separator());
+            items.Add(((Func<MenuItem>)(() => 
+            {
+                var mi = new MenuItem() { Header = "Show/Hide MacroWindow" };
+                {
+                    mi.Click += (s, e) => { CustomMacroLink.CustomMacroFactoryInstance.HideToTray(); };
+                }
+                return mi;
+            })).Invoke());
+            items.Add(new Separator());
             items.Add(closeItem);
         }
 

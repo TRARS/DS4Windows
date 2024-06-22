@@ -58,5 +58,26 @@ namespace CustomMacroFactory
                 ((double[])para)[0] = (d is not null ? d.Latency : 0);
             });
         }
+
+        public void HideToTray()
+        {
+            if (MainView.WindowState is WindowState.Minimized)
+            {
+                if (MainView.ShowInTaskbar)
+                {
+                    MainView.ShowInTaskbar = false;
+                }
+                else
+                {
+                    MainView.WindowState = WindowState.Normal;
+                    MainView.ShowInTaskbar = true;
+                }
+            }
+            else
+            {
+                MainView.WindowState = WindowState.Minimized;
+                MainView.ShowInTaskbar = false;
+            }
+        }
     }
 }

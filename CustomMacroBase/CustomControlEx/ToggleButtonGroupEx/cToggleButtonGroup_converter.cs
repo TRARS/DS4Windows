@@ -132,4 +132,20 @@ namespace CustomMacroBase.CustomControlEx.ToggleButtonGroupEx
             throw new NotImplementedException();
         }
     }
+
+    class cToggleButtonGroup_converter_tooltip : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            var pre = $"{values[0]}";
+            var suf = $"{values[1]}";
+
+            return $"{pre}" + (string.IsNullOrWhiteSpace(suf) ? string.Empty : suf);
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
