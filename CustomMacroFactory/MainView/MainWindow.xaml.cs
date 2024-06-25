@@ -10,7 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Media;
 
-namespace CustomMacroFactory.MainWindow
+namespace CustomMacroFactory.MainView
 {
     //UserControl 在自己的 view.xaml 中引用style资源
     //CustomControl 在 Themes/Generic.xaml 中引用style资源
@@ -117,39 +117,21 @@ namespace CustomMacroFactory.MainWindow
             }
             return null;
         }
-
-        //private void MinimizeButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    this.WindowState = WindowState.Minimized;
-        //}
-        //private void MaximizeButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    this.WindowState = (this.WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized);
-        //}
-        //private void CloseButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    this.WindowState = WindowState.Minimized;
-        //}
-        //private void Window_StateChanged(object sender, EventArgs e)
-        //{
-        //    if (this.WindowState == WindowState.Maximized) { this.WindowState = WindowState.Normal; }
-        //}
     }
 
-    //构造函数
+    //Initializer
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
-            InitializeComponent();
-            this.Left = this.Top = 5;
+            InitializeComponent(); Left = Top = 5;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             Task.Run(async () =>
             {
-                await Task.Delay(500);
+                await Task.Delay(512);
                 await this.Dispatcher.BeginInvoke(() =>
                 {
                     string str = $"{this.Width},{this.Height}";
@@ -174,23 +156,82 @@ namespace CustomMacroFactory.MainWindow
         }
     }
 
-    //Entry
-    public partial class MainWindow
-    {
-        public void DS4StateCustomUpdateMain(in int ind, in DS4StateLite _realState, in DS4StateLite _virtualState)
-        {
-            MacroManager.Entry(in ind, in _realState, in _virtualState);
-        }
-    }
-
-    //Exit
+    //Field
     public partial class MainWindow
     {
         private bool canExit = false;
+    }
 
+    //Method
+    public partial class MainWindow
+    {
+        //Entry
+        public void MacroEntry(in int ind, in DS4StateLite _realState, in DS4StateLite _virtualState)
+        {
+            MacroManager.Entry(in ind, in _realState, in _virtualState);
+        }
+
+        //Exit
         public void Exit()
         {
             canExit = true;
+        }
+
+        //HideToTray
+        public void HideToTray()
+        {
+            var flag = this.WindowState is WindowState.Minimized;
+            {
+                this.WindowState = flag ? (this.ShowInTaskbar ? this.WindowState : WindowState.Normal) : WindowState.Minimized;
+                this.ShowInTaskbar = flag ? (!this.ShowInTaskbar) : false;
+            }
+        }
+
+        //Init
+        public void Init(Func<dynamic> getDs4Host, Func<dynamic> getRootHub)
+        {
+            this.Show();
+
+            Mediator.Instance.Register(MessageType.WindowPosReset, para =>
+            {
+                this.TryMoveToPrimaryMonitor((Vector)para);
+            });
+
+            Mediator.Instance.Register(MessageType.WindowClose, _ =>
+            {
+                this.WindowState = WindowState.Minimized;
+            });
+
+            Mediator.Instance.Register(MessageType.Ds4Disconnect, _ =>
+            {
+                dynamic? ds4 = getDs4Host?.Invoke();
+                ds4?.CloseBT();
+            });
+
+            Mediator.Instance.Register(MessageType.Ds4Rumble, para =>
+            {//byte rightLightFastMotor, byte leftHeavySlowMotor
+                dynamic? rootHub = getRootHub?.Invoke();
+                dynamic? d = rootHub?.DS4Controllers[0];
+                byte LightRumble = (bool)para ? byte.MinValue : byte.MaxValue;
+                byte HeavyRumble = (bool)para ? byte.MaxValue : byte.MinValue;
+                if (d is not null)
+                {
+                    Task.Run(() =>
+                    {
+                        d.setRumble(LightRumble, HeavyRumble);//LightRumble //HeavyRumble
+                        Task.Delay(200).Wait();
+                        d.setRumble(0, 0);
+                        Task.Delay(200).Wait();
+                    });
+                }
+            });
+
+            Mediator.Instance.Register(MessageType.Ds4Latency, para =>
+            {
+                dynamic? rootHub = getRootHub?.Invoke();
+                dynamic? d = rootHub?.DS4Controllers[0];
+                ((double[])para)[0] = (d is not null ? d.Latency : 0);
+            });
         }
     }
 }

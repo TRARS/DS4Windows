@@ -14,7 +14,6 @@ namespace CustomMacroBase.CustomControlEx.ColorfulTextBlockEx
 
     public partial class cColorfulTextBlock
     {
-
         public string Text
         {
             get { return (string)GetValue(TextProperty); }

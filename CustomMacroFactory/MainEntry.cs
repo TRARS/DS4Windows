@@ -1,83 +1,43 @@
-﻿using CustomMacroBase.Helper;
+﻿using CustomMacroFactory.MainView;
+using CustomMacroFactory.MainView.UserControlEx.ClientEx;
+using CustomMacroFactory.MainView.UserControlEx.PixelPicker;
+using CustomMacroFactory.MainView.UserControlEx.RainbowLineEx;
+using CustomMacroFactory.MainView.UserControlEx.TitleBarEx;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace CustomMacroFactory
 {
-    public sealed partial class MainEntry
+    public static class MainEntry
     {
-        public MainWindow.MainWindow MainView = new();
-        public Func<object>? Ds4Host;
-        public Func<object>? RootHub;
+        private static readonly IHost host = GetHostBuilder().Build();
 
-        public MainEntry() { }
-
-        public void Init()
+        private static IHostBuilder GetHostBuilder()
         {
-            MainView.Show();
+            return Host.CreateDefaultBuilder()
+                       .ConfigureServices(sc =>
+                       {
+                           sc.AddSingleton<MainWindow>(sp => new() { DataContext = sp.GetRequiredService<MainWindow_viewmodel>() });
+                           sc.AddSingleton<MainWindow_viewmodel>();
 
-            Mediator.Instance.Register(MessageType.WindowPosReset, para =>
-            {
-                MainView.TryMoveToPrimaryMonitor((Vector)para);
-            });
+                           sc.AddSingleton<uTitleBar>(sp => new() { DataContext = sp.GetRequiredService<uTitleBar_viewmodel>() });
+                           sc.AddSingleton<uTitleBar_viewmodel>();
 
-            Mediator.Instance.Register(MessageType.WindowClose, _ =>
-            {
-                MainView.WindowState = WindowState.Minimized;
-            });
+                           sc.AddSingleton<uRainbowLine>(sp => new() { DataContext = sp.GetRequiredService<uRainbowLine_viewmodel>() });
+                           sc.AddSingleton<uRainbowLine_viewmodel>();
 
-            Mediator.Instance.Register(MessageType.Ds4Disconnect, _ =>
-            {
-                dynamic? ds4 = Ds4Host?.Invoke();
-                ds4?.CloseBT();
-            });
+                           sc.AddSingleton<uClient>(sp => new() { DataContext = sp.GetRequiredService<uClient_viewmodel>() });
+                           sc.AddSingleton<uClient_viewmodel>();
 
-            Mediator.Instance.Register(MessageType.Ds4Rumble, para =>
-            {//byte rightLightFastMotor, byte leftHeavySlowMotor
-                dynamic? rootHub = RootHub?.Invoke();
-                dynamic? d = rootHub?.DS4Controllers[0];
-                byte LightRumble = (bool)para ? byte.MinValue : byte.MaxValue;
-                byte HeavyRumble = (bool)para ? byte.MaxValue : byte.MinValue;
-                if (d is not null)
-                {
-                    Task.Run(() =>
-                    {
-                        d.setRumble(LightRumble, HeavyRumble);//LightRumble //HeavyRumble
-                        Task.Delay(200).Wait();
-                        d.setRumble(0, 0);
-                        Task.Delay(200).Wait();
-                    });
-                }
-            });
-
-            Mediator.Instance.Register(MessageType.Ds4Latency, para =>
-            {
-                dynamic? rootHub = RootHub?.Invoke();
-                dynamic? d = rootHub?.DS4Controllers[0];
-                ((double[])para)[0] = (d is not null ? d.Latency : 0);
-            });
+                           sc.AddSingleton<uPixelPicker>(sp => new() { DataContext = sp.GetRequiredService<uPixelPicker_viewmodel>() });
+                           sc.AddSingleton<uPixelPicker_viewmodel>();
+                       });
         }
 
-        public void HideToTray()
+        public static T GetService<T>() where T : notnull
         {
-            if (MainView.WindowState is WindowState.Minimized)
-            {
-                if (MainView.ShowInTaskbar)
-                {
-                    MainView.ShowInTaskbar = false;
-                }
-                else
-                {
-                    MainView.WindowState = WindowState.Normal;
-                    MainView.ShowInTaskbar = true;
-                }
-            }
-            else
-            {
-                MainView.WindowState = WindowState.Minimized;
-                MainView.ShowInTaskbar = false;
-            }
+            return host.Services.GetRequiredService<T>();
         }
     }
 }

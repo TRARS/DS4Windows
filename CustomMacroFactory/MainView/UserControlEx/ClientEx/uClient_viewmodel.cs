@@ -6,7 +6,7 @@ using CustomMacroBase.CustomControlEx.VerticalRadioButtonEx;
 using CustomMacroBase.Helper;
 using CustomMacroBase.Helper.Extensions;
 using CustomMacroBase.Helper.HotKey;
-using CustomMacroFactory.MainWindow.UserControlEx.PixelPicker;
+using CustomMacroFactory.MainView.UserControlEx.PixelPicker;
 using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -16,138 +16,135 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
 
-namespace CustomMacroFactory.MainWindow.UserControlEx.ClientEx
+namespace CustomMacroFactory.MainView.UserControlEx.ClientEx
 {
-    //model
     partial class uClient_viewmodel
     {
-        //
-        private uClient_model model = new();
+        private readonly uClient_model model = new();
 
-        public ObservableCollection<cVerticalButton> TopContent_Left
+        public UIElement MainMenu
         {
-            get { return model.TopContent_Left; }
+            get { return model.PartCollection[0]; }
             set
             {
-                if (model.TopContent_Left == value)
+                if (model.PartCollection[0] == value)
                     return;
-                model.TopContent_Left = value;
+                model.PartCollection[0] = value;
                 NotifyPropertyChanged();
             }
         }
-        public ObservableCollection<cToggleButton> TopContent_LeftEx
+        public UIElement MainOption
         {
-            get { return model.TopContent_LeftEx; }
+            get { return model.PartCollection[1]; }
             set
             {
-                if (model.TopContent_LeftEx == value)
+                if (model.PartCollection[1] == value)
                     return;
-                model.TopContent_LeftEx = value;
+                model.PartCollection[1] = value;
                 NotifyPropertyChanged();
             }
         }
-        public ObservableCollection<cVerticalRadioButton> TopContent_Middle
+        public UIElement GameList
         {
-            get { return model.TopContent_Middle; }
+            get { return model.PartCollection[2]; }
             set
             {
-                if (model.TopContent_Middle == value)
+                if (model.PartCollection[2] == value)
                     return;
-                model.TopContent_Middle = value;
+                model.PartCollection[2] = value;
                 NotifyPropertyChanged();
             }
         }
-        public ObservableCollection<ContentControl> TopContent_Right
+        public UIElement MacroList
         {
-            get { return model.TopContent_Right; }
+            get { return model.PartCollection[3]; }
             set
             {
-                if (model.TopContent_Right == value)
+                if (model.PartCollection[3] == value)
                     return;
-                model.TopContent_Right = value;
+                model.PartCollection[3] = value;
                 NotifyPropertyChanged();
             }
         }
-        public ObservableCollection<ContentControl> BottomContent_Top
+        public UIElement SnapshotArea
         {
-            get { return model.BottomContent_Top; }
+            get { return model.PartCollection[4]; }
             set
             {
-                if (model.BottomContent_Top == value)
+                if (model.PartCollection[4] == value)
                     return;
-                model.BottomContent_Top = value;
+                model.PartCollection[4] = value;
                 NotifyPropertyChanged();
             }
         }
-        public ObservableCollection<ContentControl> BottomContent_Bottom
+        public UIElement LogArea
         {
-            get { return model.BottomContent_Bottom; }
+            get { return model.PartCollection[5]; }
             set
             {
-                if (model.BottomContent_Bottom == value)
+                if (model.PartCollection[5] == value)
                     return;
-                model.BottomContent_Bottom = value;
+                model.PartCollection[5] = value;
                 NotifyPropertyChanged();
             }
         }
 
         public bool TopContent_Left_Hide
         {
-            get => model.TopContent_Left_Hide;
+            get => model.DoubleCollection[0];
             set
             {
-                if (model.TopContent_Left_Hide == value)
+                if (model.DoubleCollection[0] == value)
                     return;
-                model.TopContent_Left_Hide = value;
+                model.DoubleCollection[0] = value;
                 NotifyPropertyChanged();
             }
         }
         public bool TopContent_Middle_Hide
         {
-            get => model.TopContent_Middle_Hide;
+            get => model.DoubleCollection[1];
             set
             {
-                if (model.TopContent_Middle_Hide == value)
+                if (model.DoubleCollection[1] == value)
                     return;
-                model.TopContent_Middle_Hide = value;
+                model.DoubleCollection[1] = value;
                 NotifyPropertyChanged();
             }
         }
         public bool TopContent_Right_Hide
         {
-            get => model.TopContent_Right_Hide;
+            get => model.DoubleCollection[2];
             set
             {
-                if (model.TopContent_Right_Hide == value)
+                if (model.DoubleCollection[2] == value)
                     return;
-                model.TopContent_Right_Hide = value;
+                model.DoubleCollection[2] = value;
                 NotifyPropertyChanged();
             }
         }
         public bool BottomContent_Top_Hide
         {
-            get => model.BottomContent_Top_Hide;
+            get => model.DoubleCollection[3];
             set
             {
-                if (model.BottomContent_Top_Hide == value)
+                if (model.DoubleCollection[3] == value)
                     return;
-                model.BottomContent_Top_Hide = value;
+                model.DoubleCollection[3] = value;
                 NotifyPropertyChanged();
             }
         }
         public bool BottomContent_Bottom_Hide
         {
-            get => model.BottomContent_Bottom_Hide;
+            get => model.DoubleCollection[4];
             set
             {
-                if (model.BottomContent_Bottom_Hide == value)
+                if (model.DoubleCollection[4] == value)
                     return;
-                model.BottomContent_Bottom_Hide = value;
+                model.DoubleCollection[4] = value;
                 NotifyPropertyChanged();
             }
         }
 
-        //
         public ObservableCollection<MenuItem_model> MenuItemModelList
         {
             get => model.MenuItemModelList;
@@ -161,45 +158,24 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.ClientEx
         }
     }
 
-    //Init
+    // Init
     partial class uClient_viewmodel : NotificationObject
     {
         public uClient_viewmodel()
         {
-            Init();
-            Init2();
-        }
-    }
-
-    //Init具体实现
-    partial class uClient_viewmodel
-    {
-        /// <summary>
-        /// 载入数据
-        /// </summary>
-        private void Init()
-        {
-            //获取MacroManager.MacroInfo，创建些许控件并分配给 TopContent_Middle 和 TopContent_Right
-
-            this.TopContent_Left.Clear();
-            this.TopContent_Middle.Clear();
-            this.TopContent_Right.Clear();
-            this.BottomContent_Top.Clear();
-            this.BottomContent_Bottom.Clear();
-
             //控制部分区域可见性
-            this.TopContent_Left_Hide = false;      // some buttons
+            this.TopContent_Left_Hide = false;      // menu
             this.TopContent_Middle_Hide = false;    // game list
             this.TopContent_Right_Hide = false;     // macro list
             this.BottomContent_Top_Hide = false;    // rgb picker
             this.BottomContent_Bottom_Hide = false; // log
 
             //TopContent_Left
+            this.MainMenu = new PartCreator<cVerticalButton>(container =>
             {
-                //清空打印 断开连接 拾色器 获取截图 临时通行 调整尺寸
-                this.TopContent_Left.Add(new() { Text = "Clear Log", Command = () => { Mediator.Instance.NotifyColleagues(MessageType.PrintCleanup, null); } });
-                this.TopContent_Left.Add(new() { Text = "Disconnect", Command = () => { Mediator.Instance.NotifyColleagues(MessageType.Ds4Disconnect, null); } });
-                this.TopContent_Left.Add(new()
+                container.Add(new() { Text = "Clear Log", Command = () => { Mediator.Instance.NotifyColleagues(MessageType.PrintCleanup, null); } });
+                container.Add(new() { Text = "Disconnect", Command = () => { Mediator.Instance.NotifyColleagues(MessageType.Ds4Disconnect, null); } });
+                container.Add(new()
                 {
                     Text = "RGB Picker",
                     Command = () => { Mediator.Instance.NotifyColleagues(MessageType.PixelPickerOnOff, null); },
@@ -210,20 +186,23 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.ClientEx
                         new() { SubFlag = true, Text = "Resize(720P)", Command = () => { CustomMacroBase.PixelMatcher.PixelMatcherHost.SetTargetWindowSizeEx(1280, 720); }, ToolTip = "Resize the target window (client area) to 1280x720" },
                     }
                 });
-                this.TopContent_Left.Add(new()
+                container.Add(new()
                 {
                     Text = "Settings",
                     Command = () => { Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, "Right-click on this button to adjust settings related to the analog stick"); },
                     RightClickContent = ((Func<ObservableCollection<UIElement>>)(() =>
                     {
-                        if (MacroFactory.MacroManager.AnalogStickMacro is CustomMacroBase.MacroBase pre)
+                        var list = new ObservableCollection<UIElement>();
                         {
-                            return new() { new cToggleButtonGroup(pre.MainGate) };
+                            if (MacroFactory.MacroManager.AnalogStickMacro is CustomMacroBase.MacroBase pre)
+                            {
+                                list.Add(new cToggleButtonGroup() { DataContext = pre.MainGate });
+                            }
                         }
-                        return null;
+                        return list;
                     })).Invoke(),
                 });
-                this.TopContent_Left.Add(((Func<cVerticalButton>)(() =>
+                container.Add(((Func<cVerticalButton>)(() =>
                 {
                     string pathData = "M512 857.6c-190.592 0-345.6-155.008-345.6-345.6S321.408 166.4 512 166.4s345.6 155.008 345.6 345.6-155.008 345.6-345.6 345.6z m0-640C349.696 217.6 217.6 349.696 217.6 512s132.096 294.4 294.4 294.4c162.304 0 294.4-132.096 294.4-294.4S674.304 217.6 512 217.6z" +
                                       "M972.8 537.6H51.2a25.6 25.6 0 1 1 0-51.2h921.6a25.6 25.6 0 1 1 0 51.2z" +
@@ -253,10 +232,12 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.ClientEx
                         }
                     };
                 })).Invoke());
-            }
+            }).GetVerticalContent();
+
             //TopContent_LeftEx
+            this.MainOption = new PartCreator<cToggleButton>(container =>
             {
-                this.TopContent_LeftEx.Add(new cToggleButton()
+                container.Add(new cToggleButton()
                 {
                     Margin = new(4, 0, 4, 0),
                     HorizontalAlignment = HorizontalAlignment.Stretch,
@@ -272,7 +253,7 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.ClientEx
                         SingleDs4Accessor.Instance.OnSlotConsumed += () => { Application.Current.Dispatcher.Invoke(() => { self.IsChecked = false; }); };
                     }
                 });
-                this.TopContent_LeftEx.Add(new cToggleButton()
+                container.Add(new cToggleButton()
                 {
                     Margin = new(4, 0, 4, 0),
                     HorizontalAlignment = HorizontalAlignment.Stretch,
@@ -287,7 +268,7 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.ClientEx
                         ToolTipService.SetInitialShowDelay(self, 256);
                     }
                 });
-                this.TopContent_LeftEx.Add(new cToggleButton()
+                container.Add(new cToggleButton()
                 {
                     Margin = new(4, 0, 4, 0),
                     HorizontalAlignment = HorizontalAlignment.Stretch,
@@ -302,69 +283,62 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.ClientEx
                         ToolTipService.SetInitialShowDelay(self, 256);
                     }
                 });
-            }
+            }).GetVerticalContent();
 
             //TopContent_Middle
+            this.GameList = new PartCreator<cVerticalRadioButton>(container =>
             {
                 foreach (var item in MacroFactory.MacroManager.CurrentGameList)
                 {
-                    //TopContent_Middle 每个游戏类安排一个按钮
-                    cVerticalRadioButton MC = new();
+                    //每个游戏类安排一个按钮
+                    cVerticalRadioButton temp = new();
                     {
-                        MC.SetBinding(cVerticalRadioButton.EnableColorfulTextProperty, new Binding(nameof(item.UseColorfulText)) { Source = item, Mode = BindingMode.TwoWay });
-                        MC.SetBinding(cVerticalRadioButton.TextProperty, new Binding(nameof(item.Title)) { Source = item, Mode = BindingMode.OneWay });
-                        MC.SetBinding(cVerticalRadioButton.IsCheckedProperty, new Binding(nameof(item.Selected)) { Source = item, Mode = BindingMode.TwoWay });
+                        temp.SetBinding(cVerticalRadioButton.EnableColorfulTextProperty, new Binding(nameof(item.UseColorfulText)) { Source = item, Mode = BindingMode.TwoWay });
+                        temp.SetBinding(cVerticalRadioButton.TextProperty, new Binding(nameof(item.Title)) { Source = item, Mode = BindingMode.OneWay });
+                        temp.SetBinding(cVerticalRadioButton.IsCheckedProperty, new Binding(nameof(item.Selected)) { Source = item, Mode = BindingMode.TwoWay });
                     }
-                    this.TopContent_Middle.Add(MC);
+                    container.Add(temp);
                 }
 
-                //选中第一项
                 Application.Current.Dispatcher.BeginInvoke(() =>
                 {
-                    if (this.TopContent_Middle.Count > 0) { this.TopContent_Middle[0].IsChecked = true; }
+                    if (container.Count > 0) { container[0].IsChecked = true; }
                 });
-            }
 
-            // TopContent_Right
+                //
+                this.MenuItemModelList.Add(new()
+                {
+                    Text = "GameList Show/Hide",
+                    Command = new(_ => { container.ForEach(x => x.Hide = !x.Hide); })
+                });
+            }).GetVerticalContent();
+
+            //TopContent_Right
+            this.MacroList = new PartCreator<ContentControl>(container =>
             {
                 foreach (var item in MacroFactory.MacroManager.CurrentGameList)
                 {
-                    //TopContent_Right 每个按钮对应具体内容
-                    ContentControl RC = new();
+                    //每个按钮对应具体内容
+                    ContentControl temp = new();
                     {
-                        Grid grid = new() { Margin = new Thickness(0, 4, 4, 4) };
-                        {
-                            //
-                            grid.Children.Add(new cToggleButtonGroup(item.MainGate));
-                        }
-                        RC.Content = grid;
-                        RC.SetBinding(ContentControl.VisibilityProperty, new Binding(nameof(item.Selected)) { Source = item, Mode = BindingMode.OneWay, Converter = new BooleanToVisibilityConverter() });
+                        temp.Content = new cToggleButtonGroup() { DataContext = item.MainGate, Margin = new Thickness(0, 4, 4, 4) };
+                        temp.SetBinding(ContentControl.VisibilityProperty, new Binding(nameof(item.Selected)) { Source = item, Mode = BindingMode.OneWay, Converter = new BooleanToVisibilityConverter() });
                     }
-                    this.TopContent_Right.Add(RC);
+                    container.Add(temp);
                 }
-            }
+            }).GetVerticalContent();
 
-            //BottomContent 打印栏
+            //BottomContent_Top
+            this.SnapshotArea = new PartCreator<ContentControl>(container =>
             {
-                this.BottomContent_Top.Add(new() { Content = new uPixelPicker() });
-                this.BottomContent_Bottom.Add(new() { Content = new cConsoleListBox() });
-            }
-        }
+                container.Add(new() { Content = MainEntry.GetService<uPixelPicker>() });
+            }).GetVerticalContent();
 
-        /// <summary>
-        /// 载入MenuItem
-        /// </summary>
-        private void Init2()
-        {
-            //临时隐藏
-            this.MenuItemModelList.Add(new()
+            //BottomContent_Bottom
+            this.LogArea = new PartCreator<ContentControl>(container =>
             {
-                Text = "GameList Show/Hide",
-                HideGameListCommand = new(_ =>
-                {
-                    this.TopContent_Middle.ForEach(x => x.Hide = !x.Hide);
-                })
-            });
+                container.Add(new() { Content = new cConsoleListBox() });
+            }).GetVerticalContent();
         }
     }
 }

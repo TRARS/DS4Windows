@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Media;
 
-namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
+namespace CustomMacroFactory.MainView.UserControlEx.PixelPicker
 {
     public class uPixelPicker_model
     {

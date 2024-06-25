@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace CustomMacroFactory.MainWindow.UserControlEx.ClientEx
+namespace CustomMacroFactory.MainView.UserControlEx.ClientEx
 {
     class uClient_converter_bool2visibility : IValueConverter
     {

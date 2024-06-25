@@ -1,4 +1,4 @@
-﻿namespace CustomMacroFactory.MainWindow.UserControlEx.TitleBarEx
+﻿namespace CustomMacroFactory.MainView.UserControlEx.TitleBarEx
 {
     public class uTitleBar_model
     {

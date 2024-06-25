@@ -27,13 +27,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Fastenshtein" Version="1.0.0.8" />
-    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.77" />
-    <PackageReference Include="OpenCvSharp4.Extensions" Version="4.9.0.20240103" />
-    <PackageReference Include="OpenCvSharp4.Windows" Version="4.9.0.20240103" />
+    <PackageReference Include="Fastenshtein" Version="1.0.10" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.122" />
+    <PackageReference Include="OpenCvSharp4.Extensions" Version="4.10.0.20240616" />
+    <PackageReference Include="OpenCvSharp4.Windows" Version="4.10.0.20240616" />
     <PackageReference Include="Sdcb.PaddleInference" Version="2.5.0.1" />
     <PackageReference Include="Sdcb.PaddleInference.runtime.win64.cuda102_cudnn76_sm61_75" Version="2.4.0" />
-    <PackageReference Include="Sdcb.PaddleOCR" Version="2.7.0.1" />
+    <PackageReference Include="Sdcb.PaddleOCR" Version="2.7.0.2" />
     <PackageReference Include="Sdcb.PaddleOCR.Models.Local" Version="2.7.0" />
     <PackageReference Include="SharpDX.DirectInput" Version="4.2.0" />
   </ItemGroup>

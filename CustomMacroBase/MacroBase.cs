@@ -835,6 +835,19 @@ namespace CustomMacroBase
         }
 
         /// <summary>
+        /// CreateTextBlock
+        /// </summary>
+        protected static TextBlock CreateTextBlock(string str, System.Windows.Media.Color color)
+        {
+            return new TextBlock()
+            {
+                Text = $"{str}",
+                Foreground = new SolidColorBrush(color),
+                VerticalAlignment = System.Windows.VerticalAlignment.Center,
+            };
+        }
+
+        /// <summary>
         /// CreateSlider
         /// </summary>
         protected static UIElement CreateSlider(double minimum,
@@ -868,7 +881,11 @@ namespace CustomMacroBase
                 {
                     slider.Loaded += (s, e) =>
                     {
-                        slider.Value = defalutValue;
+                        if (slider.IsInitialized is false)
+                        {
+                            slider.IsInitialized = true;
+                            slider.Value = defalutValue;
+                        }
                     };
                     slider.PreviewMouseWheel += (s, e) =>
                     {
@@ -943,7 +960,11 @@ namespace CustomMacroBase
                 {
                     slider.Loaded += (s, e) =>
                     {
-                        slider.Value = defalutValue;
+                        if (slider.IsInitialized is false)
+                        {
+                            slider.IsInitialized = true;
+                            slider.Value = defalutValue;
+                        }
                     };
                     slider.PreviewMouseWheel += (s, e) =>
                     {

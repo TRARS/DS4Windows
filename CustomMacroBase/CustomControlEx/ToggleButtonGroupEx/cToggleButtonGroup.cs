@@ -1,5 +1,4 @@
-﻿using CustomMacroBase.PreBase;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
 namespace CustomMacroBase.CustomControlEx.ToggleButtonGroupEx
@@ -9,11 +8,6 @@ namespace CustomMacroBase.CustomControlEx.ToggleButtonGroupEx
         static cToggleButtonGroup()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(cToggleButtonGroup), new FrameworkPropertyMetadata(typeof(cToggleButtonGroup)));
-        }
-
-        public cToggleButtonGroup(GateBase root)
-        {
-            this.DataContext = root;
         }
     }
 

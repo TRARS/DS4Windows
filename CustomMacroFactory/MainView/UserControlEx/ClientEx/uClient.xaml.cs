@@ -1,13 +1,12 @@
 ﻿using System.Windows.Controls;
 
-namespace CustomMacroFactory.MainWindow.UserControlEx.ClientEx
+namespace CustomMacroFactory.MainView.UserControlEx.ClientEx
 {
     public partial class uClient : UserControl
     {
         public uClient()
         {
             InitializeComponent();
-            this.DataContext = new uClient_viewmodel();
         }
     }
 }

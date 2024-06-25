@@ -14,11 +14,11 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using SD = System.Drawing;
 
-namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
+namespace CustomMacroFactory.MainView.UserControlEx.PixelPicker
 {
     partial class uPixelPicker_viewmodel : NotificationObject
     {
-        private uPixelPicker_model model = new();
+        private readonly uPixelPicker_model model = new();
 
         public Visibility Visibility
         {
@@ -67,6 +67,7 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
     }
     partial class uPixelPicker_viewmodel
     {
+        private bool IsBusy { get; set; } = false;
         private bool IsMouseOver { get; set; } = false;
         private bool IsMouseLeftDown { get; set; } = false;
         private Point GetMousePoint { get; set; } = new();
@@ -295,7 +296,7 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
                         using (bmp)
                         {
                             // 限制刷新频率
-                            if (timer.Elapsed.TotalMilliseconds > 100)
+                            if (timer.Elapsed.TotalMilliseconds > 100 && IsBusy is false)
                             {
                                 timer.Restart();
 
@@ -330,14 +331,21 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
 
                 if (source is not null)
                 {
-                    await Application.Current.Dispatcher.BeginInvoke(() =>
+                    if (IsBusy is false)
                     {
-                        var old = ImageSource as BitmapImage;
+                        await Application.Current.Dispatcher.BeginInvoke(() =>
                         {
-                            ImageSource = source;
-                        }
-                        old?.StreamSource?.Dispose();
-                    });
+                            var old = ImageSource as BitmapImage;
+                            {
+                                ImageSource = source;
+                            }
+                            old?.StreamSource?.Dispose();
+                        });
+                    }
+                    else
+                    {
+                        source.StreamSource.Dispose();
+                    }
                 }
 
                 return null;
@@ -378,74 +386,117 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
     //HostEventInit
     partial class uPixelPicker_viewmodel
     {
-        public Action<object, RoutedEventArgs>? Loaded;
-        public Action<object, MouseButtonEventArgs>? PreviewMouseRightButtonUp;
-        public Action<object, MouseButtonEventArgs>? PreviewMouseLeftButtonDown;
-        public Action<object, MouseButtonEventArgs>? PreviewMouseLeftButtonUp;
-        public Action<object, MouseEventArgs>? MouseEnter;
-        public Action<object, MouseEventArgs>? MouseLeave;
-        public Action<object, MouseEventArgs>? MouseMove;
+        public RelayCommand LoadedCommand { get; set; }
+        public RelayCommand PreviewMouseRightButtonUpCommand { get; set; }
+        public RelayCommand PreviewMouseLeftButtonDownCommand { get; set; }
+        public RelayCommand PreviewMouseLeftButtonUpCommand { get; set; }
+        public RelayCommand MouseEnterCommand { get; set; }
+        public RelayCommand MouseLeaveCommand { get; set; }
+        public RelayCommand MouseMoveCommand { get; set; }
 
         private Point old_click_pos = new(0, 0);
 
         private void HostEventInit()
         {
-            Loaded = (s, e) =>
+            LoadedCommand = new(para =>
             {
-                var host = (UserControl)s;
-                host.Margin = new Thickness(1);
-                host.MinHeight = 400;
-                host.MaxHeight = host.ActualHeight;
-                RenderOptions.SetBitmapScalingMode(host, BitmapScalingMode.Fant);
-            };
-            PreviewMouseRightButtonUp = (s, e) => { ImageMargin = new(0); };
-            PreviewMouseLeftButtonDown = (s, e) =>
-            {
-                IsMouseLeftDown = true;
-                GetMousePoint = e.GetPosition((dynamic)s);
-                ImageMarginWhenLeftDown = ImageMargin;
-            };
-            PreviewMouseLeftButtonUp = (s, e) =>
-            {
-                IsMouseLeftDown = false;
-                if (BGRA.Values is not null)
+                if (para is RoutedEventArgs e)
                 {
-                    var click = GetColorInfo(e.GetPosition(Image));
+                    var host = (UserControl)(e.Source);
+                    host.Margin = new Thickness(1);
+                    host.MinHeight = 400;
+                    host.MaxHeight = host.ActualHeight;
+                    RenderOptions.SetBitmapScalingMode(host, BitmapScalingMode.Fant);
+                }
+            });
+            PreviewMouseRightButtonUpCommand = new(para =>
+            {
+                if (ImageMargin.Equals(new(0)))
+                {
+                    //save to desktop
+                    if (ImageSource is BitmapImage bi && bi is not null && bi.Width > 0 && bi.Height > 0)
                     {
-                        if (click.IsSuccess is false)
+                        var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                        var filePath = System.IO.Path.Combine(desktopPath, "_uPixelPicker.png");
+                        BitmapSourceToPngFile(bi, filePath);
+                        Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, $"save to {filePath}");
+                    }
+                }
+                else
+                {
+                    ImageMargin = new(0);
+                }
+            });
+            PreviewMouseLeftButtonDownCommand = new(para =>
+            {
+                if (para is MouseButtonEventArgs e)
+                {
+                    var sender = (dynamic)e.Source;
+
+                    IsMouseLeftDown = true;
+                    GetMousePoint = (e.GetPosition(sender));
+                    ImageMarginWhenLeftDown = ImageMargin;
+                }
+            });
+            PreviewMouseLeftButtonUpCommand = new(para =>
+            {
+                if (para is MouseButtonEventArgs e)
+                {
+                    IsMouseLeftDown = false;
+                    if (BGRA.Values is not null)
+                    {
+                        var click = GetColorInfo(e.GetPosition(Image));
                         {
-                            old_click_pos = new(0, 0);
-                            ClickPointInfo = $"{click.Info}";
-                        }
-                        else
-                        {
-                            ClickPointInfo = $"\n -> {click.Info} " + $"\n -> Rect<{click.GetBoundingRect(old_click_pos!)}> ";
-                            old_click_pos = click.Point;
+                            if (click.IsSuccess is false)
+                            {
+                                old_click_pos = new(0, 0);
+                                ClickPointInfo = $"{click.Info}";
+                            }
+                            else
+                            {
+                                ClickPointInfo = $"\n -> {click.Info} " + $"\n -> Rect<{click.GetBoundingRect(old_click_pos)}> ";
+                                old_click_pos = click.Point;
+                            }
                         }
                     }
                 }
-            };
-            MouseEnter = (s, e) => { IsMouseOver = true; LocalRatio = GetDeviceScaleFactor((dynamic)s); };
-            MouseLeave = (s, e) => { IsMouseOver = IsMouseLeftDown = false; };
-            MouseMove = (s, e) =>
+            });
+            MouseEnterCommand = new(para =>
             {
-                if (IsMouseLeftDown && ImageSource != null)
+                if (para is MouseEventArgs e)
                 {
-                    var p = ((Point)e.GetPosition((dynamic)s)).GetDiff(GetMousePoint);
-                    ImageMargin = new Thickness(ImageMarginWhenLeftDown.Left + p.X, ImageMarginWhenLeftDown.Top + p.Y, 0, 0);
+                    IsMouseOver = true;
+                    LocalRatio = GetDeviceScaleFactor((dynamic)e.Source);
                 }
-                if (BGRA.Values is not null && !IsMouseLeftDown)
+            });
+            MouseLeaveCommand = new(para =>
+            {
+                IsMouseOver = IsMouseLeftDown = false;
+            });
+            MouseMoveCommand = new(para =>
+            {
+                if (para is MouseEventArgs e)
                 {
-                    var click = GetColorInfo(e.GetPosition(Image));
-                    if (click.IsSuccess) { Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, click.Info); }
-                }
+                    var sender = (dynamic)e.Source;
 
-                { //放大镜
-                    Point p = e.GetPosition((dynamic)s);
-                    double rect_width = 128;
-                    ViewboxRect = new Rect(p.X - rect_width / 2 + 1, p.Y - rect_width / 2 + 1, rect_width, rect_width);
+                    if (IsMouseLeftDown && ImageSource != null)
+                    {
+                        var p = ((Point)e.GetPosition(sender)).GetDiff(GetMousePoint);
+                        ImageMargin = new Thickness(ImageMarginWhenLeftDown.Left + p.X, ImageMarginWhenLeftDown.Top + p.Y, 0, 0);
+                    }
+                    if (BGRA.Values is not null && !IsMouseLeftDown)
+                    {
+                        var click = GetColorInfo(e.GetPosition(Image));
+                        if (click.IsSuccess) { Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, click.Info); }
+                    }
+
+                    { //放大镜
+                        Point p = e.GetPosition(sender);
+                        double rect_width = 128;
+                        ViewboxRect = new Rect(p.X - rect_width / 2 + 1, p.Y - rect_width / 2 + 1, rect_width, rect_width);
+                    }
                 }
-            };
+            });
         }
     }
     //ViewModelInit
@@ -483,6 +534,29 @@ namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
             }
 
             return new();
+        }
+
+        private void BitmapSourceToPngFile(BitmapSource bitmapSource, string pngFilePath)
+        {
+            try
+            {
+                IsBusy = true;
+
+                using (var stream = new FileStream(pngFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
+                {
+                    var encoder = new PngBitmapEncoder();
+                    encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
+                    encoder.Save(stream);
+                }
+            }
+            catch (Exception ex)
+            {
+                Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, $"BitmapSourceToPngFile Error: {ex.Message}");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
     }
 }

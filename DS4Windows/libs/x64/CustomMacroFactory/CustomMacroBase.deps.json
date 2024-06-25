@@ -8,13 +8,13 @@
     ".NETCoreApp,Version=v8.0": {
       "CustomMacroBase/1.0.0": {
         "dependencies": {
-          "Fastenshtein": "1.0.0.8",
-          "Microsoft.Xaml.Behaviors.Wpf": "1.1.77",
-          "OpenCvSharp4.Extensions": "4.9.0.20240103",
-          "OpenCvSharp4.Windows": "4.9.0.20240103",
+          "Fastenshtein": "1.0.10",
+          "Microsoft.Xaml.Behaviors.Wpf": "1.1.122",
+          "OpenCvSharp4.Extensions": "4.10.0.20240616",
+          "OpenCvSharp4.Windows": "4.10.0.20240616",
           "Sdcb.PaddleInference": "2.5.0.1",
           "Sdcb.PaddleInference.runtime.win64.cuda102_cudnn76_sm61_75": "2.4.0",
-          "Sdcb.PaddleOCR": "2.7.0.1",
+          "Sdcb.PaddleOCR": "2.7.0.2",
           "Sdcb.PaddleOCR.Models.Local": "2.7.0",
           "SharpDX.DirectInput": "4.2.0"
         },
@@ -22,11 +22,11 @@
           "CustomMacroBase.dll": {}
         }
       },
-      "Fastenshtein/1.0.0.8": {
+      "Fastenshtein/1.0.10": {
         "runtime": {
-          "lib/netstandard2.0/Fastenshtein.dll": {
-            "assemblyVersion": "1.0.0.8",
-            "fileVersion": "1.0.0.8"
+          "lib/net8.0/Fastenshtein.dll": {
+            "assemblyVersion": "1.0.10.0",
+            "fileVersion": "1.0.10.0"
           }
         }
       },
@@ -40,11 +40,11 @@
         }
       },
       "Microsoft.Win32.SystemEvents/7.0.0": {},
-      "Microsoft.Xaml.Behaviors.Wpf/1.1.77": {
+      "Microsoft.Xaml.Behaviors.Wpf/1.1.122": {
         "runtime": {
           "lib/net6.0-windows7.0/Microsoft.Xaml.Behaviors.dll": {
             "assemblyVersion": "1.1.0.0",
-            "fileVersion": "1.1.77.27830"
+            "fileVersion": "1.1.122.28819"
           }
         }
       },
@@ -96,7 +96,7 @@
           "System.Xml.XDocument": "4.3.0"
         }
       },
-      "OpenCvSharp4/4.9.0.20240103": {
+      "OpenCvSharp4/4.10.0.20240616": {
         "dependencies": {
           "System.Memory": "4.5.5",
           "System.Runtime.CompilerServices.Unsafe": "6.0.0"
@@ -108,9 +108,9 @@
           }
         }
       },
-      "OpenCvSharp4.Extensions/4.9.0.20240103": {
+      "OpenCvSharp4.Extensions/4.10.0.20240616": {
         "dependencies": {
-          "OpenCvSharp4": "4.9.0.20240103",
+          "OpenCvSharp4": "4.10.0.20240616",
           "System.Drawing.Common": "7.0.0"
         },
         "runtime": {
@@ -120,34 +120,34 @@
           }
         }
       },
-      "OpenCvSharp4.runtime.win/4.9.0.20240103": {
+      "OpenCvSharp4.runtime.win/4.10.0.20240616": {
         "runtimeTargets": {
           "runtimes/win-x64/native/OpenCvSharpExtern.dll": {
             "rid": "win-x64",
             "assetType": "native",
             "fileVersion": "0.0.0.0"
           },
-          "runtimes/win-x64/native/opencv_videoio_ffmpeg490_64.dll": {
+          "runtimes/win-x64/native/opencv_videoio_ffmpeg4100_64.dll": {
             "rid": "win-x64",
             "assetType": "native",
-            "fileVersion": "2023.12.0.0"
+            "fileVersion": "2024.5.0.0"
           },
           "runtimes/win-x86/native/OpenCvSharpExtern.dll": {
             "rid": "win-x86",
             "assetType": "native",
             "fileVersion": "0.0.0.0"
           },
-          "runtimes/win-x86/native/opencv_videoio_ffmpeg490.dll": {
+          "runtimes/win-x86/native/opencv_videoio_ffmpeg4100.dll": {
             "rid": "win-x86",
             "assetType": "native",
-            "fileVersion": "2023.12.0.0"
+            "fileVersion": "2024.5.0.0"
           }
         }
       },
-      "OpenCvSharp4.Windows/4.9.0.20240103": {
+      "OpenCvSharp4.Windows/4.10.0.20240616": {
         "dependencies": {
-          "OpenCvSharp4": "4.9.0.20240103",
-          "OpenCvSharp4.runtime.win": "4.9.0.20240103"
+          "OpenCvSharp4": "4.10.0.20240616",
+          "OpenCvSharp4.runtime.win": "4.10.0.20240616"
         }
       },
       "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {},
@@ -230,21 +230,21 @@
           }
         }
       },
-      "Sdcb.PaddleOCR/2.7.0.1": {
+      "Sdcb.PaddleOCR/2.7.0.2": {
         "dependencies": {
-          "OpenCvSharp4": "4.9.0.20240103",
+          "OpenCvSharp4": "4.10.0.20240616",
           "Sdcb.PaddleInference": "2.5.0.1"
         },
         "runtime": {
           "lib/netstandard2.0/Sdcb.PaddleOCR.dll": {
-            "assemblyVersion": "2.7.0.1",
-            "fileVersion": "2.7.0.1"
+            "assemblyVersion": "2.7.0.2",
+            "fileVersion": "2.7.0.2"
           }
         }
       },
       "Sdcb.PaddleOCR.Models.Local/2.7.0": {
         "dependencies": {
-          "Sdcb.PaddleOCR": "2.7.0.1",
+          "Sdcb.PaddleOCR": "2.7.0.2",
           "Sdcb.PaddleOCR.Models.LocalV3": "2.7.0",
           "Sdcb.PaddleOCR.Models.LocalV4": "2.7.0",
           "Sdcb.PaddleOCR.Models.Shared": "2.7.0"
@@ -879,12 +879,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Fastenshtein/1.0.0.8": {
+    "Fastenshtein/1.0.10": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-sFzPyg8P7YowvLuyH4xWAARLA3X5hpsI/RSFyNKVRTcPLIIhLLIw2V7aIGUnoKn9W8JoMT7S4MfaEVhsxT4tVw==",
-      "path": "fastenshtein/1.0.0.8",
-      "hashPath": "fastenshtein.1.0.0.8.nupkg.sha512"
+      "sha512": "sha512-fZ5DKypgdTkwfchV4fZ5OFFGYu49B8YbUMr6hN6Azl7IziIsyKARqdU3EZt/oQJyV71eQxpY9jL2J1tXb2gvlQ==",
+      "path": "fastenshtein/1.0.10",
+      "hashPath": "fastenshtein.1.0.10.nupkg.sha512"
     },
     "Microsoft.NETCore.Platforms/1.1.0": {
       "type": "package",
@@ -914,12 +914,12 @@
       "path": "microsoft.win32.systemevents/7.0.0",
       "hashPath": "microsoft.win32.systemevents.7.0.0.nupkg.sha512"
     },
-    "Microsoft.Xaml.Behaviors.Wpf/1.1.77": {
+    "Microsoft.Xaml.Behaviors.Wpf/1.1.122": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-MCu674ZETgU18EbxfwIlRpUPJ02YbZenLsMCXTkpeA7KUBpXfFaOUDlEO+7UWu5AFnUoydg+aQENJkuaZPheMQ==",
-      "path": "microsoft.xaml.behaviors.wpf/1.1.77",
-      "hashPath": "microsoft.xaml.behaviors.wpf.1.1.77.nupkg.sha512"
+      "sha512": "sha512-SgcafT189u4qX++vSCV9FLQ4BsRXU9J2esnHA9IF8GOSgnPBulFw1CW4X/FYoOXvZwdDZxlSObJUGUg1U1wSyg==",
+      "path": "microsoft.xaml.behaviors.wpf/1.1.122",
+      "hashPath": "microsoft.xaml.behaviors.wpf.1.1.122.nupkg.sha512"
     },
     "NETStandard.Library/1.6.1": {
       "type": "package",
@@ -928,33 +928,33 @@
       "path": "netstandard.library/1.6.1",
       "hashPath": "netstandard.library.1.6.1.nupkg.sha512"
     },
-    "OpenCvSharp4/4.9.0.20240103": {
+    "OpenCvSharp4/4.10.0.20240616": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-+BJMqToSH3dl+5SUF2YaPI+1eY/o/aTtvCQsY3qgcE4YS8qvPNS7MObzzVy4avYrBmcEEFnCvNF+1VbFnQjU9w==",
-      "path": "opencvsharp4/4.9.0.20240103",
-      "hashPath": "opencvsharp4.4.9.0.20240103.nupkg.sha512"
+      "sha512": "sha512-+iaFSUq0Cp+B9s1sUqDwB3PvQ5HdWWvRE50WsAw1PL8smD3VZNbe0P786E4Yfu7LHM7jeqkulOwjk2CoihsZeg==",
+      "path": "opencvsharp4/4.10.0.20240616",
+      "hashPath": "opencvsharp4.4.10.0.20240616.nupkg.sha512"
     },
-    "OpenCvSharp4.Extensions/4.9.0.20240103": {
+    "OpenCvSharp4.Extensions/4.10.0.20240616": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-zqFJuQPV36ttTMrN1kMGQdj8rDD+wMDtTU5fVGE8osSPEAyehru1ow3xTAmB04uiaKlbzl/gy2G9BnbT+OgMNA==",
-      "path": "opencvsharp4.extensions/4.9.0.20240103",
-      "hashPath": "opencvsharp4.extensions.4.9.0.20240103.nupkg.sha512"
+      "sha512": "sha512-bECtlodf4yuyw04sSvp2nHHWh7REKHKNIN3B4AzqNHxg62nhe24DxvVzBdfi0Innji7TAoc2QIbOPePKZA3ZQg==",
+      "path": "opencvsharp4.extensions/4.10.0.20240616",
+      "hashPath": "opencvsharp4.extensions.4.10.0.20240616.nupkg.sha512"
     },
-    "OpenCvSharp4.runtime.win/4.9.0.20240103": {
+    "OpenCvSharp4.runtime.win/4.10.0.20240616": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-PkV3ge6rE//gj0OlG4TRXzmcLVDoKsJx0lYN1ogx9gZhqUPHlzrnWqKk2hAFK+nU8T0chRhrwHL0U2hSMyoCWw==",
-      "path": "opencvsharp4.runtime.win/4.9.0.20240103",
-      "hashPath": "opencvsharp4.runtime.win.4.9.0.20240103.nupkg.sha512"
+      "sha512": "sha512-dpQNIR6PpeB/oZM0e0fZpt9lOS3Htjm6ZjtOgLyxN7QwjRekbNevrmO8VbgezUoetk68CRwxYZGaymCm2vt8Sg==",
+      "path": "opencvsharp4.runtime.win/4.10.0.20240616",
+      "hashPath": "opencvsharp4.runtime.win.4.10.0.20240616.nupkg.sha512"
     },
-    "OpenCvSharp4.Windows/4.9.0.20240103": {
+    "OpenCvSharp4.Windows/4.10.0.20240616": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-IOtMfbVyZ0K7/39EAaRyz496WNNCWeI/SV1yRI1fCoWbID84EEnVnFcY2iqn1G6sWfQIpASm7pc44OF9y/gbFw==",
-      "path": "opencvsharp4.windows/4.9.0.20240103",
-      "hashPath": "opencvsharp4.windows.4.9.0.20240103.nupkg.sha512"
+      "sha512": "sha512-8xaW5lhiRu4jQE4qcCGeD29gBmfxfVwS2QZhgGih/HytXlqAHSMKmVrEbmCcVgrDKkC4weePZETNuamEiBvm8w==",
+      "path": "opencvsharp4.windows/4.10.0.20240616",
+      "hashPath": "opencvsharp4.windows.4.10.0.20240616.nupkg.sha512"
     },
     "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
       "type": "package",
@@ -1082,12 +1082,12 @@
       "path": "sdcb.paddleinference.runtime.win64.cuda102_cudnn76_sm61_75/2.4.0",
       "hashPath": "sdcb.paddleinference.runtime.win64.cuda102_cudnn76_sm61_75.2.4.0.nupkg.sha512"
     },
-    "Sdcb.PaddleOCR/2.7.0.1": {
+    "Sdcb.PaddleOCR/2.7.0.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-G6pi36+uRutsGZeqyhebupCaV19dpO353IilOnzG2B0ODuwf4RkXNDOPwfAJuX9TmHW8qU6UnQN2FJ+vcED9lw==",
-      "path": "sdcb.paddleocr/2.7.0.1",
-      "hashPath": "sdcb.paddleocr.2.7.0.1.nupkg.sha512"
+      "sha512": "sha512-mr1fGYv/ufMN2lIb4tccKOX9FPWorX9EJyJsPxhdEGFhwKnv7iLBmbjM9Ha03XuJnlQXY0LYti69RB7OqX18VA==",
+      "path": "sdcb.paddleocr/2.7.0.2",
+      "hashPath": "sdcb.paddleocr.2.7.0.2.nupkg.sha512"
     },
     "Sdcb.PaddleOCR.Models.Local/2.7.0": {
       "type": "package",

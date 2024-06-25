@@ -431,7 +431,7 @@ namespace DS4WinWPF.DS4Forms.ViewModels
             {
                 var mi = new MenuItem() { Header = "Show/Hide MacroWindow" };
                 {
-                    mi.Click += (s, e) => { CustomMacroLink.CustomMacroFactoryInstance.HideToTray(); };
+                    mi.Click += (s, e) => { CustomMacroLink.HideToTray(); };
                 }
                 return mi;
             })).Invoke());

@@ -1,31 +1,24 @@
 ﻿using CustomMacroBase.GamePadState;
 using CustomMacroBase.Helper;
+using CustomMacroFactory.MainView;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace DS4Windows
 {
-    public static partial class CustomMacroLink//
+    public static partial class CustomMacroLink
     {
-        public static DS4WinWPF.DS4Forms.MainWindow Ds4_MainWindow_Instance;
-        public static DS4Windows.ControlService Ds4_ControlService_Instance;
-        public static CustomMacroFactory.MainEntry CustomMacroFactoryInstance;
+        private static MainWindow macroWindow = CustomMacroFactory.MainEntry.GetService<MainWindow>();
 
-        static CustomMacroLink()
-        {
-            CustomMacroFactoryInstance = new()
-            {
-                Ds4Host = () => Ds4_MainWindow_Instance,
-                RootHub = () => Ds4_ControlService_Instance
-            };
-        }
+        public static void Init(dynamic ds4MainWindow, dynamic ds4ControlService) => macroWindow.Init(() => ds4MainWindow, () => ds4ControlService);
+        public static void Exit() => macroWindow.Exit();
+        public static void HideToTray() => macroWindow.HideToTray();
     }
 
     public static partial class CustomMacroLink
     {
         //Method for DS4StateLite
-        private static void StateConverter(in DS4State cState, out DS4StateLite r, out DS4StateLite v)
+        private static void ConvertToLiteState(in DS4State cState, out DS4StateLite r, out DS4StateLite v)
         {
             r = new();
             v = new();
@@ -65,7 +58,7 @@ namespace DS4Windows
             r.Touch1IsActive = v.Touch1IsActive = cState.TrackPadTouch1.IsActive;
             r.Touch1 = v.Touch1 = new short[2] { cState.TrackPadTouch1.X, cState.TrackPadTouch1.Y };
         }
-        private static void StateConverter(in DS4StateLite v, in DS4State cState)
+        private static void ConvertToFullState(in DS4StateLite v, in DS4State cState)
         {
             cState.Square = v.Square;
             cState.Triangle = v.Triangle;
@@ -114,9 +107,9 @@ namespace DS4Windows
             var mix = GamepadInputMixer.Instance.AllowMix();
             if ((mix && ind > 1) || (mix is false && ind != 0)) { return; }
 
-            StateConverter(in currentState, out DS4StateLite realState, out DS4StateLite virtualState);
-            CustomMacroFactoryInstance.MainView.DS4StateCustomUpdateMain(in ind, in realState, in virtualState);
-            StateConverter(in virtualState, in currentState);
+            ConvertToLiteState(in currentState, out DS4StateLite realState, out DS4StateLite virtualState);
+            macroWindow.MacroEntry(in ind, in realState, in virtualState);
+            ConvertToFullState(in virtualState, in currentState);
         }
     }
 
@@ -141,14 +134,6 @@ namespace DS4Windows
                 Print($"{msg} -> {dataInfo}");
             }
             return hasAnyZero;
-        }
-    }
-
-    public static partial class CustomMacroLink
-    {
-        public static void Exit()
-        {
-            CustomMacroFactoryInstance.MainView.Exit();
         }
     }
 }

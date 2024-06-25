@@ -103,7 +103,7 @@ namespace CustomMacroBase.Helper.Tools.FlowManager
         public bool Repeat_Condition { get => macro_repeat_condition; set { if (macro_repeat_condition != value) macro_repeat_condition = value; } }
 
         /// <summary>
-        /// 于循环结束时被执行的回调函数
+        /// 于每次迭代前被执行的回调函数
         /// </summary>
         public Action? OnIterationStart { get; set; }
         /// <summary>

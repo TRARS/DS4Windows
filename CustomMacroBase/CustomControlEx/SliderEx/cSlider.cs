@@ -38,7 +38,10 @@ namespace CustomMacroBase.CustomControlEx.SliderEx
             ownerType: typeof(cSlider),
             typeMetadata: new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
         );
+    }
 
-
+    public partial class cSlider
+    {
+        public bool IsInitialized { get; set; } = false;
     }
 }

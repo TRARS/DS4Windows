@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace CustomMacroFactory.MainWindow
+namespace CustomMacroFactory.MainView
 {
     //圆角裁剪
     public class RectConverter : IMultiValueConverter

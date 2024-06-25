@@ -30,15 +30,5 @@ namespace CustomMacroFactory.MacroFactory.Sample
         {
             //throw new NotImplementedException();
         }
-
-        private TextBlock CreateTextBlock(string str, Color color)
-        {
-            return new TextBlock()
-            {
-                Text = $"{str}",
-                Foreground = new SolidColorBrush(color),
-                VerticalAlignment = System.Windows.VerticalAlignment.Center,
-            };
-        }
     }
 }

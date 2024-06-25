@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace CustomMacroFactory.MainWindow
+namespace CustomMacroFactory.MainView
 {
     public partial class CustomControlPreView : UserControl
     {

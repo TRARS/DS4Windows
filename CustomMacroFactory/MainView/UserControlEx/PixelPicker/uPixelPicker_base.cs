@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace CustomMacroFactory.MainWindow.UserControlEx.PixelPicker
+namespace CustomMacroFactory.MainView.UserControlEx.PixelPicker
 {
     public record PixelDetail
     {

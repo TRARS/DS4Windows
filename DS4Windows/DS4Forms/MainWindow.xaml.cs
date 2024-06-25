@@ -179,9 +179,7 @@ namespace DS4WinWPF.DS4Forms
             // Wait for thread tasks to finish before continuing
             timerThread.Join();
 
-            CustomMacroLink.CustomMacroFactoryInstance.Init();
-            CustomMacroLink.Ds4_MainWindow_Instance = this;
-            CustomMacroLink.Ds4_ControlService_Instance = App.rootHub;
+            CustomMacroLink.Init(ds4MainWindow: this, ds4ControlService: App.rootHub);
         }
 
         public void LateChecks(ArgumentParser parser)
@@ -1677,12 +1675,16 @@ Suspend support not enabled.", true);
 
         private void NotifyIcon_TrayMouseDoubleClick(object sender, RoutedEventArgs e)
         {
-            if (!showAppInTaskbar)
+            if (WindowState is WindowState.Minimized)
             {
-                Show();
-            }
+                if (!showAppInTaskbar) { Show(); }
 
-            WindowState = WindowState.Normal;
+                WindowState = WindowState.Normal; Activate();
+            }
+            else
+            {
+                WindowState = WindowState.Minimized;
+            }
         }
 
         private void ProfilesListBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)

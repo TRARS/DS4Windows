@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace CustomMacroFactory.MainWindow.UserControlEx.TitleBarEx
+namespace CustomMacroFactory.MainView.UserControlEx.TitleBarEx
 {
     public class uTitleBar_converter_bool2opacity : IValueConverter
     {

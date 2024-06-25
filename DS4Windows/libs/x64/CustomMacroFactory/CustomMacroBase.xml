@@ -187,7 +187,7 @@
         </member>
         <member name="P:CustomMacroBase.Helper.Tools.FlowManager.FlowControllerV0.OnIterationStart">
             <summary>
-            于循环结束时被执行的回调函数
+            于每次迭代前被执行的回调函数
             </summary>
         </member>
         <member name="P:CustomMacroBase.Helper.Tools.FlowManager.FlowControllerV0.OnIterationEnd">
@@ -1062,6 +1062,11 @@
         <member name="M:CustomMacroBase.MacroBase.CreateGateBase(System.String,System.Boolean,System.String,System.Boolean)">
             <summary>
             CreateGateBase
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.MacroBase.CreateTextBlock(System.String,System.Windows.Media.Color)">
+            <summary>
+            CreateTextBlock
             </summary>
         </member>
         <member name="M:CustomMacroBase.MacroBase.CreateSlider(System.Double,System.Double,System.Object,System.String,System.Double,System.String,System.Double,System.String,System.Boolean,System.Windows.HorizontalAlignment,System.Windows.VerticalAlignment)">
