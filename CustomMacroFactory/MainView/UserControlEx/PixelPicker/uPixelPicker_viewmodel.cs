@@ -1,6 +1,7 @@
 ﻿using CustomMacroBase.CustomEffect;
 using CustomMacroBase.Helper;
 using CustomMacroBase.Helper.Extensions;
+using CustomMacroBase.PixelMatcher;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -16,7 +17,7 @@ using SD = System.Drawing;
 
 namespace CustomMacroFactory.MainView.UserControlEx.PixelPicker
 {
-    partial class uPixelPicker_viewmodel : NotificationObject
+    public partial class uPixelPicker_viewmodel : NotificationObject
     {
         private readonly uPixelPicker_model model = new();
 
@@ -59,13 +60,15 @@ namespace CustomMacroFactory.MainView.UserControlEx.PixelPicker
 
         public uPixelPicker_viewmodel()
         {
+            PixelMatcherHost.TryInit();
+
             CreateImageControl();
             RegisterDelegate();
             HostEventInit();
             ViewModelInit();
         }
     }
-    partial class uPixelPicker_viewmodel
+    public partial class uPixelPicker_viewmodel
     {
         private bool IsBusy { get; set; } = false;
         private bool IsMouseOver { get; set; } = false;
@@ -73,7 +76,7 @@ namespace CustomMacroFactory.MainView.UserControlEx.PixelPicker
         private Point GetMousePoint { get; set; } = new();
         private double LocalRatio = 1;
     }
-    partial class uPixelPicker_viewmodel
+    public partial class uPixelPicker_viewmodel
     {
         public ImageSource? ImageSource
         {
@@ -143,7 +146,7 @@ namespace CustomMacroFactory.MainView.UserControlEx.PixelPicker
     }
 
     //CreateImageControl
-    partial class uPixelPicker_viewmodel
+    public partial class uPixelPicker_viewmodel
     {
         //位图容器
         Image Image = new()
@@ -187,99 +190,94 @@ namespace CustomMacroFactory.MainView.UserControlEx.PixelPicker
             Image.SetBinding(Image.MarginProperty, new Binding(nameof(ImageMargin)));
 
             //MessageBox
+            MessageBox.Child = new Grid().Init(grid =>
             {
-                Grid Grid = new();
+                grid.Children.Add(new TextBlock().Init(tb =>
                 {
-                    TextBlock tb = new()
-                    {
-                        Margin = new(1, 0, 0, 0),
-                        Foreground = new SolidColorBrush(Colors.Snow),
-                        Background = new SolidColorBrush(Colors.SlateGray)
-                    };
-                    BindingOperations.SetBinding(tb, TextBlock.TextProperty, new Binding(nameof(MessageStr)) { Source = this });
-
-                    Grid.Children.Add(tb);
-                }
-                MessageBox.Child = Grid;
-            }
+                    tb.Margin = new(1, 0, 0, 0);
+                    tb.Foreground = new SolidColorBrush(Colors.Snow);
+                    tb.Background = new SolidColorBrush(Colors.SlateGray);
+                    tb.SetBinding(TextBlock.TextProperty, new Binding(nameof(MessageStr)) { Source = this });
+                }));
+            });
 
             //MagnifierBox
+            MagnifierBox.Child = new Grid().Init(grid =>
             {
-                Grid Grid = new();
+                grid.Children.Add(new Rectangle().Init(rect =>
                 {
-                    Rectangle rect = new() { Effect = new MagnifyEffect() { MagnificationAmount = 16 } };
+                    rect.Effect = new MagnifyEffect() { MagnificationAmount = 16 };
+                    rect.Fill = new VisualBrush().Init(vb =>
                     {
-                        VisualBrush vb = new()
-                        {
-                            Visual = Image,//
-                            ViewboxUnits = BrushMappingMode.Absolute,
-                            AlignmentX = AlignmentX.Left,
-                            AlignmentY = AlignmentY.Top,
-                            Viewport = new Rect(0, 0, 1, 1),
-                            Stretch = Stretch.None
-                        };
+                        vb.Visual = Image;
+                        vb.ViewboxUnits = BrushMappingMode.Absolute;
+                        vb.AlignmentX = AlignmentX.Left;
+                        vb.AlignmentY = AlignmentY.Top;
+                        vb.Viewport = new Rect(0, 0, 1, 1);
+                        vb.Stretch = Stretch.None;
                         BindingOperations.SetBinding(vb, VisualBrush.ViewboxProperty, new Binding(nameof(ViewboxRect)) { Source = this });
-                        rect.Fill = vb;
-                    }
-
-                    Grid reticle = new();
+                    });
+                }));
+                grid.Children.Add(new Grid().Init(reticle =>
+                {
+                    reticle.Children.Add(new Rectangle().Init(vertical_line =>
                     {
-                        Border box_white = new()
+                        vertical_line.Width = 1;
+                        vertical_line.Fill = new SolidColorBrush(Colors.Red);
+                        vertical_line.HorizontalAlignment = HorizontalAlignment.Center;
+                        vertical_line.OpacityMask = new LinearGradientBrush().Init(lgb =>
                         {
-                            Width = 9,
-                            Height = 9,
-                            BorderBrush = new SolidColorBrush(Colors.White),
-                            BorderThickness = new Thickness(1),
-                            HorizontalAlignment = HorizontalAlignment.Center,
-                            VerticalAlignment = VerticalAlignment.Center
-                        };
-                        Border box_black = new()
-                        {
-                            Width = 11,
-                            Height = 11,
-                            BorderBrush = new SolidColorBrush(Colors.Black),
-                            BorderThickness = new Thickness(1),
-                            HorizontalAlignment = HorizontalAlignment.Center,
-                            VerticalAlignment = VerticalAlignment.Center
-                        };
-                        Rectangle vl = new() { Width = 1, Fill = new SolidColorBrush(Colors.Red), HorizontalAlignment = HorizontalAlignment.Center };
-                        Rectangle hl = new() { Height = 1, Fill = new SolidColorBrush(Colors.Red), VerticalAlignment = VerticalAlignment.Center };
-                        {//十字线遮罩
-                            LinearGradientBrush lgb = new() { StartPoint = new(0, 0), EndPoint = new(1, 0) };
+                            lgb.StartPoint = new(0, 0);
+                            lgb.EndPoint = new(1, 0);
                             lgb.GradientStops.Add(new() { Offset = 0, Color = Colors.Black });
                             lgb.GradientStops.Add(new() { Offset = 0.46875, Color = Colors.Black });
                             lgb.GradientStops.Add(new() { Offset = 0.46875, Color = Colors.Transparent });
                             lgb.GradientStops.Add(new() { Offset = 0.53125, Color = Colors.Transparent });
                             lgb.GradientStops.Add(new() { Offset = 0.53125, Color = Colors.Black });
                             lgb.GradientStops.Add(new() { Offset = 1, Color = Colors.Black });
-                            hl.OpacityMask = lgb;
-
-                            LinearGradientBrush lgb2 = new() { StartPoint = new(0, 0), EndPoint = new(0, 1) };
-                            lgb2.GradientStops.Add(new() { Offset = 0, Color = Colors.Black });
-                            lgb2.GradientStops.Add(new() { Offset = 0.46875, Color = Colors.Black });
-                            lgb2.GradientStops.Add(new() { Offset = 0.46875, Color = Colors.Transparent });
-                            lgb2.GradientStops.Add(new() { Offset = 0.53125, Color = Colors.Transparent });
-                            lgb2.GradientStops.Add(new() { Offset = 0.53125, Color = Colors.Black });
-                            lgb2.GradientStops.Add(new() { Offset = 1, Color = Colors.Black });
-                            vl.OpacityMask = lgb2;
-                        }
-
-                        reticle.Children.Add(vl);
-                        reticle.Children.Add(hl);
-                        reticle.Children.Add(box_white);
-                        reticle.Children.Add(box_black);
-                    }
-
-                    //
-                    Grid.Children.Add(rect);
-                    Grid.Children.Add(reticle);
-                }
-                MagnifierBox.Child = Grid;
-            }
+                        });
+                    }));
+                    reticle.Children.Add(new Rectangle().Init(horizontal_line =>
+                    {
+                        horizontal_line.Height = 1;
+                        horizontal_line.Fill = new SolidColorBrush(Colors.Red);
+                        horizontal_line.VerticalAlignment = VerticalAlignment.Center;
+                        horizontal_line.OpacityMask = new LinearGradientBrush().Init(lgb =>
+                        {
+                            lgb.StartPoint = new(0, 0);
+                            lgb.EndPoint = new(1, 0);
+                            lgb.GradientStops.Add(new() { Offset = 0, Color = Colors.Black });
+                            lgb.GradientStops.Add(new() { Offset = 0.46875, Color = Colors.Black });
+                            lgb.GradientStops.Add(new() { Offset = 0.46875, Color = Colors.Transparent });
+                            lgb.GradientStops.Add(new() { Offset = 0.53125, Color = Colors.Transparent });
+                            lgb.GradientStops.Add(new() { Offset = 0.53125, Color = Colors.Black });
+                            lgb.GradientStops.Add(new() { Offset = 1, Color = Colors.Black });
+                        });
+                    }));
+                    reticle.Children.Add(new Border().Init(box_white =>
+                    {
+                        box_white.Width = 9;
+                        box_white.Height = 9;
+                        box_white.BorderBrush = new SolidColorBrush(Colors.White);
+                        box_white.BorderThickness = new Thickness(1);
+                        box_white.HorizontalAlignment = HorizontalAlignment.Center;
+                        box_white.VerticalAlignment = VerticalAlignment.Center;
+                    }));
+                    reticle.Children.Add(new Border().Init(box_black =>
+                    {
+                        box_black.Width = 11;
+                        box_black.Height = 11;
+                        box_black.BorderBrush = new SolidColorBrush(Colors.Black);
+                        box_black.BorderThickness = new Thickness(1);
+                        box_black.HorizontalAlignment = HorizontalAlignment.Center;
+                        box_black.VerticalAlignment = VerticalAlignment.Center;
+                    }));
+                }));
+            });
         }
     }
     //RegisterDelegate
-    partial class uPixelPicker_viewmodel
+    public partial class uPixelPicker_viewmodel
     {
         private Stopwatch timer = Stopwatch.StartNew();
 
@@ -311,16 +309,18 @@ namespace CustomMacroFactory.MainView.UserControlEx.PixelPicker
                                 System.Runtime.InteropServices.Marshal.Copy(ptr, BGRA.Values, 0, bytes);
                                 bmp.UnlockBits(data);
 
-                                var bitmapImage = new BitmapImage();
-                                using (MemoryStream ms = new MemoryStream())
+                                var bitmapImage = new BitmapImage().Init(bi =>
                                 {
-                                    bmp.Save(ms, SD.Imaging.ImageFormat.Bmp);
-                                    bitmapImage.BeginInit();
-                                    bitmapImage.StreamSource = ms;
-                                    bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                                    bitmapImage.EndInit();
-                                    bitmapImage.Freeze();
-                                }
+                                    using (var ms = new MemoryStream())
+                                    {
+                                        bmp.Save(ms, SD.Imaging.ImageFormat.Bmp);
+                                        bi.BeginInit();
+                                        bi.StreamSource = ms;
+                                        bi.CacheOption = BitmapCacheOption.OnLoad;
+                                        bi.EndInit();
+                                        bi.Freeze();
+                                    }
+                                });
                                 return bitmapImage;
                             }
                         }
@@ -384,7 +384,7 @@ namespace CustomMacroFactory.MainView.UserControlEx.PixelPicker
         }
     }
     //HostEventInit
-    partial class uPixelPicker_viewmodel
+    public partial class uPixelPicker_viewmodel
     {
         public RelayCommand LoadedCommand { get; set; }
         public RelayCommand PreviewMouseRightButtonUpCommand { get; set; }
@@ -402,7 +402,7 @@ namespace CustomMacroFactory.MainView.UserControlEx.PixelPicker
             {
                 if (para is RoutedEventArgs e)
                 {
-                    var host = (UserControl)(e.Source);
+                    var host = (UserControl)e.Source;
                     host.Margin = new Thickness(1);
                     host.MinHeight = 400;
                     host.MaxHeight = host.ActualHeight;
@@ -431,7 +431,7 @@ namespace CustomMacroFactory.MainView.UserControlEx.PixelPicker
             {
                 if (para is MouseButtonEventArgs e)
                 {
-                    var sender = (dynamic)e.Source;
+                    var sender = (UserControl)e.Source;
 
                     IsMouseLeftDown = true;
                     GetMousePoint = (e.GetPosition(sender));
@@ -466,7 +466,7 @@ namespace CustomMacroFactory.MainView.UserControlEx.PixelPicker
                 if (para is MouseEventArgs e)
                 {
                     IsMouseOver = true;
-                    LocalRatio = GetDeviceScaleFactor((dynamic)e.Source);
+                    LocalRatio = GetDeviceScaleFactor((UserControl)e.Source);
                 }
             });
             MouseLeaveCommand = new(para =>
@@ -477,11 +477,11 @@ namespace CustomMacroFactory.MainView.UserControlEx.PixelPicker
             {
                 if (para is MouseEventArgs e)
                 {
-                    var sender = (dynamic)e.Source;
+                    var sender = (UserControl)e.Source;
 
                     if (IsMouseLeftDown && ImageSource != null)
                     {
-                        var p = ((Point)e.GetPosition(sender)).GetDiff(GetMousePoint);
+                        var p = e.GetPosition(sender).GetDiff(GetMousePoint);
                         ImageMargin = new Thickness(ImageMarginWhenLeftDown.Left + p.X, ImageMarginWhenLeftDown.Top + p.Y, 0, 0);
                     }
                     if (BGRA.Values is not null && !IsMouseLeftDown)
@@ -491,8 +491,8 @@ namespace CustomMacroFactory.MainView.UserControlEx.PixelPicker
                     }
 
                     { //放大镜
-                        Point p = e.GetPosition(sender);
-                        double rect_width = 128;
+                        var p = e.GetPosition(sender);
+                        var rect_width = 128d;
                         ViewboxRect = new Rect(p.X - rect_width / 2 + 1, p.Y - rect_width / 2 + 1, rect_width, rect_width);
                     }
                 }
@@ -500,7 +500,7 @@ namespace CustomMacroFactory.MainView.UserControlEx.PixelPicker
         }
     }
     //ViewModelInit
-    partial class uPixelPicker_viewmodel
+    public partial class uPixelPicker_viewmodel
     {
         private void ViewModelInit()
         {
@@ -511,7 +511,7 @@ namespace CustomMacroFactory.MainView.UserControlEx.PixelPicker
     }
 
     //Method
-    partial class uPixelPicker_viewmodel
+    public partial class uPixelPicker_viewmodel
     {
         private double GetDeviceScaleFactor(UIElement para)
         {

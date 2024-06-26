@@ -6,7 +6,7 @@ using System.Windows.Controls;
 
 namespace CustomMacroFactory.MainView.UserControlEx.ClientEx
 {
-    class MenuItem_model : NotificationObject
+    public class MenuItem_model : NotificationObject
     {
         private string _Text;
         public string Text
@@ -39,16 +39,22 @@ namespace CustomMacroFactory.MainView.UserControlEx.ClientEx
     {
         private ObservableCollection<T> collection = new();
 
-        public PartCreator(Action<ObservableCollection<T>> LoadContent)
+        public PartCreator(Action<ObservableCollection<T>> itemsSource)
         {
-            LoadContent.Invoke(collection);
+            itemsSource.Invoke(collection);
         }
 
+        /// <summary>
+        /// 创建一个垂直排列的UI元素集合
+        /// </summary>
         public UIElement GetVerticalContent()
         {
             return GetContent(Orientation.Vertical);
         }
 
+        /// <summary>
+        /// 创建一个水平排列的UI元素集合
+        /// </summary>
         public UIElement GetHorizontalContent()
         {
             return GetContent(Orientation.Horizontal);

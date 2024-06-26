@@ -18,8 +18,10 @@ using System.Windows.Media.Effects;
 
 namespace CustomMacroFactory.MainView.UserControlEx.ClientEx
 {
-    partial class uClient_viewmodel
+    public partial class uClient_viewmodel
     {
+        private string _loadedMessage => $"{this.GetType().Name} is loaded";
+
         private readonly uClient_model model = new();
 
         public UIElement MainMenu
@@ -159,7 +161,7 @@ namespace CustomMacroFactory.MainView.UserControlEx.ClientEx
     }
 
     // Init
-    partial class uClient_viewmodel : NotificationObject
+    public partial class uClient_viewmodel : NotificationObject
     {
         public uClient_viewmodel()
         {
@@ -202,36 +204,33 @@ namespace CustomMacroFactory.MainView.UserControlEx.ClientEx
                         return list;
                     })).Invoke(),
                 });
-                container.Add(((Func<cVerticalButton>)(() =>
+                container.Add(new cAimCursorButton().Init(btn =>
                 {
                     string pathData = "M512 857.6c-190.592 0-345.6-155.008-345.6-345.6S321.408 166.4 512 166.4s345.6 155.008 345.6 345.6-155.008 345.6-345.6 345.6z m0-640C349.696 217.6 217.6 349.696 217.6 512s132.096 294.4 294.4 294.4c162.304 0 294.4-132.096 294.4-294.4S674.304 217.6 512 217.6z" +
                                       "M972.8 537.6H51.2a25.6 25.6 0 1 1 0-51.2h921.6a25.6 25.6 0 1 1 0 51.2z" +
                                       "M512 998.4a25.6 25.6 0 0 1-25.6-25.6V51.2a25.6 25.6 0 1 1 51.2 0v921.6a25.6 25.6 0 0 1-25.6 25.6z";
-                    return new cAimCursorButton()
+                    btn.IconOnly = true;
+                    btn.Icon = new()
                     {
-                        IconOnly = true,
-                        Icon = new()
+                        new System.Windows.Shapes.Path()
                         {
-                            new System.Windows.Shapes.Path()
+                            Width = 25 - 2,
+                            Height = 25 - 2,
+                            Fill = new SolidColorBrush(Colors.Transparent),
+                            Stroke = new SolidColorBrush(Colors.White),
+                            IsHitTestVisible = false,
+                            Stretch = Stretch.Fill,
+                            Data = Geometry.Parse(pathData.ToString(CultureInfo.InvariantCulture)),
+                            Effect = new DropShadowEffect()
                             {
-                                Width = 25 - 2,
-                                Height = 25 - 2,
-                                Fill = new SolidColorBrush(Colors.Transparent),
-                                Stroke = new SolidColorBrush(Colors.White),
-                                IsHitTestVisible = false,
-                                Stretch = Stretch.Fill,
-                                Data = Geometry.Parse(pathData.ToString(CultureInfo.InvariantCulture)),
-                                Effect = new DropShadowEffect()
-                                {
-                                    Color = Colors.Blue,
-                                    ShadowDepth = 0,
-                                    BlurRadius = 5,
-                                    Opacity = 0.5
-                                }
+                                Color = Colors.Blue,
+                                ShadowDepth = 0,
+                                BlurRadius = 5,
+                                Opacity = 0.5
                             }
                         }
                     };
-                })).Invoke());
+                }));
             }).GetVerticalContent();
 
             //TopContent_LeftEx
@@ -239,6 +238,7 @@ namespace CustomMacroFactory.MainView.UserControlEx.ClientEx
             {
                 container.Add(new cToggleButton()
                 {
+                    DotCornerRadius = new(5),
                     Margin = new(4, 0, 4, 0),
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     VerticalAlignment = VerticalAlignment.Center,
@@ -255,6 +255,7 @@ namespace CustomMacroFactory.MainView.UserControlEx.ClientEx
                 });
                 container.Add(new cToggleButton()
                 {
+                    DotCornerRadius = new(5),
                     Margin = new(4, 0, 4, 0),
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     VerticalAlignment = VerticalAlignment.Center,
@@ -270,6 +271,7 @@ namespace CustomMacroFactory.MainView.UserControlEx.ClientEx
                 });
                 container.Add(new cToggleButton()
                 {
+                    DotCornerRadius = new(5),
                     Margin = new(4, 0, 4, 0),
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     VerticalAlignment = VerticalAlignment.Center,

@@ -33,7 +33,6 @@ namespace CustomMacroBase.Helper
         /// </summary>
         public void Register(AsyncMessageType type, Func<object?, CancellationToken, Task<object?>> callback)
         {
-
             if (internalDictionary.TryAdd(type, callback) is false)
             {
                 Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, $"duplicate registration messages: {type}");

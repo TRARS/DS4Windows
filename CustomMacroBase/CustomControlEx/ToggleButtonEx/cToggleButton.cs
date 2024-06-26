@@ -194,6 +194,18 @@ namespace CustomMacroBase.CustomControlEx.ToggleButtonEx
             typeMetadata: new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
         );
 
+        public double DotDiet
+        {
+            get { return (double)GetValue(DotDietProperty); }
+            set { SetValue(DotDietProperty, value); }
+        }
+        public static readonly DependencyProperty DotDietProperty = DependencyProperty.Register(
+            name: "DotDiet",
+            propertyType: typeof(double),
+            ownerType: typeof(cToggleButton),
+            typeMetadata: new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
+        );
+
         private double distance => cToggleButton_math.Instance.WidthCalculator(DotDiameter) - DotDiameter - (DotBorderThickness.Left + DotBorderThickness.Right);
 
         private void OnChecked()
@@ -206,6 +218,4 @@ namespace CustomMacroBase.CustomControlEx.ToggleButtonEx
             cToggleButton.DotTransformXProperty.SetDoubleAnimation(this, distance, 0, 100, FillBehavior.HoldEnd).Begin();
         }
     }
-
-
 }

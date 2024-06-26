@@ -46,6 +46,7 @@ namespace CustomMacroBase.PixelMatcher
             this.Opacity = 0;
             this.ShowInTaskbar = false;
             this.IsHitTestVisible = false;
+            this.ShowActivated = false;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

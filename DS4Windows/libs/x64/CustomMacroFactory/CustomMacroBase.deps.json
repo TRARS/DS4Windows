@@ -14,7 +14,7 @@
           "OpenCvSharp4.Windows": "4.10.0.20240616",
           "Sdcb.PaddleInference": "2.5.0.1",
           "Sdcb.PaddleInference.runtime.win64.cuda102_cudnn76_sm61_75": "2.4.0",
-          "Sdcb.PaddleOCR": "2.7.0.2",
+          "Sdcb.PaddleOCR": "2.7.0.3",
           "Sdcb.PaddleOCR.Models.Local": "2.7.0",
           "SharpDX.DirectInput": "4.2.0"
         },
@@ -230,21 +230,21 @@
           }
         }
       },
-      "Sdcb.PaddleOCR/2.7.0.2": {
+      "Sdcb.PaddleOCR/2.7.0.3": {
         "dependencies": {
           "OpenCvSharp4": "4.10.0.20240616",
           "Sdcb.PaddleInference": "2.5.0.1"
         },
         "runtime": {
           "lib/netstandard2.0/Sdcb.PaddleOCR.dll": {
-            "assemblyVersion": "2.7.0.2",
-            "fileVersion": "2.7.0.2"
+            "assemblyVersion": "2.7.0.3",
+            "fileVersion": "2.7.0.3"
           }
         }
       },
       "Sdcb.PaddleOCR.Models.Local/2.7.0": {
         "dependencies": {
-          "Sdcb.PaddleOCR": "2.7.0.2",
+          "Sdcb.PaddleOCR": "2.7.0.3",
           "Sdcb.PaddleOCR.Models.LocalV3": "2.7.0",
           "Sdcb.PaddleOCR.Models.LocalV4": "2.7.0",
           "Sdcb.PaddleOCR.Models.Shared": "2.7.0"
@@ -1082,12 +1082,12 @@
       "path": "sdcb.paddleinference.runtime.win64.cuda102_cudnn76_sm61_75/2.4.0",
       "hashPath": "sdcb.paddleinference.runtime.win64.cuda102_cudnn76_sm61_75.2.4.0.nupkg.sha512"
     },
-    "Sdcb.PaddleOCR/2.7.0.2": {
+    "Sdcb.PaddleOCR/2.7.0.3": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-mr1fGYv/ufMN2lIb4tccKOX9FPWorX9EJyJsPxhdEGFhwKnv7iLBmbjM9Ha03XuJnlQXY0LYti69RB7OqX18VA==",
-      "path": "sdcb.paddleocr/2.7.0.2",
-      "hashPath": "sdcb.paddleocr.2.7.0.2.nupkg.sha512"
+      "sha512": "sha512-6axepRnF/FSn+sdAsF0nuCjPDu8CfbzJe/6puAHFj00Sin4YUcqUTdDZ1UONHRpMkgJYW1qyzjBnvSmBD4szxQ==",
+      "path": "sdcb.paddleocr/2.7.0.3",
+      "hashPath": "sdcb.paddleocr.2.7.0.3.nupkg.sha512"
     },
     "Sdcb.PaddleOCR.Models.Local/2.7.0": {
       "type": "package",

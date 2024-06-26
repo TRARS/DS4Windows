@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -103,16 +104,16 @@ namespace CustomMacroBase.CustomControlEx.VerticalButtonEx
     //作为图标按钮时的属性
     public partial class cVerticalButton
     {
-        public List<UIElement> Icon
+        public ObservableCollection<UIElement> Icon
         {
-            get { return (List<UIElement>)GetValue(IconProperty); }
+            get { return (ObservableCollection<UIElement>)GetValue(IconProperty); }
             set { SetValue(IconProperty, value); }
         }
         public static readonly DependencyProperty IconProperty = DependencyProperty.Register(
             name: "Icon",
-            propertyType: typeof(List<UIElement>),
+            propertyType: typeof(ObservableCollection<UIElement>),
             ownerType: typeof(cVerticalButton),
-            typeMetadata: new FrameworkPropertyMetadata(new List<UIElement>(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
+            typeMetadata: new FrameworkPropertyMetadata(new ObservableCollection<UIElement>(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
         );
 
         public bool IconOnly

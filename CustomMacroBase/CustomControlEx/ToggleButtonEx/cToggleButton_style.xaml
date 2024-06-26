@@ -5,8 +5,9 @@
     <local:cToggleButton_converter_diameter2height x:Key="cToggleButton_converter_diameter2height"/>
     <local:cToggleButton_converter_diameter2width x:Key="cToggleButton_converter_diameter2width"/>
     <local:cToggleButton_converter_radius2cornerradius x:Key="cToggleButton_converter_radius2cornerradius"/>
-    <local:cToggleButton_converter_transformXnullcheck x:Key="cToggleButton_converter_transformXnullcheck"/>
+    <local:cToggleButton_converter_transformXcalculator x:Key="cToggleButton_converter_transformXcalculator"/>
     <local:cToggleButton_converter_visibility2minwidth x:Key="cToggleButton_converter_visibility2minwidth"/>
+    <local:cToggleButton_converter_diameterDiet x:Key="cToggleButton_converter_diameterDiet"/>
     
     <VisualBrush x:Key="StripeTexture" TileMode="Tile" Viewport="0,0,3,3" ViewportUnits="Absolute" Viewbox="0,0,15,15" ViewboxUnits="Absolute">
         <VisualBrush.Visual>
@@ -64,15 +65,24 @@
                                         </Border.CornerRadius>
 
                                         <Border Background="White" HorizontalAlignment="Left" VerticalAlignment="Center"
-                                                Width="{TemplateBinding DotDiameter}" 
-                                                Height="{TemplateBinding DotDiameter}" 
+                                                Height="{Binding Width, RelativeSource={RelativeSource Self}}"
                                                 CornerRadius="{TemplateBinding DotCornerRadius}">
+                                            <Border.Width>
+                                                <MultiBinding Converter="{StaticResource cToggleButton_converter_diameterDiet}">
+                                                    <Binding Path="DotDiameter" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                                    <Binding Path="DotDiet" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                                </MultiBinding>
+                                            </Border.Width>
                                             <Border.RenderTransform>
                                                 <TransformGroup>
-                                                    <TranslateTransform X="{Binding DotTransformX, 
-                                                                                    RelativeSource={RelativeSource Mode=TemplatedParent},
-                                                                                    Converter={StaticResource cToggleButton_converter_transformXnullcheck}}"
-                                                                        Y="0"/>
+                                                    <TranslateTransform Y="0">
+                                                        <TranslateTransform.X>
+                                                            <MultiBinding Converter="{StaticResource cToggleButton_converter_transformXcalculator}">
+                                                                <Binding Path="DotTransformX" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                                                <Binding Path="DotDiet" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                                            </MultiBinding>
+                                                        </TranslateTransform.X>
+                                                    </TranslateTransform>
                                                 </TransformGroup>
                                             </Border.RenderTransform>
                                         </Border>

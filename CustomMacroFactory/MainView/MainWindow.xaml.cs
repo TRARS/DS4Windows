@@ -124,42 +124,8 @@ namespace CustomMacroFactory.MainView
     {
         public MainWindow()
         {
-            InitializeComponent(); Left = Top = 5;
+            InitializeComponent(); Left = Top = 5; this.Opacity = 0;
         }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            Task.Run(async () =>
-            {
-                await Task.Delay(512);
-                await this.Dispatcher.BeginInvoke(() =>
-                {
-                    string str = $"{this.Width},{this.Height}";
-                    Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, str);
-                });
-            });
-
-            this.PreviewKeyDown += (s, e) =>
-            {
-                Mediator.Instance.NotifyColleagues(MessageType.WindowKeyDown, e.Key);
-            };
-
-            this.TryMoveToPrimaryMonitor(new(0, 0));
-        }
-
-        private void Window_Closing(object sender, CancelEventArgs e)
-        {
-            if (canExit) { return; }
-
-            e.Cancel = true;
-            this.WindowState = (this.WindowState == WindowState.Minimized ? WindowState.Normal : WindowState.Minimized);
-        }
-    }
-
-    //Field
-    public partial class MainWindow
-    {
-        private bool canExit = false;
     }
 
     //Method
@@ -174,40 +140,60 @@ namespace CustomMacroFactory.MainView
         //Exit
         public void Exit()
         {
-            canExit = true;
+            Mediator.Instance.UnRegister(MainWindowMessageType.Closing); //canExit = true;
         }
 
         //HideToTray
         public void HideToTray()
         {
-            var flag = this.WindowState is WindowState.Minimized;
-            {
-                this.WindowState = flag ? (this.ShowInTaskbar ? this.WindowState : WindowState.Normal) : WindowState.Minimized;
-                this.ShowInTaskbar = flag ? (!this.ShowInTaskbar) : false;
-            }
+            Mediator.Instance.NotifyColleagues(MainWindowMessageType.HideToTray, null);
         }
 
         //Init
         public void Init(Func<dynamic> getDs4Host, Func<dynamic> getRootHub)
         {
-            this.Show();
+            Mediator.Instance.Register(MainWindowMessageType.Loaded, _ =>
+            {
+                Task.Run(async () =>
+                {
+                    await Task.Delay(512);
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        string str = $"{this.Width},{this.Height}";
+                        Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, str);
+                        this.SizeToContent = SizeToContent.WidthAndHeight;
+                        this.Opacity = 1;
+                    });
+                });
+
+                this.TryMoveToPrimaryMonitor(new(0, 0));
+            });
+            Mediator.Instance.Register(MainWindowMessageType.Closing, _ =>
+            {
+                this.WindowState = (this.WindowState == WindowState.Minimized ? WindowState.Normal : WindowState.Minimized);
+            });
+            Mediator.Instance.Register(MainWindowMessageType.HideToTray, _ =>
+            {
+                var flag = this.WindowState is WindowState.Minimized;
+                {
+                    this.WindowState = flag ? (this.ShowInTaskbar ? this.WindowState : WindowState.Normal) : WindowState.Minimized;
+                    this.ShowInTaskbar = flag ? (!this.ShowInTaskbar) : false;
+                }
+            });
 
             Mediator.Instance.Register(MessageType.WindowPosReset, para =>
             {
                 this.TryMoveToPrimaryMonitor((Vector)para);
             });
-
             Mediator.Instance.Register(MessageType.WindowClose, _ =>
             {
-                this.WindowState = WindowState.Minimized;
+                this.Close(); //this.WindowState = WindowState.Minimized;
             });
-
             Mediator.Instance.Register(MessageType.Ds4Disconnect, _ =>
             {
                 dynamic? ds4 = getDs4Host?.Invoke();
                 ds4?.CloseBT();
             });
-
             Mediator.Instance.Register(MessageType.Ds4Rumble, para =>
             {//byte rightLightFastMotor, byte leftHeavySlowMotor
                 dynamic? rootHub = getRootHub?.Invoke();
@@ -225,13 +211,14 @@ namespace CustomMacroFactory.MainView
                     });
                 }
             });
-
             Mediator.Instance.Register(MessageType.Ds4Latency, para =>
             {
                 dynamic? rootHub = getRootHub?.Invoke();
                 dynamic? d = rootHub?.DS4Controllers[0];
                 ((double[])para)[0] = (d is not null ? d.Latency : 0);
             });
+
+            this.Show();
         }
     }
 }

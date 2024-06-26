@@ -1,5 +1,4 @@
 ﻿using CustomMacroBase;
-using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace CustomMacroFactory.MacroFactory.Sample

@@ -51,7 +51,8 @@
                    Grid.Column="0" Grid.ColumnSpan="2"/>
         
         <!--靠左-->
-        <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Stretch" >
+        <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Stretch" 
+                    d:Background="#80DC146D">
             <titlebarbuttonex:cTitleBarButton x:Name="IconBtn" Type="MaxMinBtn" Margin="1,0,0,0" Padding="1"
                                               Height="24" Width="24" Focusable="False" IsHitTestVisible="False">
                 <Grid Width="20" Height="20" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -70,11 +71,13 @@
                        Opacity="{Binding IsActive, 
                                          RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window},
                                          Converter={StaticResource uTitleBar_converter_bool2opacity},
-                                         Mode=OneWay}"/>
+                                         Mode=OneWay}"
+                       d:Background="Gray"/>
         </StackPanel>
 
         <!--靠右-->
-        <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0" HorizontalAlignment="Right">
+        <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0" HorizontalAlignment="Right"
+                    d:Background="#8014DCDC">
             <titlebarbuttonex:cTitleBarButton x:Name="ResetPosBtn" Type="MaxMinBtn" Width="30" Height="25" HorizontalAlignment="Right" VerticalAlignment="Center"
                                               IsActive="{Binding IsActive, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Window}, Mode=OneWay}"
                                               Command="{Binding ResetPosButtonCommand}">

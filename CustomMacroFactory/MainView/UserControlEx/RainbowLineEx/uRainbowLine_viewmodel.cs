@@ -3,7 +3,7 @@ using System.Windows.Media;
 
 namespace CustomMacroFactory.MainView.UserControlEx.RainbowLineEx
 {
-    partial class uRainbowLine_viewmodel : NotificationObject
+    public partial class uRainbowLine_viewmodel : NotificationObject
     {
         private readonly uRainbowLine_model model = new();
 
@@ -36,7 +36,7 @@ namespace CustomMacroFactory.MainView.UserControlEx.RainbowLineEx
         }
     }
 
-    partial class uRainbowLine_viewmodel
+    public partial class uRainbowLine_viewmodel
     {
         private readonly LinearGradientBrush defBrush = new LinearGradientBrush()
         {

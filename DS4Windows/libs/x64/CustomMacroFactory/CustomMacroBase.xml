@@ -99,6 +99,11 @@
             记录编译时间
             </summary>
         </member>
+        <member name="M:CustomMacroBase.Helper.Extensions.InitializerExtensions.Init``1(``0,System.Action{``0})">
+            <summary>
+            为对象提供一个初始化和配置的方法
+            </summary>
+        </member>
         <member name="M:CustomMacroBase.Helper.Extensions.MacroBaseExtensions.GetSortIndex(CustomMacroBase.MacroBase)">
             <summary>
             若SortIndex不存在，返回10000

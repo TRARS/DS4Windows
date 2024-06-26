@@ -3,56 +3,55 @@ using CustomMacroFactory.MainView.UserControlEx.ClientEx;
 using CustomMacroFactory.MainView.UserControlEx.RainbowLineEx;
 using CustomMacroFactory.MainView.UserControlEx.TitleBarEx;
 using System.Collections.ObjectModel;
-using System.Linq;
+using System.ComponentModel;
 using System.Windows;
+using System.Windows.Input;
 
 namespace CustomMacroFactory.MainView
 {
-    class MainWindow_viewmodel : NotificationObject
+    partial class MainWindow_viewmodel : NotificationObject
     {
-        private readonly ObservableCollection<UIElement> ViewList = new(Enumerable.Repeat<UIElement>(new(), 10));
-
-        public UIElement TitleBarView
-        {
-            get { return ViewList[0]; }
-            set
-            {
-                if (ViewList[0] == value)
-                    return;
-                ViewList[0] = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        public UIElement RainbowLineView
-        {
-            get { return ViewList[1]; }
-            set
-            {
-                if (ViewList[1] == value)
-                    return;
-                ViewList[1] = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        public UIElement ClientView
-        {
-            get { return ViewList[2]; }
-            set
-            {
-                if (ViewList[2] == value)
-                    return;
-                ViewList[2] = value;
-                NotifyPropertyChanged();
-            }
-        }
+        public ObservableCollection<UIElement> ViewList { get; init; }
+        public RelayCommand LoadedCommand { get; set; }
+        public RelayCommand ClosingCommand { get; set; }
+        public RelayCommand PreviewKeyDownCommand { get; set; }
 
         public MainWindow_viewmodel()
         {
-            TitleBarView = MainEntry.GetService<uTitleBar>();
-            RainbowLineView = MainEntry.GetService<uRainbowLine>();
-            ClientView = MainEntry.GetService<uClient>();
+            CreateCommand();
+
+            ViewList = new()
+            {
+                MainEntry.GetService<uTitleBar>(),
+                MainEntry.GetService<uRainbowLine>(),
+                MainEntry.GetService<uClient>()
+            };
+        }
+
+        private void CreateCommand()
+        {
+            LoadedCommand = new(para =>
+            {
+                if (para is RoutedEventArgs e)
+                {
+                    Mediator.Instance.NotifyColleagues(MainWindowMessageType.Loaded, null);
+                }
+            });
+            ClosingCommand = new(para =>
+            {
+                if (para is CancelEventArgs e)
+                {
+                    e.Cancel = true;
+                    Mediator.Instance.NotifyColleagues(MainWindowMessageType.Closing, null);
+                }
+            });
+            PreviewKeyDownCommand = new(para =>
+            {
+                if (para is KeyEventArgs e)
+                {
+                    Mediator.Instance.NotifyColleagues(MessageType.WindowKeyDown, e.Key);
+                }
+            });
         }
     }
 }

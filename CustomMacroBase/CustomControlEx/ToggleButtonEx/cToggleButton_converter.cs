@@ -50,18 +50,36 @@ namespace CustomMacroBase.CustomControlEx.ToggleButtonEx
         }
     }
 
-    class cToggleButton_converter_transformXnullcheck : IValueConverter
+    class cToggleButton_converter_diameterDiet : IMultiValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is null)
-            {
-                return 0d;
-            }
-            return value;
+            var old = (double)values[0];
+            var diet = (double)values[1];
+            return Math.Max(old - diet * 2, 1d);
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    class cToggleButton_converter_transformXcalculator : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (values[0] is double transformX)
+            {
+                var diet = (double)values[1];
+
+                return Math.Max(transformX + diet, 0d);
+            }
+
+            return 0;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

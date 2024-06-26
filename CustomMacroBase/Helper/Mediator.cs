@@ -1,12 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Reflection;
+using System.Text;
+
+namespace CustomMacroBase.Helper
+{
+    public static class MainWindowMessageType
+    {
+        public static string Loaded { get; }
+        public static string Closing { get; }
+        public static string HideToTray { get; }
+
+        static MainWindowMessageType()
+        {
+            Loaded = nameof(Loaded) + GenerateRandomString(16);
+            Closing = nameof(Closing) + GenerateRandomString(16);
+            HideToTray = nameof(HideToTray) + GenerateRandomString(16);
+        }
+
+        private static Random random = new Random();
+        private static string GenerateRandomString(int length)
+        {
+            const string chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+            StringBuilder stringBuilder = new StringBuilder();
+
+            for (int i = 0; i < length; i++)
+            {
+                int index = random.Next(chars.Length);
+                stringBuilder.Append(chars[index]);
+            }
+
+            return stringBuilder.ToString();
+        }
+    }
+}
 
 namespace CustomMacroBase.Helper
 {
     //增加类型只能往后加不能往中间插入，不然可能会和CustomMacroPlugin.dll那边的对不上号（除非那边也引用最新的CustomMacroBase.dll）
-    //
     public enum MessageType
     {
         WindowClose = 0,
@@ -27,13 +57,6 @@ namespace CustomMacroBase.Helper
     {
         private Dictionary<string, List<Action<object?>>> internalListEx = new();
         private Dictionary<MessageType, List<Action<object?>>> internalList = new();
-
-        private static string GetEnumDescription(Enum enumVal)
-        {
-            System.Reflection.MemberInfo[] memInfo = enumVal.GetType().GetMember(enumVal.ToString());
-            DescriptionAttribute attribute = CustomAttributeExtensions.GetCustomAttribute<DescriptionAttribute>(memInfo[0]);
-            return attribute.Description;
-        }
     }
 
     //限制为单例
@@ -59,7 +82,13 @@ namespace CustomMacroBase.Helper
                 internalList[type].Add(callback);
             }
         }
-
+        public void UnRegister(MessageType type)
+        {
+            if (internalList.ContainsKey(type))
+            {
+                internalList.Remove(type);
+            }
+        }
         public void NotifyColleagues(MessageType type, object? args)
         {
             if (internalList.ContainsKey(type))
@@ -82,6 +111,13 @@ namespace CustomMacroBase.Helper
             else
             {
                 internalListEx[type].Add(callback);
+            }
+        }
+        public void UnRegister(string type)
+        {
+            if (internalListEx.ContainsKey(type))
+            {
+                internalListEx.Remove(type);
             }
         }
         public void NotifyColleagues(string type, object? args)
