@@ -3,7 +3,6 @@ using System;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 
 namespace CustomMacroBase.CustomControlEx.ToggleButtonEx
 {
@@ -16,49 +15,13 @@ namespace CustomMacroBase.CustomControlEx.ToggleButtonEx
 
         public cToggleButton()
         {
-            this.Checked += (s, e) => { OnChecked(); CheckedAct?.Invoke(); };
-            this.Unchecked += (s, e) => { OnUnchecked(); UncheckedAct?.Invoke(); };
-            this.Loaded += (s, e) => { LoadedAct?.Invoke(this); };
+            this.Checked += (s, e) => { CheckedAnimation(); };
+            this.Unchecked += (s, e) => { UncheckedAnimation(); };
         }
     }
 
     public partial class cToggleButton
     {
-        public Action? CheckedAct
-        {
-            get { return (Action)GetValue(CheckedActProperty); }
-            set { SetValue(CheckedActProperty, value); }
-        }
-        public static readonly DependencyProperty CheckedActProperty = DependencyProperty.Register(
-            name: "CheckedAct",
-            propertyType: typeof(Action),
-            ownerType: typeof(cToggleButton),
-            typeMetadata: new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
-        );
-        public Action? UncheckedAct
-        {
-            get { return (Action)GetValue(UncheckedActProperty); }
-            set { SetValue(UncheckedActProperty, value); }
-        }
-        public static readonly DependencyProperty UncheckedActProperty = DependencyProperty.Register(
-            name: "UncheckedAct",
-            propertyType: typeof(Action),
-            ownerType: typeof(cToggleButton),
-            typeMetadata: new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
-        );
-        public Action<cToggleButton>? LoadedAct
-        {
-            get { return (Action<cToggleButton>)GetValue(LoadedActProperty); }
-            set { SetValue(LoadedActProperty, value); }
-        }
-        public static readonly DependencyProperty LoadedActProperty = DependencyProperty.Register(
-            name: "LoadedAct",
-            propertyType: typeof(Action<cToggleButton>),
-            ownerType: typeof(cToggleButton),
-            typeMetadata: new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
-        );
-
-
         public string Text
         {
             get { return (string)GetValue(TextProperty); }
@@ -176,12 +139,42 @@ namespace CustomMacroBase.CustomControlEx.ToggleButtonEx
             name: "UseAlternateDotColor",
             propertyType: typeof(bool),
             ownerType: typeof(cToggleButton),
-            typeMetadata: new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
+            typeMetadata: new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, (d, e) =>
+            {
+                if (d is cToggleButton btn && e.NewValue is bool newValue)
+                {
+                    btn.SliderBackgroundColor = (Color)ColorConverter.ConvertFromString(newValue ? alternate_color : primary_color);
+                }
+            })
         );
     }
 
     public partial class cToggleButton
     {
+        public Color SliderBackgroundColor
+        {
+            get { return (Color)GetValue(SliderBackgroundColorProperty); }
+            set { SetValue(SliderBackgroundColorProperty, value); }
+        }
+        public static readonly DependencyProperty SliderBackgroundColorProperty = DependencyProperty.Register(
+            name: "SliderBackgroundColor",
+            propertyType: typeof(Color),
+            ownerType: typeof(cToggleButton),
+            typeMetadata: new FrameworkPropertyMetadata((Color)ColorConverter.ConvertFromString(primary_color), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
+        );
+
+        public double SliderSeparatorOffset
+        {
+            get { return (double)GetValue(SliderSeparatorOffsetProperty); }
+            set { SetValue(SliderSeparatorOffsetProperty, value); }
+        }
+        public static readonly DependencyProperty SliderSeparatorOffsetProperty = DependencyProperty.Register(
+            name: "SliderSeparatorOffset",
+            propertyType: typeof(double),
+            ownerType: typeof(cToggleButton),
+            typeMetadata: new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
+        );
+
         public double DotTransformX
         {
             get { return (double)GetValue(DotTransformXProperty); }
@@ -206,16 +199,24 @@ namespace CustomMacroBase.CustomControlEx.ToggleButtonEx
             typeMetadata: new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
         );
 
-        private double distance => cToggleButton_math.Instance.WidthCalculator(DotDiameter) - DotDiameter - (DotBorderThickness.Left + DotBorderThickness.Right);
+        private const string primary_color = "#FFC62626";
+        private const string alternate_color = "#FF1394E4";
+        private const double duration = 128;
+        private double dot_distance => cToggleButton_math.Instance.WidthCalculator(DotDiameter) - DotDiameter - (DotBorderThickness.Left + DotBorderThickness.Right);
 
-        private void OnChecked()
+        private void CheckedAnimation()
         {
-            cToggleButton.DotTransformXProperty.SetDoubleAnimation(this, 0, distance, 100, FillBehavior.HoldEnd).Begin();
+            this.SetDoubleAnimation(DotTransformXProperty, DotTransformX, dot_distance, duration * Factor(DotTransformX, dot_distance, dot_distance)).Begin();
+            this.SetDoubleAnimation(SliderSeparatorOffsetProperty, SliderSeparatorOffset, 1d, duration * Factor(SliderSeparatorOffset, 1d, 1d)).Begin();
         }
-
-        private void OnUnchecked()
+        private void UncheckedAnimation()
         {
-            cToggleButton.DotTransformXProperty.SetDoubleAnimation(this, distance, 0, 100, FillBehavior.HoldEnd).Begin();
+            this.SetDoubleAnimation(DotTransformXProperty, DotTransformX, 0, duration * Factor(DotTransformX, 0, dot_distance)).Begin();
+            this.SetDoubleAnimation(SliderSeparatorOffsetProperty, SliderSeparatorOffset, 0d, duration * Factor(SliderSeparatorOffset, 0d, 1d)).Begin();
+        }
+        private double Factor(double from, double to, double distance)
+        {
+            return (Math.Abs(from - to) / distance);
         }
     }
 }

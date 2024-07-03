@@ -21,6 +21,13 @@
             <Thickness x:Key="ChildrenPlacement">0,0,0,0</Thickness>
             <Thickness x:Key="ChildrenExPlacement">16,0,0,0</Thickness>
 
+            <!--UnknownStyle-->
+            <DataTemplate x:Key="UnknownStyle">
+                <Border Margin="{StaticResource ChildrenExPlacement}">
+                    <TextBlock Text="{Binding Type, StringFormat=UnknownType &lt;{0}&gt;}" Foreground="Red"/>
+                </Border>
+            </DataTemplate>
+            
             <!--UIElementStyle-->
             <DataTemplate x:Key="UIElementStyle">
                 <local:cChildrenExContainer Grid.Row="2" x:Name="childrenex"
@@ -30,144 +37,72 @@
                                             IsHitTestVisible="{Binding EnableChildren, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}">
                     <ItemsControl.Template>
                         <ControlTemplate TargetType="{x:Type ItemsControl}">
-                            <StackPanel IsItemsHost="True" Orientation="Vertical"/>
+                            <VirtualizingStackPanel IsItemsHost="True" Orientation="Vertical" IsVirtualizing="True"/>
                         </ControlTemplate>
                     </ItemsControl.Template>
                 </local:cChildrenExContainer>
             </DataTemplate>
-
-            <!--GateNodeContainerStyleB-->
-            <Style x:Key="GateNodeContainerStyleB" TargetType="{x:Type ContentPresenter}">
-                <Style.Resources>
-                    <!--GateNodeStyle-->
-                    <DataTemplate x:Key="GateNodeStyle">
-                        <Grid>
-                            <foldablecontainerex:cFoldableContainer>
-                                <foldablecontainerex:cFoldableContainer.ArrowVisibility>
-                                    <MultiBinding Converter="{StaticResource cToggleButtonGroup_converter_count2arrowvisibility}" Mode="OneWay">
-                                        <Binding Path="Content.Children"/>
-                                        <Binding Path="ActualHeight" ElementName="children"/>
-                                    </MultiBinding>
-                                </foldablecontainerex:cFoldableContainer.ArrowVisibility>
-                                <foldablecontainerex:cFoldableContainer.Header>
-                                    <!--Parent-->
-                                    <togglebuttonex:cToggleButton x:Name="parent"
-                                                                  DataContext="{Binding Content}"
-                                                                  Text="{Binding Text, Mode=OneWay}"
-                                                                  IsChecked="{Binding IsChecked, Mode=TwoWay}"
-                                                                  Visibility="{Binding HideSelf, Mode=OneWay, Converter={StaticResource cToggleButtonGroup_converter_bool2visibility}}"
-                                                                  DisableSliderButton="{Binding DisableSliderButton, Mode=OneWay}"
-                                                                  Enable="{Binding EnableChildren, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Mode=OneWay}"
-                                                                  ToolTipService.IsEnabled="{Binding TooltipPrefix, Mode=OneWay, Converter={StaticResource cToggleButtonGroup_converter_string2bool}}"
-                                                                  ToolTipService.Placement="Top"
-                                                                  ToolTipService.InitialShowDelay="256">
-                                        <togglebuttonex:cToggleButton.ToolTip>
-                                            <MultiBinding Converter="{StaticResource cToggleButtonGroup_converter_tooltip}" Mode="OneWay">
-                                                <Binding Path="TooltipPrefix"/>
-                                                <Binding Path="TooltipSuffix"/>
-                                            </MultiBinding>
-                                        </togglebuttonex:cToggleButton.ToolTip>
-                                    </togglebuttonex:cToggleButton>
-                                </foldablecontainerex:cFoldableContainer.Header>
-
-                                <Grid>
-                                    <!--Children-->
-                                    <local:cChildrenContainer x:Name="children"
-                                                              DataContext="{Binding Content}"
-                                                              ItemsSource="{Binding Children}"
-                                                              Margin="{StaticResource ChildrenPlacement}">
-                                        <local:cChildrenContainer.EnableChildren>
-                                            <MultiBinding Converter="{StaticResource cToggleButtonGroup_converter_boolbool2bool}">
-                                                <Binding Path="IsChecked" ElementName="parent" Mode="OneWay"/>
-                                                <Binding Path="EnableChildren" RelativeSource="{RelativeSource AncestorType={x:Type ItemsControl}}" Mode="OneWay"/>
-                                            </MultiBinding>
-                                        </local:cChildrenContainer.EnableChildren>
-                                        <ItemsControl.Template>
-                                            <ControlTemplate TargetType="{x:Type ItemsControl}">
-                                                <StackPanel IsItemsHost="True" Orientation="Vertical"/>
-                                            </ControlTemplate>
-                                        </ItemsControl.Template>
-                                        <ItemsControl.ItemContainerStyle>
-                                            <DynamicResource ResourceKey="GateNodeContainerStyleA"/>
-                                        </ItemsControl.ItemContainerStyle>
-                                    </local:cChildrenContainer>
-                                </Grid>
-                            </foldablecontainerex:cFoldableContainer>
-                        </Grid>
-                    </DataTemplate>
-                </Style.Resources>
-
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding Type}" Value="GateBase">
-                        <Setter Property="ContentTemplate" Value="{StaticResource GateNodeStyle}"/>
-                    </DataTrigger>
-                    <DataTrigger Binding="{Binding Type}" Value="Delegate">
-                        <Setter Property="ContentTemplate" Value="{StaticResource UIElementStyle}"/>
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
             
-            <!--GateNodeContainerStyleA-->
-            <Style x:Key="GateNodeContainerStyleA" TargetType="{x:Type ContentPresenter}">
-                <Style.Resources>
-                    <!--GateNodeStyle-->
-                    <DataTemplate x:Key="GateNodeStyle">
-                        <Grid>
-                            <foldablecontainerex:cFoldableContainer>
-                                <foldablecontainerex:cFoldableContainer.ArrowVisibility>
-                                    <MultiBinding Converter="{StaticResource cToggleButtonGroup_converter_count2arrowvisibility}" Mode="OneWay">
-                                        <Binding Path="Content.Children"/>
-                                        <Binding Path="ActualHeight" ElementName="children"/>
+            <!--GateNodeStyle-->
+            <DataTemplate x:Key="GateNodeStyle">
+                <Grid>
+                    <foldablecontainerex:cFoldableContainer>
+                        <foldablecontainerex:cFoldableContainer.ArrowVisibility>
+                            <MultiBinding Converter="{StaticResource cToggleButtonGroup_converter_count2arrowvisibility}" Mode="OneWay">
+                                <Binding Path="Content.Children"/>
+                                <Binding Path="ActualHeight" ElementName="children"/>
+                            </MultiBinding>
+                        </foldablecontainerex:cFoldableContainer.ArrowVisibility>
+                        <foldablecontainerex:cFoldableContainer.Header>
+                            <!--Parent-->
+                            <togglebuttonex:cToggleButton x:Name="parent"
+                                                          DataContext="{Binding Content}"
+                                                          Text="{Binding Text, Mode=OneWay}"
+                                                          IsChecked="{Binding IsChecked, Mode=TwoWay}"
+                                                          Visibility="{Binding HideSelf, Mode=OneWay, Converter={StaticResource cToggleButtonGroup_converter_bool2visibility}}"
+                                                          DisableSliderButton="{Binding DisableSliderButton, Mode=OneWay}"
+                                                          Enable="{Binding EnableChildren, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Mode=OneWay}"
+                                                          ToolTipService.IsEnabled="{Binding TooltipPrefix, Mode=OneWay, Converter={StaticResource cToggleButtonGroup_converter_string2bool}}"
+                                                          ToolTipService.Placement="Top"
+                                                          ToolTipService.InitialShowDelay="256">
+                                <togglebuttonex:cToggleButton.ToolTip>
+                                    <MultiBinding Converter="{StaticResource cToggleButtonGroup_converter_tooltip}" Mode="OneWay">
+                                        <Binding Path="TooltipPrefix"/>
+                                        <Binding Path="TooltipSuffix"/>
                                     </MultiBinding>
-                                </foldablecontainerex:cFoldableContainer.ArrowVisibility>
-                                <foldablecontainerex:cFoldableContainer.Header>
-                                    <!--Parent-->
-                                    <togglebuttonex:cToggleButton x:Name="parent"
-                                                                  DataContext="{Binding Content}"
-                                                                  Text="{Binding Text, Mode=OneWay}"
-                                                                  IsChecked="{Binding IsChecked, Mode=TwoWay}"
-                                                                  Visibility="{Binding HideSelf, Mode=OneWay, Converter={StaticResource cToggleButtonGroup_converter_bool2visibility}}"
-                                                                  DisableSliderButton="{Binding DisableSliderButton, Mode=OneWay}"
-                                                                  Enable="{Binding EnableChildren, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Mode=OneWay}"
-                                                                  ToolTipService.IsEnabled="{Binding TooltipPrefix, Mode=OneWay, Converter={StaticResource cToggleButtonGroup_converter_string2bool}}"
-                                                                  ToolTipService.Placement="Top"
-                                                                  ToolTipService.InitialShowDelay="256">
-                                        <togglebuttonex:cToggleButton.ToolTip>
-                                            <MultiBinding Converter="{StaticResource cToggleButtonGroup_converter_tooltip}" Mode="OneWay">
-                                                <Binding Path="TooltipPrefix"/>
-                                                <Binding Path="TooltipSuffix"/>
-                                            </MultiBinding>
-                                        </togglebuttonex:cToggleButton.ToolTip>
-                                    </togglebuttonex:cToggleButton>
-                                </foldablecontainerex:cFoldableContainer.Header>
+                                </togglebuttonex:cToggleButton.ToolTip>
+                            </togglebuttonex:cToggleButton>
+                        </foldablecontainerex:cFoldableContainer.Header>
 
-                                <Grid>
-                                    <!--Children-->
-                                    <local:cChildrenContainer x:Name="children"
-                                                              DataContext="{Binding Content}"
-                                                              ItemsSource="{Binding Children}"
-                                                              Margin="{StaticResource ChildrenPlacement}">
-                                        <local:cChildrenContainer.EnableChildren>
-                                            <MultiBinding Converter="{StaticResource cToggleButtonGroup_converter_boolbool2bool}">
-                                                <Binding Path="IsChecked" ElementName="parent" Mode="OneWay"/>
-                                                <Binding Path="EnableChildren" RelativeSource="{RelativeSource AncestorType={x:Type ItemsControl}}" Mode="OneWay"/>
-                                            </MultiBinding>
-                                        </local:cChildrenContainer.EnableChildren>
-                                        <ItemsControl.Template>
-                                            <ControlTemplate TargetType="{x:Type ItemsControl}">
-                                                <StackPanel IsItemsHost="True" Orientation="Vertical"/>
-                                            </ControlTemplate>
-                                        </ItemsControl.Template>
-                                        <ItemsControl.ItemContainerStyle>
-                                            <DynamicResource ResourceKey="GateNodeContainerStyleB"/>
-                                        </ItemsControl.ItemContainerStyle>
-                                    </local:cChildrenContainer>
-                                </Grid>
-                            </foldablecontainerex:cFoldableContainer>
+                        <Grid>
+                            <!--Children-->
+                            <local:cChildrenContainer x:Name="children"
+                                                      DataContext="{Binding Content}"
+                                                      ItemsSource="{Binding Children}"
+                                                      Margin="{StaticResource ChildrenPlacement}">
+                                <local:cChildrenContainer.EnableChildren>
+                                    <MultiBinding Converter="{StaticResource cToggleButtonGroup_converter_boolbool2bool}">
+                                        <Binding Path="IsChecked" ElementName="parent" Mode="OneWay"/>
+                                        <Binding Path="EnableChildren" RelativeSource="{RelativeSource AncestorType={x:Type ItemsControl}}" Mode="OneWay"/>
+                                    </MultiBinding>
+                                </local:cChildrenContainer.EnableChildren>
+                                <ItemsControl.Template>
+                                    <ControlTemplate TargetType="{x:Type ItemsControl}">
+                                        <VirtualizingStackPanel IsItemsHost="True" Orientation="Vertical" IsVirtualizing="True"/>
+                                    </ControlTemplate>
+                                </ItemsControl.Template>
+                                <ItemsControl.ItemContainerStyle>
+                                    <DynamicResource ResourceKey="GateNodeContainerStyle"/>
+                                </ItemsControl.ItemContainerStyle>
+                            </local:cChildrenContainer>
                         </Grid>
-                    </DataTemplate>
-                </Style.Resources>
+                    </foldablecontainerex:cFoldableContainer>
+                </Grid>
+            </DataTemplate>
 
+            <!--GateNodeContainerStyle-->
+            <Style x:Key="GateNodeContainerStyle" TargetType="{x:Type ContentPresenter}">
+                <Setter Property="ContentTemplate" Value="{StaticResource UnknownStyle}"/>
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding Type}" Value="GateBase">
                         <Setter Property="ContentTemplate" Value="{StaticResource GateNodeStyle}"/>
@@ -227,11 +162,11 @@
                                                               Margin="{StaticResource ChildrenPlacement}">
                                         <ItemsControl.Template>
                                             <ControlTemplate TargetType="{x:Type ItemsControl}">
-                                                <StackPanel IsItemsHost="True" Orientation="Vertical"/>
+                                                <VirtualizingStackPanel IsItemsHost="True" Orientation="Vertical" IsVirtualizing="True"/>
                                             </ControlTemplate>
                                         </ItemsControl.Template>
                                         <ItemsControl.ItemContainerStyle>
-                                            <StaticResource ResourceKey="GateNodeContainerStyleA"/>
+                                            <StaticResource ResourceKey="GateNodeContainerStyle"/>
                                         </ItemsControl.ItemContainerStyle>
                                     </local:cChildrenContainer>
                                 </Grid>

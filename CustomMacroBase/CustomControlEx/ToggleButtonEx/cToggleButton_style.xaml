@@ -55,8 +55,17 @@
                                     </Grid.Height>
                                     <Border x:Name="Slider" 
                                             BorderThickness="{TemplateBinding DotBorderThickness}" 
-                                            BorderBrush="#80A0A0A0" 
-                                            Background="DarkGray">
+                                            BorderBrush="#80A0A0A0">
+                                        <Border.Background>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                <GradientStop Offset="0.0" Color="{Binding Color, ElementName=separator}"/>
+                                                <GradientStop x:Name="separator"
+                                                              Offset="{Binding SliderSeparatorOffset, RelativeSource={RelativeSource TemplatedParent}}" 
+                                                              Color="{Binding SliderBackgroundColor, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                                <GradientStop Offset="{Binding Offset, ElementName=separator}" Color="Gray"/>
+                                                <GradientStop Offset="1.0" Color="Gray"/>
+                                            </LinearGradientBrush>
+                                        </Border.Background>
                                         <Border.CornerRadius>
                                             <MultiBinding Converter="{StaticResource cToggleButton_converter_radius2cornerradius}">
                                                 <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}"/>
@@ -137,7 +146,7 @@
                                 <Setter Property="IsHitTestVisible" Value="False"/>
                             </Trigger.Setters>
                         </Trigger>
-
+                        
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="GuideLine" Property="Opacity" Value="1"/>
                             <Setter TargetName="Slider" Property="Effect">
@@ -161,81 +170,6 @@
                                 <RemoveStoryboard BeginStoryboardName="IsMouseOverAnm"/>
                             </Trigger.ExitActions>
                         </Trigger>
-
-                        <!--<Trigger Property="IsChecked" Value="True">
-                            <Trigger.EnterActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="Slider" Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)">
-                                            <EasingColorKeyFrame KeyTime="00:00:00:0.1" Value="#FFC62626"/>
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </Trigger.EnterActions>
-                            <Trigger.ExitActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="Slider" Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)">
-                                            <EasingColorKeyFrame KeyTime="00:00:00:0.1" Value="#FFA0A0A0"/>
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </Trigger.ExitActions>
-                        </Trigger>-->
-                        
-                        <!--主色红-->
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding UseAlternateDotColor, RelativeSource={RelativeSource Self}}" Value="false"/>
-                                <Condition Binding="{Binding IsChecked, RelativeSource={RelativeSource Self}}" Value="true"/>
-                            </MultiDataTrigger.Conditions>
-
-                            <MultiDataTrigger.EnterActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="Slider" Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)">
-                                            <EasingColorKeyFrame KeyTime="00:00:00:0.1" Value="#FFC62626"/>
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </MultiDataTrigger.EnterActions>
-                            <MultiDataTrigger.ExitActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="Slider" Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)">
-                                            <EasingColorKeyFrame KeyTime="00:00:00:0.1" Value="#FFA0A0A0"/>
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </MultiDataTrigger.ExitActions>
-                        </MultiDataTrigger>
-
-                        <!--候补色蓝-->
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding UseAlternateDotColor, RelativeSource={RelativeSource Self}}" Value="true"/>
-                                <Condition Binding="{Binding IsChecked, RelativeSource={RelativeSource Self}}" Value="true"/>
-                            </MultiDataTrigger.Conditions>
-
-                            <MultiDataTrigger.EnterActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="Slider" Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)">
-                                            <EasingColorKeyFrame KeyTime="00:00:00:0.1" Value="#FF1394E4"/>
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </MultiDataTrigger.EnterActions>
-                            <MultiDataTrigger.ExitActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="Slider" Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)">
-                                            <EasingColorKeyFrame KeyTime="00:00:00:0.1" Value="#FFA0A0A0"/>
-                                        </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </MultiDataTrigger.ExitActions>
-                        </MultiDataTrigger>
 
                         <DataTrigger Binding="{Binding DisableSliderButton, RelativeSource={RelativeSource Self}}" Value="True">
                             <Setter Property="IsHitTestVisible" Value="False"/>

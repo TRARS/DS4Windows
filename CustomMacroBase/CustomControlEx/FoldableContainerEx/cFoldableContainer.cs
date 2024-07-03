@@ -1,4 +1,5 @@
 ﻿using CustomMacroBase.Helper;
+using CustomMacroBase.Helper.Extensions;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -55,13 +56,26 @@ namespace CustomMacroBase.CustomControlEx.FoldableContainerEx
             name: "BodyVisibility",
             propertyType: typeof(Visibility),
             ownerType: typeof(cFoldableContainer),
-            typeMetadata: new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
+            typeMetadata: new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, (d, e) =>
+            {
+                if (d is cFoldableContainer container && e.NewValue is Visibility newValue)
+                {
+                    if (newValue is Visibility.Collapsed)
+                    {
+                        container.BodyFadeOutAnimation(container.BodyScaleX > 0);
+                    }
+                    else
+                    {
+                        container.BodyFadeInAnimation(container.BodyScaleX < 1);
+                    }
+                }
+            })
         );
 
         public RelayCommand ArrowCommand
         {
             get { return (RelayCommand)GetValue(ArrowCommandProperty); }
-            set { SetValue(ArrowCommandProperty, value); }
+            private set { SetValue(ArrowCommandProperty, value); }
         }
         public static readonly DependencyProperty ArrowCommandProperty = DependencyProperty.Register(
             name: "ArrowCommand",
@@ -69,5 +83,47 @@ namespace CustomMacroBase.CustomControlEx.FoldableContainerEx
             ownerType: typeof(cFoldableContainer),
             typeMetadata: new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
         );
+    }
+
+    public partial class cFoldableContainer
+    {
+        public double BodyScaleX
+        {
+            get { return (double)GetValue(BodyScaleXProperty); }
+            set { SetValue(BodyScaleXProperty, value); }
+        }
+        public static readonly DependencyProperty BodyScaleXProperty = DependencyProperty.Register(
+            name: "BodyScaleX",
+            propertyType: typeof(double),
+            ownerType: typeof(cFoldableContainer),
+            typeMetadata: new FrameworkPropertyMetadata(1.0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
+        );
+
+        public double BodyScaleY
+        {
+            get { return (double)GetValue(BodyScaleYProperty); }
+            set { SetValue(BodyScaleYProperty, value); }
+        }
+        public static readonly DependencyProperty BodyScaleYProperty = DependencyProperty.Register(
+            name: "BodyScaleY",
+            propertyType: typeof(double),
+            ownerType: typeof(cFoldableContainer),
+            typeMetadata: new FrameworkPropertyMetadata(1.0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
+        );
+
+        private const double duration = 128;
+
+        private void BodyFadeOutAnimation(bool canExecute)
+        {
+            if (canExecute is false) { return; }
+            this.SetDoubleAnimation(BodyScaleXProperty, BodyScaleX, 0d, duration).Begin();
+            this.SetDoubleAnimation(BodyScaleYProperty, BodyScaleY, 0d, duration).Begin();
+        }
+        private void BodyFadeInAnimation(bool canExecute)
+        {
+            if (canExecute is false) { return; }
+            this.SetDoubleAnimation(BodyScaleXProperty, BodyScaleX, 1d, 0).Begin();
+            this.SetDoubleAnimation(BodyScaleYProperty, BodyScaleY, 1d, 0).Begin();
+        }
     }
 }

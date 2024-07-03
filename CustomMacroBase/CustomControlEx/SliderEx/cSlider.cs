@@ -9,8 +9,6 @@ namespace CustomMacroBase.CustomControlEx.SliderEx
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(cSlider), new FrameworkPropertyMetadata(typeof(cSlider)));
         }
-
-        public cSlider() { }
     }
 
     public partial class cSlider

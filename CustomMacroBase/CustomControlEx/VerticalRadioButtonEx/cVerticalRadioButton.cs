@@ -9,10 +9,6 @@ namespace CustomMacroBase.CustomControlEx.VerticalRadioButtonEx
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(cVerticalRadioButton), new FrameworkPropertyMetadata(typeof(cVerticalRadioButton)));
         }
-        public cVerticalRadioButton()
-        {
-            this.GroupName = "aS[8d7^_0>F+$B2|#q3&y>@uPr{4r";
-        }
     }
 
     public partial class cVerticalRadioButton

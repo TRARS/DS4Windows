@@ -54,6 +54,11 @@
             CurveType
             </summary>
         </member>
+        <member name="P:CustomMacroBase.CustomControlEx.StackPanelEx.cStackPanel.ItemsSource">
+            <summary>
+            <para>This property is invalid. Use the <see cref="P:CustomMacroBase.CustomControlEx.StackPanelEx.cStackPanel.Children" /> property instead of <see cref="P:System.Windows.Controls.ItemsControl.ItemsSource"/> property.</para>
+            </summary>
+        </member>
         <member name="M:CustomMacroBase.CustomEffect.InvertColorEffect.#ctor">
             <summary>
             颜色反转

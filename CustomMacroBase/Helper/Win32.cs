@@ -387,11 +387,11 @@ namespace CustomMacroBase.Helper
                                                                                     //PW_CLIENTONLY | PW_RENDERFULLCONTENT = 0x3
         [DllImport("user32.dll", EntryPoint = "WindowFromPoint")]//指定坐标处窗体句柄       
         public static extern IntPtr WindowFromPoint(System.Drawing.Point Point);
-        [DllImport("user32.dll")]
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         public extern static int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
-        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         public static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         public static extern int GetWindowTextLength(IntPtr hwnd);
 
     }

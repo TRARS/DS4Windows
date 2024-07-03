@@ -7,7 +7,6 @@ using CustomMacroBase.Helper;
 using CustomMacroBase.Helper.Extensions;
 using CustomMacroBase.Helper.HotKey;
 using CustomMacroFactory.MainView.UserControlEx.PixelPicker;
-using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows;
@@ -20,8 +19,6 @@ namespace CustomMacroFactory.MainView.UserControlEx.ClientEx
 {
     public partial class uClient_viewmodel
     {
-        private string _loadedMessage => $"{this.GetType().Name} is loaded";
-
         private readonly uClient_model model = new();
 
         public UIElement MainMenu
@@ -192,17 +189,13 @@ namespace CustomMacroFactory.MainView.UserControlEx.ClientEx
                 {
                     Text = "Settings",
                     Command = () => { Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, "Right-click on this button to adjust settings related to the analog stick"); },
-                    RightClickContent = ((Func<ObservableCollection<UIElement>>)(() =>
+                    RightClickContent = new ObservableCollection<UIElement>().Init(list =>
                     {
-                        var list = new ObservableCollection<UIElement>();
+                        if (MacroFactory.MacroManager.AnalogStickMacro is CustomMacroBase.MacroBase pre)
                         {
-                            if (MacroFactory.MacroManager.AnalogStickMacro is CustomMacroBase.MacroBase pre)
-                            {
-                                list.Add(new cToggleButtonGroup() { DataContext = pre.MainGate });
-                            }
+                            list.Add(new cToggleButtonGroup() { DataContext = pre.MainGate });
                         }
-                        return list;
-                    })).Invoke(),
+                    }),
                 });
                 container.Add(new cAimCursorButton().Init(btn =>
                 {
@@ -236,55 +229,56 @@ namespace CustomMacroFactory.MainView.UserControlEx.ClientEx
             //TopContent_LeftEx
             this.MainOption = new PartCreator<cToggleButton>(container =>
             {
-                container.Add(new cToggleButton()
+                container.Add(new cToggleButton().Init(btn =>
                 {
-                    DotCornerRadius = new(5),
-                    Margin = new(4, 0, 4, 0),
-                    HorizontalAlignment = HorizontalAlignment.Stretch,
-                    VerticalAlignment = VerticalAlignment.Center,
-                    GuideLineColor = new SolidColorBrush(Colors.OrangeRed),
-                    Text = "Ex1",
-                    ToolTip = "Temporarily allow DS4W to recognize a virtual DS4 controller as a real DS4 controller once.",
-                    CheckedAct = () => { SingleDs4Accessor.Instance.Reset(0); },
-                    UncheckedAct = () => { SingleDs4Accessor.Instance.Reset(1); },
-                    LoadedAct = (self) =>
+                    btn.DotCornerRadius = new(5);
+                    btn.Margin = new(4, 0, 4, 0);
+                    btn.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    btn.VerticalAlignment = VerticalAlignment.Center;
+                    btn.GuideLineColor = new SolidColorBrush(Colors.OrangeRed);
+                    btn.Text = "Ex1";
+                    btn.ToolTip = "Temporarily allow DS4W to recognize a virtual DS4 controller as a real DS4 controller once.";
+                    btn.Checked += (s, e) => { SingleDs4Accessor.Instance.Reset(0); };
+                    btn.Unchecked += (s, e) => { SingleDs4Accessor.Instance.Reset(1); };
+                    btn.Loaded += (s, e) =>
                     {
-                        ToolTipService.SetInitialShowDelay(self, 256);
-                        SingleDs4Accessor.Instance.OnSlotConsumed += () => { Application.Current.Dispatcher.Invoke(() => { self.IsChecked = false; }); };
-                    }
-                });
-                container.Add(new cToggleButton()
+                        ToolTipService.SetInitialShowDelay(btn, 256);
+                        SingleDs4Accessor.Instance.OnSlotConsumed += () => { Application.Current.Dispatcher.Invoke(() => { btn.IsChecked = false; }); };
+                    };
+                }));
+                container.Add(new cToggleButton().Init(btn =>
                 {
-                    DotCornerRadius = new(5),
-                    Margin = new(4, 0, 4, 0),
-                    HorizontalAlignment = HorizontalAlignment.Stretch,
-                    VerticalAlignment = VerticalAlignment.Center,
-                    GuideLineColor = new SolidColorBrush(Colors.OrangeRed),
-                    Text = "Ex2",
-                    ToolTip = "Allow using hotkeys to control toggles.",
-                    CheckedAct = () => { RealKeyboard.Instance.StartMonitoring(); },
-                    UncheckedAct = () => { RealKeyboard.Instance.StopMonitoring(); },
-                    LoadedAct = (self) =>
+                    btn.DotCornerRadius = new(5);
+                    btn.Margin = new(4, 0, 4, 0);
+                    btn.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    btn.VerticalAlignment = VerticalAlignment.Center;
+                    btn.GuideLineColor = new SolidColorBrush(Colors.OrangeRed);
+                    btn.Text = "Ex2";
+                    btn.ToolTip = "Allow using hotkeys to control toggles.";
+                    btn.Checked += (s, e) => { RealKeyboard.Instance.StartMonitoring(); };
+                    btn.Unchecked += (s, e) => { RealKeyboard.Instance.StopMonitoring(); };
+                    btn.Loaded += (s, e) =>
                     {
-                        ToolTipService.SetInitialShowDelay(self, 256);
-                    }
-                });
-                container.Add(new cToggleButton()
+                        ToolTipService.SetInitialShowDelay(btn, 256);
+                    };
+                }));
+
+                container.Add(new cToggleButton().Init(btn =>
                 {
-                    DotCornerRadius = new(5),
-                    Margin = new(4, 0, 4, 0),
-                    HorizontalAlignment = HorizontalAlignment.Stretch,
-                    VerticalAlignment = VerticalAlignment.Center,
-                    GuideLineColor = new SolidColorBrush(Colors.OrangeRed),
-                    Text = "Ex3",
-                    ToolTip = "Allow the 2nd controller to access the Macro.",
-                    CheckedAct = () => { GamepadInputMixer.Instance.Reset(0); },
-                    UncheckedAct = () => { GamepadInputMixer.Instance.Reset(1); },
-                    LoadedAct = (self) =>
+                    btn.DotCornerRadius = new(5);
+                    btn.Margin = new(4, 0, 4, 0);
+                    btn.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    btn.VerticalAlignment = VerticalAlignment.Center;
+                    btn.GuideLineColor = new SolidColorBrush(Colors.OrangeRed);
+                    btn.Text = "Ex3";
+                    btn.ToolTip = "Allow the 2nd controller to access the Macro.";
+                    btn.Checked += (s, e) => { GamepadInputMixer.Instance.Reset(0); };
+                    btn.Unchecked += (s, e) => { GamepadInputMixer.Instance.Reset(1); };
+                    btn.Loaded += (s, e) =>
                     {
-                        ToolTipService.SetInitialShowDelay(self, 256);
-                    }
-                });
+                        ToolTipService.SetInitialShowDelay(btn, 256);
+                    };
+                }));
             }).GetVerticalContent();
 
             //TopContent_Middle
@@ -293,13 +287,13 @@ namespace CustomMacroFactory.MainView.UserControlEx.ClientEx
                 foreach (var item in MacroFactory.MacroManager.CurrentGameList)
                 {
                     //每个游戏类安排一个按钮
-                    cVerticalRadioButton temp = new();
+                    container.Add(new cVerticalRadioButton().Init(btn =>
                     {
-                        temp.SetBinding(cVerticalRadioButton.EnableColorfulTextProperty, new Binding(nameof(item.UseColorfulText)) { Source = item, Mode = BindingMode.TwoWay });
-                        temp.SetBinding(cVerticalRadioButton.TextProperty, new Binding(nameof(item.Title)) { Source = item, Mode = BindingMode.OneWay });
-                        temp.SetBinding(cVerticalRadioButton.IsCheckedProperty, new Binding(nameof(item.Selected)) { Source = item, Mode = BindingMode.TwoWay });
-                    }
-                    container.Add(temp);
+                        btn.GroupName = "aS[8d7^_0>F+$B2|#q3&y>@uPr{4r";
+                        btn.SetBinding(cVerticalRadioButton.EnableColorfulTextProperty, new Binding(nameof(item.UseColorfulText)) { Source = item, Mode = BindingMode.TwoWay });
+                        btn.SetBinding(cVerticalRadioButton.TextProperty, new Binding(nameof(item.Title)) { Source = item, Mode = BindingMode.OneWay });
+                        btn.SetBinding(cVerticalRadioButton.IsCheckedProperty, new Binding(nameof(item.Selected)) { Source = item, Mode = BindingMode.TwoWay });
+                    }));
                 }
 
                 Application.Current.Dispatcher.BeginInvoke(() =>
@@ -321,12 +315,11 @@ namespace CustomMacroFactory.MainView.UserControlEx.ClientEx
                 foreach (var item in MacroFactory.MacroManager.CurrentGameList)
                 {
                     //每个按钮对应具体内容
-                    ContentControl temp = new();
+                    container.Add(new ContentControl().Init(temp =>
                     {
                         temp.Content = new cToggleButtonGroup() { DataContext = item.MainGate, Margin = new Thickness(0, 4, 4, 4) };
                         temp.SetBinding(ContentControl.VisibilityProperty, new Binding(nameof(item.Selected)) { Source = item, Mode = BindingMode.OneWay, Converter = new BooleanToVisibilityConverter() });
-                    }
-                    container.Add(temp);
+                    }));
                 }
             }).GetVerticalContent();
 

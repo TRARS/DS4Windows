@@ -16,7 +16,7 @@ namespace CustomMacroFactory.MainView
     //CustomControl 在 Themes/Generic.xaml 中引用style资源
 
     //无边框相关处理
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         protected override void OnSourceInitialized(EventArgs e)
         {
@@ -174,10 +174,10 @@ namespace CustomMacroFactory.MainView
             });
             Mediator.Instance.Register(MainWindowMessageType.HideToTray, _ =>
             {
-                var flag = this.WindowState is WindowState.Minimized;
+                var isMinimized = this.WindowState is WindowState.Minimized;
                 {
-                    this.WindowState = flag ? (this.ShowInTaskbar ? this.WindowState : WindowState.Normal) : WindowState.Minimized;
-                    this.ShowInTaskbar = flag ? (!this.ShowInTaskbar) : false;
+                    this.WindowState = isMinimized ? (this.ShowInTaskbar ? this.WindowState : WindowState.Normal) : WindowState.Minimized;
+                    this.ShowInTaskbar = isMinimized ? (!this.ShowInTaskbar) : false;
                 }
             });
 
@@ -187,7 +187,8 @@ namespace CustomMacroFactory.MainView
             });
             Mediator.Instance.Register(MessageType.WindowClose, _ =>
             {
-                this.Close(); //this.WindowState = WindowState.Minimized;
+                //this.Close(); //直接Close()会导致Hook被移除
+                this.WindowState = WindowState.Minimized;
             });
             Mediator.Instance.Register(MessageType.Ds4Disconnect, _ =>
             {

@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -17,12 +18,20 @@ namespace CustomMacroBase.CustomControlEx.StackPanelEx
 
         public cStackPanel()
         {
-            this.ItemsSource = _children;
+            base.ItemsSource = _children;
         }
     }
 
     public partial class cStackPanel
     {
+        /// <summary>
+        /// <para>This property is invalid. Use the <see cref="cStackPanel.Children" /> property instead of <see cref="ItemsControl.ItemsSource"/> property.</para>
+        /// </summary>
+        public new IEnumerable ItemsSource
+        {
+            get { return base.ItemsSource; }
+        }
+
         public Orientation Orientation
         {
             get { return (Orientation)GetValue(OrientationProperty); }

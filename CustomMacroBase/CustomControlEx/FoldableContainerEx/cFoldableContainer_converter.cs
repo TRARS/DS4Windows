@@ -23,6 +23,25 @@ namespace CustomMacroBase.CustomControlEx.FoldableContainerEx
         }
     }
 
+    class cFoldableContainer_converter_actualsize2size : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            var actualHeight0 = double.Parse($"{values[0]}");
+            var actualHeight1 = double.Parse($"{values[1]}");
+
+            if (actualHeight1 > 0) { return actualHeight1; }
+            if (actualHeight0 > 0) { return actualHeight0; }
+
+            return Binding.DoNothing;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     class cFoldableContainer_converter_visibility2visibility : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
