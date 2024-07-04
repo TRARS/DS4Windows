@@ -17,6 +17,17 @@ namespace CustomMacroBase.CustomControlEx.FoldableContainerEx
             this.ArrowCommand = new(_ =>
             {
                 this.BodyVisibility = this.BodyVisibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+
+                //if (this.BodyVisibility is Visibility.Visible)
+                //{
+                //    this.BodyVisibility = Visibility.Collapsed;
+                //    this.BodyFadeOutAnimation(BodyScaleY > 0);
+                //}
+                //else
+                //{
+                //    this.BodyVisibility = Visibility.Visible;
+                //    this.BodyFadeInAnimation(BodyScaleY < 1);
+                //}
             });
         }
     }
@@ -56,20 +67,7 @@ namespace CustomMacroBase.CustomControlEx.FoldableContainerEx
             name: "BodyVisibility",
             propertyType: typeof(Visibility),
             ownerType: typeof(cFoldableContainer),
-            typeMetadata: new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, (d, e) =>
-            {
-                if (d is cFoldableContainer container && e.NewValue is Visibility newValue)
-                {
-                    if (newValue is Visibility.Collapsed)
-                    {
-                        container.BodyFadeOutAnimation(container.BodyScaleX > 0);
-                    }
-                    else
-                    {
-                        container.BodyFadeInAnimation(container.BodyScaleX < 1);
-                    }
-                }
-            })
+            typeMetadata: new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
         );
 
         public RelayCommand ArrowCommand
@@ -87,6 +85,8 @@ namespace CustomMacroBase.CustomControlEx.FoldableContainerEx
 
     public partial class cFoldableContainer
     {
+        //成员数量与动画帧数成反比，不得行。
+
         public double BodyScaleX
         {
             get { return (double)GetValue(BodyScaleXProperty); }
@@ -116,14 +116,16 @@ namespace CustomMacroBase.CustomControlEx.FoldableContainerEx
         private void BodyFadeOutAnimation(bool canExecute)
         {
             if (canExecute is false) { return; }
-            this.SetDoubleAnimation(BodyScaleXProperty, BodyScaleX, 0d, duration).Begin();
+
+            //this.SetDoubleAnimation(BodyScaleXProperty, BodyScaleX, 0d, duration).Begin();
             this.SetDoubleAnimation(BodyScaleYProperty, BodyScaleY, 0d, duration).Begin();
         }
         private void BodyFadeInAnimation(bool canExecute)
         {
             if (canExecute is false) { return; }
-            this.SetDoubleAnimation(BodyScaleXProperty, BodyScaleX, 1d, 0).Begin();
-            this.SetDoubleAnimation(BodyScaleYProperty, BodyScaleY, 1d, 0).Begin();
+
+            //this.SetDoubleAnimation(BodyScaleXProperty, BodyScaleX, 1d, duration).Begin();
+            this.SetDoubleAnimation(BodyScaleYProperty, BodyScaleY, 1d, duration).Begin();
         }
     }
 }

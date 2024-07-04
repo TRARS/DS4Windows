@@ -114,12 +114,18 @@ namespace CustomMacroBase.CustomControlEx.ToggleButtonGroupEx
         {
             var count = 0;
 
-            if (values[0] is ObservableCollection<GateBase> list)
+            if (values[0] is ObservableCollection<GateNode> list)
             {
-                count += list.Count(gate => !gate.HideSelf);
+                count += list.Where(node => node.Type is GateNodeType.GateBase)
+                             .Select(node => (GateBase)node.Content)
+                             .ToList()
+                             .Count(gate => !gate.HideSelf);
+
+                //count += list.Where(node => node.Type is not GateNodeType.GateBase)
+                //             .Count();
             }
 
-            if ((double.TryParse($"{values[1]}", out var children) && children > 0))
+            if ((double.TryParse($"{values[1]}", out var childrenActualHeight) && childrenActualHeight > 0))
             {
                 count++;
             }

@@ -3,6 +3,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 
 namespace CustomMacroBase.CustomControlEx.ToggleButtonEx
 {
@@ -199,19 +200,20 @@ namespace CustomMacroBase.CustomControlEx.ToggleButtonEx
             typeMetadata: new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
         );
 
+        private static IEasingFunction easing = new PowerEase() { EasingMode = EasingMode.EaseInOut, Power = 3.5 };
         private const string primary_color = "#FFC62626";
         private const string alternate_color = "#FF1394E4";
-        private const double duration = 128;
+        private const double duration = 192;
         private double dot_distance => cToggleButton_math.Instance.WidthCalculator(DotDiameter) - DotDiameter - (DotBorderThickness.Left + DotBorderThickness.Right);
 
         private void CheckedAnimation()
         {
-            this.SetDoubleAnimation(DotTransformXProperty, DotTransformX, dot_distance, duration * Factor(DotTransformX, dot_distance, dot_distance)).Begin();
+            this.SetDoubleAnimation(DotTransformXProperty, DotTransformX, dot_distance, duration * Factor(DotTransformX, dot_distance, dot_distance), easing).Begin();
             this.SetDoubleAnimation(SliderSeparatorOffsetProperty, SliderSeparatorOffset, 1d, duration * Factor(SliderSeparatorOffset, 1d, 1d)).Begin();
         }
         private void UncheckedAnimation()
         {
-            this.SetDoubleAnimation(DotTransformXProperty, DotTransformX, 0, duration * Factor(DotTransformX, 0, dot_distance)).Begin();
+            this.SetDoubleAnimation(DotTransformXProperty, DotTransformX, 0, duration * Factor(DotTransformX, 0, dot_distance), easing).Begin();
             this.SetDoubleAnimation(SliderSeparatorOffsetProperty, SliderSeparatorOffset, 0d, duration * Factor(SliderSeparatorOffset, 0d, 1d)).Begin();
         }
         private double Factor(double from, double to, double distance)

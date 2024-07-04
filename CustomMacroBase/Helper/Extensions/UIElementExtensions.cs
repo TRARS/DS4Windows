@@ -79,7 +79,7 @@ namespace CustomMacroBase.Helper.Extensions
 
     public static partial class UIElementExtensions
     {
-        public static Storyboard SetDoubleAnimation(this UIElement target, DependencyProperty dp, double from, double to, double duration, FillBehavior behavior = FillBehavior.HoldEnd)
+        public static Storyboard SetDoubleAnimation(this UIElement target, DependencyProperty dp, double from, double to, double duration, IEasingFunction? easing = null, FillBehavior behavior = FillBehavior.HoldEnd)
         {
             // 创建DoubleAnimation对象
             DoubleAnimation animation = new DoubleAnimation();
@@ -87,6 +87,7 @@ namespace CustomMacroBase.Helper.Extensions
             animation.To = to; // 终止值
             animation.Duration = new Duration(TimeSpan.FromMilliseconds(duration)); // 动画持续时间
             animation.FillBehavior = behavior;
+            animation.EasingFunction = easing;
 
             // 创建Storyboard对象
             Storyboard storyboard = new Storyboard();

@@ -823,12 +823,12 @@
         </member>
         <member name="P:CustomMacroBase.PreBase.GateBase.IsChecked">
             <summary>
-            获取或设置滑块开关状态（供UI绑定）
+            获取或设置滑块开关状态（与父节点无关，仅供UI绑定）
             </summary>
         </member>
         <member name="P:CustomMacroBase.PreBase.GateBase.Enable">
             <summary>
-            获取或设置滑块开关状态（若父节点Enable为false，则必然返回false）
+            获取或设置滑块开关状态（与父节点相关，若父节点Enable为false，则必然返回false）
             </summary>
         </member>
         <member name="P:CustomMacroBase.PreBase.GateBase.HideSelf">

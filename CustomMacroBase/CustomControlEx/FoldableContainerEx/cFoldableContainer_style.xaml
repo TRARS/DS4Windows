@@ -4,7 +4,7 @@
                     xmlns:local="clr-namespace:CustomMacroBase.CustomControlEx.FoldableContainerEx">
 
     <local:cFoldableContainer_converter_height2height x:Key="cFoldableContainer_converter_height2height"/>
-    <local:cFoldableContainer_converter_actualsize2size x:Key="cFoldableContainer_converter_actualsize2size"/>
+    <local:cFoldableContainer_converter_scale2visibility x:Key="cFoldableContainer_converter_scale2visibility"/>
     <local:cFoldableContainer_converter_visibility2visibility x:Key="cFoldableContainer_converter_visibility2visibility"/>
     <local:cFoldableContainer_converter_visibility2ishittestvisible x:Key="cFoldableContainer_converter_visibility2ishittestvisible"/>
 
@@ -92,7 +92,7 @@
                                                                     </BeginStoryboard>
                                                                 </DataTrigger.ExitActions>
                                                             </DataTrigger>
-                                                            
+
                                                             <Trigger Property="IsMouseOver" Value="True">
                                                                 <Setter Property="Fill" Value="{StaticResource MouseOverColor}" TargetName="arrow"/>
                                                             </Trigger>
@@ -132,6 +132,10 @@
                                         <Binding Path="BodyVisibility" RelativeSource="{RelativeSource TemplatedParent}"/>
                                     </MultiBinding>
                                 </Border.IsHitTestVisible>
+                                <!--<Border.LayoutTransform>
+                                    <ScaleTransform ScaleX="1"
+                                                    ScaleY="{Binding BodyScaleY, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                </Border.LayoutTransform>-->
 
                                 <Line Y1="-2"
                                       Y2="{Binding ActualHeight, ElementName=body, Converter={StaticResource cFoldableContainer_converter_height2height}, Mode=OneWay}"
@@ -149,67 +153,27 @@
                                     </Line.Visibility>
                                 </Line>
                             </Border>
-                            
+
                             <!--Header-->
                             <ContentControl Grid.Column="1" Grid.Row="0" Content="{TemplateBinding Header}"/>
-                            
+
                             <!--Body-->
                             <ContentPresenter x:Name="body" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top"
-                                              Visibility="{TemplateBinding BodyVisibility}"/>
-                            <Border x:Name="body_rect" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Stretch"
-                                    Background="Transparent" IsHitTestVisible="False">
-                                <Border.Width>
-                                    <MultiBinding Converter="{StaticResource cFoldableContainer_converter_actualsize2size}" Mode="OneWay">
-                                        <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}"/>
-                                        <Binding Path="ActualWidth" ElementName="body"/>
-                                    </MultiBinding>
-                                </Border.Width>
-                                <Border.Height>
-                                    <MultiBinding Converter="{StaticResource cFoldableContainer_converter_actualsize2size}" Mode="OneWay">
-                                        <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}"/>
-                                        <Binding Path="ActualHeight" ElementName="body"/>
-                                    </MultiBinding>
-                                </Border.Height>
-                                <Border.LayoutTransform>
+                                              Visibility="{TemplateBinding BodyVisibility}">
+                                <!--<ContentPresenter.LayoutTransform>
                                     <ScaleTransform ScaleX="{Binding BodyScaleX, RelativeSource={RelativeSource TemplatedParent}}"
                                                     ScaleY="{Binding BodyScaleY, RelativeSource={RelativeSource TemplatedParent}}"/>
-                                </Border.LayoutTransform>
-                            </Border>
+                                </ContentPresenter.LayoutTransform>-->
+                                <!--<ContentPresenter.Visibility>
+                                    <MultiBinding Converter="{StaticResource cFoldableContainer_converter_scale2visibility}" Mode="OneWay">
+                                        <Binding Path="LayoutTransform.ScaleX" RelativeSource="{RelativeSource Self}"/>
+                                        <Binding Path="LayoutTransform.ScaleY" RelativeSource="{RelativeSource Self}"/>
+                                    </MultiBinding>
+                                </ContentPresenter.Visibility>-->
+                            </ContentPresenter>
                         </Grid>
                     </Border>
-
-                    <!--<ControlTemplate.Triggers>
-                        <DataTrigger Binding="{Binding BodyVisibility, RelativeSource={RelativeSource Self}}" Value="Collapsed">
-                            <DataTrigger.EnterActions>
-                                <BeginStoryboard x:Name="collapsedANM">
-                                    <Storyboard>
-                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.LayoutTransform).(ScaleY)" 
-                                                                       Storyboard.TargetName="body_rect"
-                                                                       BeginTime="0:0:0.0">
-                                            <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0">
-                                                <EasingDoubleKeyFrame.EasingFunction>
-                                                    <PowerEase  EasingMode="EaseIn"/>
-                                                </EasingDoubleKeyFrame.EasingFunction>
-                                            </EasingDoubleKeyFrame>
-                                        </DoubleAnimationUsingKeyFrames>
-                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.LayoutTransform).(ScaleX)" 
-                                                                       Storyboard.TargetName="body_rect"
-                                                                       BeginTime="0:0:0.3">
-                                            <EasingDoubleKeyFrame KeyTime="0:0:0.0" Value="0"/>
-                                        </DoubleAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility"
-                                                                       Storyboard.TargetName="body_rect"
-                                                                       BeginTime="0:0:0.3">
-                                            <DiscreteObjectKeyFrame KeyTime="0:0:0.0" Value="{x:Static Visibility.Collapsed}"/>
-                                        </ObjectAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </DataTrigger.EnterActions>
-                            <DataTrigger.ExitActions>
-                                <RemoveStoryboard BeginStoryboardName="collapsedANM"/>
-                            </DataTrigger.ExitActions>
-                        </DataTrigger>
-                    </ControlTemplate.Triggers>-->
+                    
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

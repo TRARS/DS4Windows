@@ -247,7 +247,7 @@ namespace CustomMacroBase.PreBase
         private string _text = "Sub_NoName";
 
         /// <summary>
-        /// 获取或设置滑块开关状态（供UI绑定）
+        /// 获取或设置滑块开关状态（与父节点无关，仅供UI绑定）
         /// </summary>
         public bool IsChecked
         {
@@ -260,7 +260,7 @@ namespace CustomMacroBase.PreBase
             }
         }
         /// <summary>
-        /// 获取或设置滑块开关状态（若父节点Enable为false，则必然返回false）
+        /// 获取或设置滑块开关状态（与父节点相关，若父节点Enable为false，则必然返回false）
         /// </summary>
         public bool Enable
         {
@@ -378,7 +378,7 @@ namespace CustomMacroBase.PreBase
         /// <summary>
         /// 主开关，既位于最外层的开关
         /// </summary>
-        public GateBase MainGate { get; } = new() { Text = "Main_NoName", Enable = true, TooltipPrefix = "Root" };
+        public GateBase MainGate { get; } = new() { Text = "Main_NoName", Enable = true };
     }
 }
 
