@@ -146,7 +146,7 @@ namespace CustomMacroBase.CustomControlEx.ToggleButtonGroupEx
             var pre = $"{values[0]}";
             var suf = $"{values[1]}";
 
-            return $"{pre}" + (string.IsNullOrWhiteSpace(suf) ? string.Empty : suf);
+            return $"{pre}" + (string.IsNullOrWhiteSpace(suf) ? string.Empty : $" {suf}");
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

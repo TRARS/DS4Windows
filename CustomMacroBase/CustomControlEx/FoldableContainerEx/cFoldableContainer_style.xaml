@@ -158,7 +158,7 @@
                             <ContentControl Grid.Column="1" Grid.Row="0" Content="{TemplateBinding Header}"/>
 
                             <!--Body-->
-                            <ContentPresenter x:Name="body" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top"
+                            <ContentPresenter x:Name="body" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top"
                                               Visibility="{TemplateBinding BodyVisibility}">
                                 <!--<ContentPresenter.LayoutTransform>
                                     <ScaleTransform ScaleX="{Binding BodyScaleX, RelativeSource={RelativeSource TemplatedParent}}"
