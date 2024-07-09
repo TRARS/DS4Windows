@@ -21,18 +21,18 @@ namespace CustomMacroFactory
                            sc.AddSingleton<MainWindow>(sp => new() { DataContext = sp.GetRequiredService<MainWindow_viewmodel>() });
                            sc.AddSingleton<MainWindow_viewmodel>();
 
-                           sc.AddSingleton<uTitleBar>(sp => new() { DataContext = sp.GetRequiredService<uTitleBar_viewmodel>() });
                            sc.AddSingleton<uTitleBar_viewmodel>();
-
-                           sc.AddSingleton<uRainbowLine>(sp => new() { DataContext = sp.GetRequiredService<uRainbowLine_viewmodel>() });
                            sc.AddSingleton<uRainbowLine_viewmodel>();
-
-                           sc.AddSingleton<uClient>(sp => new() { DataContext = sp.GetRequiredService<uClient_viewmodel>() });
                            sc.AddSingleton<uClient_viewmodel>();
 
                            sc.AddSingleton<uPixelPicker>(sp => new() { DataContext = sp.GetRequiredService<uPixelPicker_viewmodel>() });
                            sc.AddSingleton<uPixelPicker_viewmodel>();
                        });
+        }
+
+        static MainEntry()
+        {
+            host.Start();
         }
 
         public static T GetService<T>() where T : notnull

@@ -1,9 +1,10 @@
 ﻿using CustomMacroBase.Helper;
+using CustomMacroFactory.MainView.Interfaces;
 using System.Windows;
 
 namespace CustomMacroFactory.MainView.UserControlEx.TitleBarEx
 {
-    public partial class uTitleBar_viewmodel : NotificationObject
+    public partial class uTitleBar_viewmodel : NotificationObject, IViewModel
     {
         private readonly uTitleBar_model model = new();
 

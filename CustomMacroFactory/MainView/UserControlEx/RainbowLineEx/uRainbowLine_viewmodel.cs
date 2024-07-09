@@ -1,9 +1,10 @@
 ﻿using CustomMacroBase.Helper;
+using CustomMacroFactory.MainView.Interfaces;
 using System.Windows.Media;
 
 namespace CustomMacroFactory.MainView.UserControlEx.RainbowLineEx
 {
-    public partial class uRainbowLine_viewmodel : NotificationObject
+    public partial class uRainbowLine_viewmodel : NotificationObject, IViewModel
     {
         private readonly uRainbowLine_model model = new();
 

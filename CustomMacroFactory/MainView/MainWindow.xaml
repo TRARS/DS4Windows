@@ -4,12 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CustomMacroFactory.MainView"
-        
-        xmlns:TitleBarEx="clr-namespace:CustomMacroFactory.MainView.UserControlEx.TitleBarEx" 
-        xmlns:RainbowLineEx="clr-namespace:CustomMacroFactory.MainView.UserControlEx.RainbowLineEx" 
-        xmlns:ClientEx="clr-namespace:CustomMacroFactory.MainView.UserControlEx.ClientEx" 
-        
+        xmlns:local="clr-namespace:CustomMacroFactory.MainView" xmlns:titlebarex="clr-namespace:CustomMacroFactory.MainView.UserControlEx.TitleBarEx" xmlns:rainbowlineex="clr-namespace:CustomMacroFactory.MainView.UserControlEx.RainbowLineEx" xmlns:clientex="clr-namespace:CustomMacroFactory.MainView.UserControlEx.ClientEx"
         mc:Ignorable="d"
         SnapsToDevicePixels="True" 
         WindowStartupLocation="Manual" 
@@ -35,6 +30,16 @@
     <Window.Resources>
         <local:RectConverter x:Key="RectConverter"/>
         <local:BorderBrushConverter x:Key="BorderBrushConverter"/>
+
+        <DataTemplate DataType="{x:Type titlebarex:uTitleBar_viewmodel}">
+            <titlebarex:uTitleBar/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type rainbowlineex:uRainbowLine_viewmodel}">
+            <rainbowlineex:uRainbowLine/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type clientex:uClient_viewmodel}">
+            <clientex:uClient/>
+        </DataTemplate>
     </Window.Resources>
     <d:Window.DataContext>
         <local:MainWindow_viewmodel/>
@@ -84,19 +89,13 @@
             </Grid.RowDefinitions>
 
             <!--标题栏-->
-            <Border Grid.Row="0" x:Name="Chrome">
-                <ContentControl Content="{Binding ViewList[0]}"/>
-            </Border>
-
+            <ContentControl Grid.Row="0" Content="{Binding SubViewModelList[0]}" x:Name="Chrome"/>
+            
             <!--分界线-->
-            <Border Grid.Row="1">
-                <ContentControl Content="{Binding ViewList[1]}"/>
-            </Border>
-
+            <ContentControl Grid.Row="1" Content="{Binding SubViewModelList[1]}"/>
+            
             <!--客户区-->
-            <Border Grid.Row="2">
-                <ContentControl Content="{Binding ViewList[2]}"/>
-            </Border>
+            <ContentControl Grid.Row="2" Content="{Binding SubViewModelList[2]}"/>
         </Grid>
     </Grid>
 

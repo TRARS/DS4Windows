@@ -6,6 +6,7 @@ using CustomMacroBase.CustomControlEx.VerticalRadioButtonEx;
 using CustomMacroBase.Helper;
 using CustomMacroBase.Helper.Extensions;
 using CustomMacroBase.Helper.HotKey;
+using CustomMacroFactory.MainView.Interfaces;
 using CustomMacroFactory.MainView.UserControlEx.PixelPicker;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -158,7 +159,7 @@ namespace CustomMacroFactory.MainView.UserControlEx.ClientEx
     }
 
     // Init
-    public partial class uClient_viewmodel : NotificationObject
+    public partial class uClient_viewmodel : NotificationObject, IViewModel
     {
         public uClient_viewmodel()
         {

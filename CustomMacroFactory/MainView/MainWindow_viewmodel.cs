@@ -1,4 +1,5 @@
 ﻿using CustomMacroBase.Helper;
+using CustomMacroFactory.MainView.Interfaces;
 using CustomMacroFactory.MainView.UserControlEx.ClientEx;
 using CustomMacroFactory.MainView.UserControlEx.RainbowLineEx;
 using CustomMacroFactory.MainView.UserControlEx.TitleBarEx;
@@ -11,7 +12,7 @@ namespace CustomMacroFactory.MainView
 {
     partial class MainWindow_viewmodel : NotificationObject
     {
-        public ObservableCollection<UIElement> ViewList { get; init; }
+        public ObservableCollection<IViewModel> SubViewModelList { get; init; }
         public RelayCommand LoadedCommand { get; set; }
         public RelayCommand ClosingCommand { get; set; }
         public RelayCommand PreviewKeyDownCommand { get; set; }
@@ -20,11 +21,11 @@ namespace CustomMacroFactory.MainView
         {
             CreateCommand();
 
-            ViewList = new()
+            SubViewModelList = new()
             {
-                MainEntry.GetService<uTitleBar>(),
-                MainEntry.GetService<uRainbowLine>(),
-                MainEntry.GetService<uClient>()
+                MainEntry.GetService<uTitleBar_viewmodel>(),
+                MainEntry.GetService<uRainbowLine_viewmodel>(),
+                MainEntry.GetService<uClient_viewmodel>()
             };
         }
 

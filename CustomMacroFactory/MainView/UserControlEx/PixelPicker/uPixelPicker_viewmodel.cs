@@ -2,6 +2,7 @@
 using CustomMacroBase.Helper;
 using CustomMacroBase.Helper.Extensions;
 using CustomMacroBase.PixelMatcher;
+using CustomMacroFactory.MainView.Interfaces;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -17,7 +18,7 @@ using SD = System.Drawing;
 
 namespace CustomMacroFactory.MainView.UserControlEx.PixelPicker
 {
-    public partial class uPixelPicker_viewmodel : NotificationObject
+    public partial class uPixelPicker_viewmodel : NotificationObject, IViewModel
     {
         private readonly uPixelPicker_model model = new();
 
