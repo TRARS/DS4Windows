@@ -8,7 +8,9 @@
              xmlns:titlebarbuttonex="clr-namespace:CustomMacroBase.CustomControlEx.TitleBarButtonEx;assembly=CustomMacroBase"
              mc:Ignorable="d" 
              MinWidth="240"
-             d:MinWidth="240">
+             d:MinWidth="240"
+             d:DataContext="{d:DesignInstance local:uTitleBar_viewmodel, IsDesignTimeCreatable=True}"
+             >
     <UserControl.Resources>
         <ResourceDictionary>
             <SolidColorBrush Color="#862E2F34" x:Key="AreaColor"/>
@@ -37,9 +39,6 @@
             <local:uTitleBar_converter_bool2opacity x:Key="uTitleBar_converter_bool2opacity"/>
         </ResourceDictionary>
     </UserControl.Resources>
-    <d:UserControl.DataContext>
-        <local:uTitleBar_viewmodel/>
-    </d:UserControl.DataContext>
 
     <Grid Background="{StaticResource AreaColor}" >
         <Grid.ColumnDefinitions>

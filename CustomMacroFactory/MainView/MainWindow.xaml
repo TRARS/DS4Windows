@@ -4,7 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CustomMacroFactory.MainView" xmlns:titlebarex="clr-namespace:CustomMacroFactory.MainView.UserControlEx.TitleBarEx" xmlns:rainbowlineex="clr-namespace:CustomMacroFactory.MainView.UserControlEx.RainbowLineEx" xmlns:clientex="clr-namespace:CustomMacroFactory.MainView.UserControlEx.ClientEx"
+        xmlns:local="clr-namespace:CustomMacroFactory.MainView" 
+        xmlns:titlebarex="clr-namespace:CustomMacroFactory.MainView.UserControlEx.TitleBarEx"
+        xmlns:rainbowlineex="clr-namespace:CustomMacroFactory.MainView.UserControlEx.RainbowLineEx" 
+        xmlns:clientex="clr-namespace:CustomMacroFactory.MainView.UserControlEx.ClientEx"
         mc:Ignorable="d"
         SnapsToDevicePixels="True" 
         WindowStartupLocation="Manual" 
@@ -26,6 +29,7 @@
         
         MinWidth="233"
         MinHeight="423"
+        d:DataContext="{d:DesignInstance local:MainWindow_viewmodel, IsDesignTimeCreatable=True}"
         >
     <Window.Resources>
         <local:RectConverter x:Key="RectConverter"/>
@@ -41,9 +45,6 @@
             <clientex:uClient/>
         </DataTemplate>
     </Window.Resources>
-    <d:Window.DataContext>
-        <local:MainWindow_viewmodel/>
-    </d:Window.DataContext>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding LoadedCommand}" PassEventArgsToCommand="True"/>
@@ -55,9 +56,8 @@
             <i:InvokeCommandAction Command="{Binding PreviewKeyDownCommand}" PassEventArgsToCommand="True"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    
+
     <Grid>
-        <!--BorderBrush="DimGray"-->
         <Border x:Name="PART_Border" BorderThickness="1" CornerRadius="5" 
                 Margin="0" Panel.ZIndex="2"
                 BorderBrush="{Binding IsActive, 

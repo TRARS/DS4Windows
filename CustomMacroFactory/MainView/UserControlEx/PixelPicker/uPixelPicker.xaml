@@ -11,10 +11,9 @@
              
              d:Width="480" 
              d:Height="272" 
-             d:Visibility="Visible">
-    <d:UserControl.DataContext>
-        <local:uPixelPicker_viewmodel/>
-    </d:UserControl.DataContext>
+             d:Visibility="Visible"
+             d:DataContext="{d:DesignInstance local:uPixelPicker_viewmodel, IsDesignTimeCreatable=True}"
+             >
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding LoadedCommand}" PassEventArgsToCommand="True"/>

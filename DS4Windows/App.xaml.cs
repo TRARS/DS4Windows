@@ -774,7 +774,9 @@ namespace DS4WinWPF
                 if (ipcClassNameMMF != null) ipcClassNameMMF.Dispose();
 
                 LogManager.Flush();
-                LogManager.Shutdown();
+                LogManager.Shutdown(); 
+                
+                Environment.Exit(0);
             }
         }
 

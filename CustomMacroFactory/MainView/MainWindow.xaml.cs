@@ -141,8 +141,8 @@ namespace CustomMacroFactory.MainView
         public void Exit()
         {
             Mediator.Instance.UnRegister(MessageType.WindowClose);
-            Mediator.Instance.UnRegister(MainWindowMessageType.Closing); //canExit = true;
-            Environment.Exit(0);
+            Mediator.Instance.UnRegister(MainWindowMessageType.Closing);
+            //Environment.Exit(0);
         }
 
         //HideToTray

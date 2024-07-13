@@ -7,11 +7,9 @@
              xmlns:effect="clr-namespace:CustomMacroBase.CustomEffect;assembly=CustomMacroBase"
              mc:Ignorable="d" 
              d:DesignHeight="20" 
-             d:DesignWidth="640">
-    <d:UserControl.DataContext>
-        <local:uRainbowLine_viewmodel/>
-    </d:UserControl.DataContext>
-    
+             d:DesignWidth="640"
+             d:DataContext="{d:DesignInstance local:uRainbowLine_viewmodel, IsDesignTimeCreatable=True}"
+             >
     <Grid>
         <Rectangle Width="{Binding Width}" Height="{Binding Height}" Fill="{Binding BrushColor}"
                    d:Height="auto">

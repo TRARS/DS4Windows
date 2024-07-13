@@ -10,6 +10,7 @@
              mc:Ignorable="d"
              d:MinWidth="240"
              d:MinHeight="240"
+             d:DataContext="{d:DesignInstance local:uClient_viewmodel, IsDesignTimeCreatable=True}"
              >
     <UserControl.Resources>
         <ResourceDictionary>
@@ -22,9 +23,6 @@
             <local:uClient_converter_boolbool2visibility x:Key="uClient_converter_boolbool2visibility"/>
         </ResourceDictionary>
     </UserControl.Resources>
-    <d:UserControl.DataContext>
-        <local:uClient_viewmodel/>
-    </d:UserControl.DataContext>
 
     <Border d:BorderThickness="4" d:BorderBrush ="DarkRed" d:Background="snow">
         <Grid MaxHeight="1080">
