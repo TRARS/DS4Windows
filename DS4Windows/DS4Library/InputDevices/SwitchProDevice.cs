@@ -870,39 +870,46 @@ namespace DS4Windows.InputDevices
             //res = hidDevice.ReadFile(tmpReport);
         }
 
-        public byte[] Subcommand(byte subcommand, byte[] tmpBuffer, uint bufLen,
+        private byte[] Subcommand(byte subcommand, byte[] tmpBuffer, uint bufLen,
             bool checkResponse = false)
         {
-            bool result;
-            byte[] commandBuffer = new byte[SUBCOMMAND_BUFFER_LEN];
-            Array.Copy(commandBuffHeader, 0, commandBuffer, 2, SUBCOMMAND_HEADER_LEN);
-            Array.Copy(tmpBuffer, 0, commandBuffer, 11, bufLen);
+            int retryLimit = 100;
+            byte[] tmpReport;
 
-            commandBuffer[0] = 0x01;
-            commandBuffer[1] = frameCount;
-            frameCount = (byte)(++frameCount & 0x0F);
-            commandBuffer[10] = subcommand;
-
-            result = hDevice.WriteOutputReportViaInterrupt(commandBuffer, 0);
-            hDevice.fileStream.Flush();
-
-            byte[] tmpReport = null;
-            if (result && checkResponse)
+            do
             {
-                tmpReport = new byte[INPUT_REPORT_LEN];
-                HidDevice.ReadStatus res;
-                res = hDevice.ReadWithFileStream(tmpReport, SUBCOMMAND_RESPONSE_TIMEOUT);
-                int tries = 1;
-                while (res == HidDevice.ReadStatus.Success &&
-                    tmpReport[0] != 0x21 && tmpReport[14] != subcommand && tries < 100)
-                {
-                    //Console.WriteLine("TRY AGAIN: {0}", tmpReport[0]);
-                    res = hDevice.ReadWithFileStream(tmpReport, SUBCOMMAND_RESPONSE_TIMEOUT);
-                    tries++;
-                }
+                bool result;
+                byte[] commandBuffer = new byte[SUBCOMMAND_BUFFER_LEN];
+                Array.Copy(commandBuffHeader, 0, commandBuffer, 2, SUBCOMMAND_HEADER_LEN);
+                Array.Copy(tmpBuffer, 0, commandBuffer, 11, bufLen);
 
-                //Console.WriteLine("END GAME: {0} {1} {2}", subcommand, tmpReport[0], tries);
+                commandBuffer[0] = 0x01;
+                commandBuffer[1] = frameCount;
+                frameCount = (byte)(++frameCount & 0x0F);
+                commandBuffer[10] = subcommand;
+
+                result = hDevice.WriteOutputReportViaInterrupt(commandBuffer, 0);
+                hDevice.fileStream.Flush();
+
+                tmpReport = null;
+                if (result && checkResponse)
+                {
+                    tmpReport = new byte[INPUT_REPORT_LEN];
+                    HidDevice.ReadStatus res;
+                    res = hDevice.ReadWithFileStream(tmpReport, SUBCOMMAND_RESPONSE_TIMEOUT);
+                    int tries = 1;
+                    while (res == HidDevice.ReadStatus.Success &&
+                        tmpReport[0] != 0x21 && tmpReport[14] != subcommand && tries < 100)
+                    {
+                        //Console.WriteLine("TRY AGAIN: {0}", tmpReport[0]);
+                        res = hDevice.ReadWithFileStream(tmpReport, SUBCOMMAND_RESPONSE_TIMEOUT);
+                        tries++;
+                    }
+
+                    //Console.WriteLine("END GAME: {0} {1} {2}", subcommand, tmpReport[0], tries);
+                }
             }
+            while (CustomMacroLink.ReloadStickCalib(subcommand, tmpBuffer, tmpReport, ref retryLimit));
 
             return tmpReport;
         }
@@ -1029,11 +1036,11 @@ namespace DS4Windows.InputDevices
                 //Debug.WriteLine("New: {0} | Old: {1}", leftStickXData.mid, leftStickCalib[2]);
                 //Debug.WriteLine("MAX: {0} | MIN: {1}", leftStickXData.max, leftStickXData.min);
                 //leftStickOffsetX = leftStickOffsetY = 140;
+            }
 
-                if (CustomMacroLink.HasAnyZero("left", leftStickXData, leftStickYData))
-                {
-                    goto reload_left;//
-                }
+            if (CustomMacroLink.HasAnyZero("left", leftStickXData, leftStickYData))
+            {
+                goto reload_left;//
             }
 
         //leftStickOffsetX = leftStickCalib[2];
@@ -1094,11 +1101,11 @@ namespace DS4Windows.InputDevices
                 //rightStickYData.mid = rightStickCalib[3];
                 rightStickYData.mid = (ushort)((rightStickYData.max - rightStickYData.min) / 2.0 + rightStickYData.min);
                 //rightStickOffsetX = rightStickOffsetY = 140;
+            }
 
-                if (CustomMacroLink.HasAnyZero("right", rightStickXData, rightStickYData))
-                {
-                    goto reload_right;//
-                }
+            if (CustomMacroLink.HasAnyZero("right", rightStickXData, rightStickYData))
+            {
+                goto reload_right;//
             }
 
             //rightStickOffsetX = rightStickCalib[2];

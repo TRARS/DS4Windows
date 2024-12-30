@@ -110,7 +110,7 @@ namespace CustomMacroFactory.MainView
             {
                 var button = result.VisualHit.FindVisualAncestor<Button>();
                 var checkbox = result.VisualHit.FindVisualAncestor<CheckBox>();
-                if (button == null && checkbox == null)
+                if ((button == null || !button.IsHitTestVisible) && (checkbox == null || !checkbox.IsHitTestVisible))
                 {
                     return Win32.HitTestResult.HTCAPTION;
                 }
@@ -183,6 +183,14 @@ namespace CustomMacroFactory.MainView
                 }
             });
 
+            Mediator.Instance.Register(MessageType.WindowTopmost, para =>
+            {
+                this.Topmost = (bool)para;
+                this.Dispatcher.BeginInvoke(() =>
+                {
+                    Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, $"Window.Topmost = {this.Topmost}");
+                });
+            });
             Mediator.Instance.Register(MessageType.WindowPosReset, para =>
             {
                 this.TryMoveToPrimaryMonitor((Vector)para);

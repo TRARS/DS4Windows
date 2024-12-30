@@ -1,7 +1,6 @@
 ﻿using CustomMacroBase.CustomControlEx.AggregateBindingControl;
 using CustomMacroBase.CustomControlEx.ComboBoxEx;
 using CustomMacroBase.CustomControlEx.SliderEx;
-using CustomMacroBase.CustomControlEx.StackPanelEx;
 using CustomMacroBase.CustomControlEx.ToggleButtonEx;
 using CustomMacroBase.CustomControlEx.ValueIndicatorEx;
 using CustomMacroBase.GamePadState;
@@ -862,7 +861,7 @@ namespace CustomMacroBase
                                                 HorizontalAlignment horizontalAlignment = HorizontalAlignment.Stretch,
                                                 VerticalAlignment verticalAlignment = VerticalAlignment.Stretch)
         {
-            var stackpanel = new cStackPanel() { GuideLineColor = new(Colors.WhiteSmoke), HorizontalAlignment = horizontalAlignment, VerticalAlignment = verticalAlignment };
+            var stackpanel = new StackPanel() { Orientation = Orientation.Horizontal, HorizontalAlignment = horizontalAlignment, VerticalAlignment = verticalAlignment };
             {
                 var slider = new cSlider()
                 {
@@ -941,7 +940,7 @@ namespace CustomMacroBase
                                                  HorizontalAlignment horizontalAlignment = HorizontalAlignment.Stretch,
                                                  VerticalAlignment verticalAlignment = VerticalAlignment.Stretch)
         {
-            var stackpanel = new cStackPanel() { GuideLineColor = new(Colors.WhiteSmoke), HorizontalAlignment = horizontalAlignment, VerticalAlignment = verticalAlignment };
+            var stackpanel = new StackPanel() { Orientation = Orientation.Horizontal, HorizontalAlignment = horizontalAlignment, VerticalAlignment = verticalAlignment };
             {
                 var slider = new cSlider()
                 {
@@ -1037,7 +1036,7 @@ namespace CustomMacroBase
                                                   HorizontalAlignment horizontalAlignment = HorizontalAlignment.Stretch,
                                                   VerticalAlignment verticalAlignment = VerticalAlignment.Stretch)
         {
-            var stackpanel = new cStackPanel() { GuideLineColor = new(Colors.WhiteSmoke), HorizontalAlignment = horizontalAlignment, VerticalAlignment = verticalAlignment };
+            var stackpanel = new StackPanel() { Orientation = Orientation.Horizontal, HorizontalAlignment = horizontalAlignment, VerticalAlignment = verticalAlignment };
             {
                 var combobox = new cComboBox()
                 {
@@ -1081,7 +1080,7 @@ namespace CustomMacroBase
                                                   HorizontalAlignment horizontalAlignment = HorizontalAlignment.Stretch,
                                                   VerticalAlignment verticalAlignment = VerticalAlignment.Stretch)
         {
-            var stackpanel = new cStackPanel() { GuideLineColor = new(Colors.WhiteSmoke), HorizontalAlignment = horizontalAlignment, VerticalAlignment = verticalAlignment };
+            var stackpanel = new StackPanel() { Orientation = Orientation.Horizontal, HorizontalAlignment = horizontalAlignment, VerticalAlignment = verticalAlignment };
             {
                 var combobox = new cComboBox()
                 {
@@ -1119,7 +1118,7 @@ namespace CustomMacroBase
         protected static UIElement CreateValueIndicator(object model,
                                                         params ValueIndicatorPacket[] propPackets)
         {
-            var stackpanel = new cStackPanel() { Orientation = Orientation.Vertical, GuideLineColor = new(Colors.SeaShell), VerticalAlignment = VerticalAlignment.Center };
+            var stackpanel = new StackPanel() { Orientation = Orientation.Vertical, VerticalAlignment = VerticalAlignment.Center };
             {
                 foreach (var item in propPackets)
                 {

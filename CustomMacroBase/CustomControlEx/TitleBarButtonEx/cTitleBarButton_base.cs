@@ -4,6 +4,9 @@
     {
         EmptyBtn,
         MaxMinBtn,
-        CloseBtn
+        CloseBtn,
+
+        TopmostBtn,
+        ResetPosBtn,
     }
 }

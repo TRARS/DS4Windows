@@ -50,6 +50,7 @@ namespace CustomMacroBase.Helper
         PixelPickerOnOff,         //拾色器区域 展开/关闭 
         WindowPosReset,           //窗体位置恢复至左上角
         CanUpdateFrames,          //
+        WindowTopmost,            //总在最前
     }
 
     //私有字段/属性/方法

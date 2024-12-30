@@ -3,7 +3,7 @@
                     xmlns:local="clr-namespace:CustomMacroBase.CustomControlEx.ToggleButtonGroupEx" 
                     xmlns:togglebuttonex="clr-namespace:CustomMacroBase.CustomControlEx.ToggleButtonEx" 
                     xmlns:contextmenuex="clr-namespace:CustomMacroBase.CustomControlEx.ContextMenuEx"
-                    xmlns:foldablecontainerex="clr-namespace:CustomMacroBase.CustomControlEx.FoldableContainerEx">
+                    xmlns:foldablecontainerex="clr-namespace:CustomMacroBase.CustomControlEx.FoldableContainerEx" xmlns:stackpanelex="clr-namespace:CustomMacroBase.CustomControlEx.StackPanelEx">
 
     <local:cToggleButtonGroup_converter_bool2visibility x:Key="cToggleButtonGroup_converter_bool2visibility"/>
     <local:cToggleButtonGroup_converter_bool2opacity x:Key="cToggleButtonGroup_converter_bool2opacity"/>
@@ -30,17 +30,21 @@
             
             <!--UIElementStyle-->
             <DataTemplate x:Key="UIElementStyle">
-                <local:cChildrenExContainer Grid.Row="2" x:Name="childrenex"
-                                            ItemsSource="{Binding Content, Converter={StaticResource cToggleButtonGroup_converter_delegate2uielement}}"
-                                            Margin="{StaticResource ChildrenExPlacement}"
-                                            Opacity="{Binding EnableChildren, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Converter={StaticResource cToggleButtonGroup_converter_bool2opacity}, ConverterParameter=0.25, Mode=OneWay}"
-                                            IsHitTestVisible="{Binding EnableChildren, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}">
-                    <ItemsControl.Template>
-                        <ControlTemplate TargetType="{x:Type ItemsControl}">
-                            <VirtualizingStackPanel IsItemsHost="True" Orientation="Vertical" IsVirtualizing="True"/>
-                        </ControlTemplate>
-                    </ItemsControl.Template>
-                </local:cChildrenExContainer>
+                <stackpanelex:cStackPanel GuideLineColor="WhiteSmoke">
+                    <stackpanelex:cStackPanel.Children>
+                        <local:cChildrenExContainer Grid.Row="2" x:Name="childrenex"
+                                                    ItemsSource="{Binding Content, Converter={StaticResource cToggleButtonGroup_converter_delegate2uielement}}"
+                                                    Margin="{StaticResource ChildrenExPlacement}"
+                                                    Opacity="{Binding EnableChildren, RelativeSource={RelativeSource AncestorType={x:Type local:cChildrenContainer}}, Converter={StaticResource cToggleButtonGroup_converter_bool2opacity}, ConverterParameter=0.25, Mode=OneWay}"
+                                                    IsHitTestVisible="{Binding EnableChildren, RelativeSource={RelativeSource AncestorType={x:Type local:cChildrenContainer}}}">
+                            <ItemsControl.Template>
+                                <ControlTemplate TargetType="{x:Type ItemsControl}">
+                                    <VirtualizingStackPanel IsItemsHost="True" Orientation="Vertical" IsVirtualizing="True"/>
+                                </ControlTemplate>
+                            </ItemsControl.Template>
+                        </local:cChildrenExContainer>
+                    </stackpanelex:cStackPanel.Children>
+                </stackpanelex:cStackPanel>
             </DataTemplate>
             
             <!--GateNodeStyle-->

@@ -3,6 +3,9 @@
                     xmlns:local="clr-namespace:CustomMacroBase.CustomControlEx.TitleBarButtonEx" 
                     xmlns:invertedcoloreffect="clr-namespace:CustomMacroBase.CustomEffect">
 
+    <SolidColorBrush x:Key="PathColor" Color="#FFDCDFE1"/>
+    <SolidColorBrush x:Key="PathColor2" Color="Yellow"/>
+
     <Style TargetType="{x:Type local:cTitleBarButton}">
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Width" Value="30"/>
@@ -136,7 +139,14 @@
                         CornerRadius="{TemplateBinding BorderCornerRadius}">
                     <Border x:Name="contentBorder">
                         <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                          IsHitTestVisible="False"/>
+                                          IsHitTestVisible="False"
+                                          RenderTransformOrigin="0.5,0.5">
+                            <ContentPresenter.RenderTransform>
+                                <TransformGroup>
+                                    <RotateTransform Angle="0"/>
+                                </TransformGroup>
+                            </ContentPresenter.RenderTransform>
+                        </ContentPresenter>
                     </Border>
                 </Border>
 
@@ -158,6 +168,10 @@
                                         <EasingDoubleKeyFrame KeyTime="0:0:0.05" Value="0"/>
                                         <EasingDoubleKeyFrame KeyTime="0:0:0.10" Value="6"/>
                                     </DoubleAnimationUsingKeyFrames>
+                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(RenderTransform).(TransformGroup.Children)[0].(RotateTransform.Angle)" 
+                                                                   Storyboard.TargetName="contentPresenter">
+                                        <EasingDoubleKeyFrame KeyTime="0:0:0.15" Value="90"/>
+                                    </DoubleAnimationUsingKeyFrames>
                                 </Storyboard>
                             </BeginStoryboard>
                         </Trigger.EnterActions>
@@ -168,6 +182,10 @@
                                         <EasingColorKeyFrame KeyTime="0:0:0" Value="#FFE02A2A"/>
                                         <EasingColorKeyFrame KeyTime="0:0:0.15" Value="#00E02A2A"/>
                                     </ColorAnimationUsingKeyFrames>
+                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(RenderTransform).(TransformGroup.Children)[0].(RotateTransform.Angle)" 
+                                                                   Storyboard.TargetName="contentPresenter">
+                                        <EasingDoubleKeyFrame KeyTime="0:0:0.15" Value="0"/>
+                                    </DoubleAnimationUsingKeyFrames>
                                 </Storyboard>
                             </BeginStoryboard>
                         </Trigger.ExitActions>
@@ -206,6 +224,151 @@
                     </Trigger>
                 </ControlTemplate.Triggers>
             </ControlTemplate>
+            
+            <!--TopmostBtn-->
+            <ControlTemplate x:Key="TopmostBtn" TargetType="{x:Type local:cTitleBarButton}">
+                <Border x:Name="border"
+                        Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}" 
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding BorderCornerRadius}">
+                    <Border x:Name="contentBorder">
+                        <Grid>
+                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              IsHitTestVisible="False"/>
+
+                            <Path x:Name="pathIcon"
+                                  Data="{TemplateBinding PathData}"
+                                  Fill="{StaticResource PathColor}"
+                                  Width="{TemplateBinding PathSize}"
+                                  Height="{TemplateBinding PathSize}"
+                                  Stretch="Uniform"
+                                  IsHitTestVisible="False"
+                                  RenderTransformOrigin="0.5,0.5">
+                                <Path.RenderTransform>
+                                    <TransformGroup>
+                                        <RotateTransform Angle="0"/>
+                                    </TransformGroup>
+                                </Path.RenderTransform>
+                            </Path>
+                        </Grid>
+                    </Border>
+                </Border>
+
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter TargetName="pathIcon" Property="Fill" Value="{StaticResource PathColor2}"/>
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter TargetName="pathIcon" Property="Opacity" Value="0.85"/>
+                    </Trigger>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding IsActive, RelativeSource={RelativeSource Self}}" Value="false"/>
+                            <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="false"/>
+                        </MultiDataTrigger.Conditions>
+                        <MultiDataTrigger.Setters>
+                            <Setter Property="Opacity" TargetName="border" Value="0.5"/>
+                        </MultiDataTrigger.Setters>
+                    </MultiDataTrigger>
+                    <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Self}}" Value="False">
+                        <DataTrigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard FillBehavior="HoldEnd">
+                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(RenderTransform).(TransformGroup.Children)[0].(RotateTransform.Angle)" 
+                                                                   Storyboard.TargetName="pathIcon">
+                                        <EasingDoubleKeyFrame KeyTime="0:0:0.15" Value="45"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </DataTrigger.EnterActions>
+                        <DataTrigger.ExitActions>
+                            <BeginStoryboard>
+                                <Storyboard FillBehavior="HoldEnd">
+                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(RenderTransform).(TransformGroup.Children)[0].(RotateTransform.Angle)" 
+                                                                   Storyboard.TargetName="pathIcon">
+                                        <EasingDoubleKeyFrame KeyTime="0:0:0.15" Value="0"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </DataTrigger.ExitActions>
+                    </DataTrigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" TargetName="border" Value="0.3"/>
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+            <!--ResetPosBtn-->
+            <ControlTemplate x:Key="ResetPosBtn" TargetType="{x:Type local:cTitleBarButton}">
+                <Border x:Name="border"
+                        Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}" 
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding BorderCornerRadius}">
+                    <Border x:Name="contentBorder">
+                        <Grid>
+                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              IsHitTestVisible="False"/>
+
+                            <Path x:Name="pathIcon"
+                                  Data="{TemplateBinding PathData}"
+                                  Fill="{StaticResource PathColor}"
+                                  Width="{TemplateBinding PathSize}"
+                                  Height="{TemplateBinding PathSize}"
+                                  Stretch="Uniform"
+                                  IsHitTestVisible="False"
+                                  RenderTransformOrigin="0.5,0.5">
+                                <Path.RenderTransform>
+                                    <TransformGroup>
+                                        <RotateTransform Angle="0"/>
+                                    </TransformGroup>
+                                </Path.RenderTransform>
+                            </Path>
+                        </Grid>
+                    </Border>
+                </Border>
+
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter TargetName="pathIcon" Property="Fill" Value="{StaticResource PathColor2}"/>
+                        <Trigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard FillBehavior="HoldEnd">
+                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(RenderTransform).(TransformGroup.Children)[0].(RotateTransform.Angle)" 
+                                                                   Storyboard.TargetName="pathIcon">
+                                        <EasingDoubleKeyFrame KeyTime="0:0:0.15" Value="75"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.EnterActions>
+                        <Trigger.ExitActions>
+                            <BeginStoryboard>
+                                <Storyboard FillBehavior="HoldEnd">
+                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(RenderTransform).(TransformGroup.Children)[0].(RotateTransform.Angle)" 
+                                                                   Storyboard.TargetName="pathIcon">
+                                        <EasingDoubleKeyFrame KeyTime="0:0:0.15" Value="0"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.ExitActions>
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter TargetName="pathIcon" Property="Opacity" Value="0.85"/>
+                    </Trigger>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding IsActive, RelativeSource={RelativeSource Self}}" Value="false"/>
+                            <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="false"/>
+                        </MultiDataTrigger.Conditions>
+                        <MultiDataTrigger.Setters>
+                            <Setter Property="Opacity" TargetName="border" Value="0.5"/>
+                        </MultiDataTrigger.Setters>
+                    </MultiDataTrigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" TargetName="border" Value="0.3"/>
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
         </Style.Resources>
 
         <Style.Triggers>
@@ -223,6 +386,19 @@
             </DataTrigger>
             <DataTrigger Binding="{Binding Type, RelativeSource={RelativeSource Self}}" Value="{x:Static local:ButtonType.CloseBtn}">
                 <Setter Property="Template" Value="{StaticResource CloseBtn}"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="BorderCornerRadius" Value="0"/>
+            </DataTrigger>
+            
+            <DataTrigger Binding="{Binding Type, RelativeSource={RelativeSource Self}}" Value="{x:Static local:ButtonType.TopmostBtn}">
+                <Setter Property="Template" Value="{StaticResource TopmostBtn}"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="BorderCornerRadius" Value="0"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Type, RelativeSource={RelativeSource Self}}" Value="{x:Static local:ButtonType.ResetPosBtn}">
+                <Setter Property="Template" Value="{StaticResource ResetPosBtn}"/>
                 <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="BorderBrush" Value="Transparent"/>
                 <Setter Property="BorderCornerRadius" Value="0"/>

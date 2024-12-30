@@ -50,8 +50,11 @@ namespace DS4WinWPF.UI.Helper.Extensions
             return null;
         }
 
-        public static T FindVisualAncestorByName<T>(this DependencyObject target, string target_name, int depth = 0, int maxDepth = 5) where T : DependencyObject
+        public static T FindVisualAncestorByName<T>(this DependencyObject target, string target_name, int depth = 1) where T : DependencyObject
         {
+            if (depth-- <= 0)
+                return null;
+
             if (target is T && ((FrameworkElement)target).Name == target_name) { return (T)target; }
 
             var parent = VisualTreeHelper.GetParent(target);
@@ -63,10 +66,13 @@ namespace DS4WinWPF.UI.Helper.Extensions
             {
                 return (T)parent;
             }
-            return parent.FindVisualAncestorByName<T>(target_name, depth, maxDepth);
+            return parent.FindVisualAncestorByName<T>(target_name, depth);
         }
-        public static T FindVisualChildByName<T>(this DependencyObject target, string target_name, int depth = 0, int maxDepth = 5) where T : DependencyObject
+        public static T FindVisualChildByName<T>(this DependencyObject target, string target_name, int depth = 1) where T : DependencyObject
         {
+            if (depth-- <= 0)
+                return null;
+
             for (int i = 0; i <= VisualTreeHelper.GetChildrenCount(target) - 1; i++)
             {
                 DependencyObject child = VisualTreeHelper.GetChild(target, i);
@@ -75,7 +81,7 @@ namespace DS4WinWPF.UI.Helper.Extensions
                     return child as T;
                 else
                 {
-                    T childOfChildren = FindVisualChildByName<T>(child, target_name, depth, maxDepth);
+                    T childOfChildren = FindVisualChildByName<T>(child, target_name, depth);
                     if (childOfChildren != null)
                         return childOfChildren;
                 }

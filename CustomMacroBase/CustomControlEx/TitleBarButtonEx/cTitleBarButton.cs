@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Media;
 
 namespace CustomMacroBase.CustomControlEx.TitleBarButtonEx
 {
@@ -22,6 +23,18 @@ namespace CustomMacroBase.CustomControlEx.TitleBarButtonEx
             propertyType: typeof(bool),
             ownerType: typeof(cTitleBarButton),
             typeMetadata: new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
+        );
+
+        public bool IsChecked
+        {
+            get { return (bool)GetValue(IsCheckedProperty); }
+            set { SetValue(IsCheckedProperty, value); }
+        }
+        public static readonly DependencyProperty IsCheckedProperty = DependencyProperty.Register(
+            name: "IsChecked",
+            propertyType: typeof(bool),
+            ownerType: typeof(cTitleBarButton),
+            typeMetadata: new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
         );
 
         public string Text
@@ -58,6 +71,30 @@ namespace CustomMacroBase.CustomControlEx.TitleBarButtonEx
             propertyType: typeof(CornerRadius),
             ownerType: typeof(cTitleBarButton),
             typeMetadata: new FrameworkPropertyMetadata(new CornerRadius(0), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
+        );
+
+        public Geometry PathData
+        {
+            get { return (Geometry)GetValue(PathDataProperty); }
+            set { SetValue(PathDataProperty, value); }
+        }
+        public static readonly DependencyProperty PathDataProperty = DependencyProperty.Register(
+            name: "PathData",
+            propertyType: typeof(Geometry),
+            ownerType: typeof(cTitleBarButton),
+            typeMetadata: new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
+        );
+
+        public double PathSize
+        {
+            get { return (double)GetValue(PathSizeProperty); }
+            set { SetValue(PathSizeProperty, value); }
+        }
+        public static readonly DependencyProperty PathSizeProperty = DependencyProperty.Register(
+            name: "PathSize",
+            propertyType: typeof(double),
+            ownerType: typeof(cTitleBarButton),
+            typeMetadata: new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
         );
     }
 }

@@ -20,6 +20,18 @@ namespace CustomMacroFactory.MainView.UserControlEx.TitleBarEx
             }
         }
 
+        public bool Topmost
+        {
+            get { return model.Topmost; }
+            set
+            {
+                if (model.Topmost == value)
+                    return;
+                model.Topmost = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         public uTitleBar_viewmodel()
         {
             this.Title = $"Macro Extension ({System.IO.File.GetLastWriteTime(this.GetType().Assembly.Location):yyyy-MM-dd HH:mm:ss})";
@@ -30,6 +42,9 @@ namespace CustomMacroFactory.MainView.UserControlEx.TitleBarEx
 
     public partial class uTitleBar_viewmodel
     {
+        public RelayCommand LoadedCommand { get; set; }
+
+        public RelayCommand TopmostButtonCommand { get; set; }
         public RelayCommand ResetPosButtonCommand { get; set; }
         public RelayCommand MinimizeButtonCommand { get; set; }
         public RelayCommand MaximizeButtonCommand { get; set; }
@@ -37,13 +52,23 @@ namespace CustomMacroFactory.MainView.UserControlEx.TitleBarEx
 
         private void ButtonEventInit()
         {
-            ResetPosButtonCommand = new(para =>
+            LoadedCommand = new(para =>
+            {
+                TopmostButtonCommand?.Execute(true);
+            });
+
+            TopmostButtonCommand = new(para =>
+            {
+                this.Topmost = para is bool defaultValue ? defaultValue : !this.Topmost;
+                Mediator.Instance.NotifyColleagues(MessageType.WindowTopmost, this.Topmost);
+            });
+            ResetPosButtonCommand = new(_ =>
             {
                 Mediator.Instance.NotifyColleagues(MessageType.WindowPosReset, new Vector(0, 0));
             });
-            MinimizeButtonCommand = new(para => { throw new System.NotImplementedException(); });
-            MaximizeButtonCommand = new(para => { throw new System.NotImplementedException(); });
-            CloseButtonCommand = new(para =>
+            MinimizeButtonCommand = new(_ => { throw new System.NotImplementedException(); });
+            MaximizeButtonCommand = new(_ => { throw new System.NotImplementedException(); });
+            CloseButtonCommand = new(_ =>
             {
                 Mediator.Instance.NotifyColleagues(MessageType.WindowClose, null);
             });

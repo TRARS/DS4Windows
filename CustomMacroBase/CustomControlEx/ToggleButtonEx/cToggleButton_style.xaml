@@ -58,11 +58,10 @@
                                             BorderBrush="#80A0A0A0">
                                         <Border.Background>
                                             <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                                                <GradientStop Offset="0.0" Color="{Binding Color, ElementName=separator}"/>
-                                                <GradientStop x:Name="separator"
-                                                              Offset="{Binding SliderSeparatorOffset, RelativeSource={RelativeSource TemplatedParent}}" 
-                                                              Color="{Binding SliderBackgroundColor, RelativeSource={RelativeSource TemplatedParent}}"/>
-                                                <GradientStop Offset="{Binding Offset, ElementName=separator}" Color="Gray"/>
+                                                <GradientStop x:Name="IgnoreWarning" 
+                                                              Offset="0.0" Color="{Binding SliderBackgroundColor, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                                <GradientStop Offset="{Binding SliderSeparatorOffset, RelativeSource={RelativeSource TemplatedParent}}" Color="{Binding SliderBackgroundColor, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                                <GradientStop Offset="{Binding SliderSeparatorOffset, RelativeSource={RelativeSource TemplatedParent}}" Color="Gray"/>
                                                 <GradientStop Offset="1.0" Color="Gray"/>
                                             </LinearGradientBrush>
                                         </Border.Background>
@@ -126,7 +125,7 @@
                                 </Grid>
 
                                 <!--Red Line 删除线-->
-                                <Border x:Name="StrikeLine" Grid.ColumnSpan="2" VerticalAlignment="Center" 
+                                <Border x:Name="StrikeLine" Grid.ColumnSpan="2" VerticalAlignment="Center" IsHitTestVisible="False"
                                         CornerRadius="1"
                                         Background="LawnGreen" 
                                         Opacity="0" 

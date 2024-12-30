@@ -1,7 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:DS4WinWPF.UI.Control.CustomStyleEx.ComboBoxEx" 
-                    xmlns:scrollviewerex="clr-namespace:DS4WinWPF.UI.Control.CustomControlEx.ScrollViewerEx">
+                    xmlns:local="clr-namespace:DS4WinWPF.UI.Control.CustomStyleEx.ComboBoxEx">
 
     <local:cComboBox_converter_content2string x:Key="cComboBox_converter_content2string"/>
 
