@@ -1,14 +1,15 @@
 ﻿using CustomMacroBase.GamePadState;
 using CustomMacroBase.Helper;
-using CustomMacroFactory.MainView;
+using CustomMacroFactory.MVVM.Views;
 using System;
 using System.Linq;
+using TrarsUI.Shared.Interfaces.UIComponents;
 
 namespace DS4Windows
 {
     public static partial class CustomMacroLink
     {
-        private static MainWindow macroWindow = CustomMacroFactory.MainEntry.GetService<MainWindow>();
+        private static MainWindow macroWindow = (MainWindow)CustomMacroFactory.MainEntry.GetRequiredService<IMainWindow>();
 
         public static void Init(dynamic ds4MainWindow, dynamic ds4ControlService) => macroWindow.Init(() => ds4MainWindow, () => ds4ControlService);
         public static void Exit() => macroWindow.Exit();

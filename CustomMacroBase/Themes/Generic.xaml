@@ -23,7 +23,6 @@
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/ToggleButtonGroupEx/cToggleButtonGroup_style.xaml"/>
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/TooltipInfoButtonEx/cTooltipInfoButton_style.xaml"/>
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/ValueIndicatorEx/cValueIndicator_style.xaml"/>
-        <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/VerticalButtonEx/cVerticalButtonBase_style.xaml"/>
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/VerticalButtonEx/cVerticalButton_style.xaml"/>
         <ResourceDictionary Source="/CustomMacroBase;component/CustomControlEx/VerticalRadioButtonEx/cVerticalRadioButton_style.xaml"/>
     </ResourceDictionary.MergedDictionaries>

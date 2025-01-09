@@ -6,7 +6,8 @@ As shown in the following image, using this Recorder, we can quickly validate wh
 <img src="CustomMacroFactory/スクリーンショット/CustomMacroFactory.png" width="100%" />
 
 ---
-
+<details><summary><strong>Unmodified README from DS4Windows</strong></summary>
+  
 # DS4Windows
 
 Like those other DS4 tools, but sexier.
@@ -49,3 +50,5 @@ available in this source code from the COPYING file.
   *Disabling 'Enable output data' in the controller profile settings might help with latency issues, but will disable lightbar and rumble support.*
 - Disable **PlayStation Configuration Support** and
 **Xbox Configuration Support** options in Steam
+
+</details>

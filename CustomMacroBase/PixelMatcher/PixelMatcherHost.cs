@@ -8,7 +8,7 @@ namespace CustomMacroBase.PixelMatcher
         //公开字段/属性
         public static Action<int, int> SetTargetWindowSizeEx = SetTargetWindowSize;
         public static Action<IntPtr, string, string> SetTargetWindowHandleEx = SetTargetWindowHandle;
-        public static Action GetTargetWindowSnapshotEx = GetTargetWindowSnapshot;
+        public static Func<bool> GetTargetWindowSnapshotEx = GetTargetWindowSnapshot;
 
         //Init
         public static void TryInit()

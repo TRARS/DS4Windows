@@ -1,11 +1,14 @@
-﻿using CustomMacroFactory.MainView;
-using CustomMacroFactory.MainView.UserControlEx.ClientEx;
-using CustomMacroFactory.MainView.UserControlEx.PixelPicker;
-using CustomMacroFactory.MainView.UserControlEx.RainbowLineEx;
-using CustomMacroFactory.MainView.UserControlEx.TitleBarEx;
+﻿using CustomMacroFactory.Factories;
+using CustomMacroFactory.MVVM.ViewModels;
+using CustomMacroFactory.MVVM.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Windows;
+using TrarsUI.Shared.Helper.Extensions;
+using TrarsUI.Shared.Interfaces;
+using TrarsUI.Shared.Interfaces.UIComponents;
+using TrarsUI.Shared.Services;
 
 namespace CustomMacroFactory
 {
@@ -18,15 +21,54 @@ namespace CustomMacroFactory
             return Host.CreateDefaultBuilder()
                        .ConfigureServices(sc =>
                        {
-                           sc.AddSingleton<MainWindow>(sp => new() { DataContext = sp.GetRequiredService<MainWindow_viewmodel>() });
-                           sc.AddSingleton<MainWindow_viewmodel>();
+                           // Service
+                           sc.AddSingleton<IMessageBoxService, MessageBoxService>();
+                           sc.AddScoped<ITokenProviderService, TokenProviderService>();
+                           sc.AddSingleton<IContentProviderService, AContentProviderService>();
+                           sc.AddTransient<IDebouncerService, DebouncerService>();
 
-                           sc.AddSingleton<uTitleBar_viewmodel>();
-                           sc.AddSingleton<uRainbowLine_viewmodel>();
-                           sc.AddSingleton<uClient_viewmodel>();
+                           // UI组件VM
+                           sc.AddFormFactory<IuTitleBarVM, uTitleBarVM>();
+                           sc.AddFormFactory<IuRainbowLineVM, uRainbowLineVM>();
+                           sc.AddFormFactory<IuClientVM, uClientVM>();
 
-                           sc.AddSingleton<uPixelPicker>(sp => new() { DataContext = sp.GetRequiredService<uPixelPicker_viewmodel>() });
-                           sc.AddSingleton<uPixelPicker_viewmodel>();
+                           // MainWindow MainWindowVM
+                           sc.AddFormFactory<IMainWindow, IMainWindowEmpty, MainWindow>(sp =>
+                           {
+                               using (var scope = sp.CreateScope())
+                               {
+                                   var mainwindow = (MainWindow)(scope.ServiceProvider.GetRequiredService<IMainWindowEmpty>());
+                                   {
+                                       mainwindow.DataContext = scope.ServiceProvider.GetRequiredService<IMainWindowVM>();
+                                       mainwindow.SizeToContent = SizeToContent.WidthAndHeight;
+                                       mainwindow.MinWidth = 233;
+                                       mainwindow.MinHeight = 423;
+                                       mainwindow.MaxWidth = 1920;
+                                       mainwindow.MaxHeight = 1080;
+                                   }
+                                   return mainwindow;
+                               }
+                           });
+                           sc.AddScoped<IMainWindowVM, MainWindowVM>();
+
+                           // ChildForm ChildFormVM
+                           sc.AddFormFactory<IChildForm, IChildFormEmpty, ChildForm>(sp =>
+                           {
+                               using (var scope = sp.CreateScope())
+                               {
+                                   var childForm = (ChildForm)scope.ServiceProvider.GetRequiredService<IChildFormEmpty>();
+                                   {
+                                       childForm.DataContext = scope.ServiceProvider.GetRequiredService<IChildFormVM>();
+                                       childForm.SizeToContent = SizeToContent.WidthAndHeight;
+                                   }
+                                   return childForm;
+                               }
+                           });
+                           sc.AddScoped<IChildFormVM, ChildFormVM>();
+
+                           // 其他组件VM
+                           sc.AddSingleton<MacroViewerVM>();
+                           sc.AddSingleton<ImageColorPickerVM>();
                        });
         }
 
@@ -35,7 +77,7 @@ namespace CustomMacroFactory
             host.Start();
         }
 
-        public static T GetService<T>() where T : notnull
+        public static T GetRequiredService<T>() where T : notnull
         {
             return host.Services.GetRequiredService<T>();
         }

@@ -6,13 +6,13 @@ using System.Windows.Interop;
 namespace CustomMacroBase.Helper
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct STYLESTRUCT
+    internal struct STYLESTRUCT
     {
         public int styleOld;
         public int styleNew;
     }
 
-    public static partial class Win32_Ex_Transparency
+    internal static partial class Win32_Ex_Transparency
     {
         /// <summary>
         /// 扩展的窗口风格
@@ -352,7 +352,7 @@ namespace CustomMacroBase.Helper
         }
     }
 
-    public static partial class Win32_Ex_Transparency
+    internal static partial class Win32_Ex_Transparency
     {
         public enum WM
         {
@@ -609,7 +609,7 @@ namespace CustomMacroBase.Helper
         }
     }
 
-    public static partial class Win32_Ex_Transparency
+    internal static partial class Win32_Ex_Transparency
     {
         public static void SetTransparency(Window window_obj)
         {

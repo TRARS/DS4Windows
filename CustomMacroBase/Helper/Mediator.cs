@@ -1,56 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-
-namespace CustomMacroBase.Helper
-{
-    public static class MainWindowMessageType
-    {
-        public static string Loaded { get; }
-        public static string Closing { get; }
-        public static string HideToTray { get; }
-
-        static MainWindowMessageType()
-        {
-            Loaded = nameof(Loaded) + GenerateRandomString(16);
-            Closing = nameof(Closing) + GenerateRandomString(16);
-            HideToTray = nameof(HideToTray) + GenerateRandomString(16);
-        }
-
-        private static Random random = new Random();
-        private static string GenerateRandomString(int length)
-        {
-            const string chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-            StringBuilder stringBuilder = new StringBuilder();
-
-            for (int i = 0; i < length; i++)
-            {
-                int index = random.Next(chars.Length);
-                stringBuilder.Append(chars[index]);
-            }
-
-            return stringBuilder.ToString();
-        }
-    }
-}
 
 namespace CustomMacroBase.Helper
 {
     //增加类型只能往后加不能往中间插入，不然可能会和CustomMacroPlugin.dll那边的对不上号（除非那边也引用最新的CustomMacroBase.dll）
     public enum MessageType
     {
-        WindowClose = 0,
-        WindowKeyDown,            //检测按键按下，以便用wasd或者↑←↓→控制拾色器区域里面的截图
-        Ds4Disconnect,            //调用DS4Windows方法（断开连接）
-        Ds4Rumble,                //调用DS4Windows方法（使手柄震动）
-        Ds4Latency,               //调用DS4Windows方法（获取输入延迟）
-        PrintNewMessage,          //打印新消息至日志区域
-        PrintCleanup,             //清空日志
-        GetFrames,                //更新截图（弃用）
-        PixelPickerOnOff,         //拾色器区域 展开/关闭 
-        WindowPosReset,           //窗体位置恢复至左上角
+        WindowClose = 0,          // （弃用）
+        WindowKeyDown,            // （弃用）检测按键按下，以便用wasd或者↑←↓→控制拾色器区域里面的截图
+        Ds4Disconnect,            // 调用DS4Windows方法（断开连接）
+        Ds4Rumble,                // 调用DS4Windows方法（使手柄震动）
+        Ds4Latency,               // 调用DS4Windows方法（获取输入延迟）
+        PrintNewMessage,          // 打印新消息至日志区域
+        PrintCleanup,             // 清空日志
+        GetFrames,                // （弃用）更新截图
+        PixelPickerOnOff,         // （弃用）拾色器区域 展开/关闭
+        WindowPosReset,           // （弃用）窗体位置恢复至左上角
         CanUpdateFrames,          //
-        WindowTopmost,            //总在最前
+        WindowTopmost,            // （弃用）总在最前
     }
 
     //私有字段/属性/方法

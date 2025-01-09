@@ -1,0 +1,129 @@
+﻿<UserControl x:Class="CustomMacroFactory.MVVM.Views.CustomControlPreView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CustomMacroFactory.MVVM.Views"
+             xmlns:AttachedProperty="clr-namespace:CustomMacroBase.Helper.Extensions;assembly=CustomMacroBase"
+             
+             xmlns:ConsoleListBoxEx="clr-namespace:CustomMacroBase.CustomControlEx.ConsoleListBoxEx;assembly=CustomMacroBase" 
+             xmlns:verticalbuttonex="clr-namespace:CustomMacroBase.CustomControlEx.VerticalButtonEx;assembly=CustomMacroBase" 
+             xmlns:verticalradiobuttonex="clr-namespace:CustomMacroBase.CustomControlEx.VerticalRadioButtonEx;assembly=CustomMacroBase" 
+             xmlns:togglebuttonex="clr-namespace:CustomMacroBase.CustomControlEx.ToggleButtonEx;assembly=CustomMacroBase" 
+             xmlns:sliderex="clr-namespace:CustomMacroBase.CustomControlEx.SliderEx;assembly=CustomMacroBase" 
+             xmlns:valueindicatorex="clr-namespace:CustomMacroBase.CustomControlEx.ValueIndicatorEx;assembly=CustomMacroBase"
+             xmlns:scrollviewerex="clr-namespace:CustomMacroBase.CustomControlEx.ScrollViewerEx;assembly=CustomMacroBase" 
+             xmlns:comboboxex="clr-namespace:CustomMacroBase.CustomControlEx.ComboBoxEx;assembly=CustomMacroBase" 
+             xmlns:colorfultextblockex="clr-namespace:CustomMacroBase.CustomControlEx.ColorfulTextBlockEx;assembly=CustomMacroBase" 
+             xmlns:tooltipinfobuttonex="clr-namespace:CustomMacroBase.CustomControlEx.TooltipInfoButtonEx;assembly=CustomMacroBase"
+             mc:Ignorable="d" 
+             
+             SnapsToDevicePixels="True" 
+             TextOptions.TextFormattingMode="Display"
+             TextOptions.TextRenderingMode="ClearType"
+             UseLayoutRounding="true" 
+             
+             Visibility="Collapsed"
+             d:DesignHeight="200" d:DesignWidth="600" d:Visibility="Visible">
+    <Border BorderBrush="Red" BorderThickness="2" Padding="5">
+        <Grid>
+            <StackPanel Orientation ="Horizontal"
+                        AttachedProperty:PanelExtensions.Spacing="0,0,3,0">
+                
+                <scrollviewerex:cScrollViewer VerticalScrollBarVisibility="Hidden"
+                                              ScrollBarBackgroundColor="Snow"
+                                              BackgroundColor="#9BAFBB"
+                                              BackgroundCornerRadius="4">
+                    <StackPanel Orientation ="Horizontal" 
+                                AttachedProperty:PanelExtensions.Spacing="2">
+                        <ConsoleListBoxEx:cConsoleListBox  d:ItemsSource="{d:SampleData ItemCount=5}"/>
+                    </StackPanel>
+                </scrollviewerex:cScrollViewer>
+
+                <scrollviewerex:cScrollViewer VerticalScrollBarVisibility="Hidden"
+                                              ScrollBarBackgroundColor="Snow"
+                                              BackgroundColor="#5A4344"
+                                              BackgroundCornerRadius="4">
+                    <StackPanel Orientation ="Vertical"
+                                AttachedProperty:PanelExtensions.Spacing="2">
+                        <verticalbuttonex:cVerticalButton Text="cVerticalButton"/>
+                        <verticalradiobuttonex:cVerticalRadioButton Text="cVerticalRadioButton" 
+                                                                    IsChecked="True"
+                                                                    EnableColorfulText="True"/>
+                    </StackPanel>
+                </scrollviewerex:cScrollViewer>
+                
+                <scrollviewerex:cScrollViewer VerticalScrollBarVisibility="Hidden"
+                                              ScrollBarBackgroundColor="Snow"
+                                              BackgroundColor="#46435A"
+                                              BackgroundCornerRadius="4">
+                    <StackPanel Orientation ="Vertical"
+                                AttachedProperty:PanelExtensions.Spacing="2">
+                        <togglebuttonex:cToggleButton Text="cToggleButton"/>
+                        <togglebuttonex:cToggleButton Text="cToggleButton" 
+                                                      IsChecked="True"/>
+                        <sliderex:cSlider Maximum="255"
+                                          TickPlacement="Both" 
+                                          TickFrequency="64" 
+                                          LargeChange="1"
+                                          SmallChange="1"
+                                          AutoToolTipPlacement="TopLeft"
+                                          AutoToolTipPrecision="0"
+                                          Value="192"/>
+                        <comboboxex:cComboBox d:ItemsSource="{d:SampleData ItemCount=5}" 
+                                              SelectedIndex="0"/>
+                        <valueindicatorex:cValueIndicator PropName="cValueIndicator"
+                                                          PropValue="-999" 
+                                                          PropNameColor="Crimson"
+                                                          PropValueColor="LawnGreen"
+                                                          ColonColor="Yellow"
+                                                          BackgroundColor="#210F19" 
+                                                          BackgroundCornerRadius="2.5"/>
+                        <colorfultextblockex:cColorfulTextBlock Text="cColorfulTextBlock"
+                                                                TextBaseColor="Transparent"
+                                                                TextHorizontalAlignment="Center"
+                                                                TextVerticalAlignment="Center"
+                                                                BackgroundColor="#210F19"
+                                                                BackgroundCornerRadius="2.5"
+                                                                MaskBackgroundColor="Transparent"/>
+                        
+                    </StackPanel>
+                </scrollviewerex:cScrollViewer>
+
+                <scrollviewerex:cScrollViewer VerticalScrollBarVisibility="Hidden"
+                                              ScrollBarBackgroundColor="Snow"
+                                              BackgroundColor="#5A4350"
+                                              BackgroundCornerRadius="4">
+                    <ScrollViewer.Resources>
+                        <Geometry x:Key="TestIcon">
+                            M556.891676 638.208l-22.384-20.928 0 272.464c0 17.792 14.432 32.256 32.24 32.256l80.608 0c17.808 0 32.24-14.448 32.24-32.256L679.595676 525.44 556.891676 638.208z
+                            M345.131676 440.16l-65.872 58.848 0 390.752c0 17.792 14.416 32.256 32.24 32.256l80.608 0c17.808 0 32.24-14.448 32.24-32.256L424.347676 514.256 345.131676 440.16z
+                            M23.995676 726.976l0 164.128c0 17.792 14.432 32.256 32.256 32.256l80.608 0c17.792 0 32.24-14.448 32.24-32.256L169.099676 596.912 23.995676 726.976z
+                            M789.739676 889.744c0 17.792 14.432 32.256 32.24 32.256l80.608 0c17.792 0 32.24-14.448 32.24-32.256L934.827676 291.808l-145.072 132.8L789.755676 889.744z
+                            M990.891676 102.096l-145.584 45.376c-16.928 5.296-20.112 19.44-7.072 31.456l38.592 35.6L557.499676 507.712 362.827676 325.472c-9.04-8.464-23.104-8.64-32.368-0.384L8.027676 612.576c-9.888 8.816-10.768 23.984-1.936 33.872 4.736 5.328 11.312 8.032 17.92 8.032 5.664 0 11.376-2 15.952-6.096l306.064-272.912 194.912 182.48c9.152 8.576 23.392 8.64 32.64 0.16l338.656-310.96 42.72 39.392c13.024 12.048 26.528 7.664 30-9.744l30.4-152.688C1018.827676 106.736 1007.803676 96.8 990.891676 102.096z
+                        </Geometry>
+                    </ScrollViewer.Resources>
+
+                    <StackPanel Orientation ="Vertical"
+                                AttachedProperty:PanelExtensions.Spacing="2">
+                        <tooltipinfobuttonex:cTooltipInfoButton Height="20" 
+                                                                Width="20"
+                                                                Background="Crimson" 
+                                                                BorderCornerRadius="2.5"
+                                                                ContextMenuIsOpen="False">
+                            <Path Data="{StaticResource TestIcon}" 
+                                  Fill="#1B1B1B"
+                                  Stretch="Uniform" 
+                                  Width="18"
+                                  Height="{Binding Width, RelativeSource={RelativeSource Self}}"/>
+
+                            <tooltipinfobuttonex:cTooltipInfoButton.ToolTipContent>
+                                <Grid Width="25" Height="25" Background="Yellow"/>
+                            </tooltipinfobuttonex:cTooltipInfoButton.ToolTipContent>
+                        </tooltipinfobuttonex:cTooltipInfoButton>
+                    </StackPanel>
+                </scrollviewerex:cScrollViewer>
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>

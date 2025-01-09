@@ -202,12 +202,12 @@ namespace CustomMacroBase.PixelMatcher
                 return this.screenshot;
             }
 
-            public void GetWindowSnapshot()
+            public bool GetWindowSnapshot()
             {
-                if (this.IsNotWindow(true)) { featureEnable = false; return; }
-                if (this.IsWindowMinimized(true)) { featureEnable = false; return; }
+                if (this.IsNotWindow(true)) { featureEnable = false; return false; }
+                if (this.IsWindowMinimized(true)) { featureEnable = false; return false; }
 
-                this.UpdateToSnapshotArea(GetWindowCapture, "GetWindowCapture Done");
+                this.UpdateToSnapshotArea(GetWindowCapture, "GetWindowCapture Done"); return true;
             }
             public void SetWindowSize(int cw, int ch)
             {
@@ -229,9 +229,9 @@ namespace CustomMacroBase.PixelMatcher
         #region 私有字段/属性/方法
         private static WindowManager targetWindow = new(Process.GetProcessesByName("RemotePlay").ToList().FirstOrDefault()?.MainWindowHandle ?? IntPtr.Zero);
 
-        private protected static void GetTargetWindowSnapshot()
+        private protected static bool GetTargetWindowSnapshot()
         {
-            targetWindow.GetWindowSnapshot();
+            return targetWindow.GetWindowSnapshot();
         }
         private protected static void SetTargetWindowHandle(IntPtr _hwnd, string _title, string _classname)
         {

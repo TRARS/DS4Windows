@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CustomMacroBase.Helper
 {
-    public static class Win32
+    internal static class Win32
     {
         public enum ShowWindowOptions
         {
@@ -339,7 +339,7 @@ namespace CustomMacroBase.Helper
     /// <summary>
     /// Helper class containing Gdi32 API functions
     /// </summary>
-    public static class GDI32
+    internal static class GDI32
     {
 
         public const int SRCCOPY = 0x00CC0020; // BitBlt dwRop parameter
@@ -362,7 +362,7 @@ namespace CustomMacroBase.Helper
     /// <summary>
     /// Helper class containing User32 API functions
     /// </summary>
-    public static class User32
+    internal static class User32
     {
         [StructLayout(LayoutKind.Sequential)]
         public struct RECT

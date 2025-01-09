@@ -28,10 +28,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
     <PackageReference Include="SharpDX.DirectInput" Version="4.2.0" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
     <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
   </ItemGroup>
 
@@ -46,4 +48,10 @@
     </None>
   </ItemGroup>
   
+  <ItemGroup>
+    <Reference Include="TrarsUI.Shared">
+      <HintPath>..\libs\TrarsUI.Shared.dll</HintPath>
+    </Reference>
+    <Analyzer Include="..\CustomMacroFactory\libs\TrarsUI.SourceGenerators.dll" />
+  </ItemGroup>
 </Project>
