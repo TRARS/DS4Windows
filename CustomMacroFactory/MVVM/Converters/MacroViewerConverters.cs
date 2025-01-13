@@ -5,7 +5,7 @@ using System.Windows.Data;
 
 namespace CustomMacroFactory.MVVM.Converters
 {
-    class uClient_converter_bool2visibility : IValueConverter
+    class MacroViewer_converter_bool2visibility : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -17,7 +17,7 @@ namespace CustomMacroFactory.MVVM.Converters
             throw new NotImplementedException();
         }
     }
-    class uClient_converter_bool2minwidth : IValueConverter
+    class MacroViewer_converter_bool2minwidth : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -29,7 +29,7 @@ namespace CustomMacroFactory.MVVM.Converters
             throw new NotImplementedException();
         }
     }
-    class uClient_converter_visibility2minheight : IValueConverter
+    class MacroViewer_converter_visibility2minheight : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -41,7 +41,7 @@ namespace CustomMacroFactory.MVVM.Converters
             throw new NotImplementedException();
         }
     }
-    class uClient_converter_visibility2maxheight : IValueConverter
+    class MacroViewer_converter_visibility2maxheight : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -53,7 +53,7 @@ namespace CustomMacroFactory.MVVM.Converters
             throw new NotImplementedException();
         }
     }
-    class uClient_converter_visibility2height : IValueConverter
+    class MacroViewer_converter_visibility2height : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -67,7 +67,7 @@ namespace CustomMacroFactory.MVVM.Converters
             throw new NotImplementedException();
         }
     }
-    class uClient_converter_bool2opacity : IValueConverter
+    class MacroViewer_converter_bool2opacity : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -80,7 +80,7 @@ namespace CustomMacroFactory.MVVM.Converters
         }
     }
 
-    class uClient_converter_boolbool2visibility : IMultiValueConverter
+    class MacroViewer_converter_boolbool2visibility : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
@@ -97,7 +97,7 @@ namespace CustomMacroFactory.MVVM.Converters
         }
     }
 
-    class uClient_converter_boolbool2bool : IMultiValueConverter
+    class MacroViewer_converter_boolbool2bool : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
@@ -112,7 +112,7 @@ namespace CustomMacroFactory.MVVM.Converters
             throw new NotImplementedException();
         }
     }
-    class uClient_converter_boolbool2double : IMultiValueConverter
+    class MacroViewer_converter_boolbool2double : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {

@@ -966,7 +966,7 @@
             <summary>
             <para>范围找图</para>
             <para>-</para>
-            <para>参数 path：<see cref="T:System.String"/> 类型，匹配的小图的绝对路径</para>
+            <para>参数 saveFolder：<see cref="T:System.String"/> 类型，匹配的小图的绝对路径</para>
             <para>参数 rect：<see cref="T:System.Drawing.Rectangle"/>? 类型，描述匹配范围的矩形（比如填'new(10, 20, 30, 40)'意为将范围限定在'x=10,y=20,width=30,height=40'的矩形内，填'null'默认全图）</para>
             <para>参数 tolerance：<see cref="T:System.Double"/>? 类型，相似度（范围0~1，比如填'null'意为使用默认值0.8）</para>
             <para>-</para>
@@ -1118,6 +1118,16 @@
             <para>coloncolor: 冒号颜色</para>
             <para>backgroundcolor: 背景颜色</para>
             <para>backgroundcornerradius: 背景圆角半径</para>
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.MacroBase.SaveConfig``1(System.String,CustomMacroBase.PreBase.GateBase,``0,System.String,System.String)">
+            <summary>
+            Save Config
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.MacroBase.LoadConfig``1(System.String,CustomMacroBase.PreBase.GateBase,System.Action{``0},System.String,System.String)">
+            <summary>
+            Load Config
             </summary>
         </member>
         <member name="T:CustomMacroBase.PixelMatcher.AimCursor">

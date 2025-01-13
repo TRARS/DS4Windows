@@ -21,7 +21,6 @@ using System.Windows.Media;
 using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using TrarsUI.Shared.DTOs;
 using TrarsUI.Shared.Interfaces.UIComponents;
 using TrarsUI.Shared.Messages;
 using SD = System.Drawing;
@@ -127,7 +126,10 @@ namespace CustomMacroFactory.MVVM.ViewModels
         public string MessageStr => (SizeInfo.Equals(string.Empty) ? "" : $" size{SizeInfo} {ClickPointInfo} {""}");
 
         [ObservableProperty]
-        private ColorHex colorHex = new();
+        private ColorHex clickHex = new();
+
+        [ObservableProperty]
+        private ColorHex moveHex = new();
     }
 
     //CreateImageControl
@@ -414,7 +416,7 @@ namespace CustomMacroFactory.MVVM.ViewModels
                             old_click_pos = click.Point;
                         }
                     }
-                    this.ColorHex = GetColorHex(pt);
+                    this.ClickHex = GetColorHex(pt);
                 }
             }
         }
@@ -452,7 +454,7 @@ namespace CustomMacroFactory.MVVM.ViewModels
                     var pt = e.GetPosition(Image);
                     var click = GetColorInfo(pt);
                     if (click.IsSuccess) { Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, click.Info); }
-                    //this.ColorHex = GetColorHex(pt);
+                    this.MoveHex = GetColorHex(pt);
                 }
 
                 { //放大镜
@@ -617,7 +619,7 @@ namespace CustomMacroFactory.MVVM.ViewModels
             var ptr = ((int)pt.Y * BGRA.Stride + (int)pt.X) << 2;
             if (pt.X >= 0 && pt.Y >= 0 && pt.X < BGRA.Stride && ptr < BGRA.Values.Length)
             {
-                return new() { Hex = BGRA.GetColorHexString(ptr), Pos = $"({p.X}, {p.Y})" };
+                return new() { Hex = BGRA.GetColorHexString(ptr), Pos = $"({pt.X}, {pt.Y})" };
             }
             return new();
         }

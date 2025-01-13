@@ -12,9 +12,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
@@ -78,6 +82,7 @@ namespace CustomMacroBase.PreBase
         /// <summary>
         /// 获取Children中类型为GateBase的成员
         /// </summary>
+        [JsonIgnore]
         public List<GateBase> GateBaseList
         {
             get
@@ -220,6 +225,7 @@ namespace CustomMacroBase.PreBase
         /// <summary>
         /// 获取或设置组名，使得处于相同组里的滑块开关在任意时刻最多只有一个处于启用状态
         /// </summary>
+        [JsonIgnore]
         public string? GroupName
         {
             get { return _groupname; }
@@ -238,6 +244,7 @@ namespace CustomMacroBase.PreBase
         /// <summary>
         /// 获取或设置文本内容，用作滑块开关控件的注释
         /// </summary>
+        [JsonIgnore]
         public string Text
         {
             get { return _text; }
@@ -248,6 +255,7 @@ namespace CustomMacroBase.PreBase
         /// <summary>
         /// 获取或设置滑块开关状态（与父节点无关，仅供UI绑定）
         /// </summary>
+        [JsonIgnore]
         public bool IsChecked
         {
             get { return _enable; }
@@ -261,6 +269,7 @@ namespace CustomMacroBase.PreBase
         /// <summary>
         /// 获取或设置滑块开关状态（与父节点相关，若父节点Enable为false，则必然返回false）
         /// </summary>
+        [JsonPropertyName("Enable")]
         public bool Enable
         {
             get { return _enable && (this.Parent?.Enable ?? true); }
@@ -277,6 +286,7 @@ namespace CustomMacroBase.PreBase
         /// <summary>
         /// 获取或设置滑块开关整体显示状态
         /// </summary>
+        [JsonIgnore]
         public bool HideSelf
         {
             get { return _hideSelf; }
@@ -291,6 +301,7 @@ namespace CustomMacroBase.PreBase
         /// <summary>
         /// 获取或设置SliderButton状态
         /// </summary>
+        [JsonIgnore]
         public bool DisableSliderButton
         {
             get { return _DisableSliderButton; }
@@ -305,6 +316,7 @@ namespace CustomMacroBase.PreBase
         /// <summary>
         /// 特征码
         /// </summary>
+        [JsonIgnore]
         public string Feature
         {
             get { return _Feature; }
@@ -319,6 +331,7 @@ namespace CustomMacroBase.PreBase
         /// <summary>
         /// 气泡注释前缀
         /// </summary>
+        [JsonIgnore]
         public string TooltipPrefix
         {
             get { return _TooltipPrefix; }
@@ -333,6 +346,7 @@ namespace CustomMacroBase.PreBase
         /// <summary>
         /// 气泡注释后缀
         /// </summary>
+        [JsonIgnore]
         public string TooltipSuffix
         {
             get { return _TooltipSuffix; }
@@ -347,7 +361,7 @@ namespace CustomMacroBase.PreBase
         /// <summary>
         /// 获取当前滑块开关的子成员列表（同时包含节点成员和非节点成员）
         /// </summary>
-        public ObservableCollection<GateNode> Children { get; init; } = new();
+        [JsonIgnore] public ObservableCollection<GateNode> Children { get; init; } = new();
     }
 }
 
@@ -507,7 +521,7 @@ namespace CustomMacroBase
         /// <summary>
         /// <para>范围找图</para>
         /// <para>-</para>
-        /// <para>参数 path：<see cref="string"/> 类型，匹配的小图的绝对路径</para>
+        /// <para>参数 saveFolder：<see cref="string"/> 类型，匹配的小图的绝对路径</para>
         /// <para>参数 rect：<see cref="Rectangle"/>? 类型，描述匹配范围的矩形（比如填'new(10, 20, 30, 40)'意为将范围限定在'x=10,y=20,width=30,height=40'的矩形内，填'null'默认全图）</para>
         /// <para>参数 tolerance：<see cref="double"/>? 类型，相似度（范围0~1，比如填'null'意为使用默认值0.8）</para>
         /// <para>-</para>
@@ -1178,6 +1192,145 @@ namespace CustomMacroBase
                 ColonColor = coloncolor ?? new(Colors.White);
                 BackgroundColor = backgroundcolor ?? new(Colors.Black);
                 BackgroundCornerRadius = backgroundcornerradius ?? new(2.5);
+            }
+        }
+    }
+}
+
+//MacroBase_SL
+namespace CustomMacroBase
+{
+    public abstract partial class MacroBase
+    {
+        JsonSerializerOptions jsonOptions = new JsonSerializerOptions
+        {
+            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+            Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) },
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+            AllowTrailingCommas = true,
+            WriteIndented = true,
+        };
+
+        record MacroConfigs<T>(MacroConfig Gate, T GateVM);
+        record MacroConfig(bool Enable, List<MacroConfig>? Children);
+
+        /// <summary>
+        /// Save Config
+        /// </summary>
+        public void SaveConfig<T>(string key, GateBase gate, T vm, string? saveFolder = null, string? saveFileName = null)
+        {
+            var savePath = string.Empty;
+            var realFileName = saveFileName ?? $"{this.Title}({key}).json";
+            if (!string.IsNullOrWhiteSpace(saveFolder))
+            {
+                try
+                {
+                    Directory.CreateDirectory(saveFolder);
+                    savePath = Path.Combine(saveFolder, realFileName);
+                }
+                catch (Exception ex)
+                {
+                    Print($"Failed to create directory: {ex.Message}");
+                    throw;
+                }
+            }
+            else
+            {
+                var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                var directoryPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                var realPath = Directory.Exists(directoryPath) ? directoryPath : desktopPath;
+                savePath = Path.Combine(realPath, realFileName);
+            }
+
+            try
+            {
+                var root = new MacroConfig(MainGate.Enable, GenerateMacroConfig(MainGate));
+                using (StreamWriter sw = new StreamWriter($"{savePath}", false, Encoding.Unicode))
+                {
+                    sw.WriteLine(JsonSerializer.Serialize(new MacroConfigs<T>(root, vm), jsonOptions));
+                    Print($"SaveConfig: {this.Title}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Print(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Load Config
+        /// </summary>
+        public void LoadConfig<T>(string key, GateBase gate, Action<T> vmLoader, string? saveFolder = null, string? saveFileName = null)
+        {
+            var savePath = string.Empty;
+            var realFileName = saveFileName ?? $"{this.Title}({key}).json";
+            if (!string.IsNullOrWhiteSpace(saveFolder))
+            {
+                if (Directory.Exists(saveFolder))
+                {
+                    savePath = Path.Combine(saveFolder, realFileName);
+                }
+                else
+                {
+                    Print($"not found: {saveFolder}");
+                    return;
+                }
+            }
+            else
+            {
+                var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                var directoryPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                var realPath = Directory.Exists(directoryPath) ? directoryPath : desktopPath;
+                savePath = Path.Combine(realPath, realFileName);
+            }
+
+            try
+            {
+                if (File.Exists(savePath))
+                {
+                    string content = File.ReadAllText(savePath);
+                    if (JsonSerializer.Deserialize(content, typeof(MacroConfigs<T>)) is MacroConfigs<T> jsonObj)
+                    {
+                        RestoreFromMacroConfig(MainGate, jsonObj.Gate);
+                        vmLoader?.Invoke(jsonObj.GateVM);
+                        Print($"LoadConfig: {this.Title}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Print(ex.Message);
+            }
+        }
+
+        private List<MacroConfig>? GenerateMacroConfig(GateBase gate)
+        {
+            var list = gate.Children.OfType<GateNode>().Where(node => node.Type == GateNodeType.GateBase);
+            var result = new List<MacroConfig>();
+            foreach (var node in list)
+            {
+                var item = (GateBase)node.Content;
+                result.Add(new MacroConfig(item.Enable, GenerateMacroConfig(item)));
+            }
+            return result.Count > 0 ? result : null;
+        }
+        private void RestoreFromMacroConfig(GateBase gateRoot, MacroConfig jsonRoot, int depth = 0)
+        {
+            var isRoot = depth == 0; depth++;
+            if (isRoot) { gateRoot.Enable = jsonRoot.Enable; }
+
+            var gateChildren = gateRoot.Children.OfType<GateNode>().Where(node => node.Type == GateNodeType.GateBase);
+            if (gateChildren is null) { return; }
+            if (jsonRoot.Children is null) { return; }
+
+            var gateList = gateChildren.ToList();
+            var count = 0;
+            foreach (var item in jsonRoot.Children)
+            {
+                var currentGate = (GateBase)gateList[count++].Content;
+                currentGate.Enable = item.Enable;
+
+                RestoreFromMacroConfig(currentGate, item, depth);
             }
         }
     }

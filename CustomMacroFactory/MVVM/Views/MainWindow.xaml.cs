@@ -3,6 +3,7 @@ using CustomMacroBase.GamePadState;
 using CustomMacroBase.Helper;
 using CustomMacroFactory.MacroFactory;
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 using TrarsUI.Shared.DTOs;
@@ -90,17 +91,29 @@ namespace CustomMacroFactory.MVVM.Views
             });
 
             // 关闭
-            WeakReferenceMessenger.Default.Register<WindowCloseMessage, string>(this, this.Token, (r, m) =>
+            WeakReferenceMessenger.Default.Register<WindowCloseMessage, string>(this, this.Token, async (r, m) =>
             {
-                canExit = false; shadowHelper.Close(this.Token);
-
-                ((MainWindow)r).SetDoubleAnimation(OpacityProperty, Opacity, 0d, 256).ContinueWith(() =>
+                try
                 {
-                    canExit = true;
-                    this.UnRegister();
-                    this.Close();
-                    Environment.Exit(0);
-                }).Begin();
+                    Action? yesnoCallback = null;
+                    if (await WeakReferenceMessenger.Default.Send(new DialogYesNoMessage("Exit ?", (x) => { yesnoCallback = x; }), this.Token))
+                    {
+                        canExit = false; shadowHelper.Close(this.Token);
+
+                        ((MainWindow)r).SetDoubleAnimation(OpacityProperty, Opacity, 0d, 256).ContinueWith(() =>
+                        {
+                            canExit = true;
+                            this.UnRegister();
+                            this.Close();
+                            Environment.Exit(0);
+                        }).Begin();
+                    }
+                    yesnoCallback?.Invoke();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"WindowCloseMessage error: {ex.Message}");
+                }
             });
 
             // 窗体截图

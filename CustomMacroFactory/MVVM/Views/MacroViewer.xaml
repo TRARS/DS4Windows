@@ -18,12 +18,12 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <SolidColorBrush Color="#862E2F34" x:Key="AreaColor"/>
-            <converters:uClient_converter_bool2visibility x:Key="uClient_converter_bool2visibility"/>
-            <converters:uClient_converter_bool2minwidth x:Key="uClient_converter_bool2minwidth"/>
-            <converters:uClient_converter_visibility2minheight x:Key="uClient_converter_visibility2minheight"/>
-            <converters:uClient_converter_visibility2maxheight x:Key="uClient_converter_visibility2maxheight"/>
-            <converters:uClient_converter_visibility2height x:Key="uClient_converter_visibility2height"/>
-            <converters:uClient_converter_boolbool2visibility x:Key="uClient_converter_boolbool2visibility"/>
+            <converters:MacroViewer_converter_bool2visibility x:Key="MacroViewer_converter_bool2visibility"/>
+            <converters:MacroViewer_converter_bool2minwidth x:Key="MacroViewer_converter_bool2minwidth"/>
+            <converters:MacroViewer_converter_visibility2minheight x:Key="MacroViewer_converter_visibility2minheight"/>
+            <converters:MacroViewer_converter_visibility2maxheight x:Key="MacroViewer_converter_visibility2maxheight"/>
+            <converters:MacroViewer_converter_visibility2height x:Key="MacroViewer_converter_visibility2height"/>
+            <converters:MacroViewer_converter_boolbool2visibility x:Key="MacroViewer_converter_boolbool2visibility"/>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -33,15 +33,15 @@
                 <RowDefinition Height="*" MinHeight="192" d:MinHeight="128"
                                MaxHeight="{Binding Visibility, 
                                                    ElementName=BottomArea, 
-                                                   Converter={StaticResource uClient_converter_visibility2maxheight},
+                                                   Converter={StaticResource MacroViewer_converter_visibility2maxheight},
                                                    ConverterParameter=384}"/>
                 <RowDefinition MaxHeight="632"
                                Height="{Binding Visibility, 
                                                 ElementName=BottomArea, 
-                                                Converter={StaticResource uClient_converter_visibility2height}}"
+                                                Converter={StaticResource MacroViewer_converter_visibility2height}}"
                                MinHeight="{Binding Visibility, 
                                                    ElementName=BottomArea, 
-                                                   Converter={StaticResource uClient_converter_visibility2minheight},
+                                                   Converter={StaticResource MacroViewer_converter_visibility2minheight},
                                                    ConverterParameter=192}"/>
             </Grid.RowDefinitions>
 
@@ -51,16 +51,16 @@
                     d:BorderBrush ="Red">
                 <Grid x:Name="Part_0_Grid" Margin="2">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" MinWidth="{Binding TopContent_Left_Hide, Converter={StaticResource uClient_converter_bool2minwidth}, ConverterParameter=65}"/>
-                        <ColumnDefinition Width="{Binding TopContent_Left_Hide, Converter={StaticResource uClient_converter_bool2minwidth}, ConverterParameter=1}"/>
-                        <ColumnDefinition Width="Auto" MinWidth="{Binding TopContent_Middle_Hide, Converter={StaticResource uClient_converter_bool2minwidth}, ConverterParameter=65}"/>
-                        <ColumnDefinition Width="{Binding TopContent_Middle_Hide, Converter={StaticResource uClient_converter_bool2minwidth}, ConverterParameter=1}"/>
-                        <ColumnDefinition Width="*" MinWidth="{Binding TopContent_Right_Hide, Converter={StaticResource uClient_converter_bool2minwidth}, ConverterParameter=343}"/>
+                        <ColumnDefinition Width="Auto" MinWidth="{Binding TopContent_Left_Hide, Converter={StaticResource MacroViewer_converter_bool2minwidth}, ConverterParameter=65}"/>
+                        <ColumnDefinition Width="{Binding TopContent_Left_Hide, Converter={StaticResource MacroViewer_converter_bool2minwidth}, ConverterParameter=1}"/>
+                        <ColumnDefinition Width="Auto" MinWidth="{Binding TopContent_Middle_Hide, Converter={StaticResource MacroViewer_converter_bool2minwidth}, ConverterParameter=65}"/>
+                        <ColumnDefinition Width="{Binding TopContent_Middle_Hide, Converter={StaticResource MacroViewer_converter_bool2minwidth}, ConverterParameter=1}"/>
+                        <ColumnDefinition Width="*" MinWidth="{Binding TopContent_Right_Hide, Converter={StaticResource MacroViewer_converter_bool2minwidth}, ConverterParameter=343}"/>
                     </Grid.ColumnDefinitions>
 
                     <!--左-->
                     <Grid Grid.Column="0"
-                          Visibility="{Binding TopContent_Left_Hide, Converter={StaticResource uClient_converter_bool2visibility}}"
+                          Visibility="{Binding TopContent_Left_Hide, Converter={StaticResource MacroViewer_converter_bool2visibility}}"
                           d:Visibility="Visible">
                         <Grid>
                             <Grid.RowDefinitions>
@@ -88,7 +88,7 @@
                     <!--中-->
                     <gridex:cGrid Grid.Column="2"
                                   ParentModel="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
-                                  Visibility="{Binding TopContent_Middle_Hide, Converter={StaticResource uClient_converter_bool2visibility}}"
+                                  Visibility="{Binding TopContent_Middle_Hide, Converter={StaticResource MacroViewer_converter_bool2visibility}}"
                                   d:Visibility="Visible">
                         <scrollviewerex:cSmoothScrollViewer Content="{Binding GameList}"
                                                       VerticalScrollBarVisibility="Auto" d:VerticalScrollBarVisibility="Visible"
@@ -106,7 +106,7 @@
 
                     <!--右-->
                     <Grid Grid.Column="4"
-                          Visibility="{Binding TopContent_Right_Hide, Converter={StaticResource uClient_converter_bool2visibility}}"
+                          Visibility="{Binding TopContent_Right_Hide, Converter={StaticResource MacroViewer_converter_bool2visibility}}"
                           d:Visibility="Visible">
                         <scrollviewerex:cScrollViewer Content="{Binding MacroList}"
                                                       VerticalScrollBarVisibility="Auto" d:VerticalScrollBarVisibility="Visible"
@@ -120,12 +120,12 @@
 
             <!--下半部分：截图框、打印框-->
             <Border x:Name="BottomArea" 
-                    Visibility="{Binding BottomContent_Bottom_Hide, Converter={StaticResource uClient_converter_bool2visibility}}"
+                    Visibility="{Binding BottomContent_Bottom_Hide, Converter={StaticResource MacroViewer_converter_bool2visibility}}"
                     Grid.Row="1" BorderThickness="1" BorderBrush="#33C1D3FF" Margin="1,0,1,1" CornerRadius="0,0,4,4"
                     d:BorderBrush ="Red" d:Visibility="Visible">
 
                 <Grid Margin="2" MaxWidth="{Binding ElementName=Part_0_Grid,Path=ActualWidth,Mode=OneWay}">
-                    <Grid Visibility="{Binding BottomContent_Bottom_Hide, Converter={StaticResource uClient_converter_bool2visibility}}"
+                    <Grid Visibility="{Binding BottomContent_Bottom_Hide, Converter={StaticResource MacroViewer_converter_bool2visibility}}"
                           d:Visibility="Visible">
                         <scrollviewerex:cScrollViewer Content="{Binding LogArea}" VerticalScrollBarVisibility="Auto" d:VerticalScrollBarVisibility="Visible" 
                                                       BackgroundColor="{StaticResource AreaColor}" d:BackgroundColor="DarkOrange" d:ScrollBarBackgroundColor="Gray"
