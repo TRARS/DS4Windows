@@ -6,6 +6,7 @@ using CustomMacroBase.CustomControlEx.VerticalButtonEx;
 using CustomMacroBase.Helper.Extensions;
 using CustomMacroBase.Helper.HotKey;
 using CustomMacroFactory.MVVM.Models;
+using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Reflection;
@@ -207,17 +208,16 @@ namespace CustomMacroFactory.MVVM.ViewModels
                 }
             }).GetVerticalContent();
 
-            //BottomContent_Top
-            //this.SnapshotArea = new PartCreator<ContentControl>(container =>
-            //{
-            //    container.Add(new() { Content = MainEntry.GetRequiredService<uPixelPicker>() });
-            //}).GetVerticalContent();
-
             //BottomContent_Bottom
             this.LogArea = new PartCreator<ContentControl>(container =>
             {
                 container.Add(new() { Content = new cConsoleListBox() });
             }).GetVerticalContent();
+        }
+
+        private void Btn_LayoutUpdated(object? sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }

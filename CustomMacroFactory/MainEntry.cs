@@ -49,7 +49,7 @@ namespace CustomMacroFactory
                                    return mainwindow;
                                }
                            });
-                           sc.AddScoped<IMainWindowVM, MainWindowVM>();
+                           sc.AddTransient<IMainWindowVM, MainWindowVM>();
 
                            // ChildForm ChildFormVM
                            sc.AddFormFactory<IChildForm, IChildFormEmpty, ChildForm>(sp =>
@@ -64,7 +64,7 @@ namespace CustomMacroFactory
                                    return childForm;
                                }
                            });
-                           sc.AddScoped<IChildFormVM, ChildFormVM>();
+                           sc.AddTransient<IChildFormVM, ChildFormVM>();
 
                            // 其他组件VM
                            sc.AddSingleton<MacroViewerVM>();

@@ -1208,7 +1208,7 @@ namespace CustomMacroBase
             Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) },
             DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
             AllowTrailingCommas = true,
-            WriteIndented = true,
+            WriteIndented = true
         };
 
         record MacroConfigs<T>(MacroConfig Gate, T GateVM);
