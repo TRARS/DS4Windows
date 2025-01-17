@@ -166,12 +166,6 @@ namespace CustomMacroFactory.MVVM.Views
                 shadowHelper.ShadowMove(this.Token);
             };
 
-            // SizeChanged
-            this.SizeChanged += (s, e) =>
-            {
-                shadowHelper.ShadowMove(this.Token);
-            };
-
             // Activated
             this.Activated += async (s, e) =>
             {
@@ -242,7 +236,7 @@ namespace CustomMacroFactory.MVVM.Views
             }
             else
             {
-                OnTaskbarMinimize?.Invoke(); //this.WindowState = WindowState.Minimized;
+                this.WindowState = WindowState.Minimized; shadowHelper.ShadowFadeInOut(this.Token, null);
                 this.ShowInTaskbar = false;
             }
         }

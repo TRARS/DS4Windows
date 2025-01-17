@@ -163,12 +163,6 @@ namespace CustomMacroFactory.MVVM.Views
                 shadowHelper.ShadowMove(this.Token);
             };
 
-            // SizeChanged
-            this.SizeChanged += (s, e) =>
-            {
-                shadowHelper.ShadowMove(this.Token);
-            };
-
             // Activated
             this.Activated += async (s, e) =>
             {
