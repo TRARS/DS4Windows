@@ -128,12 +128,12 @@
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <i:InvokeCommandAction Command="{Binding PauseRefreshCommand}"
-                                               CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
+                                                   CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </buttonex:cButtonAtype>
                 <buttonex:cButtonAtype Content="Save To Desktop" MinWidth="60" HorizontalAlignment="Left"
-                                   Command="{Binding SaveToDesktopCommand}"/>
+                                       Command="{Binding SaveToDesktopCommand}"/>
             </StackPanel>
         </Grid>
         

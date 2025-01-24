@@ -1,5 +1,4 @@
-﻿using CustomMacroFactory.Factories;
-using CustomMacroFactory.MVVM.ViewModels;
+﻿using CustomMacroFactory.MVVM.ViewModels;
 using CustomMacroFactory.MVVM.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -22,10 +21,14 @@ namespace CustomMacroFactory
                        .ConfigureServices(sc =>
                        {
                            // Service
-                           sc.AddSingleton<IMessageBoxService, MessageBoxService>();
-                           sc.AddScoped<ITokenProviderService, TokenProviderService>();
-                           sc.AddSingleton<IContentProviderService, AContentProviderService>();
+                           sc.AddSingleton<ICreateChildFormService, CreateChildFormService>();
                            sc.AddTransient<IDebouncerService, DebouncerService>();
+                           sc.AddTransient<IDialogYesNoService, DialogYesNoService>();
+                           sc.AddTransient<IDispatcherService, DispatcherService>();
+                           sc.AddSingleton<IMessageBoxService, MessageBoxService>();
+                           sc.AddTransient<IStringEncryptorService, StringEncryptorService>();
+                           sc.AddScoped<ITokenProviderService, TokenProviderService>();
+                           sc.AddSingleton<IContentProviderService, CustomMacroFactory.EntryService>();
 
                            // UI组件VM
                            sc.AddFormFactory<IuTitleBarVM, uTitleBarVM>();

@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
-using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using TrarsUI.Shared.DTOs;
@@ -20,8 +19,9 @@ namespace CustomMacroFactory.MVVM.ViewModels
 
         public MainWindowVM(IMessageBoxService messageBox,
                             ITokenProviderService tokenProvider,
+                            IDialogYesNoService dialogYesNo,
                             IContentProviderService contentProvider,
-                            IAbstractFactory<IChildForm> childFormFactory,
+                            ICreateChildFormService childFormFactory,
                             IAbstractFactory<IuTitleBarVM> titleBarFactory,
                             IAbstractFactory<IuRainbowLineVM> rainbowLineFactory,
                             IAbstractFactory<IuClientVM> clientFactory)
@@ -54,30 +54,17 @@ namespace CustomMacroFactory.MVVM.ViewModels
             // 打开子窗体
             WeakReferenceMessenger.Default.Register<OpenChildFormMessage>(this, (r, m) =>
             {
-                var childForm = childFormFactory.Create();
-                {
-                    var context = m.Value;
-                    childForm.SetWindowInfo(context.WindowInfo);
-                    childForm.SetClientContent(context.ViewModel);
-                    childForm.SetTitleBarIcon(context.Icon);
-                    childForm.Show();
-                }
+                childFormFactory.Create(m.Value);
             });
 
             // 本地弹框
             WeakReferenceMessenger.Default.Register<DialogYesNoMessage, string>(this, token, (r, m) =>
             {
-                m.Reply(((Func<Task<bool>>)(() =>
-                {
-                    var tk = tokenProvider.GetRandomToken();
-                    var msg = m.Message;
-                    var dp = new DialogPacket(tk, msg);
-                    m.Callback?.Invoke(() => { this.DialogMessageList.Remove(dp); tokenProvider.RemoveToken(tk); });
-                    this.DialogMessageList.Add(dp);
-
-                    TaskCompletionSource = new TaskCompletionSource<bool>();
-                    return TaskCompletionSource.Task;
-                }))());
+                m.Reply(dialogYesNo.ShowDialog(
+                    m,
+                    () => { TaskCompletionSource = new(); return TaskCompletionSource; },
+                    dp => { this.DialogMessageList.Remove(dp); },
+                    dp => { this.DialogMessageList.Add(dp); }));
             });
         }
     }

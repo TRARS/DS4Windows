@@ -1,9 +1,9 @@
 ﻿using CustomMacroFactory.MVVM.ViewModels;
 using TrarsUI.Shared.Interfaces.UIComponents;
 
-namespace CustomMacroFactory.Factories
+namespace CustomMacroFactory
 {
-    internal class AContentProviderService : IContentProviderService
+    internal class EntryService : IContentProviderService
     {
         public IContentVM Create()
         {

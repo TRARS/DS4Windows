@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
-using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using TrarsUI.Shared.DTOs;
@@ -20,6 +19,7 @@ namespace CustomMacroFactory.MVVM.ViewModels
 
         public ChildFormVM(IMessageBoxService messageBox,
                            ITokenProviderService tokenProvider,
+                           IDialogYesNoService dialogYesNo,
                            IAbstractFactory<IuTitleBarVM> titleBarFactory,
                            IAbstractFactory<IuRainbowLineVM> rainbowLineFactory,
                            IAbstractFactory<IuClientVM> clientFactory)
@@ -59,17 +59,11 @@ namespace CustomMacroFactory.MVVM.ViewModels
             // 本地弹框
             WeakReferenceMessenger.Default.Register<DialogYesNoMessage, string>(this, token, (r, m) =>
             {
-                m.Reply(((Func<Task<bool>>)(() =>
-                {
-                    var tk = tokenProvider.GetRandomToken();
-                    var msg = m.Message;
-                    var dp = new DialogPacket(tk, msg);
-                    m.Callback?.Invoke(() => { this.DialogMessageList.Remove(dp); tokenProvider.RemoveToken(tk); });
-                    this.DialogMessageList.Add(dp);
-
-                    TaskCompletionSource = new TaskCompletionSource<bool>();
-                    return TaskCompletionSource.Task;
-                }))());
+                m.Reply(dialogYesNo.ShowDialog(
+                    m,
+                    () => { TaskCompletionSource = new(); return TaskCompletionSource; },
+                    dp => { this.DialogMessageList.Remove(dp); },
+                    dp => { this.DialogMessageList.Add(dp); }));
             });
         }
     }
