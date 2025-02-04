@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using CustomMacroBase.Messages;
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -184,7 +186,7 @@ namespace CustomMacroBase.Helper.Tools.SendInputManager
             public abstract Action? NextState { get; init; }
             public abstract void Press(T[] keys);
             public abstract void Release(T[] keys);
-            public static void Print(string str) => Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, str);
+            public static void Print(string str) => WeakReferenceMessenger.Default.Send(new PrintNewMessage(str));
         }
         private class KeyPressed<T> : KeyState<T>
         {

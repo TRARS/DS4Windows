@@ -5,17 +5,18 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CustomMacroFactory.MVVM.Views"
              xmlns:AttachedProperty="clr-namespace:CustomMacroBase.Helper.Extensions;assembly=CustomMacroBase"
-             
              xmlns:ConsoleListBoxEx="clr-namespace:CustomMacroBase.CustomControlEx.ConsoleListBoxEx;assembly=CustomMacroBase" 
              xmlns:verticalbuttonex="clr-namespace:CustomMacroBase.CustomControlEx.VerticalButtonEx;assembly=CustomMacroBase" 
-             xmlns:verticalradiobuttonex="clr-namespace:CustomMacroBase.CustomControlEx.VerticalRadioButtonEx;assembly=CustomMacroBase" 
-             xmlns:togglebuttonex="clr-namespace:CustomMacroBase.CustomControlEx.ToggleButtonEx;assembly=CustomMacroBase" 
              xmlns:sliderex="clr-namespace:CustomMacroBase.CustomControlEx.SliderEx;assembly=CustomMacroBase" 
              xmlns:valueindicatorex="clr-namespace:CustomMacroBase.CustomControlEx.ValueIndicatorEx;assembly=CustomMacroBase"
              xmlns:scrollviewerex="clr-namespace:CustomMacroBase.CustomControlEx.ScrollViewerEx;assembly=CustomMacroBase" 
              xmlns:comboboxex="clr-namespace:CustomMacroBase.CustomControlEx.ComboBoxEx;assembly=CustomMacroBase" 
              xmlns:colorfultextblockex="clr-namespace:CustomMacroBase.CustomControlEx.ColorfulTextBlockEx;assembly=CustomMacroBase" 
              xmlns:tooltipinfobuttonex="clr-namespace:CustomMacroBase.CustomControlEx.TooltipInfoButtonEx;assembly=CustomMacroBase"
+             
+             xmlns:verticalradiobuttonex="clr-namespace:TrarsUI.Shared.Controls.VerticalRadioButtonEx;assembly=TrarsUI.Shared"
+             xmlns:togglebuttonex="clr-namespace:TrarsUI.Shared.Controls.ToggleButtonEx;assembly=TrarsUI.Shared"
+             
              mc:Ignorable="d" 
              
              SnapsToDevicePixels="True" 

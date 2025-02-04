@@ -1,5 +1,7 @@
-﻿using CustomMacroBase.Helper;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
 using CustomMacroBase.Helper.HotKey;
+using CustomMacroBase.Messages;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,7 +12,7 @@ namespace CustomMacroBase.CustomControlEx.ContextMenuEx
 {
     partial class cMenuItemForHotkey_viewmodel
     {
-        public class ItemViewModel : NotificationObject
+        public class ItemViewModel : ObservableObject
         {
             private string _text;
             private string _accesskey;
@@ -21,13 +23,13 @@ namespace CustomMacroBase.CustomControlEx.ContextMenuEx
             public List<Key> KeyEnumList0
             {
                 get { return _KeyEnumList0; }
-                set { _KeyEnumList0 = value; NotifyPropertyChanged(); }
+                set { _KeyEnumList0 = value; OnPropertyChanged(); }
             }
             private int _SelectedKey0 = 0;
             public int SelectedKey0
             {
                 get { return _SelectedKey0; }
-                set { _SelectedKey0 = value; NotifyPropertyChanged(); OnSelectedChanged(); }
+                set { _SelectedKey0 = value; OnPropertyChanged(); OnSelectedChanged(); }
             }
 
             //第二个Key
@@ -35,13 +37,13 @@ namespace CustomMacroBase.CustomControlEx.ContextMenuEx
             public List<Key> KeyEnumList1
             {
                 get { return _KeyEnumList1; }
-                set { _KeyEnumList1 = value; NotifyPropertyChanged(); }
+                set { _KeyEnumList1 = value; OnPropertyChanged(); }
             }
             private int _SelectedKey1 = 0;
             public int SelectedKey1
             {
                 get { return _SelectedKey1; }
-                set { _SelectedKey1 = value; NotifyPropertyChanged(); OnSelectedChanged(); }
+                set { _SelectedKey1 = value; OnPropertyChanged(); OnSelectedChanged(); }
             }
 
             //Key汇总
@@ -90,11 +92,11 @@ namespace CustomMacroBase.CustomControlEx.ContextMenuEx
                 if (this.GetKeys.Length > 0)
                 {
                     HotKeyManager.Instance.RegisterHotKey(_accesskey, this.GetKeys, _callback);
-                    Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, $"RegisterHotKey: {_text}, {string.Join(",", this.GetKeys)}");
+                    WeakReferenceMessenger.Default.Send(new PrintNewMessage($"RegisterHotKey: {_text}, {string.Join(",", this.GetKeys)}"));
                 }
                 else
                 {
-                    Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, $"UnregisterHotKey: {_text}");
+                    WeakReferenceMessenger.Default.Send(new PrintNewMessage($"UnregisterHotKey: {_text}"));
                 }
             }
         }

@@ -1,4 +1,6 @@
-﻿using CustomMacroBase.Helper;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using CustomMacroBase.Helper;
+using CustomMacroBase.Messages;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -29,14 +31,14 @@ namespace CustomMacroBase.PixelMatcher
 
             private void Init()
             {
-                Mediator.Instance.Register(MessageType.CanUpdateFrames, (para) =>
+                WeakReferenceMessenger.Default.Register<CanUpdateFrames>(this, (r, m) =>
                 {
-                    can_update = (bool)para;
+                    can_update = m.Value;
                 });
             }
             private void Print(string str = "")
             {
-                Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, str);
+                WeakReferenceMessenger.Default.Send(new PrintNewMessage(str));
             }
             private void UpdateToSnapshotArea(Func<Bitmap?> func, string? msg = null)
             {
@@ -52,7 +54,7 @@ namespace CustomMacroBase.PixelMatcher
                         {
                             using (source)
                             {
-                                await MediatorAsync.Instance.NotifyColleagues(AsyncMessageType.AsyncSnapshot, source);
+                                await WeakReferenceMessenger.Default.Send(new AsyncSnapshotMessage(source));
 
                                 if (msg is not null) { Print($"{msg}"); }
                             }

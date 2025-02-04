@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using CustomMacroBase.Messages;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
@@ -29,7 +31,7 @@ namespace CustomMacroBase.Helper.Tools.FlowManager
     {
         private protected void Print([CallerMemberName] string str = "")
         {
-            Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, str);
+            WeakReferenceMessenger.Default.Send(new PrintNewMessage(str));
         }
     }
 }

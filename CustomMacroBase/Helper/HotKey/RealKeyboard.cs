@@ -1,4 +1,6 @@
-﻿using SharpDX.DirectInput;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using CustomMacroBase.Messages;
+using SharpDX.DirectInput;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -81,7 +83,7 @@ namespace CustomMacroBase.Helper.HotKey
                     {
                         try
                         {
-                            Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, $"start keyboard monitoring");
+                            WeakReferenceMessenger.Default.Send(new PrintNewMessage($"start keyboard monitoring"));
 
                             while (loopFlag)
                             {
@@ -110,7 +112,7 @@ namespace CustomMacroBase.Helper.HotKey
             {
                 loopFlag = false;
                 keyboard.Unacquire();
-                Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, $"stop keyboard monitoring ");
+                WeakReferenceMessenger.Default.Send(new PrintNewMessage($"stop keyboard monitoring"));
             }
         }
     }

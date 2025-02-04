@@ -14,6 +14,15 @@
             InitializeComponent
             </summary>
         </member>
+        <member name="T:CustomMacroBase.CustomControlEx.FoldableContainerEx.cFoldableContainer">
+            <inheritdoc/>
+        </member>
+        <member name="F:CustomMacroBase.CustomControlEx.FoldableContainerEx.cFoldableContainer.arrowClickCommand">
+            <summary>The backing field for <see cref="P:CustomMacroBase.CustomControlEx.FoldableContainerEx.cFoldableContainer.ArrowClickCommand"/>.</summary>
+        </member>
+        <member name="P:CustomMacroBase.CustomControlEx.FoldableContainerEx.cFoldableContainer.ArrowClickCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:CustomMacroBase.CustomControlEx.FoldableContainerEx.cFoldableContainer.OnArrowClick"/>.</summary>
+        </member>
         <member name="P:CustomMacroBase.CustomControlEx.GridEx.cGrid.ParentModel">
             <summary>
             DataContext中转
@@ -112,21 +121,6 @@
         <member name="M:CustomMacroBase.Helper.Extensions.MacroBaseExtensions.GetSortIndex(CustomMacroBase.MacroBase)">
             <summary>
             若SortIndex不存在，返回10000
-            </summary>
-        </member>
-        <member name="T:CustomMacroBase.Helper.AsyncMessageType">
-            <summary>
-            适用于 MediatorAsync 的消息枚举
-            </summary>
-        </member>
-        <member name="M:CustomMacroBase.Helper.MediatorAsync.Register(CustomMacroBase.Helper.AsyncMessageType,System.Func{System.Object,System.Threading.CancellationToken,System.Threading.Tasks.Task{System.Object}})">
-            <summary>
-            注册异步方法供日后使用（每种消息只能注册一次）
-            </summary>
-        </member>
-        <member name="M:CustomMacroBase.Helper.MediatorAsync.NotifyColleagues(CustomMacroBase.Helper.AsyncMessageType,System.Object,System.Nullable{System.Threading.CancellationToken})">
-            <summary>
-            获取异步方法提供的返回值
             </summary>
         </member>
         <member name="P:CustomMacroBase.Helper.Tools.FlowManager.ActionInfoV0.Action">
@@ -739,16 +733,40 @@
             Retrieves the address of the window procedure, or a handle representing the address of the window procedure. You must use the CallWindowProc function to call the window procedure
             </summary>
         </member>
+        <member name="T:CustomMacroBase.PreBase.DelegateNode">
+            <inheritdoc/>
+            <inheritdoc/>
+        </member>
+        <member name="P:CustomMacroBase.PreBase.DelegateNode.ContentRenderType">
+            <inheritdoc cref="F:CustomMacroBase.PreBase.DelegateNode.contentRenderType"/>
+        </member>
+        <member name="F:CustomMacroBase.PreBase.DelegateNode.removeNodeCommand">
+            <summary>The backing field for <see cref="P:CustomMacroBase.PreBase.DelegateNode.RemoveNodeCommand"/>.</summary>
+        </member>
+        <member name="P:CustomMacroBase.PreBase.DelegateNode.RemoveNodeCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand`1"/> instance wrapping <see cref="M:CustomMacroBase.PreBase.DelegateNode.OnRemoveNodeAsync(System.Object)"/>.</summary>
+        </member>
         <member name="T:CustomMacroBase.PreBase.GateBase">
             <summary>
             滑块开关控件模型
             </summary>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
         </member>
-        <member name="M:CustomMacroBase.PreBase.GateBase.#ctor(System.String,System.Nullable{System.Boolean},System.String)">
+        <member name="M:CustomMacroBase.PreBase.GateBase.#ctor(System.String,System.Nullable{System.Boolean},System.String,System.Boolean)">
             <summary>
             <para>_text：开关注释</para>
             <para>_enable：开关状态</para>
             <para>_groupname：开关分组</para>
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.PreBase.GateBase.HasChildren">
+            <summary>
+            是否有子成员
             </summary>
         </member>
         <member name="P:CustomMacroBase.PreBase.GateBase.GateBaseList">
@@ -766,24 +784,34 @@
             <para>往Children列表添加作为节点的子项</para>
             </summary>
         </member>
-        <member name="M:CustomMacroBase.PreBase.GateBase.AddEx(System.Func{System.Windows.UIElement})">
+        <member name="M:CustomMacroBase.PreBase.GateBase.AddEx(TrarsUI.Shared.DTOs.DelegateType,System.Func{System.Windows.UIElement})">
             <summary>
             <para>往Children列表添加作为附加内容的子项</para>
             </summary>
         </member>
-        <member name="M:CustomMacroBase.PreBase.GateBase.EnableReverse">
+        <member name="M:CustomMacroBase.PreBase.GateBase.OnAddNodeAsync(System.Object)">
             <summary>
-            滑块开关状态反转
+            添加节点
             </summary>
         </member>
-        <member name="M:CustomMacroBase.PreBase.GateBase.SetDs4Rumble">
+        <member name="M:CustomMacroBase.PreBase.GateBase.OnRemoveNodeAsync(System.Object)">
             <summary>
-            震动一下以表示状态发生变化
+            删除节点
             </summary>
         </member>
-        <member name="M:CustomMacroBase.PreBase.GateBase.EnableReverseAndSetDs4Rumble">
+        <member name="M:CustomMacroBase.PreBase.GateBase.OnCollapseBranch">
             <summary>
-            连起来
+            折叠或展开下一层所有子节点
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.PreBase.GateBase.OnMoveUpAsync(System.Object)">
+            <summary>
+            上移
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.PreBase.GateBase.OnMoveDownAsync(System.Object)">
+            <summary>
+            下移
             </summary>
         </member>
         <member name="M:CustomMacroBase.PreBase.GateBase.GenerateRandomString(System.Int32)">
@@ -806,9 +834,14 @@
             通知同组控件做出反应
             </summary>
         </member>
+        <member name="P:CustomMacroBase.PreBase.GateBase.Root">
+            <summary>
+            Root节点
+            </summary>
+        </member>
         <member name="P:CustomMacroBase.PreBase.GateBase.Parent">
             <summary>
-            父节点
+            父节点（仅首次设置生效）
             </summary>
         </member>
         <member name="P:CustomMacroBase.PreBase.GateBase.GroupName">
@@ -816,7 +849,7 @@
             获取或设置组名，使得处于相同组里的滑块开关在任意时刻最多只有一个处于启用状态
             </summary>
         </member>
-        <member name="P:CustomMacroBase.PreBase.GateBase.Text">
+        <member name="F:CustomMacroBase.PreBase.GateBase.text">
             <summary>
             获取或设置文本内容，用作滑块开关控件的注释
             </summary>
@@ -831,27 +864,27 @@
             获取或设置滑块开关状态（与父节点相关，若父节点Enable为false，则必然返回false）
             </summary>
         </member>
-        <member name="P:CustomMacroBase.PreBase.GateBase.HideSelf">
+        <member name="F:CustomMacroBase.PreBase.GateBase.hideSelf">
             <summary>
             获取或设置滑块开关整体显示状态
             </summary>
         </member>
-        <member name="P:CustomMacroBase.PreBase.GateBase.DisableSliderButton">
+        <member name="F:CustomMacroBase.PreBase.GateBase.disableSliderButton">
             <summary>
             获取或设置SliderButton状态
             </summary>
         </member>
-        <member name="P:CustomMacroBase.PreBase.GateBase.Feature">
+        <member name="F:CustomMacroBase.PreBase.GateBase.feature">
             <summary>
             特征码
             </summary>
         </member>
-        <member name="P:CustomMacroBase.PreBase.GateBase.TooltipPrefix">
+        <member name="F:CustomMacroBase.PreBase.GateBase.tooltipPrefix">
             <summary>
             气泡注释前缀
             </summary>
         </member>
-        <member name="P:CustomMacroBase.PreBase.GateBase.TooltipSuffix">
+        <member name="F:CustomMacroBase.PreBase.GateBase.tooltipSuffix">
             <summary>
             气泡注释后缀
             </summary>
@@ -860,6 +893,103 @@
             <summary>
             获取当前滑块开关的子成员列表（同时包含节点成员和非节点成员）
             </summary>
+        </member>
+        <member name="F:CustomMacroBase.PreBase.GateBase.branchVisible">
+            <summary>
+            展开或折叠子成员
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.PreBase.GateBase.rootUpdating">
+            <summary>
+            Root节点负责通知刷新
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.PreBase.GateBase.ContentRenderType">
+            <summary>
+            模型用于生成Json（只需要在Root节点设置）
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.PreBase.GateBase.JsonKey">
+            <summary>
+            JsonKey
+            </summary>
+        </member>
+        <member name="F:CustomMacroBase.PreBase.GateBase.jsonValue">
+            <summary>
+            JsonValue
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.PreBase.GateBase.EnableReverse">
+            <summary>
+            滑块开关状态反转
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.PreBase.GateBase.SetDs4Rumble">
+            <summary>
+            震动一下以表示状态发生变化
+            </summary>
+        </member>
+        <member name="M:CustomMacroBase.PreBase.GateBase.EnableReverseAndSetDs4Rumble">
+            <summary>
+            连起来
+            </summary>
+        </member>
+        <member name="P:CustomMacroBase.PreBase.GateBase.Text">
+            <inheritdoc cref="F:CustomMacroBase.PreBase.GateBase.text"/>
+        </member>
+        <member name="P:CustomMacroBase.PreBase.GateBase.HideSelf">
+            <inheritdoc cref="F:CustomMacroBase.PreBase.GateBase.hideSelf"/>
+        </member>
+        <member name="P:CustomMacroBase.PreBase.GateBase.DisableSliderButton">
+            <inheritdoc cref="F:CustomMacroBase.PreBase.GateBase.disableSliderButton"/>
+        </member>
+        <member name="P:CustomMacroBase.PreBase.GateBase.Feature">
+            <inheritdoc cref="F:CustomMacroBase.PreBase.GateBase.feature"/>
+        </member>
+        <member name="P:CustomMacroBase.PreBase.GateBase.TooltipPrefix">
+            <inheritdoc cref="F:CustomMacroBase.PreBase.GateBase.tooltipPrefix"/>
+        </member>
+        <member name="P:CustomMacroBase.PreBase.GateBase.TooltipSuffix">
+            <inheritdoc cref="F:CustomMacroBase.PreBase.GateBase.tooltipSuffix"/>
+        </member>
+        <member name="P:CustomMacroBase.PreBase.GateBase.BranchVisible">
+            <inheritdoc cref="F:CustomMacroBase.PreBase.GateBase.branchVisible"/>
+        </member>
+        <member name="P:CustomMacroBase.PreBase.GateBase.RootUpdating">
+            <inheritdoc cref="F:CustomMacroBase.PreBase.GateBase.rootUpdating"/>
+        </member>
+        <member name="P:CustomMacroBase.PreBase.GateBase.JsonValue">
+            <inheritdoc cref="F:CustomMacroBase.PreBase.GateBase.jsonValue"/>
+        </member>
+        <member name="F:CustomMacroBase.PreBase.GateBase.addNodeCommand">
+            <summary>The backing field for <see cref="P:CustomMacroBase.PreBase.GateBase.AddNodeCommand"/>.</summary>
+        </member>
+        <member name="P:CustomMacroBase.PreBase.GateBase.AddNodeCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand`1"/> instance wrapping <see cref="M:CustomMacroBase.PreBase.GateBase.OnAddNodeAsync(System.Object)"/>.</summary>
+        </member>
+        <member name="F:CustomMacroBase.PreBase.GateBase.removeNodeCommand">
+            <summary>The backing field for <see cref="P:CustomMacroBase.PreBase.GateBase.RemoveNodeCommand"/>.</summary>
+        </member>
+        <member name="P:CustomMacroBase.PreBase.GateBase.RemoveNodeCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand`1"/> instance wrapping <see cref="M:CustomMacroBase.PreBase.GateBase.OnRemoveNodeAsync(System.Object)"/>.</summary>
+        </member>
+        <member name="F:CustomMacroBase.PreBase.GateBase.collapseBranchCommand">
+            <summary>The backing field for <see cref="P:CustomMacroBase.PreBase.GateBase.CollapseBranchCommand"/>.</summary>
+        </member>
+        <member name="P:CustomMacroBase.PreBase.GateBase.CollapseBranchCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:CustomMacroBase.PreBase.GateBase.OnCollapseBranch"/>.</summary>
+        </member>
+        <member name="F:CustomMacroBase.PreBase.GateBase.moveUpCommand">
+            <summary>The backing field for <see cref="P:CustomMacroBase.PreBase.GateBase.MoveUpCommand"/>.</summary>
+        </member>
+        <member name="P:CustomMacroBase.PreBase.GateBase.MoveUpCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand`1"/> instance wrapping <see cref="M:CustomMacroBase.PreBase.GateBase.OnMoveUpAsync(System.Object)"/>.</summary>
+        </member>
+        <member name="F:CustomMacroBase.PreBase.GateBase.moveDownCommand">
+            <summary>The backing field for <see cref="P:CustomMacroBase.PreBase.GateBase.MoveDownCommand"/>.</summary>
+        </member>
+        <member name="P:CustomMacroBase.PreBase.GateBase.MoveDownCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand`1"/> instance wrapping <see cref="M:CustomMacroBase.PreBase.GateBase.OnMoveDownAsync(System.Object)"/>.</summary>
         </member>
         <member name="T:CustomMacroBase.PreBase.MacroModel">
             <summary>
@@ -1214,6 +1344,84 @@
             <summary>
             AddEventHandler
             </summary>
+        </member>
+        <member name="T:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs">
+            <summary>
+            A helper type providing cached, reusable <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instances
+            for all properties generated with <see cref="T:CommunityToolkit.Mvvm.ComponentModel.ObservablePropertyAttribute"/>.
+            </summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.ContentRenderType">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "ContentRenderType" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Text">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Text" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.JsonKey">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "JsonKey" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.HideSelf">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "HideSelf" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.DisableSliderButton">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "DisableSliderButton" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Feature">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Feature" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.TooltipPrefix">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "TooltipPrefix" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.TooltipSuffix">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "TooltipSuffix" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.BranchVisible">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "BranchVisible" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.RootUpdating">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "RootUpdating" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.JsonValue">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "JsonValue" generated properties.</summary>
+        </member>
+        <member name="T:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs">
+            <summary>
+            A helper type providing cached, reusable <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instances
+            for all properties generated with <see cref="T:CommunityToolkit.Mvvm.ComponentModel.ObservablePropertyAttribute"/>.
+            </summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.ContentRenderType">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "ContentRenderType" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Text">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Text" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.JsonKey">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "JsonKey" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.HideSelf">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "HideSelf" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.DisableSliderButton">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "DisableSliderButton" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Feature">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Feature" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.TooltipPrefix">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "TooltipPrefix" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.TooltipSuffix">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "TooltipSuffix" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.BranchVisible">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "BranchVisible" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.RootUpdating">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "RootUpdating" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.JsonValue">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "JsonValue" generated properties.</summary>
         </member>
     </members>
 </doc>

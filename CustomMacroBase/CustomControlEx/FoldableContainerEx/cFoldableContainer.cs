@@ -1,5 +1,5 @@
-﻿using CustomMacroBase.Helper;
-using CustomMacroBase.Helper.Extensions;
+﻿using CommunityToolkit.Mvvm.Input;
+using CustomMacroBase.Helper;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -10,25 +10,6 @@ namespace CustomMacroBase.CustomControlEx.FoldableContainerEx
         static cFoldableContainer()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(cFoldableContainer), new FrameworkPropertyMetadata(typeof(cFoldableContainer)));
-        }
-
-        public cFoldableContainer()
-        {
-            this.ArrowCommand = new(_ =>
-            {
-                this.BodyVisibility = this.BodyVisibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
-
-                //if (this.BodyVisibility is Visibility.Visible)
-                //{
-                //    this.BodyVisibility = Visibility.Collapsed;
-                //    this.BodyFadeOutAnimation(BodyScaleY > 0);
-                //}
-                //else
-                //{
-                //    this.BodyVisibility = Visibility.Visible;
-                //    this.BodyFadeInAnimation(BodyScaleY < 1);
-                //}
-            });
         }
     }
 
@@ -70,14 +51,14 @@ namespace CustomMacroBase.CustomControlEx.FoldableContainerEx
             typeMetadata: new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
         );
 
-        public RelayCommand ArrowCommand
+        public IRelayCommand ArrowRightClickCommand
         {
-            get { return (RelayCommand)GetValue(ArrowCommandProperty); }
-            private set { SetValue(ArrowCommandProperty, value); }
+            get { return (IRelayCommand)GetValue(ArrowRightClickCommandProperty); }
+            set { SetValue(ArrowRightClickCommandProperty, value); }
         }
-        public static readonly DependencyProperty ArrowCommandProperty = DependencyProperty.Register(
-            name: "ArrowCommand",
-            propertyType: typeof(RelayCommand),
+        public static readonly DependencyProperty ArrowRightClickCommandProperty = DependencyProperty.Register(
+            name: "ArrowRightClickCommand",
+            propertyType: typeof(IRelayCommand),
             ownerType: typeof(cFoldableContainer),
             typeMetadata: new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
         );
@@ -85,47 +66,10 @@ namespace CustomMacroBase.CustomControlEx.FoldableContainerEx
 
     public partial class cFoldableContainer
     {
-        //成员数量与动画帧数成反比，不得行。
-
-        public double BodyScaleX
+        [RelayCommand]
+        private void OnArrowClick()
         {
-            get { return (double)GetValue(BodyScaleXProperty); }
-            set { SetValue(BodyScaleXProperty, value); }
-        }
-        public static readonly DependencyProperty BodyScaleXProperty = DependencyProperty.Register(
-            name: "BodyScaleX",
-            propertyType: typeof(double),
-            ownerType: typeof(cFoldableContainer),
-            typeMetadata: new FrameworkPropertyMetadata(1.0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
-        );
-
-        public double BodyScaleY
-        {
-            get { return (double)GetValue(BodyScaleYProperty); }
-            set { SetValue(BodyScaleYProperty, value); }
-        }
-        public static readonly DependencyProperty BodyScaleYProperty = DependencyProperty.Register(
-            name: "BodyScaleY",
-            propertyType: typeof(double),
-            ownerType: typeof(cFoldableContainer),
-            typeMetadata: new FrameworkPropertyMetadata(1.0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
-        );
-
-        private const double duration = 128;
-
-        private void BodyFadeOutAnimation(bool canExecute)
-        {
-            if (canExecute is false) { return; }
-
-            //this.SetDoubleAnimation(BodyScaleXProperty, BodyScaleX, 0d, duration).Begin();
-            this.SetDoubleAnimation(BodyScaleYProperty, BodyScaleY, 0d, duration).Begin();
-        }
-        private void BodyFadeInAnimation(bool canExecute)
-        {
-            if (canExecute is false) { return; }
-
-            //this.SetDoubleAnimation(BodyScaleXProperty, BodyScaleX, 1d, duration).Begin();
-            this.SetDoubleAnimation(BodyScaleYProperty, BodyScaleY, 1d, duration).Begin();
+            this.BodyVisibility = this.BodyVisibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
         }
     }
 }

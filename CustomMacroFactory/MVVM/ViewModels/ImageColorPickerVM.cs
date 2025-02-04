@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using CustomMacroBase.CustomEffect;
 using CustomMacroBase.Helper;
 using CustomMacroBase.Helper.Extensions;
+using CustomMacroBase.Messages;
 using CustomMacroBase.PixelMatcher;
 using CustomMacroFactory.MVVM.Models;
 using CustomMacroFactory.MVVM.Views;
@@ -85,7 +86,7 @@ namespace CustomMacroFactory.MVVM.ViewModels
             this.AdditionalInfo = MessageBox;
             this.Magnifier = MagnifierBox;
             this.AllowRefresh = true;
-            Mediator.Instance.NotifyColleagues(MessageType.CanUpdateFrames, this.AllowRefresh);
+            WeakReferenceMessenger.Default.Send(new CanUpdateFrames(this.AllowRefresh));
         }
     }
     public partial class ImageColorPickerVM
@@ -270,72 +271,78 @@ namespace CustomMacroFactory.MVVM.ViewModels
 
         private void RegisterDelegate()
         {
-            MediatorAsync.Instance.Register(AsyncMessageType.AsyncSnapshot, async (para, token) =>
+            WeakReferenceMessenger.Default.Register<AsyncSnapshotMessage>(this, (r, m) =>
             {
-                var source = await Task.Run(async () =>
+                m.Reply(((Func<Task<bool>>)(async () =>
                 {
-                    await Task.Yield();
+                    var bmp = m.Bitmap;
 
-                    if (para is SD.Bitmap bmp)
+                    var source = await Task.Run(async () =>
                     {
-                        using (bmp)
+                        await Task.Yield();
+
+                        if (bmp is SD.Bitmap)
                         {
-                            // 限制刷新频率
-                            if (timer.Elapsed.TotalMilliseconds > 100 && IsBusy is false)
+                            using (bmp)
                             {
-                                timer.Restart();
-
-                                SD.Imaging.BitmapData data = bmp.LockBits(new SD.Rectangle(0, 0, bmp.Width, bmp.Height), SD.Imaging.ImageLockMode.ReadWrite, SD.Imaging.PixelFormat.Format32bppArgb);
-                                IntPtr ptr = data.Scan0;
-                                int bytes = Math.Abs(data.Stride) * bmp.Height;//w*h*4
-
-                                SizeInfo = $"({bmp.Width},{bmp.Height})";
-
-                                BGRA.Stride = data.Width;
-                                BGRA.Values = new byte[bytes];
-                                System.Runtime.InteropServices.Marshal.Copy(ptr, BGRA.Values, 0, bytes);
-                                bmp.UnlockBits(data);
-
-                                var bitmapImage = new BitmapImage().Init(bi =>
+                                // 限制刷新频率
+                                if (timer.Elapsed.TotalMilliseconds > 100 && IsBusy is false)
                                 {
-                                    using (var ms = new MemoryStream())
+                                    timer.Restart();
+
+                                    SD.Imaging.BitmapData data = bmp.LockBits(new SD.Rectangle(0, 0, bmp.Width, bmp.Height), SD.Imaging.ImageLockMode.ReadWrite, SD.Imaging.PixelFormat.Format32bppArgb);
+                                    IntPtr ptr = data.Scan0;
+                                    int bytes = Math.Abs(data.Stride) * bmp.Height;//w*h*4
+
+                                    SizeInfo = $"({bmp.Width},{bmp.Height})";
+
+                                    BGRA.Stride = data.Width;
+                                    BGRA.Values = new byte[bytes];
+                                    System.Runtime.InteropServices.Marshal.Copy(ptr, BGRA.Values, 0, bytes);
+                                    bmp.UnlockBits(data);
+
+                                    var bitmapImage = new BitmapImage().Init(bi =>
                                     {
-                                        bmp.Save(ms, SD.Imaging.ImageFormat.Bmp);
-                                        bi.BeginInit();
-                                        bi.StreamSource = ms;
-                                        bi.CacheOption = BitmapCacheOption.OnLoad;
-                                        bi.EndInit();
-                                        bi.Freeze();
-                                    }
-                                });
-                                return bitmapImage;
+                                        using (var ms = new MemoryStream())
+                                        {
+                                            bmp.Save(ms, SD.Imaging.ImageFormat.Bmp);
+                                            bi.BeginInit();
+                                            bi.StreamSource = ms;
+                                            bi.CacheOption = BitmapCacheOption.OnLoad;
+                                            bi.EndInit();
+                                            bi.Freeze();
+                                        }
+                                    });
+                                    return bitmapImage;
+                                }
                             }
+                        }
+
+                        return null;
+                    });
+
+                    if (source is not null)
+                    {
+                        if (IsBusy is false)
+                        {
+                            await Application.Current.Dispatcher.BeginInvoke(() =>
+                            {
+                                var old = ImageSource as BitmapImage;
+                                {
+                                    ImageSource = source;
+                                }
+                                old?.StreamSource?.Dispose();
+                            });
+                        }
+                        else
+                        {
+                            source.StreamSource.Dispose();
                         }
                     }
 
-                    return null;
-                });
+                    return true;
+                }))());
 
-                if (source is not null)
-                {
-                    if (IsBusy is false)
-                    {
-                        await Application.Current.Dispatcher.BeginInvoke(() =>
-                        {
-                            var old = ImageSource as BitmapImage;
-                            {
-                                ImageSource = source;
-                            }
-                            old?.StreamSource?.Dispose();
-                        });
-                    }
-                    else
-                    {
-                        source.StreamSource.Dispose();
-                    }
-                }
-
-                return null;
             });
 
             WeakReferenceMessenger.Default.Register<AlertMessage>(this, (r, m) =>
@@ -453,7 +460,7 @@ namespace CustomMacroFactory.MVVM.ViewModels
                 {
                     var pt = e.GetPosition(Image);
                     var click = GetColorInfo(pt);
-                    if (click.IsSuccess) { Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, click.Info); }
+                    if (click.IsSuccess) { WeakReferenceMessenger.Default.Send(new PrintNewMessage(click.Info)); }
                     this.MoveHex = GetColorHex(pt);
                 }
 
@@ -510,7 +517,7 @@ namespace CustomMacroFactory.MVVM.ViewModels
                 if (await WeakReferenceMessenger.Default.Send(new DialogYesNoMessage(msg, (x) => { yesnoCallback = x; }), token))
                 {
                     this.AllowRefresh = !this.AllowRefresh;
-                    Mediator.Instance.NotifyColleagues(MessageType.CanUpdateFrames, this.AllowRefresh);
+                    WeakReferenceMessenger.Default.Send(new CanUpdateFrames(this.AllowRefresh));
                 }
                 yesnoCallback?.Invoke();
             }
@@ -528,7 +535,7 @@ namespace CustomMacroFactory.MVVM.ViewModels
                 var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
                 var filePath = System.IO.Path.Combine(desktopPath, "_uPixelPicker.png");
                 BitmapSourceToPngFile(bi, filePath);
-                Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, $"save to {filePath}");
+                WeakReferenceMessenger.Default.Send(new PrintNewMessage($"save to {filePath}"));
             }
         }
 
@@ -639,7 +646,7 @@ namespace CustomMacroFactory.MVVM.ViewModels
             }
             catch (Exception ex)
             {
-                Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, $"BitmapSourceToPngFile Error: {ex.Message}");
+                WeakReferenceMessenger.Default.Send(new PrintNewMessage($"BitmapSourceToPngFile Error: {ex.Message}"));
             }
             finally
             {

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using CustomMacroBase.Messages;
+using System;
 using System.Linq;
 using System.Threading;
 
@@ -23,12 +25,12 @@ namespace CustomMacroBase.Helper
         }
         public void Reset(int value = 0)
         {
-            Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, value switch
+            WeakReferenceMessenger.Default.Send(new PrintNewMessage(value switch
             {
                 0 => "Virtual DS4 controller can now be plugged in.",
                 1 => "Ex1 toggle switch has been reset.",
                 _ => throw new NotImplementedException()
-            });
+            }));
 
             Interlocked.Exchange(ref slot, value);
         }

@@ -27,6 +27,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="Fastenshtein" Version="1.0.10" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
     <PackageReference Include="OpenCvSharp4.Extensions" Version="4.10.0.20241108" />
@@ -41,6 +42,12 @@
     <PackageReference Include="Sdcb.PaddleOCR.Models.Local" Version="2.7.0" />
     <PackageReference Include="SharpDX.DirectInput" Version="4.2.0" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="TrarsUI.Shared">
+      <HintPath>..\CustomMacroFactory\libs\TrarsUI.Shared.dll</HintPath>
+    </Reference>
+  </ItemGroup>
   
   <ItemGroup>
     <Compile Update="PixelMatcher\AimCursor.xaml.cs">
@@ -54,14 +61,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="CustomControlEx\SliderEx\cSlider_style.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="CustomControlEx\ToggleButtonEx\cToggleButton_style.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="CustomControlEx\VerticalRadioButtonEx\cVerticalRadioButton_style.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

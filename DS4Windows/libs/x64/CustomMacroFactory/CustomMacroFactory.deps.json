@@ -8,11 +8,9 @@
     ".NETCoreApp,Version=v8.0": {
       "CustomMacroFactory/1.0.0": {
         "dependencies": {
-          "CommunityToolkit.Mvvm": "8.4.0",
           "CustomMacroBase": "1.0.0",
           "Microsoft.Extensions.DependencyInjection": "9.0.1",
           "Microsoft.Extensions.Hosting": "9.0.1",
-          "Microsoft.Xaml.Behaviors.Wpf": "1.1.135",
           "TrarsUI.Shared": "1.0.0.0"
         },
         "runtime": {
@@ -1299,6 +1297,7 @@
       },
       "CustomMacroBase/1.0.0": {
         "dependencies": {
+          "CommunityToolkit.Mvvm": "8.4.0",
           "Fastenshtein": "1.0.10",
           "Microsoft.Xaml.Behaviors.Wpf": "1.1.135",
           "OpenCvSharp4.Extensions": "4.10.0.20241108",

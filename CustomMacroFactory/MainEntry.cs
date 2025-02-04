@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Windows;
-using TrarsUI.Shared.Helper.Extensions;
+using TrarsUI.Shared.Helpers.Extensions;
 using TrarsUI.Shared.Interfaces;
 using TrarsUI.Shared.Interfaces.UIComponents;
 using TrarsUI.Shared.Services;
@@ -20,6 +20,9 @@ namespace CustomMacroFactory
             return Host.CreateDefaultBuilder()
                        .ConfigureServices(sc =>
                        {
+                           //
+                           EntryService.Register(sc);
+
                            // Service
                            sc.AddSingleton<ICreateChildFormService, CreateChildFormService>();
                            sc.AddTransient<IDebouncerService, DebouncerService>();
@@ -68,10 +71,6 @@ namespace CustomMacroFactory
                                }
                            });
                            sc.AddTransient<IChildFormVM, ChildFormVM>();
-
-                           // 其他组件VM
-                           sc.AddSingleton<MacroViewerVM>();
-                           sc.AddSingleton<ImageColorPickerVM>();
                        });
         }
 

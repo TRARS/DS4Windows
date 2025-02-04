@@ -1,5 +1,5 @@
-﻿using CustomMacroBase;
-using CustomMacroBase.Helper;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CustomMacroBase;
 using CustomMacroBase.Helper.Attributes;
 using CustomMacroBase.Helper.Tools.OtherManager;
 using System;
@@ -15,7 +15,7 @@ namespace CustomMacroFactory.MacroFactory.InnerMacro
             public ObservableCollection<double> DoubleList = new(Enumerable.Repeat(0d, 20));
         }
 
-        class InnerViewModel : NotificationObject
+        class InnerViewModel : ObservableObject
         {
             InnerModel model = new();
 
@@ -27,7 +27,7 @@ namespace CustomMacroFactory.MacroFactory.InnerMacro
                     if (model.DoubleList[0] != value)
                     {
                         model.DoubleList[0] = Math.Floor(value);
-                        NotifyPropertyChanged();
+                        OnPropertyChanged();
                     }
                 }
             }
@@ -39,7 +39,7 @@ namespace CustomMacroFactory.MacroFactory.InnerMacro
                     if (model.DoubleList[1] != value)
                     {
                         model.DoubleList[1] = Math.Floor(value);
-                        NotifyPropertyChanged();
+                        OnPropertyChanged();
                     }
                 }
             }
@@ -51,7 +51,7 @@ namespace CustomMacroFactory.MacroFactory.InnerMacro
                     if (model.DoubleList[2] != value)
                     {
                         model.DoubleList[2] = Math.Floor(value);
-                        NotifyPropertyChanged();
+                        OnPropertyChanged();
                     }
                 }
             }
@@ -64,7 +64,7 @@ namespace CustomMacroFactory.MacroFactory.InnerMacro
                     if (model.DoubleList[3] != value)
                     {
                         model.DoubleList[3] = Math.Floor(value);
-                        NotifyPropertyChanged();
+                        OnPropertyChanged();
                     }
                 }
             }
@@ -76,7 +76,7 @@ namespace CustomMacroFactory.MacroFactory.InnerMacro
                     if (model.DoubleList[4] != value)
                     {
                         model.DoubleList[4] = Math.Floor(value);
-                        NotifyPropertyChanged();
+                        OnPropertyChanged();
                     }
                 }
             }
@@ -88,7 +88,7 @@ namespace CustomMacroFactory.MacroFactory.InnerMacro
                     if (model.DoubleList[5] != value)
                     {
                         model.DoubleList[5] = Math.Floor(value);
-                        NotifyPropertyChanged();
+                        OnPropertyChanged();
                     }
                 }
             }

@@ -12,8 +12,9 @@
     <SolidColorBrush x:Key="MousePressedColor" Color="Cyan"/>
     <SolidColorBrush x:Key="ContractedColor" Color="DimGray"/>
     <SolidColorBrush x:Key="ExpandedColor" Color="DarkGray"/>
-    
+
     <Style TargetType="{x:Type local:cFoldableContainer}">
+        <Setter Property="ArrowVisibility" Value="Visible"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:cFoldableContainer}">
@@ -36,7 +37,7 @@
                                 <Button Background="Transparent"
                                         HorizontalAlignment="Stretch" 
                                         VerticalAlignment="Stretch"
-                                        Command="{TemplateBinding ArrowCommand}">
+                                        Command="{Binding ArrowClickCommand, RelativeSource={RelativeSource TemplatedParent}}">
                                     <Button.Style>
                                         <Style TargetType="{x:Type Button}">
                                             <Setter Property="Template">
@@ -61,7 +62,7 @@
 
                                                         <ControlTemplate.Triggers>
                                                             <DataTrigger Binding="{Binding BodyVisibility,
-                                                                                           RelativeSource={RelativeSource AncestorType={x:Type local:cFoldableContainer}},
+                                                                                           RelativeSource={RelativeSource TemplatedParent},
                                                                                            Mode=OneWay}" 
                                                                          Value="Visible">
                                                                 <Setter Property="Fill" Value="{StaticResource ExpandedColor}" TargetName="arrow"/>
@@ -105,6 +106,11 @@
                                             </Setter>
                                         </Style>
                                     </Button.Style>
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseRightButtonDown">
+                                            <i:InvokeCommandAction Command="{Binding ArrowRightClickCommand, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
                                 </Button>
                             </Border>
 
@@ -122,8 +128,11 @@
                                 </Border.Style>
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="MouseLeftButtonUp">
-                                        <i:InvokeCommandAction Command="{Binding ArrowCommand, 
-                                                                                 RelativeSource={RelativeSource AncestorType={x:Type local:cFoldableContainer}}}" />
+                                        <i:InvokeCommandAction Command="{Binding ArrowClickCommand, 
+                                                                                 RelativeSource={RelativeSource TemplatedParent}}" />
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="MouseRightButtonDown">
+                                        <i:InvokeCommandAction Command="{Binding ArrowRightClickCommand, RelativeSource={RelativeSource TemplatedParent}}"/>
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                                 <Border.IsHitTestVisible>
@@ -132,10 +141,6 @@
                                         <Binding Path="BodyVisibility" RelativeSource="{RelativeSource TemplatedParent}"/>
                                     </MultiBinding>
                                 </Border.IsHitTestVisible>
-                                <!--<Border.LayoutTransform>
-                                    <ScaleTransform ScaleX="1"
-                                                    ScaleY="{Binding BodyScaleY, RelativeSource={RelativeSource TemplatedParent}}"/>
-                                </Border.LayoutTransform>-->
 
                                 <Line Y1="-2"
                                       Y2="{Binding ActualHeight, ElementName=body, Converter={StaticResource cFoldableContainer_converter_height2height}, Mode=OneWay}"
@@ -158,22 +163,12 @@
                             <ContentControl Grid.Column="1" Grid.Row="0" Content="{TemplateBinding Header}"/>
 
                             <!--Body-->
-                            <ContentPresenter x:Name="body" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top"
-                                              Visibility="{TemplateBinding BodyVisibility}">
-                                <!--<ContentPresenter.LayoutTransform>
-                                    <ScaleTransform ScaleX="{Binding BodyScaleX, RelativeSource={RelativeSource TemplatedParent}}"
-                                                    ScaleY="{Binding BodyScaleY, RelativeSource={RelativeSource TemplatedParent}}"/>
-                                </ContentPresenter.LayoutTransform>-->
-                                <!--<ContentPresenter.Visibility>
-                                    <MultiBinding Converter="{StaticResource cFoldableContainer_converter_scale2visibility}" Mode="OneWay">
-                                        <Binding Path="LayoutTransform.ScaleX" RelativeSource="{RelativeSource Self}"/>
-                                        <Binding Path="LayoutTransform.ScaleY" RelativeSource="{RelativeSource Self}"/>
-                                    </MultiBinding>
-                                </ContentPresenter.Visibility>-->
-                            </ContentPresenter>
+                            <ContentPresenter Grid.Column="1" Grid.Row="1" x:Name="body" 
+                                              HorizontalAlignment="Stretch" 
+                                              VerticalAlignment="Top"
+                                              Visibility="{TemplateBinding BodyVisibility}"/>
                         </Grid>
                     </Border>
-                    
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

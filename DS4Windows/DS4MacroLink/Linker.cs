@@ -1,5 +1,7 @@
-﻿using CustomMacroBase.GamePadState;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using CustomMacroBase.GamePadState;
 using CustomMacroBase.Helper;
+using CustomMacroBase.Messages;
 using CustomMacroFactory.MVVM.Views;
 using System;
 using System.Linq;
@@ -117,7 +119,7 @@ namespace DS4Windows
     public static partial class CustomMacroLink
     {
         public static bool AllowOnce(string[] hardwareIds) => SingleDs4Accessor.Instance.AllowOnce(hardwareIds);
-        public static void Print(string str) => Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, str);
+        public static void Print(string str) => WeakReferenceMessenger.Default.Send(new PrintNewMessage(str));
         public static bool HasAnyZero<T>(string msg, T xData, T yData)
         {
             var valuesListX = typeof(T).GetFields().Select(field => Convert.ToUInt16(field.GetValue(xData))).ToList();

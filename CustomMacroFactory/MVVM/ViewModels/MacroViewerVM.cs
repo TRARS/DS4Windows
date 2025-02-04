@@ -1,10 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
 using CustomMacroBase.CustomControlEx.ConsoleListBoxEx;
-using CustomMacroBase.CustomControlEx.ToggleButtonEx;
-using CustomMacroBase.CustomControlEx.ToggleButtonGroupEx;
 using CustomMacroBase.CustomControlEx.VerticalButtonEx;
 using CustomMacroBase.Helper.Extensions;
 using CustomMacroBase.Helper.HotKey;
+using CustomMacroBase.Messages;
+using CustomMacroFactory.MVVM.Helpers;
 using CustomMacroFactory.MVVM.Models;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -14,13 +15,15 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
+using TrarsUI.Shared.Controls.Specialized.ToggleTreeViewEx;
+using TrarsUI.Shared.Controls.ToggleButtonEx;
 using TrarsUI.Shared.Controls.VerticalRadioButtonEx;
 using TrarsUI.Shared.Interfaces.UIComponents;
 using Helper = CustomMacroBase.Helper;
 using RelayCommand = CommunityToolkit.Mvvm.Input.RelayCommand;
 namespace CustomMacroFactory.MVVM.ViewModels
 {
-    public partial class MacroViewerVM
+    partial class MacroViewerVM
     {
         [ObservableProperty]
         private UIElement mainMenu;
@@ -47,11 +50,11 @@ namespace CustomMacroFactory.MVVM.ViewModels
     }
 
     // Init
-    public partial class MacroViewerVM : ObservableObject, IContentVM
+    partial class MacroViewerVM : ObservableObject, IContentVM
     {
         public string Title { get; set; } = $"Macro Extension ({System.IO.File.GetLastWriteTime(Assembly.GetExecutingAssembly().Location):yyyy-MM-dd HH:mm:ss})";
 
-        public MacroViewerVM()
+        public MacroViewerVM(Manager manager)
         {
             //控制部分区域可见性
             this.TopContent_Left_Hide = false;      // menu
@@ -62,22 +65,22 @@ namespace CustomMacroFactory.MVVM.ViewModels
             //TopContent_Left
             this.MainMenu = new PartCreator<cVerticalButton>(container =>
             {
-                container.Add(new() { Text = "Clear Log", Command = new RelayCommand(() => { Helper.Mediator.Instance.NotifyColleagues(Helper.MessageType.PrintCleanup, null); }) });
-                container.Add(new() { Text = "Disconnect", Command = new RelayCommand(() => { Helper.Mediator.Instance.NotifyColleagues(Helper.MessageType.Ds4Disconnect, null); }) });
+                container.Add(new() { Text = "Clear Log", Command = new RelayCommand(() => { WeakReferenceMessenger.Default.Send(new PrintCleanup("")); }) });
+                container.Add(new() { Text = "Disconnect", Command = new RelayCommand(() => { WeakReferenceMessenger.Default.Send(new Ds4Disconnect("")); }) });
                 container.Add(new()
                 {
                     Text = "Picker",
-                    Command = new RelayCommand(() => { MVVM.Helpers.Manager.OpenImageColorPicker(); })
+                    Command = new RelayCommand(() => { manager.OpenImageColorPicker(); })
                 });
                 container.Add(new()
                 {
                     Text = "Settings",
-                    Command = new RelayCommand(() => { Helper.Mediator.Instance.NotifyColleagues(Helper.MessageType.PrintNewMessage, "Right-click on this button to adjust settings related to the analog stick"); }),
+                    Command = new RelayCommand(() => { WeakReferenceMessenger.Default.Send(new PrintNewMessage("Right-click on this button to adjust settings related to the analog stick")); }),
                     RightClickContent = new ObservableCollection<UIElement>().Init(list =>
                     {
                         if (MacroFactory.MacroManager.AnalogStickMacro is CustomMacroBase.MacroBase pre)
                         {
-                            list.Add(new cToggleButtonGroup() { DataContext = pre.MainGate });
+                            list.Add(new cToggleTreeView() { DataContext = pre.MainGate });
                         }
                     }),
                 });
@@ -201,7 +204,7 @@ namespace CustomMacroFactory.MVVM.ViewModels
                     //每个按钮对应具体内容
                     container.Add(new ContentControl().Init(temp =>
                     {
-                        temp.Content = new cToggleButtonGroup() { DataContext = item.MainGate, Margin = new Thickness(0, 4, 4, 4) };
+                        temp.Content = new cToggleTreeView() { DataContext = item.MainGate, Margin = new Thickness(0, 4, 4, 4) };
                         temp.SetBinding(ContentControl.VisibilityProperty, new Binding(nameof(item.Selected)) { Source = item, Mode = BindingMode.OneWay, Converter = new BooleanToVisibilityConverter() });
                     }));
                 }

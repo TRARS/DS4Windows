@@ -54,7 +54,8 @@ namespace CustomMacroFactory.MVVM.ViewModels
             // 打开子窗体
             WeakReferenceMessenger.Default.Register<OpenChildFormMessage>(this, (r, m) =>
             {
-                childFormFactory.Create(m.Value);
+                childFormFactory.Create(m.Context);
+                m.Reply(childFormFactory.GetWindowToken());
             });
 
             // 本地弹框

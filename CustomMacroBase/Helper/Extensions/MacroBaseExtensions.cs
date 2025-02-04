@@ -1,4 +1,6 @@
-﻿using CustomMacroBase.Helper.Attributes;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using CustomMacroBase.Helper.Attributes;
+using CustomMacroBase.Messages;
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -67,7 +69,7 @@ namespace CustomMacroBase.Helper.Extensions
             Task.Run(() =>
             {
                 Task.Delay(800 + _delay).Wait();
-                Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, _str);
+                WeakReferenceMessenger.Default.Send(new PrintNewMessage(_str));
             });
         }
     }

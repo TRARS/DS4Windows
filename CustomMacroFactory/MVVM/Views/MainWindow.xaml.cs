@@ -1,12 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 using CustomMacroBase.GamePadState;
-using CustomMacroBase.Helper;
+using CustomMacroBase.Messages;
 using CustomMacroFactory.MacroFactory;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
-using TrarsUI.Shared.Helper.Extensions;
+using TrarsUI.Shared.Helpers.Extensions;
 using TrarsUI.Shared.Interfaces;
 using TrarsUI.Shared.Interfaces.UIComponents;
 using TrarsUI.Shared.Messages;
@@ -23,6 +23,8 @@ namespace CustomMacroFactory.MVVM.Views
 
         public MainWindow(ITokenProviderService tokenProvider, IDebouncerService debouncer, IStringEncryptorService stringEncryptor)
         {
+            enableShadowLayer = false;
+
             _tokenProvider = tokenProvider;
             _debouncer = debouncer;
             _stringEncryptor = stringEncryptor;
@@ -37,9 +39,10 @@ namespace CustomMacroFactory.MVVM.Views
                 try
                 {
                     Action? yesnoCallback = null;
+                    this.Chrome.IsHitTestVisible = false;
                     if (await WeakReferenceMessenger.Default.Send(new DialogYesNoMessage("Exit ?", (x) => { yesnoCallback = x; }), this.Token))
                     {
-                        canExit = false; shadowHelper.Close();
+                        canExit = false; shadowHelper?.Close();
 
                         ((Window)r).SetDoubleAnimation(OpacityProperty, Opacity, 0d, 256).ContinueWith(() =>
                         {
@@ -49,6 +52,7 @@ namespace CustomMacroFactory.MVVM.Views
                             Environment.Exit(0);
                         }).Begin();
                     }
+                    this.Chrome.IsHitTestVisible = true;
                     yesnoCallback?.Invoke();
                 }
                 catch (Exception ex)
@@ -57,9 +61,9 @@ namespace CustomMacroFactory.MVVM.Views
                 }
             });
 
-            this.Closing += (s, e) => 
+            this.Closing += (s, e) =>
             {
-                Mediator.Instance.NotifyColleagues(MessageType.Ds4Disconnect, null);
+                WeakReferenceMessenger.Default.Send(new Ds4Disconnect(""));
             };
         }
     }
@@ -80,7 +84,14 @@ namespace CustomMacroFactory.MVVM.Views
         /// </summary>
         public void Exit()
         {
-            shadowHelper.Close();
+            if (shadowHelper is not null)
+            {
+                shadowHelper?.Close();
+            }
+            else
+            {
+                WeakReferenceMessenger.Default.Send(new ShadowCloseMessage("Close"), this.Token);
+            }
         }
 
         /// <summary>
@@ -95,7 +106,7 @@ namespace CustomMacroFactory.MVVM.Views
             }
             else
             {
-                this.WindowState = WindowState.Minimized; shadowHelper.ShadowFadeInOut(null);
+                this.WindowState = WindowState.Minimized; shadowHelper?.ShadowFadeInOut(null);
                 this.ShowInTaskbar = false;
             }
         }
@@ -105,13 +116,16 @@ namespace CustomMacroFactory.MVVM.Views
         /// </summary>
         public void Init(Func<dynamic> getDs4Host, Func<dynamic> getRootHub)
         {
-            Mediator.Instance.Register(MessageType.Ds4Disconnect, _ =>
+            WeakReferenceMessenger.Default.Register<Ds4Disconnect>(this, (r, m) =>
             {
                 dynamic? ds4 = getDs4Host?.Invoke();
                 ds4?.CloseBT();
             });
-            Mediator.Instance.Register(MessageType.Ds4Rumble, para =>
-            {//byte rightLightFastMotor, byte leftHeavySlowMotor
+            WeakReferenceMessenger.Default.Register<Ds4Rumble>(this, (r, m) =>
+            {
+                //byte rightLightFastMotor, byte leftHeavySlowMotor
+                var para = m.Value;// bool
+
                 dynamic? rootHub = getRootHub?.Invoke();
                 dynamic? d = rootHub?.DS4Controllers[0];
                 byte LightRumble = (bool)para ? byte.MinValue : byte.MaxValue;
@@ -127,11 +141,13 @@ namespace CustomMacroFactory.MVVM.Views
                     });
                 }
             });
-            Mediator.Instance.Register(MessageType.Ds4Latency, para =>
+            WeakReferenceMessenger.Default.Register<Ds4Latency>(this, (r, m) =>
             {
+                var para = m.Value; // double[]
+
                 dynamic? rootHub = getRootHub?.Invoke();
                 dynamic? d = rootHub?.DS4Controllers[0];
-                ((double[])para)[0] = (d is not null ? d.Latency : 0);
+                para[0] = (d is not null ? d.Latency : 0);
             });
 
             this.Show();

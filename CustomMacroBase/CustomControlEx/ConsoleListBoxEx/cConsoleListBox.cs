@@ -1,4 +1,5 @@
-﻿using CustomMacroBase.Helper;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using CustomMacroBase.Messages;
 using System;
 using System.Collections.ObjectModel;
 using System.Windows;
@@ -43,14 +44,14 @@ namespace CustomMacroBase.CustomControlEx.ConsoleListBoxEx
 
             this.ItemsSource = _list;
 
-            Mediator.Instance.Register(MessageType.PrintNewMessage, para =>
+            WeakReferenceMessenger.Default.Register<PrintNewMessage>(this, (r, m) =>
             {
                 this.Dispatcher.BeginInvoke(() =>
                 {
-                    _list.Add($"{DateTime.Now.ToString("HH:mm:ss")} -> {(string)para}");
+                    _list.Add($"{DateTime.Now.ToString("HH:mm:ss")} -> {m.Value}");
                 });
             });
-            Mediator.Instance.Register(MessageType.PrintCleanup, _ =>
+            WeakReferenceMessenger.Default.Register<PrintCleanup>(this, (r, m) =>
             {
                 this.Dispatcher.BeginInvoke(() => { _list.Clear(); });
             });

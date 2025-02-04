@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using CustomMacroBase.Messages;
+using System;
 using System.Collections.Generic;
 
 namespace CustomMacroBase.Helper.Tools.TimeManager
@@ -12,7 +14,7 @@ namespace CustomMacroBase.Helper.Tools.TimeManager
             public abstract void Start(int threshold, out bool flag);
             public abstract void Stop(int threshold, out bool flag);
             public abstract TimerState Reset();
-            public static void Print(string str) => Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, str);
+            public static void Print(string str) => WeakReferenceMessenger.Default.Send(new PrintNewMessage(str));
         }
         private class Started : TimerState
         {

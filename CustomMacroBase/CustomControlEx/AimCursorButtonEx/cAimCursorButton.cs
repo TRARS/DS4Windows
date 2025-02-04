@@ -1,4 +1,6 @@
-﻿using CustomMacroBase.Helper;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using CustomMacroBase.Helper;
+using CustomMacroBase.Messages;
 using System;
 using System.Text;
 
@@ -41,7 +43,7 @@ namespace CustomMacroBase.CustomControlEx.VerticalButtonEx
                         User32.GetClassName(wHwnd, wClassName, wClassName.Capacity);
 
                         string msg = $"{wHwnd:x8}\"{wTitle}\"{wClassName}";
-                        Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, msg);
+                        WeakReferenceMessenger.Default.Send(new PrintNewMessage(msg));
                     }
                 }
                 else { PixelMatcher.AimCursor.Instance.MoveTo(mousePoint); }

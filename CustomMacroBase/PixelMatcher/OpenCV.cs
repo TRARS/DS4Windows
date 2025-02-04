@@ -1,4 +1,5 @@
-﻿using CustomMacroBase.Helper;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using CustomMacroBase.Messages;
 using OpenCvSharp;
 using Sdcb.PaddleInference;
 using Sdcb.PaddleOCR;
@@ -36,14 +37,14 @@ namespace CustomMacroBase.PixelMatcher
 
         private void Init()
         {
-            Mediator.Instance.Register(MessageType.CanUpdateFrames, (para) =>
+            WeakReferenceMessenger.Default.Register<CanUpdateFrames>(this, (r, m) =>
             {
-                can_update = (bool)para;
+                can_update = m.Value;
             });
         }
         private void Print(string str = "")
         {
-            Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, str);
+            WeakReferenceMessenger.Default.Send(new PrintNewMessage(str));
         }
         private void UpdateToSnapshotArea(Mat source, string? msg = null)
         {
@@ -57,7 +58,7 @@ namespace CustomMacroBase.PixelMatcher
                 {
                     using (source)
                     {
-                        await MediatorAsync.Instance.NotifyColleagues(AsyncMessageType.AsyncSnapshot, OpenCvSharp.Extensions.BitmapConverter.ToBitmap(source));
+                        await WeakReferenceMessenger.Default.Send(new AsyncSnapshotMessage(OpenCvSharp.Extensions.BitmapConverter.ToBitmap(source)));
 
                         if (msg is not null) { Print($"{msg}"); }
                     }
@@ -113,7 +114,7 @@ namespace CustomMacroBase.PixelMatcher
             /// </summary>
             private void Print(string str = "")
             {
-                Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, str);
+                WeakReferenceMessenger.Default.Send(new PrintNewMessage(str));
             }
 
             /// <summary>

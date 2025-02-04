@@ -1,16 +1,20 @@
-﻿using CustomMacroBase.CustomControlEx.AggregateBindingControl;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using CustomMacroBase.CustomControlEx.AggregateBindingControl;
 using CustomMacroBase.CustomControlEx.ComboBoxEx;
 using CustomMacroBase.CustomControlEx.SliderEx;
-using CustomMacroBase.CustomControlEx.ToggleButtonEx;
 using CustomMacroBase.CustomControlEx.ValueIndicatorEx;
 using CustomMacroBase.GamePadState;
 using CustomMacroBase.Helper;
 using CustomMacroBase.Helper.Converter;
 using CustomMacroBase.Helper.ProConSimulate;
+using CustomMacroBase.Messages;
 using CustomMacroBase.PreBase;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -26,15 +30,27 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Media;
+using TrarsUI.Shared.Controls.ToggleButtonEx;
+using TrarsUI.Shared.DTOs;
+using TrarsUI.Shared.Interfaces.UIComponents;
+using TrarsUI.Shared.Messages;
 using static CustomMacroBase.PixelMatcher.OpenCV;
 
 //GateNode
 namespace CustomMacroBase.PreBase
 {
-    public enum GateNodeType
-    {
-        GateBase, Delegate
-    }
+    //public enum ContentRenderType
+    //{
+    //    None = 0, ForMacroEditor, ForJsonEditor
+    //}
+    //public enum DelegateType
+    //{
+    //    None, TextBlock, Slider, Combobox
+    //}
+    //public enum GateNodeType
+    //{
+    //    GateBase, Delegate
+    //}
 
     public sealed class GateNode
     {
@@ -45,6 +61,51 @@ namespace CustomMacroBase.PreBase
         {
             Type = type;
             Content = content;
+        }
+    }
+
+    public partial class DelegateNode : ObservableObject
+    {
+        private Action? _callback { get; init; }
+        public Func<UIElement> Creator { get; init; }
+        public DelegateType Type { get; init; }
+
+        [ObservableProperty]
+        private ContentRenderType contentRenderType;
+
+        public DelegateNode(Func<UIElement> creator, DelegateType type, ContentRenderType renderType, Action callback)
+        {
+            Creator = creator;
+            Type = type;
+            ContentRenderType = renderType;
+            _callback = callback;
+        }
+
+        [RelayCommand]
+        private async Task OnRemoveNodeAsync(object para)
+        {
+            if (para is not null)
+            {
+                try
+                {
+                    Action? yesnoCallback = null;
+                    var msg = $"Remove DelegateNode({this.Type}) ?";
+                    var token = ((IToken)para).Token;
+                    var yesno = await WeakReferenceMessenger.Default.Send(new DialogYesNoMessage(msg, (x) => { yesnoCallback = x; }), token);
+
+                    if (yesno is true)
+                    {
+                        _callback?.Invoke();
+
+                        Debug.WriteLine($"Remove DelegateNode");
+                    }
+                    yesnoCallback?.Invoke(); // 无论yesno
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"OnRemoveNodeAsync error: {ex.Message}");
+                }
+            }
         }
     }
 }
@@ -62,27 +123,35 @@ namespace CustomMacroBase.PreBase
         /// <para>_enable：开关状态</para>
         /// <para>_groupname：开关分组</para>
         /// </summary>
-        public GateBase(string? _text = null, bool? _enable = null, string? _groupname = null)
+        public GateBase(string? _text = null, bool? _enable = null, string? _groupname = null, bool branchVisible = true)
         {
             this.Text = _text ?? this.Text;
             this.Enable = _enable ?? this.Enable;
             this.GroupName = _groupname ?? this.GroupName;
+            this.BranchVisible = branchVisible;
 
             this.Children.CollectionChanged += (s, e) =>
             {
                 _isCacheValid = false; // 当 Children 集合发生变化时，标记缓存为无效
+                OnPropertyChanged(nameof(HasChildren));
             };
         }
     }
     public partial class GateBase
     {
+        protected static Dictionary<string, GateNode> AllGateNode = new();
+
         private List<GateBase> _cachedGateBaseList;
         private bool _isCacheValid = false;
 
         /// <summary>
+        /// 是否有子成员
+        /// </summary>
+        public bool HasChildren => GateBaseList.Count > 0;
+
+        /// <summary>
         /// 获取Children中类型为GateBase的成员
         /// </summary>
-        [JsonIgnore]
         public List<GateBase> GateBaseList
         {
             get
@@ -122,31 +191,151 @@ namespace CustomMacroBase.PreBase
         /// </summary>
         public void Add(GateBase child)
         {
-            child.Parent = this; Children.Add(new(GateNodeType.GateBase, child));
+            var item = new GateNode(GateNodeType.GateBase, child);
+            AllGateNode.Add(child.Feature, item);
+
+            child.Parent = this; Children.Add(item);
         }
 
         /// <summary>
         /// <para>往Children列表添加作为附加内容的子项</para>
         /// </summary>
+        public void AddEx(DelegateType type, Func<UIElement> child)
+        {
+            var feature = GenerateRandomString(16);
+            var item = new GateNode(GateNodeType.Delegate, new DelegateNode(child, type, this.ContentRenderType, () => // 委托删除UIElement
+            {
+                Debug.WriteLine($"Remove DelegateNode: {feature}");
+
+                AllGateNode.TryGetValue(feature, out var item);
+                this.Children.Remove(item);
+            }));
+            AllGateNode.Add(feature, item);
+
+            Children.Add(item);
+        }
         public void AddEx(Func<UIElement> child)
         {
-            Children.Add(new(GateNodeType.Delegate, child));
+            this.AddEx(DelegateType.None, child);
         }
 
         /// <summary>
-        /// 滑块开关状态反转
+        /// 添加节点
         /// </summary>
-        public void EnableReverse() => this.Enable = !this.Enable;
+        [RelayCommand]
+        private async Task OnAddNodeAsync(object para)
+        {
+            await Task.Yield();
+
+            Debug.WriteLine($"AddNode: {this.Text}");
+
+            var item = new GateBase() { Text = string.Empty, Enable = enable };
+            this.Add(item);
+
+            Root.Updating = false; Root.Updating = true;
+        }
+        /// <summary>
+        /// 删除节点
+        /// </summary>
+        [RelayCommand]
+        private async Task OnRemoveNodeAsync(object para)
+        {
+            if (this.Parent is not null)
+            {
+                if (para is not null)
+                {
+                    try
+                    {
+                        Action? yesnoCallback = null;
+                        var msg = $"Remove GateNode({this.JsonKey}) ?";
+                        var token = ((IToken)para).Token;
+                        var yesno = await WeakReferenceMessenger.Default.Send(new DialogYesNoMessage(msg, (x) => { yesnoCallback = x; }), token);
+
+                        if (yesno is true)
+                        {
+                            AllGateNode.TryGetValue(this.Feature, out var item);
+                            this.Parent?.Children.Remove(item);
+                            this.Parent = null;
+
+                            Debug.WriteLine($"Remove GateNode: {this.Feature}");
+                        }
+                        yesnoCallback?.Invoke(); // 无论yesno
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine($"OnRemoveNodeAsync error: {ex.Message}");
+                    }
+                }
+            }
+            else
+            {
+                Debug.WriteLine($"Root节点不可删除: {this.Feature}");
+            }
+        }
 
         /// <summary>
-        /// 震动一下以表示状态发生变化
+        /// 折叠或展开下一层所有子节点
         /// </summary>
-        public void SetDs4Rumble() => Mediator.Instance.NotifyColleagues(MessageType.Ds4Rumble, this.Enable);
+        [RelayCommand]
+        private async Task OnCollapseBranch()
+        {
+            await Task.Yield();
+
+            // 检查 GateBaseList 是否为空
+            if (GateBaseList == null || GateBaseList.Count == 0) { return; }
+
+            // 获取第一个成员的 BranchVisible 状态
+            bool shouldCollapse = GateBaseList.FirstOrDefault()?.BranchVisible ?? true;
+
+            // 根据第一个成员的状态设置所有成员的 BranchVisible
+            GateBaseList.ForEach(x => x.BranchVisible = !shouldCollapse);
+        }
 
         /// <summary>
-        /// 连起来
+        /// 上移
         /// </summary>
-        public void EnableReverseAndSetDs4Rumble() => ((Action)(() => { EnableReverse(); SetDs4Rumble(); }))();
+        [RelayCommand]
+        private async Task OnMoveUpAsync(object para)
+        {
+            await Task.Yield();
+            AllGateNode.TryGetValue(this.Feature, out var item);
+            if (this.Parent is GateBase parent && item is GateNode)
+            {
+                var list = parent.Children;
+                var index = list.IndexOf(item);
+                var count = list.Count;
+
+                if (count > 1 && index > 0)
+                {
+                    var previous = list[index - 1]; // 获取 list[index - 1]
+                    list.RemoveAt(index - 1); // 移除 previous
+                    list.Insert(index, previous); // 将 previous 插入到 item 的旧位置
+                }
+            }
+        }
+
+        /// <summary>
+        /// 下移
+        /// </summary>
+        [RelayCommand]
+        private async Task OnMoveDownAsync(object para)
+        {
+            await Task.Yield();
+            AllGateNode.TryGetValue(this.Feature, out var item);
+            if (this.Parent is GateBase parent && item is GateNode)
+            {
+                var list = parent.Children;
+                var index = list.IndexOf(item);
+                var count = list.Count;
+
+                if (count > 1 && index > -1 && index < count - 1)
+                {
+                    var next = list[index + 1]; // 获取 list[index + 1]
+                    list.RemoveAt(index + 1); // 移除 next
+                    list.Insert(index, next); // 将 next 插入到 item 的旧位置
+                }
+            }
+        }
     }
     public partial class GateBase
     {
@@ -156,7 +345,7 @@ namespace CustomMacroBase.PreBase
         /// <summary>
         /// 加盐
         /// </summary>
-        private static string GenerateRandomString(int length)
+        protected static string GenerateRandomString(int length)
         {
             const string chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
             string newString = string.Empty;
@@ -210,10 +399,29 @@ namespace CustomMacroBase.PreBase
             }
         }
     }
-    public partial class GateBase : NotificationObject
+    public partial class GateBase : ObservableObject
     {
+        public bool Updating
+        {
+            get { return _updating; }
+            set
+            {
+                SetProperty(ref _updating, value);
+                OnPropertyChanged(nameof(Updating));
+            }
+        }
+        private bool _updating;
+
         /// <summary>
-        /// 父节点
+        /// Root节点
+        /// </summary>
+        private GateBase Root
+        {
+            get { return this.Parent?.Root ?? this; }
+        }
+
+        /// <summary>
+        /// 父节点（仅首次设置生效）
         /// </summary>
         private GateBase? Parent
         {
@@ -225,7 +433,6 @@ namespace CustomMacroBase.PreBase
         /// <summary>
         /// 获取或设置组名，使得处于相同组里的滑块开关在任意时刻最多只有一个处于启用状态
         /// </summary>
-        [JsonIgnore]
         public string? GroupName
         {
             get { return _groupname; }
@@ -244,124 +451,138 @@ namespace CustomMacroBase.PreBase
         /// <summary>
         /// 获取或设置文本内容，用作滑块开关控件的注释
         /// </summary>
-        [JsonIgnore]
-        public string Text
-        {
-            get { return _text; }
-            set { _text = value; NotifyPropertyChanged(); }
-        }
-        private string _text = "Sub_NoName";
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(JsonKey))]
+        private string text = "Sub_NoName";
 
         /// <summary>
         /// 获取或设置滑块开关状态（与父节点无关，仅供UI绑定）
         /// </summary>
-        [JsonIgnore]
         public bool IsChecked
         {
-            get { return _enable; }
+            get { return enable; }
             set
             {
-                _enable = value;
-                NotifyPropertyChanged();
+                SetProperty(ref enable, value);
                 NotifyGroupMemberUpdate(this);
             }
         }
         /// <summary>
         /// 获取或设置滑块开关状态（与父节点相关，若父节点Enable为false，则必然返回false）
         /// </summary>
-        [JsonPropertyName("Enable")]
         public bool Enable
         {
-            get { return _enable && (this.Parent?.Enable ?? true); }
+            get { return enable && (this.Parent?.Enable ?? true); }
             set
             {
-                _enable = value;
-                NotifyPropertyChanged();
-                NotifyPropertyChanged(nameof(IsChecked));
+                SetProperty(ref enable, value);
                 NotifyGroupMemberUpdate(this);
             }
         }
-        private bool _enable = false;
+        private bool enable = false;
+
 
         /// <summary>
         /// 获取或设置滑块开关整体显示状态
         /// </summary>
-        [JsonIgnore]
-        public bool HideSelf
-        {
-            get { return _hideSelf; }
-            set
-            {
-                _hideSelf = value;
-                NotifyPropertyChanged();
-            }
-        }
-        private bool _hideSelf = false;
+        [ObservableProperty]
+        private bool hideSelf = false;
 
         /// <summary>
         /// 获取或设置SliderButton状态
         /// </summary>
-        [JsonIgnore]
-        public bool DisableSliderButton
-        {
-            get { return _DisableSliderButton; }
-            set
-            {
-                _DisableSliderButton = value;
-                NotifyPropertyChanged();
-            }
-        }
-        private bool _DisableSliderButton = false;
+
+        [ObservableProperty]
+        private bool disableSliderButton = false;
 
         /// <summary>
         /// 特征码
         /// </summary>
-        [JsonIgnore]
-        public string Feature
-        {
-            get { return _Feature; }
-            init
-            {
-                _Feature = value;
-                NotifyPropertyChanged();
-            }
-        }
-        private string _Feature = GenerateRandomString(32);
+        [ObservableProperty]
+        private string feature = GenerateRandomString(32);
 
         /// <summary>
         /// 气泡注释前缀
         /// </summary>
-        [JsonIgnore]
-        public string TooltipPrefix
-        {
-            get { return _TooltipPrefix; }
-            set
-            {
-                _TooltipPrefix = value;
-                NotifyPropertyChanged();
-            }
-        }
-        private string _TooltipPrefix = string.Empty;
+        [ObservableProperty]
+        private string tooltipPrefix = string.Empty;
 
         /// <summary>
         /// 气泡注释后缀
         /// </summary>
-        [JsonIgnore]
-        public string TooltipSuffix
-        {
-            get { return _TooltipSuffix; }
-            set
-            {
-                _TooltipSuffix = value;
-                NotifyPropertyChanged();
-            }
-        }
-        private string _TooltipSuffix = string.Empty;
+        [ObservableProperty]
+        private string tooltipSuffix = string.Empty;
 
         /// <summary>
         /// 获取当前滑块开关的子成员列表（同时包含节点成员和非节点成员）
         /// </summary>
-        [JsonIgnore] public ObservableCollection<GateNode> Children { get; init; } = new();
+        public ObservableCollection<GateNode> Children { get; init; } = new();
+
+        /// <summary>
+        /// 展开或折叠子成员
+        /// </summary>
+        [ObservableProperty]
+        private bool branchVisible = false;
+
+        /// <summary>
+        /// Root节点负责通知刷新
+        /// </summary>
+        [ObservableProperty]
+        private bool rootUpdating = false;
+    }
+
+    public partial class GateBase
+    {
+        /// <summary>
+        /// 模型用于生成Json（只需要在Root节点设置）
+        /// </summary>
+        public ContentRenderType ContentRenderType
+        {
+            get { return this.Parent?.ContentRenderType ?? this.contentRenderType; }
+            set
+            {
+                SetProperty(ref this.contentRenderType, value);
+            }
+        }
+        private ContentRenderType contentRenderType = ContentRenderType.None;
+
+        /// <summary>
+        /// JsonKey
+        /// </summary>
+        public string JsonKey
+        {
+            get { return this.Text; }
+            set
+            {
+                this.Text = value;
+                OnPropertyChanged(nameof(JsonKey));
+            }
+        }
+
+        /// <summary>
+        /// JsonValue
+        /// </summary>
+        [ObservableProperty]
+        private string jsonValue = string.Empty;
+    }
+
+    // 补
+    public partial class GateBase
+    {
+        /// <summary>
+        /// 滑块开关状态反转
+        /// </summary>
+        public void EnableReverse() => this.Enable = !this.Enable;
+
+        /// <summary>
+        /// 震动一下以表示状态发生变化
+        /// </summary>
+        public void SetDs4Rumble() => WeakReferenceMessenger.Default.Send(new Ds4Rumble(this.Enable));
+
+        /// <summary>
+        /// 连起来
+        /// </summary>
+        public void EnableReverseAndSetDs4Rumble() => ((Action)(() => { EnableReverse(); SetDs4Rumble(); }))();
     }
 }
 
@@ -437,7 +658,7 @@ namespace CustomMacroBase
     /// <summary>
     /// 脚本基类
     /// </summary>
-    public abstract partial class MacroBase : NotificationObject
+    public abstract partial class MacroBase : ObservableObject
     {
         #region 仅限基类内部访问的 字段
         private static DS4StateLite? rStateLite;//真实手柄
@@ -566,7 +787,7 @@ namespace CustomMacroBase
         /// </summary>
         protected static void Print([CallerMemberName] string str = "")
         {
-            Mediator.Instance.NotifyColleagues(MessageType.PrintNewMessage, str);
+            WeakReferenceMessenger.Default.Send(new PrintNewMessage(str));
         }
         #endregion
 
@@ -587,7 +808,7 @@ namespace CustomMacroBase
             set
             {
                 model.Title = value;
-                NotifyPropertyChanged();
+                OnPropertyChanged();
             }
         }
         /// <summary>
@@ -599,7 +820,7 @@ namespace CustomMacroBase
             set
             {
                 model.Selected = value;
-                NotifyPropertyChanged();
+                OnPropertyChanged();
             }
         }
         /// <summary>
@@ -611,7 +832,7 @@ namespace CustomMacroBase
             set
             {
                 model.ColorfulText = value;
-                NotifyPropertyChanged();
+                OnPropertyChanged();
             }
         }
         #endregion
@@ -1305,7 +1526,7 @@ namespace CustomMacroBase
 
         private List<MacroConfig>? GenerateMacroConfig(GateBase gate)
         {
-            var list = gate.Children.OfType<GateNode>().Where(node => node.Type == GateNodeType.GateBase);
+            var list = gate.Children.OfType<PreBase.GateNode>().Where(node => node.Type == GateNodeType.GateBase);
             var result = new List<MacroConfig>();
             foreach (var node in list)
             {
@@ -1319,7 +1540,7 @@ namespace CustomMacroBase
             var isRoot = depth == 0; depth++;
             if (isRoot) { gateRoot.Enable = jsonRoot.Enable; }
 
-            var gateChildren = gateRoot.Children.OfType<GateNode>().Where(node => node.Type == GateNodeType.GateBase);
+            var gateChildren = gateRoot.Children.OfType<PreBase.GateNode>().Where(node => node.Type == GateNodeType.GateBase);
             if (gateChildren is null) { return; }
             if (jsonRoot.Children is null) { return; }
 
