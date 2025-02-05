@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CustomMacroBase.CustomControlEx.ConsoleListBoxEx;
 using CustomMacroBase.CustomControlEx.VerticalButtonEx;
@@ -20,7 +21,6 @@ using TrarsUI.Shared.Controls.ToggleButtonEx;
 using TrarsUI.Shared.Controls.VerticalRadioButtonEx;
 using TrarsUI.Shared.Interfaces.UIComponents;
 using Helper = CustomMacroBase.Helper;
-using RelayCommand = CommunityToolkit.Mvvm.Input.RelayCommand;
 namespace CustomMacroFactory.MVVM.ViewModels
 {
     partial class MacroViewerVM
@@ -180,7 +180,40 @@ namespace CustomMacroFactory.MVVM.ViewModels
                         btn.SetBinding(cVerticalRadioButton.EnableColorfulTextProperty, new Binding(nameof(item.UseColorfulText)) { Source = item, Mode = BindingMode.TwoWay });
                         btn.SetBinding(cVerticalRadioButton.TextProperty, new Binding(nameof(item.Title)) { Source = item, Mode = BindingMode.OneWay });
                         btn.SetBinding(cVerticalRadioButton.IsCheckedProperty, new Binding(nameof(item.Selected)) { Source = item, Mode = BindingMode.TwoWay });
+
+                        btn.MoveUpCommand = new RelayCommand(() =>
+                        {
+                            var list = container;
+                            var index = list.IndexOf(btn);
+                            var count = list.Count;
+
+                            if (count > 1 && index > 0)
+                            {
+                                var previous = list[index - 1];
+                                list.RemoveAt(index - 1);
+                                list.Insert(index, previous);
+                            }
+                        });
+                        btn.MoveDownCommand = new RelayCommand(() =>
+                        {
+                            var list = container;
+                            var index = list.IndexOf(btn);
+                            var count = list.Count;
+
+                            if (count > 1 && index > -1 && index < count - 1)
+                            {
+                                var next = list[index + 1];
+                                list.RemoveAt(index + 1);
+                                list.Insert(index, next);
+                            }
+                        });
+                        btn.RemoveCommand = new RelayCommand(() =>
+                        {
+                            btn.IsChecked = false;
+                            container.Remove(btn);
+                        });
                     }));
+
                 }
 
                 Application.Current.Dispatcher.BeginInvoke(() =>
