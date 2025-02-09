@@ -25,6 +25,9 @@
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding LoadedCommand}" PassEventArgsToCommand="True"/>
         </i:EventTrigger>
+        <i:EventTrigger EventName="Unloaded">
+            <i:InvokeCommandAction Command="{Binding UnLoadedCommand}"/>
+        </i:EventTrigger>
         <i:EventTrigger EventName="PreviewMouseRightButtonUp">
             <i:InvokeCommandAction Command="{Binding PreviewMouseRightButtonUpCommand}" PassEventArgsToCommand="True"/>
         </i:EventTrigger>

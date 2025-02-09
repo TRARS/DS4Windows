@@ -80,18 +80,11 @@ namespace CustomMacroFactory.MVVM.Views
         }
 
         /// <summary>
-        /// Exit ?
+        /// Exit
         /// </summary>
         public void Exit()
         {
-            if (shadowHelper is not null)
-            {
-                shadowHelper?.Close();
-            }
-            else
-            {
-                WeakReferenceMessenger.Default.Send(new ShadowCloseMessage("Close"), this.Token);
-            }
+            WeakReferenceMessenger.Default.Send(new WindowCloseMessage("Close"), this.Token);
         }
 
         /// <summary>

@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using CustomMacroBase.Helper;
 using System.Windows;
 using System.Windows.Controls;
 

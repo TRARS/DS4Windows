@@ -1302,7 +1302,6 @@
           "Microsoft.Xaml.Behaviors.Wpf": "1.1.135",
           "OpenCvSharp4.Extensions": "4.10.0.20241108",
           "OpenCvSharp4.Windows": "4.10.0.20241108",
-          "Sdcb.PaddleInference": "2.5.0.1",
           "Sdcb.PaddleInference.runtime.win64.cuda102_cudnn76_sm61_75": "2.4.0",
           "Sdcb.PaddleOCR": "2.7.0.3",
           "Sdcb.PaddleOCR.Models.Local": "2.7.0",

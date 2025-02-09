@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CustomMacroBase.CustomEffect;
-using CustomMacroBase.Helper;
 using CustomMacroBase.Helper.Extensions;
 using CustomMacroBase.Messages;
 using CustomMacroBase.PixelMatcher;
@@ -78,15 +77,6 @@ namespace CustomMacroFactory.MVVM.ViewModels
         public ImageColorPickerVM()
         {
             PixelMatcherHost.TryInit();
-
-            CreateImageControl();
-            RegisterDelegate();
-
-            this.CurrentScreenshot = Image;
-            this.AdditionalInfo = MessageBox;
-            this.Magnifier = MagnifierBox;
-            this.AllowRefresh = true;
-            WeakReferenceMessenger.Default.Send(new CanUpdateFrames(this.AllowRefresh));
         }
     }
     public partial class ImageColorPickerVM
@@ -264,13 +254,40 @@ namespace CustomMacroFactory.MVVM.ViewModels
             });
         }
     }
-    //RegisterDelegate
+
+    //RelayCommand
     public partial class ImageColorPickerVM
     {
         private Stopwatch timer = Stopwatch.StartNew();
+        private Point old_click_pos = new(0, 0);
 
-        private void RegisterDelegate()
+        [RelayCommand]
+        private void OnLoaded(object para)
         {
+            if (para is RoutedEventArgs e)
+            {
+                var host = (UserControl)e.Source;
+                host.Margin = new Thickness(1);
+                host.MinHeight = 400;
+                host.MaxHeight = host.ActualHeight;
+                RenderOptions.SetBitmapScalingMode(host, BitmapScalingMode.Fant);
+
+                host.MouseLeftButtonDown += (s, e) =>
+                {
+                    host.Focus(); //聚焦
+                };
+
+                ScreenshotArea = ((ImageColorPicker)host).ScreenshotArea;
+            }
+
+            CreateImageControl();
+
+            this.CurrentScreenshot = Image;
+            this.AdditionalInfo = MessageBox;
+            this.Magnifier = MagnifierBox;
+            this.AllowRefresh = true;
+            WeakReferenceMessenger.Default.Send(new CanUpdateFrames(this.AllowRefresh));
+
             WeakReferenceMessenger.Default.Register<AsyncSnapshotMessage>(this, (r, m) =>
             {
                 m.Reply(((Func<Task<bool>>)(async () =>
@@ -341,10 +358,9 @@ namespace CustomMacroFactory.MVVM.ViewModels
                     }
 
                     return true;
-                }))());
+                })).Invoke());
 
             });
-
             WeakReferenceMessenger.Default.Register<AlertMessage>(this, (r, m) =>
             {
                 Application.Current.Dispatcher.BeginInvoke(() =>
@@ -353,31 +369,12 @@ namespace CustomMacroFactory.MVVM.ViewModels
                 });
             });
         }
-    }
-
-    //RelayCommand
-    public partial class ImageColorPickerVM
-    {
-        private Point old_click_pos = new(0, 0);
-
         [RelayCommand]
-        private void OnLoaded(object para)
+        private async Task OnUnLoaded()
         {
-            if (para is RoutedEventArgs e)
-            {
-                var host = (UserControl)e.Source;
-                host.Margin = new Thickness(1);
-                host.MinHeight = 400;
-                host.MaxHeight = host.ActualHeight;
-                RenderOptions.SetBitmapScalingMode(host, BitmapScalingMode.Fant);
-
-                host.MouseLeftButtonDown += (s, e) =>
-                {
-                    host.Focus(); //聚焦
-                };
-
-                ScreenshotArea = ((ImageColorPicker)host).ScreenshotArea;
-            }
+            WeakReferenceMessenger.Default.Send(new CanUpdateFrames(false)); await Task.Delay(1000);
+            WeakReferenceMessenger.Default.UnregisterAll(this);
+            timer.Stop();
         }
 
         [RelayCommand]

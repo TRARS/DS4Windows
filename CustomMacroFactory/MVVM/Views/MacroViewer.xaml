@@ -12,8 +12,7 @@
              mc:Ignorable="d"
              d:MinWidth="240"
              d:MinHeight="240"
-             d:DataContext="{d:DesignInstance vm:MacroViewerVM, IsDesignTimeCreatable=True}"
-             >
+             d:DataContext="{d:DesignInstance vm:MacroViewerVM, IsDesignTimeCreatable=False}">
     
     <UserControl.Resources>
         <ResourceDictionary>

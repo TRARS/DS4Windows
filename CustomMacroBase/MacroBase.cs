@@ -6,7 +6,6 @@ using CustomMacroBase.CustomControlEx.ComboBoxEx;
 using CustomMacroBase.CustomControlEx.SliderEx;
 using CustomMacroBase.CustomControlEx.ValueIndicatorEx;
 using CustomMacroBase.GamePadState;
-using CustomMacroBase.Helper;
 using CustomMacroBase.Helper.Converter;
 using CustomMacroBase.Helper.ProConSimulate;
 using CustomMacroBase.Messages;
