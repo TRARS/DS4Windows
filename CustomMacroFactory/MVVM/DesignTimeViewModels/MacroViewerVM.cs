@@ -22,7 +22,7 @@ using TrarsUI.Shared.Controls.VerticalRadioButtonEx;
 using TrarsUI.Shared.Interfaces.UIComponents;
 using Helper = CustomMacroBase.Helper;
 
-namespace CustomMacroFactory.MVVM.ViewModels
+namespace CustomMacroFactory.MVVM.DesignTimeViewModels
 {
     partial class MacroViewerVM
     {
@@ -50,13 +50,14 @@ namespace CustomMacroFactory.MVVM.ViewModels
         public ObservableCollection<MenuItem_model> MenuItemModelList { get; set; } = new();
     }
 
-    // Init
     partial class MacroViewerVM : ObservableObject, IContentVM
     {
         public string Title { get; set; } = $"Macro Extension ({System.IO.File.GetLastWriteTime(Assembly.GetExecutingAssembly().Location):yyyy-MM-dd HH:mm:ss})";
 
-        public MacroViewerVM(Manager manager)
+        public MacroViewerVM()
         {
+            Manager? manager = null;
+
             //控制部分区域可见性
             this.TopContent_Left_Hide = false;      // menu
             this.TopContent_Middle_Hide = false;    // game list
@@ -71,7 +72,7 @@ namespace CustomMacroFactory.MVVM.ViewModels
                 container.Add(new()
                 {
                     Text = "Picker",
-                    Command = new RelayCommand(() => { manager.OpenImageColorPicker(); })
+                    Command = new RelayCommand(() => { manager?.OpenImageColorPicker(); })
                 });
                 container.Add(new()
                 {

@@ -44,6 +44,8 @@ namespace CustomMacroFactory.MVVM.Views
                     {
                         canExit = false; shadowHelper?.Close();
 
+                        WeakReferenceMessenger.Default.Send(new Ds4Disconnect(""));
+
                         ((Window)r).SetDoubleAnimation(OpacityProperty, Opacity, 0d, 256).ContinueWith(() =>
                         {
                             canExit = true;
@@ -60,11 +62,6 @@ namespace CustomMacroFactory.MVVM.Views
                     Debug.WriteLine($"WindowCloseMessage error: {ex.Message}");
                 }
             });
-
-            this.Closing += (s, e) =>
-            {
-                WeakReferenceMessenger.Default.Send(new Ds4Disconnect(""));
-            };
         }
     }
 
