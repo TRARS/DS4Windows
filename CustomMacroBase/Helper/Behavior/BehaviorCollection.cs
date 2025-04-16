@@ -1,8 +1,8 @@
-﻿using CustomMacroBase.CustomControlEx.GridEx;
-using Microsoft.Xaml.Behaviors;
+﻿using Microsoft.Xaml.Behaviors;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using TrarsUI.Shared.Controls.GridEx;
 
 namespace CustomMacroBase.Helper.Behavior
 {

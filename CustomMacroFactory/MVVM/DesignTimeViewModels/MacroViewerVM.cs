@@ -3,8 +3,10 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CustomMacroBase.CustomControlEx.ConsoleListBoxEx;
 using CustomMacroBase.CustomControlEx.VerticalButtonEx;
+using CustomMacroBase.DTOs;
 using CustomMacroBase.Helper.Extensions;
 using CustomMacroBase.Helper.HotKey;
+using CustomMacroBase.Interfaces;
 using CustomMacroBase.Messages;
 using CustomMacroFactory.MVVM.Helpers;
 using CustomMacroFactory.MVVM.Models;
@@ -13,12 +15,11 @@ using System.Globalization;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
 using TrarsUI.Shared.Controls.Specialized.ToggleTreeViewEx;
 using TrarsUI.Shared.Controls.ToggleButtonEx;
-using TrarsUI.Shared.Controls.VerticalRadioButtonEx;
+using TrarsUI.Shared.Controls.VerticalButtonEx;
 using TrarsUI.Shared.Interfaces.UIComponents;
 using Helper = CustomMacroBase.Helper;
 
@@ -27,20 +28,19 @@ namespace CustomMacroFactory.MVVM.DesignTimeViewModels
     partial class MacroViewerVM
     {
         [ObservableProperty]
+        private ObservableCollection<IMacroPacket> macroPacketList = new();
+        [ObservableProperty]
+        private MacroPacket? selectedMacroPacket;
+
+        [ObservableProperty]
         private UIElement mainMenu;
         [ObservableProperty]
         private UIElement mainOption;
-        [ObservableProperty]
-        private UIElement gameList;
-        [ObservableProperty]
-        private UIElement macroList;
         [ObservableProperty]
         private UIElement logArea;
 
         [ObservableProperty]
         private bool topContent_Left_Hide;
-        [ObservableProperty]
-        private bool topContent_Middle_Hide;
         [ObservableProperty]
         private bool topContent_Right_Hide;
 
@@ -60,7 +60,6 @@ namespace CustomMacroFactory.MVVM.DesignTimeViewModels
 
             //控制部分区域可见性
             this.TopContent_Left_Hide = false;      // menu
-            this.TopContent_Middle_Hide = false;    // game list
             this.TopContent_Right_Hide = false;     // macro list
             this.BottomContent_Bottom_Hide = false; // log
 
@@ -170,80 +169,15 @@ namespace CustomMacroFactory.MVVM.DesignTimeViewModels
                 }));
             }).GetVerticalContent();
 
-            //TopContent_Middle
-            this.GameList = new PartCreator<cVerticalRadioButton>(container =>
-            {
-                foreach (var item in MacroFactory.MacroManager.CurrentGameList)
-                {
-                    //每个游戏类安排一个按钮
-                    container.Add(new cVerticalRadioButton() { AquaOnSelection = true }.Init(btn =>
-                    {
-                        btn.GroupName = "aS[8d7^_0>F+$B2|#q3&y>@uPr{4r";
-                        btn.SetBinding(cVerticalRadioButton.EnableColorfulTextProperty, new Binding(nameof(item.UseColorfulText)) { Source = item, Mode = BindingMode.TwoWay });
-                        btn.SetBinding(cVerticalRadioButton.TextProperty, new Binding(nameof(item.Title)) { Source = item, Mode = BindingMode.OneWay });
-                        btn.SetBinding(cVerticalRadioButton.IsCheckedProperty, new Binding(nameof(item.Selected)) { Source = item, Mode = BindingMode.TwoWay });
-
-                        btn.MoveUpCommand = new RelayCommand(() =>
-                        {
-                            var list = container;
-                            var index = list.IndexOf(btn);
-                            var count = list.Count;
-
-                            if (count > 1 && index > 0)
-                            {
-                                var previous = list[index - 1];
-                                list.RemoveAt(index - 1);
-                                list.Insert(index, previous);
-                            }
-                        });
-                        btn.MoveDownCommand = new RelayCommand(() =>
-                        {
-                            var list = container;
-                            var index = list.IndexOf(btn);
-                            var count = list.Count;
-
-                            if (count > 1 && index > -1 && index < count - 1)
-                            {
-                                var next = list[index + 1];
-                                list.RemoveAt(index + 1);
-                                list.Insert(index, next);
-                            }
-                        });
-                        btn.RemoveCommand = new RelayCommand(() =>
-                        {
-                            btn.IsChecked = false;
-                            container.Remove(btn);
-                        });
-                    }));
-
-                }
-
-                Application.Current.Dispatcher.BeginInvoke(() =>
-                {
-                    if (container.Count > 0) { container[0].IsChecked = true; }
-                });
-
-                //
-                this.MenuItemModelList.Add(new()
-                {
-                    Text = "GameList Show/Hide",
-                    Command = new RelayCommand(() => { container.ForEach(x => x.Hide = !x.Hide); })
-                });
-            }).GetVerticalContent();
-
             //TopContent_Right
-            this.MacroList = new PartCreator<ContentControl>(container =>
+            foreach (var item in MacroFactory.MacroManager.CurrentGameList)
             {
-                foreach (var item in MacroFactory.MacroManager.CurrentGameList)
+                MacroPacketList.Add(new MacroPacket(item.Title, item.MainGate)
                 {
-                    //每个按钮对应具体内容
-                    container.Add(new ContentControl().Init(temp =>
-                    {
-                        temp.Content = new cToggleTreeView() { DataContext = item.MainGate, Margin = new Thickness(0, 4, 4, 4) };
-                        temp.SetBinding(ContentControl.VisibilityProperty, new Binding(nameof(item.Selected)) { Source = item, Mode = BindingMode.OneWay, Converter = new BooleanToVisibilityConverter() });
-                    }));
-                }
-            }).GetVerticalContent();
+                    IsChecked = true,
+                    ColorfulText = item.UseColorfulText
+                });
+            }
 
             //BottomContent_Bottom
             this.LogArea = new PartCreator<ContentControl>(container =>

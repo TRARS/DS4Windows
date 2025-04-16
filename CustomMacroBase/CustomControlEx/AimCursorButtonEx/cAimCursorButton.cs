@@ -3,6 +3,7 @@ using CustomMacroBase.Helper;
 using CustomMacroBase.Messages;
 using System;
 using System.Text;
+using TrarsUI.Shared.Controls.VerticalButtonEx;
 
 namespace CustomMacroBase.CustomControlEx.VerticalButtonEx
 {

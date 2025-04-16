@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:CustomMacroBase.CustomControlEx.PointCurveChartEx" 
-                    xmlns:scrollviewerex="clr-namespace:CustomMacroBase.CustomControlEx.ScrollViewerEx">
+                    xmlns:scrollviewerex="clr-namespace:TrarsUI.Shared.Controls.ScrollViewerEx;assembly=TrarsUI.Shared">
 
     <local:cPointCurveChart_converter_size2width x:Key="cPointCurveChart_converter_size2width"/>
     <local:cPointCurveChart_converter_size2height x:Key="cPointCurveChart_converter_size2height"/>

@@ -4,7 +4,7 @@
                     xmlns:local="clr-namespace:CustomMacroBase.CustomControlEx.TooltipInfoButtonEx" 
                     xmlns:behavior="clr-namespace:CustomMacroBase.Helper.Behavior"
                     xmlns:contextmenuex="clr-namespace:CustomMacroBase.CustomControlEx.ContextMenuEx" 
-                    xmlns:gridex="clr-namespace:CustomMacroBase.CustomControlEx.GridEx" 
+                    xmlns:gridex="clr-namespace:TrarsUI.Shared.Controls.GridEx;assembly=TrarsUI.Shared" 
                     >
 
     <local:cTooltipInfoButton_converter_test x:Key="cTooltipInfoButton_converter_test"/>

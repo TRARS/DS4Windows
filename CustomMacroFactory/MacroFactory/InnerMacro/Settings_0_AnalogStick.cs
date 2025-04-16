@@ -105,14 +105,14 @@ namespace CustomMacroFactory.MacroFactory.InnerMacro
             MainGate.Text = "Analog Stick Setting";
             MainGate.Enable = false;
 
-            MainGate.Add(CreateGateBase("LeftStick"));//[0]
+            MainGate.Add(CreateTVN("LeftStick"));//[0]
             {
                 MainGate[0].AddEx(() => CreateSlider2(0, 127, viewmodel, nameof(viewmodel.LeftStickDeadZone), 1, "DeadZone", defalutValue: 0));
                 MainGate[0].AddEx(() => CreateSlider2(128, 1280, viewmodel, nameof(viewmodel.LeftStickEnlargementFactor), 1, "EnlargementFactor", defalutValue: 1280));
                 MainGate[0].AddEx(() => CreateSlider2(64, 180, viewmodel, nameof(viewmodel.LeftStickClipRadius), 1, "ClipRadius", defalutValue: 128));
             }
 
-            MainGate.Add(CreateGateBase("RightStick"));//[1]
+            MainGate.Add(CreateTVN("RightStick"));//[1]
             {
                 MainGate[1].AddEx(() => CreateSlider2(0, 127, viewmodel, nameof(viewmodel.RightStickDeadZone), 1, "DeadZone", defalutValue: 0));
                 MainGate[1].AddEx(() => CreateSlider2(128, 1280, viewmodel, nameof(viewmodel.RightStickEnlargementFactor), 1, "EnlargementFactor", defalutValue: 1280));

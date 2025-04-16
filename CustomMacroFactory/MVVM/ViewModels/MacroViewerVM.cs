@@ -3,22 +3,26 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CustomMacroBase.CustomControlEx.ConsoleListBoxEx;
 using CustomMacroBase.CustomControlEx.VerticalButtonEx;
+using CustomMacroBase.DTOs;
 using CustomMacroBase.Helper.Extensions;
 using CustomMacroBase.Helper.HotKey;
+using CustomMacroBase.Interfaces;
 using CustomMacroBase.Messages;
 using CustomMacroFactory.MVVM.Helpers;
 using CustomMacroFactory.MVVM.Models;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
 using TrarsUI.Shared.Controls.Specialized.ToggleTreeViewEx;
 using TrarsUI.Shared.Controls.ToggleButtonEx;
-using TrarsUI.Shared.Controls.VerticalRadioButtonEx;
+using TrarsUI.Shared.Controls.VerticalButtonEx;
+using TrarsUI.Shared.Interfaces;
 using TrarsUI.Shared.Interfaces.UIComponents;
 using Helper = CustomMacroBase.Helper;
 
@@ -27,20 +31,20 @@ namespace CustomMacroFactory.MVVM.ViewModels
     partial class MacroViewerVM
     {
         [ObservableProperty]
+        private ObservableCollection<IMacroPacket> macroPacketList = new();
+        [ObservableProperty]
+        private MacroPacket? selectedMacroPacket;
+
+
+        [ObservableProperty]
         private UIElement mainMenu;
         [ObservableProperty]
         private UIElement mainOption;
-        [ObservableProperty]
-        private UIElement gameList;
-        [ObservableProperty]
-        private UIElement macroList;
         [ObservableProperty]
         private UIElement logArea;
 
         [ObservableProperty]
         private bool topContent_Left_Hide;
-        [ObservableProperty]
-        private bool topContent_Middle_Hide;
         [ObservableProperty]
         private bool topContent_Right_Hide;
 
@@ -55,11 +59,14 @@ namespace CustomMacroFactory.MVVM.ViewModels
     {
         public string Title { get; set; } = $"Macro Extension ({System.IO.File.GetLastWriteTime(Assembly.GetExecutingAssembly().Location):yyyy-MM-dd HH:mm:ss})";
 
-        public MacroViewerVM(Manager manager)
+        private IDispatcherService _dispatcher;
+
+        public MacroViewerVM(IDispatcherService dispatcher, Manager manager)
         {
+            _dispatcher = dispatcher;
+
             //控制部分区域可见性
             this.TopContent_Left_Hide = false;      // menu
-            this.TopContent_Middle_Hide = false;    // game list
             this.TopContent_Right_Hide = false;     // macro list
             this.BottomContent_Bottom_Hide = false; // log
 
@@ -169,86 +176,145 @@ namespace CustomMacroFactory.MVVM.ViewModels
                 }));
             }).GetVerticalContent();
 
-            //TopContent_Middle
-            this.GameList = new PartCreator<cVerticalRadioButton>(container =>
-            {
-                foreach (var item in MacroFactory.MacroManager.CurrentGameList)
-                {
-                    //每个游戏类安排一个按钮
-                    container.Add(new cVerticalRadioButton() { AquaOnSelection = true }.Init(btn =>
-                    {
-                        btn.GroupName = "aS[8d7^_0>F+$B2|#q3&y>@uPr{4r";
-                        btn.SetBinding(cVerticalRadioButton.EnableColorfulTextProperty, new Binding(nameof(item.UseColorfulText)) { Source = item, Mode = BindingMode.TwoWay });
-                        btn.SetBinding(cVerticalRadioButton.TextProperty, new Binding(nameof(item.Title)) { Source = item, Mode = BindingMode.OneWay });
-                        btn.SetBinding(cVerticalRadioButton.IsCheckedProperty, new Binding(nameof(item.Selected)) { Source = item, Mode = BindingMode.TwoWay });
-
-                        btn.MoveUpCommand = new RelayCommand(() =>
-                        {
-                            var list = container;
-                            var index = list.IndexOf(btn);
-                            var count = list.Count;
-
-                            if (count > 1 && index > 0)
-                            {
-                                var previous = list[index - 1];
-                                list.RemoveAt(index - 1);
-                                list.Insert(index, previous);
-                            }
-                        });
-                        btn.MoveDownCommand = new RelayCommand(() =>
-                        {
-                            var list = container;
-                            var index = list.IndexOf(btn);
-                            var count = list.Count;
-
-                            if (count > 1 && index > -1 && index < count - 1)
-                            {
-                                var next = list[index + 1];
-                                list.RemoveAt(index + 1);
-                                list.Insert(index, next);
-                            }
-                        });
-                        btn.RemoveCommand = new RelayCommand(() =>
-                        {
-                            btn.IsChecked = false;
-                            container.Remove(btn);
-                        });
-                    }));
-
-                }
-
-                Application.Current.Dispatcher.BeginInvoke(() =>
-                {
-                    if (container.Count > 0) { container[0].IsChecked = true; }
-                });
-
-                //
-                this.MenuItemModelList.Add(new()
-                {
-                    Text = "GameList Show/Hide",
-                    Command = new RelayCommand(() => { container.ForEach(x => x.Hide = !x.Hide); })
-                });
-            }).GetVerticalContent();
-
             //TopContent_Right
-            this.MacroList = new PartCreator<ContentControl>(container =>
+            var selectedFirst = false;
+            foreach (var item in MacroFactory.MacroManager.CurrentGameList)
             {
-                foreach (var item in MacroFactory.MacroManager.CurrentGameList)
+                MacroPacketList.Add(new MacroPacket(item.Title, item.MainGate)
                 {
-                    //每个按钮对应具体内容
-                    container.Add(new ContentControl().Init(temp =>
+                    IsChecked = !selectedFirst,
+                    IconData = "",
+                    ColorfulText = item.UseColorfulText
+                });
+                if (selectedFirst is false) { selectedFirst = true; }
+            }
+            //MenuCommand
+            this.MenuItemModelList.Add(new()
+            {
+                Text = "GameList Show/Hide",
+                Command = new RelayCommand(() =>
+                {
+                    // 统计数量
+                    int checkedCount = MacroPacketList.Count(x => x.IsChecked);
+                    int notCheckedCount = MacroPacketList.Count(x => x.IsChecked is false);
+                    int usedCount = MacroPacketList.Count(x => x.Unused is false);
+                    int unusedCount = MacroPacketList.Count(x => x.Unused);
+
+                    //
+                    if (checkedCount == 0)
                     {
-                        temp.Content = new cToggleTreeView() { DataContext = item.MainGate, Margin = new Thickness(0, 4, 4, 4) };
-                        temp.SetBinding(ContentControl.VisibilityProperty, new Binding(nameof(item.Selected)) { Source = item, Mode = BindingMode.OneWay, Converter = new BooleanToVisibilityConverter() });
-                    }));
-                }
-            }).GetVerticalContent();
+                        if (unusedCount == 0)
+                        {
+                            MacroPacketList.ForEach(x => { x.Unused = true; });
+                        }
+                        else
+                        {
+                            MacroPacketList.ForEach(x => { x.Unused = false; });
+                        }
+                    }
+                    else if (checkedCount >= 1)
+                    {
+                        if (checkedCount != usedCount)
+                        {
+                            MacroPacketList.ForEach(x => { x.Unused = !x.IsChecked; });
+                        }
+                        else
+                        {
+                            MacroPacketList.ForEach(x => { x.Unused = false; });
+                        }
+                    }
+                })
+            });
+
 
             //BottomContent_Bottom
             this.LogArea = new PartCreator<ContentControl>(container =>
             {
                 container.Add(new() { Content = new cConsoleListBox() });
             }).GetVerticalContent();
+        }
+    }
+
+    // Command
+    partial class MacroViewerVM
+    {
+        /// <summary>
+        /// 上移
+        /// </summary>
+        [RelayCommand]
+        private async Task OnMoveUpAsync(object para)
+        {
+            await _dispatcher.BeginInvoke(() =>
+            {
+                if (!(para is IMacroPacket item)) { return; }
+
+                var list = this.MacroPacketList;
+                var index = list.IndexOf(item);
+                var count = list.Count;
+
+                if (count > 1 && index > 0)
+                {
+                    var previous = list[index - 1]; // 获取 list[index - 1]
+                    list.RemoveAt(index - 1); // 移除 previous
+                    list.Insert(index, previous); // 将 previous 插入到 item 的旧位置
+                }
+            });
+        }
+        /// <summary>
+        /// 下移
+        /// </summary>
+        [RelayCommand]
+        private async Task OnMoveDownAsync(object para)
+        {
+            await _dispatcher.BeginInvoke(() =>
+            {
+                if (!(para is IMacroPacket item)) { return; }
+
+                var list = this.MacroPacketList;
+                var index = list.IndexOf(item);
+                var count = list.Count;
+
+                if (count > 1 && index > -1 && index < count - 1)
+                {
+                    var next = list[index + 1]; // 获取 list[index + 1]
+                    list.RemoveAt(index + 1); // 移除 next
+                    list.Insert(index, next); // 将 next 插入到 item 的旧位置
+                }
+            });
+        }
+        /// <summary>
+        /// 启用/禁用
+        /// </summary>
+        [RelayCommand]
+        private async Task OnUnusedAsync(object para)
+        {
+            await _dispatcher.BeginInvoke(() =>
+            {
+                if (!(para is IMacroPacket item)) { return; }
+
+                item.Unused = !item.Unused;
+            });
+        }
+        /// <summary>
+        /// 删除
+        /// </summary>
+        [RelayCommand]
+        private async Task OnRemoveMacroAsync(object para)
+        {
+            await _dispatcher.BeginInvoke(() =>
+            {
+                if (!(para is IMacroPacket item)) { return; }
+
+                var list = this.MacroPacketList;
+                var index = list.IndexOf(item);
+
+                if (index > -1)
+                {
+                    item.IsChecked = false;
+                    list.RemoveAt(index);
+                    WeakReferenceMessenger.Default.Send(new PrintNewMessage($" Remove: {item.MacroContent.GetType().Name}"));
+                }
+            });
         }
     }
 }

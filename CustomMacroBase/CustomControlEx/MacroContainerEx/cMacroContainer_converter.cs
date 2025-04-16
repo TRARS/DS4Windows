@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Globalization;
-using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
+using TrarsUI.Shared.DTOs;
 
-namespace CustomMacroBase.CustomControlEx.StackPanelEx
+namespace CustomMacroBase.CustomControlEx.MacroContainerEx
 {
-    class cStackPanel_converter_itemsheight2visibility : IValueConverter
+    internal class cMacroContainer_converter_content2scrollbarvisibility : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (double)value > 0 ? Visibility.Visible : Visibility.Collapsed;
+            if (value is ToggleTreeViewNode) { return ScrollBarVisibility.Visible; }
+            return ScrollBarVisibility.Disabled;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

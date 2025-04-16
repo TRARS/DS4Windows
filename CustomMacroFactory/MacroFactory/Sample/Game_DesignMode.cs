@@ -11,16 +11,16 @@ namespace CustomMacroFactory.MacroFactory.Sample
 
             MainGate.Text = "CustomMacroFactory/MacroFactory/Sample/Game_DesignMode.cs";
 
-            MainGate.Add(CreateGateBase("[0]"));
+            MainGate.Add(CreateTVN("[0]"));
             MainGate[0].AddEx(() => CreateTextBlock("- This sample is applicable only to design mode.", Colors.Crimson));
-            MainGate[0].Add(CreateGateBase("[0][0]"));
-            MainGate[0][0].Add(CreateGateBase("[0][0][0]"));
-            MainGate[0][0][0].Add(CreateGateBase("[0][0][0][0]"));
+            MainGate[0].Add(CreateTVN("[0][0]"));
+            MainGate[0][0].Add(CreateTVN("[0][0][0]"));
+            MainGate[0][0][0].Add(CreateTVN("[0][0][0][0]"));
 
-            MainGate.Add(CreateGateBase("[1]"));
+            MainGate.Add(CreateTVN("[1]"));
             MainGate[1].AddEx(() => CreateTextBlock("- This sample is applicable only to design mode.", Colors.LawnGreen));
-            MainGate[1].Add(CreateGateBase("[1][0]"));
-            MainGate[1].Add(CreateGateBase("[1][1]"));
+            MainGate[1].Add(CreateTVN("[1][0]"));
+            MainGate[1].Add(CreateTVN("[1][1]"));
 
             MainGate.AddEx(() => CreateTextBlock("- This sample is applicable only to design mode.", Colors.DodgerBlue));
         }

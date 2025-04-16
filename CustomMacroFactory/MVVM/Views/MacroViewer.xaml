@@ -6,10 +6,12 @@
              xmlns:designtimeviewmodel="clr-namespace:CustomMacroFactory.MVVM.DesignTimeViewModels"
              xmlns:v="clr-namespace:CustomMacroFactory.MVVM.Views"
              xmlns:vm="clr-namespace:CustomMacroFactory.MVVM.ViewModels"
+             xmlns:dots="clr-namespace:TrarsUI.Shared.DTOs;assembly=TrarsUI.Shared"
              xmlns:converters="clr-namespace:CustomMacroFactory.MVVM.Converters"
-             xmlns:gridex="clr-namespace:CustomMacroBase.CustomControlEx.GridEx;assembly=CustomMacroBase" 
              xmlns:contextmenuex="clr-namespace:CustomMacroBase.CustomControlEx.ContextMenuEx;assembly=CustomMacroBase" 
              xmlns:scrollviewerex="clr-namespace:TrarsUI.Shared.Controls.ScrollViewerEx;assembly=TrarsUI.Shared"
+             xmlns:macrocontainerex="clr-namespace:CustomMacroBase.CustomControlEx.MacroContainerEx;assembly=CustomMacroBase"
+             xmlns:toggletreeviewex="clr-namespace:TrarsUI.Shared.Controls.Specialized.ToggleTreeViewEx;assembly=TrarsUI.Shared"
              mc:Ignorable="d"
              d:MinWidth="240"
              d:MinHeight="240"
@@ -24,6 +26,10 @@
             <converters:MacroViewer_converter_visibility2maxheight x:Key="MacroViewer_converter_visibility2maxheight"/>
             <converters:MacroViewer_converter_visibility2height x:Key="MacroViewer_converter_visibility2height"/>
             <converters:MacroViewer_converter_boolbool2visibility x:Key="MacroViewer_converter_boolbool2visibility"/>
+
+            <DataTemplate DataType="{x:Type dots:ToggleTreeViewNode}">
+                <toggletreeviewex:cToggleTreeView Width="NaN" Margin="2,0,0,0"/>
+            </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -46,20 +52,17 @@
             </Grid.RowDefinitions>
 
             <!--上半部分：按钮-->
-            <Border x:Name="TopArea" 
+            <Border x:Name="TopArea" HorizontalAlignment="Left"
                     Grid.Row="0" BorderThickness="1" BorderBrush="#33C1D3FF" Margin="1" 
                     d:BorderBrush ="Red">
                 <Grid x:Name="Part_0_Grid" Margin="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" MinWidth="{Binding TopContent_Left_Hide, Converter={StaticResource MacroViewer_converter_bool2minwidth}, ConverterParameter=65}"/>
-                        <ColumnDefinition Width="{Binding TopContent_Left_Hide, Converter={StaticResource MacroViewer_converter_bool2minwidth}, ConverterParameter=1}"/>
-                        <ColumnDefinition Width="Auto" MinWidth="{Binding TopContent_Middle_Hide, Converter={StaticResource MacroViewer_converter_bool2minwidth}, ConverterParameter=65}"/>
-                        <ColumnDefinition Width="{Binding TopContent_Middle_Hide, Converter={StaticResource MacroViewer_converter_bool2minwidth}, ConverterParameter=1}"/>
                         <ColumnDefinition Width="*" MinWidth="{Binding TopContent_Right_Hide, Converter={StaticResource MacroViewer_converter_bool2minwidth}, ConverterParameter=343}"/>
                     </Grid.ColumnDefinitions>
 
                     <!--左-->
-                    <Grid Grid.Column="0"
+                    <Grid Grid.Column="0" Margin="0,0,1,0"
                           Visibility="{Binding TopContent_Left_Hide, Converter={StaticResource MacroViewer_converter_bool2visibility}}"
                           d:Visibility="Visible">
                         <Grid>
@@ -85,41 +88,32 @@
                         </Grid>
                     </Grid>
 
-                    <!--中-->
-                    <gridex:cGrid Grid.Column="2"
-                                  ParentModel="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
-                                  Visibility="{Binding TopContent_Middle_Hide, Converter={StaticResource MacroViewer_converter_bool2visibility}}"
-                                  d:Visibility="Visible">
-                        <scrollviewerex:cSmoothScrollViewer Content="{Binding GameList}"
-                                                      VerticalScrollBarVisibility="Auto" d:VerticalScrollBarVisibility="Visible"
-                                                      BackgroundColor="{StaticResource AreaColor}"
-                                                      d:BackgroundColor="#44374F"
-                                                      d:ScrollBarBackgroundColor="Gray">
-                        </scrollviewerex:cSmoothScrollViewer>
-                        <Grid.ContextMenu>
-                            <contextmenuex:cContextMenu>
-                                <contextmenuex:cMenuItem Text="{Binding PlacementTarget.ParentModel.MenuItemModelList[0].Text, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
-                                                         Command="{Binding PlacementTarget.ParentModel.MenuItemModelList[0].Command, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"/>
-                            </contextmenuex:cContextMenu>
-                        </Grid.ContextMenu>
-                    </gridex:cGrid>
-
                     <!--右-->
-                    <Grid Grid.Column="4"
+                    <Grid Grid.Column="1"
                           Visibility="{Binding TopContent_Right_Hide, Converter={StaticResource MacroViewer_converter_bool2visibility}}"
                           d:Visibility="Visible">
-                        <scrollviewerex:cScrollViewer Content="{Binding MacroList}"
-                                                      VerticalScrollBarVisibility="Auto" d:VerticalScrollBarVisibility="Visible"
-                                                      BackgroundColor="{StaticResource AreaColor}" 
-                                                      d:BackgroundColor="DarkSlateBlue" 
-                                                      d:ScrollBarBackgroundColor="Gray">
-                        </scrollviewerex:cScrollViewer>
+                        <macrocontainerex:cMacroContainer ItemsSource="{Binding MacroPacketList, Mode=OneWay}"
+                                                          SelectedItem="{Binding SelectedMacroPacket}"
+                                                          Background="{StaticResource AreaColor}" 
+                                                          PageMinWidth="384"
+                                                          MoveUpCommand="{Binding MoveUpCommand, Mode=OneWay}"
+                                                          MoveDownCommand="{Binding MoveDownCommand, Mode=OneWay}"
+                                                          RemoveCommand="{Binding RemoveMacroCommand, Mode=OneWay}"
+                                                          UnusedCommand="{Binding UnusedCommand, Mode=OneWay}"
+                                                          d:Background="DarkSlateBlue">
+                            <macrocontainerex:cMacroContainer.ContextMenu>
+                                <contextmenuex:cContextMenu>
+                                    <contextmenuex:cMenuItem Text="{Binding PlacementTarget.DataContext.MenuItemModelList[0].Text, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
+                                                             Command="{Binding PlacementTarget.DataContext.MenuItemModelList[0].Command, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"/>
+                                </contextmenuex:cContextMenu>
+                            </macrocontainerex:cMacroContainer.ContextMenu>
+                        </macrocontainerex:cMacroContainer>
                     </Grid>
                 </Grid>
             </Border>
 
-            <!--下半部分：截图框、打印框-->
-            <Border x:Name="BottomArea" 
+            <!--下半部分：打印框-->
+            <Border x:Name="BottomArea"
                     Visibility="{Binding BottomContent_Bottom_Hide, Converter={StaticResource MacroViewer_converter_bool2visibility}}"
                     Grid.Row="1" BorderThickness="1" BorderBrush="#33C1D3FF" Margin="1,0,1,1" CornerRadius="0,0,4,4"
                     d:BorderBrush ="Red" d:Visibility="Visible">

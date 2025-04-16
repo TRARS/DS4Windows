@@ -4,6 +4,7 @@ using CustomMacroBase.Messages;
 using CustomMacroFactory.MacroFactory;
 using System;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using TrarsUI.Shared.Helpers.Extensions;
@@ -106,6 +107,9 @@ namespace CustomMacroFactory.MVVM.Views
         /// </summary>
         public void Init(Func<dynamic> getDs4Host, Func<dynamic> getRootHub)
         {
+            var rumbleCTS = new CancellationTokenSource();
+            var runbleToken = rumbleCTS.Token;
+
             WeakReferenceMessenger.Default.Register<Ds4Disconnect>(this, (r, m) =>
             {
                 dynamic? ds4 = getDs4Host?.Invoke();
@@ -113,6 +117,10 @@ namespace CustomMacroFactory.MVVM.Views
             });
             WeakReferenceMessenger.Default.Register<Ds4Rumble>(this, (r, m) =>
             {
+                rumbleCTS?.Cancel();
+                rumbleCTS = new CancellationTokenSource();
+                runbleToken = rumbleCTS.Token;
+
                 //byte rightLightFastMotor, byte leftHeavySlowMotor
                 var para = m.Value;// bool
 
@@ -124,11 +132,15 @@ namespace CustomMacroFactory.MVVM.Views
                 {
                     Task.Run(() =>
                     {
-                        d.setRumble(LightRumble, HeavyRumble);//LightRumble //HeavyRumble
-                        Task.Delay(200).Wait();
-                        d.setRumble(0, 0);
-                        Task.Delay(200).Wait();
-                    });
+                        try
+                        {
+                            d.setRumble(LightRumble, HeavyRumble);//LightRumble //HeavyRumble
+                            Task.Delay(200, runbleToken).Wait();
+                            d.setRumble(0, 0);
+                            Task.Delay(200, runbleToken).Wait();
+                        }
+                        catch { }
+                    }, runbleToken);
                 }
             });
             WeakReferenceMessenger.Default.Register<Ds4Latency>(this, (r, m) =>

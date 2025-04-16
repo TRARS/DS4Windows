@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:CustomMacroBase.CustomControlEx.ContextMenuEx"
-                    xmlns:scrollviewerex="clr-namespace:CustomMacroBase.CustomControlEx.ScrollViewerEx">
+                    xmlns:scrollviewerex="clr-namespace:TrarsUI.Shared.Controls.ScrollViewerEx;assembly=TrarsUI.Shared">
     
     <local:cMenuItemForHotkey_converter_enum2string x:Key="cMenuItemForHotkey_converter_enum2string"/>
     <local:cMenuItemForHotkey_converter_datacontext2hotkeyinfolist x:Key="cMenuItemForHotkey_converter_datacontext2hotkeyinfolist"/>

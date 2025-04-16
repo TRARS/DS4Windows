@@ -20,12 +20,12 @@ namespace CustomMacroBase.Messages
         }
     }
 
-    public class Ds4Rumble : ValueChangedMessage<bool>
-    {
-        public Ds4Rumble(bool value) : base(value)
-        {
-        }
-    }
+    //public class Ds4Rumble : ValueChangedMessage<bool>
+    //{
+    //    public Ds4Rumble(bool value) : base(value)
+    //    {
+    //    }
+    //}
 
     public class Ds4Latency : ValueChangedMessage<double[]>
     {

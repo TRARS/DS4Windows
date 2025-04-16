@@ -1,10 +1,11 @@
-﻿using CustomMacroBase.PreBase;
+﻿
+using TrarsUI.Shared.DTOs;
 
 namespace CustomMacroBase.Helper.Extensions
 {
-    public static class GateBaseExtensions
+    public static class ToggleTreeViewNodeExtensions
     {
-        public static GateBase Comment(this GateBase target, string comment)
+        public static ToggleTreeViewNode Comment(this ToggleTreeViewNode target, string comment)
         {
             target.TooltipSuffix = comment; return target;
         }

@@ -117,8 +117,8 @@ namespace CustomMacroFactory.MacroFactory
     public partial class MacroCreator
     {
         public List<MacroBase> CurrentGameList => this.game_list_main;
-        public MacroBase? CurrentRunnableMacro => is_busy ? null : game_list_main.Find(item => item.Selected);
-        public MacroBase? AnalogStickMacro => is_busy ? null : game_list_pre[0];
+        public MacroBase? CurrentRunnableMacro => is_busy ? null : this.game_list_main.Find(item => item.Selected);
+        public MacroBase? AnalogStickMacro => is_busy ? null : this.game_list_pre[0];
     }
 
     public partial class MacroCreator

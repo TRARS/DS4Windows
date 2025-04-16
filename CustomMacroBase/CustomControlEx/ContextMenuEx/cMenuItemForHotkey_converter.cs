@@ -1,7 +1,7 @@
-﻿using CustomMacroBase.PreBase;
-using System;
+﻿using System;
 using System.Globalization;
 using System.Windows.Data;
+using TrarsUI.Shared.DTOs;
 
 namespace CustomMacroBase.CustomControlEx.ContextMenuEx
 {
@@ -26,7 +26,7 @@ namespace CustomMacroBase.CustomControlEx.ContextMenuEx
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is GateBase gb)
+            if (value is ToggleTreeViewNode gb)
             {
                 return new cMenuItemForHotkey_viewmodel(gb.Text, gb.Feature, gb.EnableReverse).HotkeyInfoList;
             }
