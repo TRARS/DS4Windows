@@ -92,7 +92,8 @@ namespace CustomMacroBase.Helper.Tools.OtherManager
                 fix1(ref x, ref y, clip);
                 fix2(ref x, ref y, radius_2);
                 fix3(ref x, ref y, radius_3);
-            };
+            }
+            ;
         }
 
         //死区（必要）

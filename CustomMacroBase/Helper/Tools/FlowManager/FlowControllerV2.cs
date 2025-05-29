@@ -68,7 +68,8 @@ namespace CustomMacroBase.Helper.Tools.FlowManager
                 if (macro_task_is_running is false) { macro_task_locker = false; return; }
                 if (macro_task_cancelflag[0] is false) { macro_task_cancelflag[0] = true; }
                 if (macro_cts_is_disposed is false) { macro_cts?.Cancel(); }
-            };
+            }
+            ;
 
             if (macro_start_condition)
             {

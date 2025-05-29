@@ -551,7 +551,8 @@ namespace CustomMacroFactory.MVVM.ViewModels
             else
             {
                 msg = "Failed to capture screenshot";
-            };
+            }
+            ;
             WeakReferenceMessenger.Default.Send(new AlertMessage(msg));
         }
 

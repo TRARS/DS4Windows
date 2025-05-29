@@ -117,12 +117,14 @@ namespace CustomMacroFactory.MacroFactory
     public partial class MacroCreator
     {
         public List<MacroBase> CurrentGameList => this.game_list_main;
-        public MacroBase? CurrentRunnableMacro => is_busy ? null : this.game_list_main.Find(item => item.Selected);
+        public MacroBase? CurrentRunnableMacro => is_busy ? null : _currentRunnableMacro;//this.game_list_main.Find(item => item.Selected);
         public MacroBase? AnalogStickMacro => is_busy ? null : this.game_list_pre[0];
     }
 
     public partial class MacroCreator
     {
+        private MacroBase? _currentRunnableMacro = null;
+
         private void PushToList(ref List<MacroBase> list, IEnumerable<Type> tpList)
         {
             foreach (Type item in tpList)
@@ -131,6 +133,7 @@ namespace CustomMacroFactory.MacroFactory
                 {
                     if (item.FullName is not null && item.Assembly.CreateInstance(item.FullName) is MacroBase obj)
                     {
+                        obj.OnSelectedChangedAction += () => { _currentRunnableMacro = obj; };
                         list.Add(obj);
                     }
                 }

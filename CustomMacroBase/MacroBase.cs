@@ -230,6 +230,20 @@ namespace CustomMacroBase
         private bool useColorfulText;
         #endregion
 
+        #region 通知MacroCreator更新选中项
+
+        public event Action? OnSelectedChangedAction;
+
+        partial void OnSelectedChanged(bool value)
+        {
+            if (value)
+            {
+                OnSelectedChangedAction?.Invoke();
+            }
+        }
+
+        #endregion
+
         #region 脚本入口
         /// <summary>
         /// 入口

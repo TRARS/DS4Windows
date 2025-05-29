@@ -101,12 +101,6 @@
                                                           RemoveCommand="{Binding RemoveMacroCommand, Mode=OneWay}"
                                                           UnusedCommand="{Binding UnusedCommand, Mode=OneWay}"
                                                           d:Background="DarkSlateBlue">
-                            <macrocontainerex:cMacroContainer.ContextMenu>
-                                <contextmenuex:cContextMenu>
-                                    <contextmenuex:cMenuItem Text="{Binding PlacementTarget.DataContext.MenuItemModelList[0].Text, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
-                                                             Command="{Binding PlacementTarget.DataContext.MenuItemModelList[0].Command, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"/>
-                                </contextmenuex:cContextMenu>
-                            </macrocontainerex:cMacroContainer.ContextMenu>
                         </macrocontainerex:cMacroContainer>
                     </Grid>
                 </Grid>

@@ -26,6 +26,8 @@ namespace CustomMacroFactory.MVVM.ViewModels
         };
 
         [ObservableProperty]
+        private bool isAnimationEnabled = true;
+        [ObservableProperty]
         private Brush brushColor;
         [ObservableProperty]
         private double width;

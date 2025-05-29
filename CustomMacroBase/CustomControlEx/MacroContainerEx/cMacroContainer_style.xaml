@@ -4,7 +4,8 @@
                     xmlns:local="clr-namespace:CustomMacroBase.CustomControlEx.MacroContainerEx"
                     xmlns:verticalradiobuttonex="clr-namespace:TrarsUI.Shared.Controls.VerticalRadioButtonEx;assembly=TrarsUI.Shared"
                     xmlns:buttonex="clr-namespace:TrarsUI.Shared.Controls.ButtonEx;assembly=TrarsUI.Shared"
-                    xmlns:scrollviewerex="clr-namespace:TrarsUI.Shared.Controls.ScrollViewerEx;assembly=TrarsUI.Shared">
+                    xmlns:scrollviewerex="clr-namespace:TrarsUI.Shared.Controls.ScrollViewerEx;assembly=TrarsUI.Shared" 
+                    xmlns:contextmenuex="clr-namespace:CustomMacroBase.CustomControlEx.ContextMenuEx">
 
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     <local:cMacroContainer_converter_content2scrollbarvisibility x:Key="cMacroContainer_converter_content2scrollbarvisibility"/>
@@ -104,7 +105,20 @@
                                             <ItemsControl.Template>
                                                 <ControlTemplate TargetType="ItemsControl">
                                                     <Border>
-                                                        <StackPanel IsItemsHost="True" Orientation="Vertical"/>
+                                                        <StackPanel IsItemsHost="True" Orientation="Vertical">
+                                                            <i:Interaction.Behaviors>
+                                                                <i:FluidMoveBehavior AppliesTo="Children"
+                                                                                     Tag="DataContext"
+                                                                                     Duration="0:0:0.300">
+                                                                    <i:FluidMoveBehavior.EaseX>
+                                                                        <SineEase EasingMode="EaseOut"/>
+                                                                    </i:FluidMoveBehavior.EaseX>
+                                                                    <i:FluidMoveBehavior.EaseY>
+                                                                        <SineEase EasingMode="EaseOut"/>
+                                                                    </i:FluidMoveBehavior.EaseY>
+                                                                </i:FluidMoveBehavior>
+                                                            </i:Interaction.Behaviors>
+                                                        </StackPanel>
                                                     </Border>
                                                 </ControlTemplate>
                                             </ItemsControl.Template>
@@ -113,6 +127,13 @@
                                             </ItemsControl.ItemContainerStyle>
                                         </ItemsControl>
                                     </Border>
+
+                                    <Grid.ContextMenu>
+                                        <contextmenuex:cContextMenu>
+                                            <contextmenuex:cMenuItem Text="{Binding PlacementTarget.DataContext.MenuItemModelList[0].Text, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
+                                                                     Command="{Binding PlacementTarget.DataContext.MenuItemModelList[0].Command, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"/>
+                                        </contextmenuex:cContextMenu>
+                                    </Grid.ContextMenu>
                                 </Grid>
                             </scrollviewerex:cScrollViewer>
                             

@@ -5,6 +5,7 @@ namespace CustomMacroFactory.MVVM.DesignTimeViewModels
 {
     internal class uRainbowLineVM : IuRainbowLineVM
     {
+        public bool IsAnimationEnabled { get; set; } = true;
         public Brush BrushColor { get; set; } = new LinearGradientBrush()
         {
             StartPoint = new(0, 0),

@@ -240,7 +240,8 @@ namespace CustomMacroBase.PixelMatcher
                 using (Mat refMat = OpenCvSharp.Extensions.BitmapConverter.ToMat(bmpA)) //大图
                 {
                     return MatchTextBase(refMat, rect, isWhiteText, deviceType, language, zoomratio, TextType.Word);
-                };
+                }
+                ;
             }
             catch (Exception ex) { Print($"{ex.Message}"); }
             return string.Empty;

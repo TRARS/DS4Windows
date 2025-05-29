@@ -8,5 +8,6 @@
         bool IsChecked { get; set; }
         bool Unused { get; set; }
         bool ColorfulText { get; set; }
+        MacroBase MacroBase { get; set; }
     }
 }

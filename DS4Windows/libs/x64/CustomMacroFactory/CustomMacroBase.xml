@@ -109,6 +109,9 @@
         <member name="P:CustomMacroBase.DTOs.MacroPacket.ColorfulText">
             <inheritdoc cref="F:CustomMacroBase.DTOs.MacroPacket.colorfulText"/>
         </member>
+        <member name="P:CustomMacroBase.DTOs.MacroPacket.MacroBase">
+            <inheritdoc cref="F:CustomMacroBase.DTOs.MacroPacket.macroBase"/>
+        </member>
         <member name="T:CustomMacroBase.Helper.Attributes.DoNotLoadAttribute">
             <summary>
             是否加载
@@ -1001,6 +1004,11 @@
         <member name="P:CustomMacroBase.MacroBase.UseColorfulText">
             <inheritdoc cref="F:CustomMacroBase.MacroBase.useColorfulText"/>
         </member>
+        <member name="M:CustomMacroBase.MacroBase.OnSelectedChanged(System.Boolean)">
+            <summary>Executes the logic for when <see cref="P:CustomMacroBase.MacroBase.Selected"/> just changed.</summary>
+            <param name="value">The new property value that was set.</param>
+            <remarks>This method is invoked right after the value of <see cref="P:CustomMacroBase.MacroBase.Selected"/> is changed.</remarks>
+        </member>
         <member name="T:CustomMacroBase.PixelMatcher.AimCursor">
             <summary>
             AimCursor
@@ -1110,6 +1118,9 @@
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.ColorfulText">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "ColorfulText" generated properties.</summary>
         </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.MacroBase">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "MacroBase" generated properties.</summary>
+        </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.MainGate">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "MainGate" generated properties.</summary>
         </member>
@@ -1145,6 +1156,9 @@
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.ColorfulText">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "ColorfulText" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.MacroBase">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "MacroBase" generated properties.</summary>
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.MainGate">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "MainGate" generated properties.</summary>

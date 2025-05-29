@@ -165,7 +165,8 @@ namespace CustomMacroBase.CustomControlEx.PointCurveChartEx
 
                         geometryGroup.Children.Add(Geometry.Parse(data.ToString())); break;
                     }
-            };
+            }
+            ;
 
             // 创建圆圈
             if (marker)

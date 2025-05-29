@@ -172,7 +172,7 @@ namespace CustomMacroFactory.MVVM.DesignTimeViewModels
             //TopContent_Right
             foreach (var item in MacroFactory.MacroManager.CurrentGameList)
             {
-                MacroPacketList.Add(new MacroPacket(item.Title, item.MainGate)
+                MacroPacketList.Add(new MacroPacket(item)
                 {
                     IsChecked = true,
                     ColorfulText = item.UseColorfulText

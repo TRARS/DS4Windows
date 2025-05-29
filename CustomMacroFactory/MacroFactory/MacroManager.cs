@@ -19,6 +19,7 @@ namespace CustomMacroFactory.MacroFactory
         {
             Creator.AnalogStickMacro?.UpdateEntry(in ind, in _realState, in _virtualState); //Inner
             Creator.CurrentRunnableMacro?.UpdateEntry(in ind, in _realState, in _virtualState);
+            //Trace.WriteLine($"CurrentRunnableMacro is null? {Creator.CurrentRunnableMacro is null}");
         }
     }
 }

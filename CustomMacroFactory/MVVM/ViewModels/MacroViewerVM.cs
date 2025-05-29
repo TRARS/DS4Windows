@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using CustomMacroBase;
 using CustomMacroBase.CustomControlEx.ConsoleListBoxEx;
 using CustomMacroBase.CustomControlEx.VerticalButtonEx;
 using CustomMacroBase.DTOs;
@@ -180,7 +181,7 @@ namespace CustomMacroFactory.MVVM.ViewModels
             var selectedFirst = false;
             foreach (var item in MacroFactory.MacroManager.CurrentGameList)
             {
-                MacroPacketList.Add(new MacroPacket(item.Title, item.MainGate)
+                MacroPacketList.Add(new MacroPacket(item)
                 {
                     IsChecked = !selectedFirst,
                     IconData = "",
@@ -254,9 +255,7 @@ namespace CustomMacroFactory.MVVM.ViewModels
 
                 if (count > 1 && index > 0)
                 {
-                    var previous = list[index - 1]; // 获取 list[index - 1]
-                    list.RemoveAt(index - 1); // 移除 previous
-                    list.Insert(index, previous); // 将 previous 插入到 item 的旧位置
+                    list.Move(index, index - 1);
                 }
             });
         }
@@ -276,9 +275,7 @@ namespace CustomMacroFactory.MVVM.ViewModels
 
                 if (count > 1 && index > -1 && index < count - 1)
                 {
-                    var next = list[index + 1]; // 获取 list[index + 1]
-                    list.RemoveAt(index + 1); // 移除 next
-                    list.Insert(index, next); // 将 next 插入到 item 的旧位置
+                    list.Move(index, index + 1);
                 }
             });
         }
@@ -315,6 +312,26 @@ namespace CustomMacroFactory.MVVM.ViewModels
                     WeakReferenceMessenger.Default.Send(new PrintNewMessage($" Remove: {item.MacroContent.GetType().Name}"));
                 }
             });
+        }
+    }
+
+    // SelectedMacroBaseChanged
+    partial class MacroViewerVM
+    {
+        private MacroBase? lastSelectedMacroBase = null;
+
+        partial void OnSelectedMacroPacketChanged(MacroPacket? value)
+        {
+            if (value is null) { return; }
+            if (!(value.MacroBase is MacroBase mb)) { return; }
+
+            if (lastSelectedMacroBase is not null)
+            {
+                lastSelectedMacroBase.Selected = false; // Unselect the last selected MacroBase
+            }
+
+            mb.Selected = true;
+            lastSelectedMacroBase = mb; // Update the last selected MacroBase
         }
     }
 }

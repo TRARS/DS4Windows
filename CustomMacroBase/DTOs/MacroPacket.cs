@@ -23,10 +23,14 @@ namespace CustomMacroBase.DTOs
         [ObservableProperty]
         private bool colorfulText;
 
-        public MacroPacket(string text, object content)
+        [ObservableProperty]
+        MacroBase macroBase;
+
+        public MacroPacket(MacroBase mb)
         {
-            this.ButtonText = text;
-            this.MacroContent = content;
+            this.ButtonText = mb.Title;
+            this.MacroContent = mb.MainGate;
+            this.MacroBase = mb;
         }
     }
 }
